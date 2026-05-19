@@ -229,8 +229,16 @@ While monitoring <strong>validation loss</strong> and checking <strong>evaluatio
 
 ## Frequency API
 
+### Python
+
 -   `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 -   `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -238,12 +246,49 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 ### HAL-based Implementation
 
+#### Python
+
 -   `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 -   `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 -   `HAL.getImage()` - to get the image (BGR8).
 -   `HAL.setV(velocity)` - to set the linear speed.
 -   `HAL.setW(velocity)` - to set the angular velocity.
 -   `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_image();` - to get the image (cv::Mat).
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
+
+To use the model in C++, include `Model.hpp` from the provided libs:
+
+- `#include "Model.hpp"` - to import the model path utility.
+- `models::model_path_func("model.onnx");` - returns the full path to the uploaded model file as a `std::string`.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
 
 ### ROS 2-direct Implementation
 
@@ -263,6 +308,8 @@ For image debugging:
 - `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
   Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`, depth `10`
+
+#### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
@@ -284,6 +331,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 from model import model_path_func
 model_path = model_path_func("model.onnx")
 
+```
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
 ```
 
 ## Run the Exercise

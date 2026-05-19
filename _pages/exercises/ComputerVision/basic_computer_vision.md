@@ -46,8 +46,16 @@ Here the intention is to develop some basic exercises about computer vision. You
 
 ## Frequency API
 
+### Python
+
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -60,6 +68,32 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 - `WebGUI.getImage()` - to get the image (numpy array). It can be None.
 - `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
+
+#### C++
+
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `WebGUI::get_image();` - to get the image from the webcam as a `cv::Mat`. It may be empty; check with `image.empty()`.
+- `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or one with relevant information.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
 
 ### ROS 2-direct Implementation
 
@@ -85,6 +119,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 

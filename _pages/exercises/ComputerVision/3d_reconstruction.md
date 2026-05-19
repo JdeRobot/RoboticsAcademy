@@ -64,14 +64,24 @@ In this exercise, the intention is to program the necessary logic to allow kobuk
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -102,6 +112,46 @@ def algorithm(self):
  # color = [1.0, 0.0, 0.0] R, G, B
  # self.point.plotPoint(position, color)
 ```
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_image_left();` - Returns the left camera image as a `cv::Mat`.
+- `HAL::get_image_right();` - Returns the right camera image as a `cv::Mat`.
+- `HAL::get_camera_position(lr);` - Returns the camera world position as a `cv::Vec3d`. `lr` is `"left"` or `"right"`.
+- `HAL::grafic_to_optical(lr, point2d);` - Transforms image coordinate system to camera system. Returns `cv::Vec3d`.
+- `HAL::optical_to_grafic(lr, point2d);` - Transforms camera system to image coordinate system. Returns `cv::Vec3d`.
+- `HAL::backproject(lr, point2d);` - Backprojects a 2D image point into 3D homogeneous point space. Returns `cv::Vec4d`.
+- `HAL::project(lr, point3d);` - Projects a 3D homogeneous point into a 2D homogeneous image point. Returns `cv::Vec3d`.
+- `HAL::project_3d_scene(point3d);` - Scales a reconstructed 3D point for the frontend 3D viewer. Returns `cv::Vec3d`.
+- `WebGUI::show_images(left, right, paint_matching);` - Displays left and right `cv::Mat` images in the WebGUI.
+- `WebGUI::show_image_matching(x1, y1, x2, y2);` - Plots a correspondence between two image points.
+- `WebGUI::show_new_points(points);` - Adds new 3D points to the viewer. Each point is `std::array<double, 6>` as `{x, y, z, r, g, b}`.
+- `WebGUI::show_all_points(points);` - Replaces all 3D points in the viewer.
+- `WebGUI::clear_all_points();` - Clears all 3D points from the viewer.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -158,6 +208,8 @@ msg.data = json.dumps(points)
 
 points_pub.publish(msg)
 ```
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -170,6 +222,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### 3D Viewer
 

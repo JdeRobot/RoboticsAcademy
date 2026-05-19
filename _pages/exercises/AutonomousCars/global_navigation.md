@@ -127,13 +127,15 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
-- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the `tick` function to regulate the execution rate.
-- `Frequency freq = Frequency();` - to instantiate the Frequency class.
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
 - `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
@@ -268,6 +270,8 @@ For image debugging:
 - `/webgui/debug_image` - Publish to this topic to display a debug image typically used to visualize the cost map, wavefront expansion, or any other intermediate grid representation.
   Message type: `sensor_msgs/msg/Image`
 
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -283,7 +287,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 #### C++
 
-In order to use native ros controls you must include the following lines:
+In order to use direct ros controls you must include the following lines:
 
 ```cpp
 #ifndef USER_NODE
