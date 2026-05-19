@@ -51,14 +51,24 @@ The objective of this exercise is to develop a visual localisation algorithm bas
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -91,6 +101,46 @@ The instruction to get the image with the roof textures is:
 ```python
 array = WebGUI.getColorMap('/resources/exercises/montecarlo_visual_loc/images/color_mapgrannyannie.png')
 ```
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_image();` - to get the image (cv::Mat).
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `HAL::get_pose3d();` - Returns the current pose as a `HAL::Pose3d` struct with fields `x`, `y` (in m) and `yaw` (in rad).
+- `HAL::get_odom();` - Returns the approximated pose with noise as a `HAL::Pose3d` struct.
+- `HAL::get_laser_data();` - Returns laser sensor data as a `HAL::LaserData` struct.
+- `WebGUI::set_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
+- `WebGUI::show_particles(particles);` - shows the particles on the map. Accepts a `std::vector<std::vector<double>>` where each particle is `{x, y, angle_in_radians, weight}` in gazebo world coordinate system.
+- `WebGUI::show_position(x, y, yaw);` - shows the estimated robot position in the map view in blue (gazebo world coordinates).
+- `WebGUI::map_to_pose(x, y, yaw);` - converts a map pixel to gazebo world coordinate system position, returns `std::vector<double>`.
+- `WebGUI::pose_to_map(x, y, yaw);` - converts a gazebo world coordinate system position to a map pixel, returns `std::vector<double>`.
+- `WebGUI::get_map(url);` - Returns the map image as a `cv::Mat` (BGRA). The URL is `/resources/exercises/montecarlo_visual_loc/images/mapgrannyannie.png`.
+- `WebGUI::get_bgr_map(url);` - Returns the map image as a `cv::Mat` (BGR, values 0–255).
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -115,6 +165,8 @@ For image debugging:
 
 - `/webgui/image_debug` - Publish to this topic to display a debug image in the WebGUI. Message type: `sensor_msgs/msg/Image`
 
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -127,6 +179,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 

@@ -84,14 +84,24 @@ If it doesn't react, click on the area where the image is shown and try again.
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets. Only for **Gazebo Classic** universes (the ones that do not say Harmonic at the end)
@@ -106,6 +116,39 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
 * `WebGUI.showImage()` - to show an opencv image in the web template
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_image();` - to obtain the current frame of the camera robot (cv::Mat).
+- `HAL::get_pose3d();` - Returns the current pose as a `HAL::Pose3d` struct with fields `x`, `y` (in m) and `yaw` (in rad).
+- `HAL::get_laser_data();` - Returns laser sensor data as a `HAL::LaserData` struct.
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `HAL::get_bounding_boxes(image);` - Returns a `std::vector<HAL::BoundingBox>` of detected objects from the given image (cv::Mat).
+- `WebGUI::show_image(image);` - to show an opencv image (cv::Mat) in the web template.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
 
 ## Laser attributes
 `HAL.getLaserData()` returns an instance of a Class with the following attributes:
@@ -166,6 +209,8 @@ For image debugging:
 In ROS 2-direct, bounding boxes are not provided through a ROS topic.  
 If you want to replicate `HAL.getBoundingBoxes(img)`, you must run your own object detector on the images received from `/depth_camera/image_raw`.
 
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -179,6 +224,40 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 **Note**  
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
