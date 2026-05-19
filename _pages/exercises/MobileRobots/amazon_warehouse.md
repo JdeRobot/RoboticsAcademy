@@ -124,8 +124,16 @@ The objective of this exercise is to implement the logic that allows a logistics
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -203,6 +211,43 @@ See the example below on how to use them:
     WebGUI.showNumpy(mat)
 ```
 
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_pose3d();` - Returns the current pose as a `HAL::Pose3d` struct with fields `x`, `y` (in m) and `yaw` (in rad).
+- `HAL::get_sim_time();` - Returns the simulation time in seconds as a `double`.
+- `HAL::get_laser_data();` - Returns laser sensor data as a `HAL::LaserData` struct.
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular speed.
+- `HAL::lift();` - to lift the platform.
+- `HAL::putdown();` - to put down the platform.
+- `HAL::get_lift_state();` - Returns the current lift state as a `bool`.
+- `WebGUI::show_path(array);` - shows a path on the map. The parameter should be a `std::vector<std::vector<double>>` containing each of the points of the path.
+- `WebGUI::get_map(url);` - Returns the map image as a `cv::Mat`. The URLs of the worlds are in the **Supporting information** section.
+- `WebGUI::show_image(image);` - Displays the given `cv::Mat` image in the WebGUI.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
@@ -233,6 +278,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Gazebo Harmonic tools
 

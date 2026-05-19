@@ -318,7 +318,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### C++
-In order to use native ros controls you must include the following lines:
+In order to use direct ros controls you must include the following lines:
 
 ```cpp
 #ifndef USER_NODE

@@ -31,14 +31,24 @@ The objective of this exercise is to implement the logic of a navigation algorit
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -69,6 +79,39 @@ array = WebGUI.getMap('/resources/exercises/vacuum_cleaner_loc/images/mapgrannya
 ```
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `HAL::get_pose3d();` - Returns the current pose as a `HAL::Pose3d` struct with fields `x`, `y` (in m) and `yaw` (in rad).
+- `HAL::get_bumper_data();` - Returns bumper state as a `HAL::BumperData` struct with fields `state` (1 if collision, 0 otherwise) and `bumper` (0 = right, 1 = center, 2 = left).
+- `HAL::get_laser_data();` - Returns laser sensor data as a `HAL::LaserData` struct (180 measurements, 0–180°).
+- `WebGUI::show_image(image);` - Displays the given `cv::Mat` image in the WebGUI (equivalent to `WebGUI.showNumpy`).
+- `WebGUI::get_map(url);` - Returns the map image as a `cv::Mat`. The URL of the map is `/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png`.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
 
 ### ROS 2-direct Implementation
 Use standard ROS 2 topics for direct communication with the simulation. Load the map in: /resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png
@@ -109,6 +152,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### Types conversion
 
