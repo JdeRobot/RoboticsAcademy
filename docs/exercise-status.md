@@ -6,17 +6,17 @@
 | ------------------------------------ | :--------------: | :---------: | :-----------: | :------: | ---------------------------- | :---------------: | :----------------: | ----------- |
 | Basic Vacuum Cleaner                 |        ok        |     ok      |      ok       |    ok    | [Link][vid_basic_vacuum]     |        ok         |         ok         | FSM         |
 | Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_line]      |        ok         |         ok         | PID control |
-| Obstacle Avoidance                   |        ok        |     ok      |      ok       |          | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
-| Global navigation                    |        ok        |     ok      |      ok       |          | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
-| Laser Gridmap mapping                |        ok        |     ok      |      ok       |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
-| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |          | [Link][vid_montecarlo_laser] |        ok         |         ok         | AMCL        |
-| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
-| Marker-based visual Loc              |        ok        |     ok      |      ok       |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
-| Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
-| Autoparking                          |        ok        |     ok      |      ok       |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
-| Amazon Warehouse                     |        ok        |     ok      |      ok       |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
-| Follow Person                        |        ok        |     ok      |      ok       |          | [Link][vid_follow_person]    |        ok         |         ok         |             |
-| Drone Follow Road                    |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
+| Obstacle Avoidance                   |        ok        |     ok      |      ok       |    ok    | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
+| Global navigation                    |        ok        |     ok      |      ok       |    ok    | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
+| Laser Gridmap mapping                |        ok        |     ok      |      ok       |    ok    | [Link][vid_laser_mapping]    |                   |         ok         |             |
+| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |    ok    | [Link][vid_montecarlo_laser] |        ok         |         ok         | AMCL        |
+| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |    ok    | -                            |        ok         |         ok         | AMCL        |
+| Marker-based visual Loc              |        ok        |     ok      |      ok       |    ok    | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
+| Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |    ok    | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
+| Autoparking                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_autoparking]      |        ok         |         ok         |             |
+| Amazon Warehouse                     |        ok        |     ok      |      ok       |    ok    | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
+| Follow Person                        |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_person]    |        ok         |         ok         |             |
+| Drone Follow Road                    |        ok        |     ok      |      ok       |    ok    | -                            |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 | Drone Gymkhana                       |        ok        |     ok      |      ok       |          | [Link][vid_drone_gymkhana]   |                   |         ok         |             |
 | Drone Power tower Inspection         |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
