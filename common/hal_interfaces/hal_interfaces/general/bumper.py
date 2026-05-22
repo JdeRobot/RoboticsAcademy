@@ -67,7 +67,6 @@ class BumperNode(Node):
         self.contact_states_[0] = contact
 
     def center_callback(self, contact):
-        print(contact)
         self.contact_states_[1] = contact
 
     def left_callback(self, contact):
