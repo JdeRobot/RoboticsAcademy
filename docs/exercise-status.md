@@ -20,7 +20,7 @@
 | Drone Rescue people                  |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 | Drone Gymkhana                       |        ok        |     ok      |      ok       |          | [Link][vid_drone_gymkhana]   |                   |         ok         |             |
 | Drone Power tower Inspection         |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
-| Visual 3D reconstruction             |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         |             |
+| Visual 3D reconstruction             |        ok        |     ok      |      ok       |          | [Link][vid_3d_reconstr]      |        ok         |         ok         |             |
 | DL e2e Visual control                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         |             |
 | Basic Computer Vision                |        ok        |     ok      |      ok       |          | [Link][vid_basic_cv]         |       none        |        none        |             |
 | DL image classification              |        ok        |     ok      |      ok       |          | -                            |       none        |        none        |             |
@@ -57,3 +57,4 @@
 [vid_marker_loc]: https://www.youtube.com/watch?v=HF57L6ekrRg
 [vid_drone_gymkhana]: https://www.youtube.com/watch?v=uNVWs_-JfV8
 [vid_montecarlo_laser]: https://www.youtube.com/watch?v=mkEZ-ffX6cA
+[vid_3d_reconstr]: https://www.youtube.com/watch?v=nJeppI5i5H0
