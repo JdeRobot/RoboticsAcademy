@@ -26,7 +26,7 @@
 | DL image classification              |        ok        |     ok      |      ok       |          | -                            |       none        |        none        |             |
 | DL visual object detection           |        ok        |     ok      |      ok       |          | -                            |       none        |        none        |             |
 | Pick and Place                       |        ok        |     ok      |      ok       |          | [Link][vid_pick_place]       |        ok         |         ok         |             |
-| Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]   |        ok         |                    |             |
+| Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]   |        ok         |         ok         |             |
 | Car junction                         |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 
 ## 🚧 Exercises under repair / workshop state
