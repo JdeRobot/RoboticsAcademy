@@ -89,9 +89,15 @@ while True:
 * **RTF (Real Time Factor)**: 1.0 means real time. Lower values imply slower simulation (depends on your hardware).
 * **Pseudo Console**: Displays printouts and errors from your code. Use `print()` for debugging.
 
-## HAL API (ROS 2)
+## HAL API for Gazebo 11 (classic)
 
 > The following is the updated **student API** for the ROS 2 migration. It supersedes the old ROS 1 `pickup/place` helpers. Use these calls directly in your solution.
+
+To use this HAL API, you need to import the HAL module:
+
+```python
+import HAL
+```
 
 ### Robot information
 * `HAL.get_TCP_pose()` → `(xyz, ypr)` (position, rotation)
@@ -130,6 +136,248 @@ while True:
 * `HAL.back_to_home()` — move home and **open** gripper.
 * `HAL.move_joint_arm(j0, j1, j2, j3, j4, j5)` — convenience wrapper.
 * `HAL.custom_scan_sequence(list_of_joint6_arrays)` — multi‑pose scanning routine.
+
+## HAL API for Gazebo Harmonic (Machine Vision)
+
+To use this HAL API, you need to import the HAL_Harmonic module:
+
+```python
+import HAL_Harmonic as HAL
+```
+
+This HAL provides robot motion, gripper control, object attachment, workspace scanning, perception filtering, and camera access for the Machine Vision exercise in Gazebo Harmonic.
+
+---
+
+### Robot information
+
+* `HAL.get_TCP_pose()` → `(xyz, ypr)`
+  * Returns the current Tool Center Point (TCP) pose in world coordinates.
+  * `xyz = [x, y, z]` in meters.
+  * `ypr = [yaw, pitch, roll]` in degrees.
+
+* `HAL.get_Joint_states()` → `[j1..j6]`
+  * Returns the current robot joint positions in degrees.
+
+---
+
+### Kinematics
+
+#### Direct Kinematics
+
+* `HAL.MoveAbsJ(absolute_joints, speed, wait_time)`
+  * Moves the robot to an absolute joint-space configuration.
+  * `absolute_joints` → list of 6 joint angles in degrees.
+  * `speed` → relative speed in range `[0.0 - 1.0]`.
+  * `wait_time` → delay after execution in seconds.
+
+* `HAL.MoveSingleJ(joint_number, relative_angle, speed, wait_time)`
+  * Moves a single joint by a relative angular increment.
+  * `relative_angle` is specified in degrees.
+
+---
+
+#### Inverse Kinematics
+
+* `HAL.MoveJoint(abs_xyz, abs_ypr, speed, wait_time)`
+  * Point-to-Point (PTP) movement to an absolute Cartesian pose.
+  * `abs_xyz = [x, y, z]` in meters.
+  * `abs_ypr = [yaw, pitch, roll]` in degrees.
+  * Uses inverse kinematics internally.
+
+* `HAL.MoveLinear(abs_xyz, abs_ypr, speed, wait_time)`
+  * Moves the TCP to an absolute Cartesian pose following a linear trajectory.
+  * Useful for pick-and-place approach motions.
+
+---
+
+#### Relative TCP motion
+
+* `HAL.MoveRelLinear(relative_xyz, speed, wait_time)`
+  * Moves the TCP by a relative Cartesian displacement.
+  * `relative_xyz = [dx, dy, dz]` in meters.
+  * Orientation remains unchanged.
+
+* `HAL.MoveRelReor(relative_ypr, speed, wait_time)`
+  * Reorients the TCP without changing position.
+  * `relative_ypr = [dYaw, dPitch, dRoll]` in degrees.
+
+---
+
+### Gripper
+
+In Gazebo Harmonic, the gripper is controlled through a ROS2 JointTrajectory Action Controller, while object handling is managed using the Gazebo LinkAttacher service.
+
+* `HAL.GripperSet(relative_closure, wait_time)`
+  * Controls the Robotiq gripper closure percentage.
+  * `0 = fully open`
+  * `100 = fully closed`
+  * Automatically performs a dettach if `relative_closure <= 5`.
+
+Examples:
+
+```python
+HAL.GripperSet(0, 1.0)     # fully open
+HAL.GripperSet(30, 1.0)    # partially closed
+HAL.GripperSet(100, 1.0)   # fully closed
+```
+
+---
+
+* `HAL.attach(object_name)`
+  * Attaches an object to the gripper using the Gazebo LinkAttacher service.
+  * Supported objects:
+    * `"red_sphere"`
+    * `"green_sphere"`
+    * `"blue_sphere"`
+    * `"purple_sphere"`
+    * `"red_cylinder"`
+    * `"green_cylinder"`
+    * `"blue_cylinder"`
+    * `"purple_cylinder"`
+
+---
+
+* `HAL.dettach()`
+  * Dettaches the currently attached object from the gripper.
+  * No arguments required.
+  * If no object is attached, the function safely returns.
+
+> Note: in this HAL the function name is `dettach()` (double `t`), not `detach()`.
+
+---
+
+### Vision & Environment
+
+This HAL includes a Perception Manager that handles filtering, workspace scanning, object lookup, and target retrieval.
+
+---
+
+#### Color filtering
+
+* `HAL.start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin)`
+  * Starts RGB-based color filtering.
+  * Supported colors:
+    * `"red"`
+    * `"green"`
+    * `"blue"`
+    * `"purple"`
+  * RGB values must be in range `[0..255]`.
+
+* `HAL.stop_color_filter(color)`
+  * Stops a running color filter.
+
+---
+
+#### Shape filtering
+
+* `HAL.start_shape_filter(color, shape, radius)`
+  * Starts shape detection over the filtered color cloud.
+  * Supported shapes:
+    * `"sphere"`
+    * `"cylinder"`
+  * `radius` → approximate radius in meters.
+
+* `HAL.stop_shape_filter(color, shape)`
+  * Stops the shape filter.
+
+---
+
+#### Object handling
+
+* `HAL.get_object_position(object_name)` → `[x, y, z] | None`
+  * Returns the Cartesian position of an object.
+  * Object poses are loaded from the environment model.
+
+* `HAL.get_object_info(object_name)` → `(height, width, length, shape, color)`
+  * Returns metadata of a known object:
+    * height
+    * width
+    * length
+    * shape
+    * color
+
+* `HAL.get_target_position(target_name)` → `geometry_msgs/Point`
+  * Returns the world position of a target.
+
+---
+
+### Cameras
+
+This HAL provides two camera streams.
+
+* `HAL.getImage(camera="hand")`
+  * Returns an RGB image from the selected camera.
+
+Supported cameras:
+
+* `"hand"` → wrist-mounted camera
+* `"base"` → fixed base camera
+
+Examples:
+
+```python
+img = HAL.getImage("hand")
+img = HAL.getImage("base")
+```
+
+---
+
+### Workspace & scanning
+
+* `HAL.scan_workspace()`
+  * Performs a workspace scanning sequence:
+    1. Move robot to scan pose
+    2. Trigger environment scanning
+    3. Wait for acquisition
+    4. Stop scanning
+    5. Return home
+
+  * Returns the detected object list.
+
+---
+
+* `HAL.buildmap()`
+  * Runs a full environment mapping procedure.
+
+---
+
+* `HAL.custom_scan_sequence(scan_positions)`
+  * Runs a custom multi-pose scanning sequence.
+  * `scan_positions` → list of joint configurations.
+  * Returns merged detected objects.
+
+---
+
+### Workspace helpers
+
+* `HAL.set_home_position(joint_angles_deg)`
+  * Sets a custom robot home position.
+
+* `HAL.get_home_position()`
+  * Returns the current home joint configuration.
+
+* `HAL.back_to_home()`
+  * Moves the robot to the home position and opens the gripper.
+
+Internally executes:
+
+```python
+MoveAbsJ(...)
+GripperSet(0, ...)
+```
+
+---
+
+* `HAL.move_joint_arm(j0, j1, j2, j3, j4, j5)`
+  * Convenience wrapper for absolute joint-space motion.
+  * Equivalent to:
+
+```python
+HAL.MoveAbsJ([...], speed, wait_time)
+```
+
+---
 
 ## Instructions for ROS 2 Node Templates
 
