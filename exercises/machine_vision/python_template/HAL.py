@@ -832,7 +832,7 @@ def detach():
 
 
 def GripperSet(relative_closure, wait_time):
-    """Set gripper closure percentage (100% full open, 0% full closed)"""
+    """Set gripper closure percentage (0% full open, 100% full closed)"""
     ACTION = Action()
     ACTION.action = "MoveG"
     ACTION.speed = float(1)  # Gripper speed not working for Robotiq 85, set to 100%
