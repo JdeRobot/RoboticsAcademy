@@ -77,7 +77,6 @@ target/
 celerybeat-schedule
 
 # dotenv
-.env
 
 # virtualenv
 .venv/
@@ -126,3 +125,4 @@ docker-compose.yaml
 
 # Zips
 *.zip
+config.bat

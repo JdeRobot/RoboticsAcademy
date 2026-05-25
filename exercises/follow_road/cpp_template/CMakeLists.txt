@@ -7,6 +7,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
@@ -15,6 +16,9 @@ find_package(sensor_msgs REQUIRED)
 find_package(gazebo_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(as2_core REQUIRED)
+find_package(as2_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 
 find_package(nlohmann_json REQUIRED)
@@ -22,6 +26,7 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 set(dependencies
   rclcpp
+  rclcpp_action
   sensor_msgs
   nav_msgs
   geometry_msgs
@@ -30,13 +35,15 @@ set(dependencies
   message_filters
   tf2_ros
   tf2_geometry_msgs
+  as2_core
+  as2_msgs
+  cv_bridge
   common_interfaces_cpp
 )
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/libs/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/libs/include/vacuum_cleaner_cpp
 )
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
