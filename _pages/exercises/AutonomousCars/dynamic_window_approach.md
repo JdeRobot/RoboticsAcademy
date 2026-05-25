@@ -396,25 +396,11 @@ For example, you can scale values to the range [0, 1]:
 normalized_value = (value - min_value) / (max_value - min_value)
 ```
 
-### Illustrations
-
 ## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Contributors
 
-- Contributors:.
-- Maintained by.
-
-## References
-
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Eduardo Perdices](eperdices@gsyc.es), [Francisco Pérez](https://github.com/fqez), Victor Arribas, [Julio Vega](julio.vega@urjc.es), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh).
+- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
