@@ -13,6 +13,7 @@
   <depend>rclcpp_action</depend>
   <depend>as2_core</depend>
   <depend>as2_msgs</depend>
+  <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
   <depend>libopencv-dev</depend>
   <depend>sensor_msgs</depend>

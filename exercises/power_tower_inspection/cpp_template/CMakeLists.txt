@@ -18,6 +18,7 @@ find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(as2_core REQUIRED)
 find_package(as2_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 
 find_package(nlohmann_json REQUIRED)
@@ -36,6 +37,7 @@ set(dependencies
   tf2_geometry_msgs
   as2_core
   as2_msgs
+  cv_bridge
   common_interfaces_cpp
 )
 
