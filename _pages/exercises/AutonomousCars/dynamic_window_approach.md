@@ -13,17 +13,6 @@ toc_icon: "cog"
 
 <!--- classes: wide --->
 
-gallery:
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
-    alt: "Obstacle Avoidance"
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
-    alt: "F1 laser"
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
-    alt: "Interface"
-
 youtubeId1: 0fsE49EijDc
 ---
 
