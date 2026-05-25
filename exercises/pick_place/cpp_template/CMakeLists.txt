@@ -7,8 +7,15 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(moveit_msgs REQUIRED)
+find_package(linkattacher_msgs REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 
 find_package(nlohmann_json REQUIRED)
@@ -16,8 +23,15 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 set(dependencies
   rclcpp
+  rclcpp_action
   sensor_msgs
   std_msgs
+  geometry_msgs
+  trajectory_msgs
+  control_msgs
+  builtin_interfaces
+  moveit_msgs
+  linkattacher_msgs
   common_interfaces_cpp
 )
 
