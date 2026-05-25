@@ -30,6 +30,9 @@
 | Car junction                         |        ok        |     ok      |      ok       |          | [Docs][doc_car_junction]         | -                            |                   |         ok         |             |
 | Dynamic Window Approach              |        ok        |             |               |          | -                                | [Link][vid_dynamic_window]   |                   |         ok         |             |
 | Visual Odometry                      |                  |             |               |          | -                                |                              |                   |                    |             |
+| Visibility Graph Navigation          |                  |             |               |          | -                                |                              |                   |                    |             |
+| Rapidly Exploring Random Trees nav   |                  |             |               |          | -                                |                              |                   |                    |             |
+| Line Mapping                         |                  |             |               |          | -                                |                              |                   |                    |             |
 
 ## 🚧 Exercises under repair / workshop state
 
