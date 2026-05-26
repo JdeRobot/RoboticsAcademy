@@ -2,36 +2,36 @@
 name: Python Linting
 
 on:
-    push:
-        # paths:
-        #     - "**/*.py"
+  push:
+    # paths:
+    #     - "**/*.py"
 
 jobs:
-    black-lint:
-        runs-on: ubuntu-latest
-        name: Python black Lint
-        steps:
-            - uses: actions/checkout@v4
-            - uses: psf/black@stable
-              with:
-                  version: "22.3.0"
-    # flake8-lint:
-    #     runs-on: ubuntu-latest
-    #     name: Python flake8 Lint
-    #     steps:
-    #         - name: Check out source repository
-    #           uses: actions/checkout@v3
+  black-lint:
+    runs-on: ubuntu-latest
+    name: Python black Lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: psf/black@stable
+        with:
+          version: "26.5.1"
+  # flake8-lint:
+  #     runs-on: ubuntu-latest
+  #     name: Python flake8 Lint
+  #     steps:
+  #         - name: Check out source repository
+  #           uses: actions/checkout@v3
 
-    #         - name: Set up Python environment
-    #           uses: actions/setup-python@v4
-    #           with:
-    #               python-version: "3.11"
+  #         - name: Set up Python environment
+  #           uses: actions/setup-python@v4
+  #           with:
+  #               python-version: "3.11"
 
-    #         - name: flake8 Lint
-    #           uses: py-actions/flake8@v2
-    #           with:
-    #               ignore: "E701,W503,E203"
-    #               exclude: "docs,.idea"
-    #               max-line-length: "88"
-    #               path: "."
-    #               plugins: "flake8-docstrings flake8-black"
+  #         - name: flake8 Lint
+  #           uses: py-actions/flake8@v2
+  #           with:
+  #               ignore: "E701,W503,E203"
+  #               exclude: "docs,.idea"
+  #               max-line-length: "88"
+  #               path: "."
+  #               plugins: "flake8-docstrings flake8-black"
