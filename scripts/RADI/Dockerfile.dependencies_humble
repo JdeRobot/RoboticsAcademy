@@ -98,7 +98,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   x11-apps \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
-  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -L -o xorg.conf https://xpra.org/xorg.conf || echo "Download failed" \
   && rm -rf /tmp/*
@@ -115,7 +115,8 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
   libxv1:i386 \
   libglu1-mesa:i386 \
   libegl1-mesa:i386 \
-  libegl1-mesa:amd64
+  libegl1-mesa:amd64 \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
   && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
@@ -147,7 +148,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
   && apt-get install -y nodejs \
-  && npm install -g yarn
+  && npm install -g yarn \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install Python 3 pip build dependencies first
 RUN python3.10 -m pip install --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2 selenium
@@ -174,7 +176,8 @@ RUN apt-get update && apt-get install -y wget && \
     cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
     cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
     ldconfig && \
-    rm -rf /tmp/onnxruntime*
+    rm -rf /tmp/onnxruntime* && \
+    rm -rf /var/lib/apt/lists/*
 
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
@@ -186,7 +189,8 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
   && apt-get update && apt-get install -y \
   ros-humble-py-trees \
-  ros-humble-py-trees-ros
+  ros-humble-py-trees-ros \
+  && rm -rf /var/lib/apt/lists/*
 
 ## Aerostack2
 WORKDIR /root/
