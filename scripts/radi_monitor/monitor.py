@@ -148,7 +148,7 @@ def main():
             try:
                 while True:
                     typed = input_queue.get_nowait().strip()
-                    t_now = (time.time() - (meta.get("_start_time") or time.time()))
+                    t_now = time.time() - (meta.get("_start_time") or time.time())
                     if typed:
                         manual_tag = typed
                         manual_events.append({"t": round(t_now, 2), "name": manual_tag})
@@ -160,7 +160,9 @@ def main():
                 pass
 
             if container_id is None:
-                container_id, container_name, container_img = find_container(args.container)
+                container_id, container_name, container_img = find_container(
+                    args.container
+                )
                 if container_id is None:
                     print("Waiting for container...", end="\r")
                     time.sleep(2)
@@ -181,7 +183,9 @@ def main():
                 log(
                     f"Container GPU: {'yes — ' + container_gpu if container_gpu else 'not accessible'}"
                 )
-                print(f"Monitoring {container_name} ({container_id[:12]}) · {container_img}")
+                print(
+                    f"Monitoring {container_name} ({container_id[:12]}) · {container_img}"
+                )
 
             t0 = time.time()
             elapsed = t0 - meta["_start_time"]
@@ -214,7 +218,9 @@ def main():
                 "container": cstats,
                 "processes": processes[:40],
                 "exercise": exercise,
-                "exercise_source": "manual" if manual_tag else ("auto" if auto_exc else None),
+                "exercise_source": "manual" 
+                if manual_tag 
+                else ("auto" if auto_exc else None),
                 "rtf": rtf,
                 "gpu": gpu,
                 "host": hst,
@@ -222,7 +228,9 @@ def main():
             samples.append(sample)
 
             if not header_printed:
-                print(f"{'Time':>8}  {'CPU':>9}  {'RAM':>8}  {'GPU':>5}  {'RTF':>6}  Exercise")
+                print(
+                    f"{'Time':>8}  {'CPU':>9}  {'RAM':>8}  {'GPU':>5}  {'RTF':>6}  Exercise"
+                )
                 header_printed = True
 
             gpu_s = f"{gpu['util_pct']:4.0f}%" if gpu else "  N/A"
@@ -272,7 +280,9 @@ def main():
         f"CPU        avg {summary['cpu_avg']}%  peak {summary['cpu_peak']}%"
         f"  (of {summary['cpu_max_pct']}% max, {meta['sysinfo'].get('cpu_threads','?')} threads)"
     )
-    print(f"RAM        avg {summary['mem_avg_gb']} GiB  peak {summary['mem_peak_gb']} GiB")
+    print(
+        f"RAM        avg {summary['mem_avg_gb']} GiB  peak {summary['mem_peak_gb']} GiB"
+    )
     if summary.get("rtf_avg") is not None:
         print(f"RTF        avg {summary['rtf_avg']}  min {summary['rtf_min']}")
     if summary.get("gpu_avg") is not None:
