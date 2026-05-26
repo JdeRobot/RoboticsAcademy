@@ -218,8 +218,8 @@ def main():
                 "container": cstats,
                 "processes": processes[:40],
                 "exercise": exercise,
-                "exercise_source": "manual" 
-                if manual_tag 
+                "exercise_source": "manual"
+                if manual_tag
                 else ("auto" if auto_exc else None),
                 "rtf": rtf,
                 "gpu": gpu,
