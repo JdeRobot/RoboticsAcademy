@@ -41,7 +41,6 @@ from builtin_interfaces.msg import Duration
 from geometry_msgs.msg import PoseStamped
 from linkattacher_msgs.srv import AttachLink, DetachLink
 
-
 # ==============================================================
 # MAIN ROS2 NODE
 # ==============================================================
