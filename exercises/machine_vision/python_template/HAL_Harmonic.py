@@ -36,7 +36,6 @@ import tf2_geometry_msgs.tf2_geometry_msgs
 
 from sensor_msgs.msg import JointState
 from ros2srrc_data.msg import Robpose
-from linkattacher_msgs.srv import AttachLink, DetachLink
 from ament_index_python.packages import get_package_share_directory
 from std_msgs.msg import String, Bool
 from geometry_msgs.msg import Point, Pose, PoseStamped, Quaternion
@@ -77,6 +76,18 @@ HAL = Node("hal_node")
 HAL.current_joint_states = None
 HAL.grasped_object = None
 
+HAL.auto_attach_pub = HAL.create_publisher(
+    Bool,
+    "/gripper_auto_attach",
+    10,
+)
+
+HAL.graspable_pub = HAL.create_publisher(
+    String,
+    "/graspable_objects",
+    10,
+)
+
 
 def joint_state_callback(msg):
     HAL.current_joint_states = msg
@@ -95,18 +106,45 @@ while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
     print("[HAL] Waiting for gripper controller...")
 print("[HAL] Gripper ready")
 
-HAL.attach_client = HAL.create_client(AttachLink, "/ATTACHLINK")
-HAL.detach_client = HAL.create_client(DetachLink, "/DETACHLINK")
-
-print("[HAL] Waiting for LinkAttacher services...")
-
-while not HAL.attach_client.wait_for_service(timeout_sec=1.0):
-    print("Waiting for /ATTACHLINK...")
-
-while not HAL.detach_client.wait_for_service(timeout_sec=1.0):
-    print("Waiting for /DETACHLINK...")
-
 print("[HAL] LinkAttacher ready")
+
+graspable_msg = String()
+
+graspable_msg.data = (
+    "blue_sphere,"
+    "red_sphere,"
+    "green_sphere,"
+    "purple_sphere,"
+    "green_cylinder,"
+    "purple_cylinder,"
+    "red_cylinder,"
+)
+
+HAL.graspable_pub.publish(graspable_msg)
+
+print("[HAL] Published graspable objects")
+
+def publish_graspable_objects():
+
+    graspable_msg = String()
+
+    graspable_msg.data = (
+        "blue_sphere,"
+        "red_sphere,"
+        "green_sphere,"
+        "purple_sphere,"
+        "green_cylinder,"
+        "purple_cylinder,"
+        "red_cylinder,"
+    )
+
+    HAL.graspable_pub.publish(graspable_msg)
+
+
+HAL.create_timer(
+    1.0,
+    publish_graspable_objects
+)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = MultiThreadedExecutor()
@@ -863,138 +901,78 @@ def get_Joint_states():
 
 
 def GripperSet(relative_closure, wait_time):
-    """
-    Controls the Robotiq gripper.
 
-    0%   = fully open
-    100% = fully closed
+    print("\n==================================================")
+    print("[HAL] GripperSet() called")
+    print(f"[HAL] Requested closure: {relative_closure} %")
+    print(f"[HAL] Wait time: {wait_time} s")
 
-    IMPORTANT:
-    In Gazebo Harmonic, grasping is NOT done via attach plugin.
-    The object is held by physical contact and friction.
-    """
+    auto_msg = Bool()
 
-    # Gripper limits in simulation
+    if relative_closure > 5:
+
+        auto_msg.data = True
+
+        print("[HAL] AutoAttach ENABLED")
+
+    else:
+
+        auto_msg.data = False
+
+        print("[HAL] AutoAttach DISABLED")
+
+    HAL.auto_attach_pub.publish(auto_msg)
+
+    print("[HAL] AutoAttach message published")
+
     max_open = 1.0
     min_close = 0.0
 
-    # Convert percentage to joint position
-    position = min_close + (max_open - min_close) * (relative_closure / 100.0)
+    position = min_close + (
+        (max_open - min_close)
+        * (relative_closure / 100.0)
+    )
+
+    print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
-    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
+
+    goal_msg.trajectory.joint_names = [
+        "robotiq_85_left_knuckle_joint"
+    ]
 
     point = JointTrajectoryPoint()
+
     point.positions = [position]
     point.time_from_start = Duration(sec=1)
 
     goal_msg.trajectory.points.append(point)
 
+    print("[HAL] Sending gripper trajectory...")
+
     future = HAL.gripper_client.send_goal_async(goal_msg)
+
     rclpy.spin_until_future_complete(HAL, future)
+
     goal_handle = future.result()
 
     if not goal_handle.accepted:
-        print("Gripper trajectory rejected")
+
+        print("[HAL] ERROR: Gripper trajectory rejected")
         return
 
+    print("[HAL] Gripper trajectory accepted")
+
     result_future = goal_handle.get_result_async()
+
     rclpy.spin_until_future_complete(HAL, result_future)
 
-    if relative_closure <= 5:
-        dettach()
+    print("[HAL] Gripper motion completed")
 
     time.sleep(wait_time)
 
-
-def attach(item):
-    """
-    Attach object to gripper using Gazebo LinkAttacher plugin
-    """
-
-    request = AttachLink.Request()
-
-    request.model1_name = "ur5_robotiq"
-    request.link1_name = "wrist_3_link"
-
-    request.model2_name = item
-
-    link_map = {
-        "blue_sphere": "blue_sphere",
-        "red_sphere": "red_sphere",
-        "green_sphere": "green_sphere",
-        "purple_sphere": "purple_sphere",
-        "blue_cylinder": "blue_cylinder",
-        "red_cylinder": "red_cylinder",
-        "green_cylinder": "green_cylinder",
-        "purple_cylinder": "purple_cylinder",
-    }
-
-    request.link2_name = link_map[item]
-
-    print(
-        f"[HAL DEBUG] ATTACH -> "
-        f"{request.model1_name}:{request.link1_name}  "
-        f"{request.model2_name}:{request.link2_name}"
-    )
-
-    future = HAL.attach_client.call_async(request)
-    rclpy.spin_until_future_complete(HAL, future)
-
-    result = future.result()
-
-    if result and result.success:
-        print(f"Attached {item}")
-        HAL.grasped_object = item
-    else:
-        print("Attach failed")
-
-
-def dettach():
-    """
-    Detach object from gripper
-    """
-
-    if HAL.grasped_object is None:
-        return
-
-    request = DetachLink.Request()
-
-    request.model1_name = "ur5_robotiq"
-    request.link1_name = "wrist_3_link"
-
-    request.model2_name = HAL.grasped_object
-
-    link_map = {
-        "blue_sphere": "blue_sphere",
-        "red_sphere": "red_sphere",
-        "green_sphere": "green_sphere",
-        "purple_sphere": "purple_sphere",
-        "blue_cylinder": "blue_cylinder",
-        "red_cylinder": "red_cylinder",
-        "green_cylinder": "green_cylinder",
-        "purple_cylinder": "purple_cylinder",
-    }
-
-    request.link2_name = link_map[HAL.grasped_object]
-
-    print(
-        f"[HAL DEBUG] DETTACH -> "
-        f"{request.model1_name}:{request.link1_name}  "
-        f"{request.model2_name}:{request.link2_name}"
-    )
-
-    future = HAL.detach_client.call_async(request)
-    rclpy.spin_until_future_complete(HAL, future)
-
-    result = future.result()
-
-    if result and result.success:
-        print(f"Detached {HAL.grasped_object}")
-        HAL.grasped_object = None
-
-    else:
-        print("Detach failed")
+    print(f"[HAL] Waiting {wait_time} s")
+    print("==================================================\n")
 
 
 #################################### WORKSPACE MANAGEMENT ###################################################
