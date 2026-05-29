@@ -124,6 +124,7 @@ HAL.graspable_pub.publish(graspable_msg)
 
 print("[HAL] Published graspable objects")
 
+
 def publish_graspable_objects():
 
     graspable_msg = String()
@@ -141,10 +142,7 @@ def publish_graspable_objects():
     HAL.graspable_pub.publish(graspable_msg)
 
 
-HAL.create_timer(
-    1.0,
-    publish_graspable_objects
-)
+HAL.create_timer(1.0, publish_graspable_objects)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = MultiThreadedExecutor()
@@ -928,18 +926,13 @@ def GripperSet(relative_closure, wait_time):
     max_open = 1.0
     min_close = 0.0
 
-    position = min_close + (
-        (max_open - min_close)
-        * (relative_closure / 100.0)
-    )
+    position = min_close + ((max_open - min_close) * (relative_closure / 100.0))
 
     print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
 
-    goal_msg.trajectory.joint_names = [
-        "robotiq_85_left_knuckle_joint"
-    ]
+    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
 
     point = JointTrajectoryPoint()
 
