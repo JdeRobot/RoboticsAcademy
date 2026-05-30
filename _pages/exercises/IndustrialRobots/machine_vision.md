@@ -206,44 +206,32 @@ This HAL provides robot motion, gripper control, object attachment, workspace sc
 
 ### Gripper
 
-In Gazebo Harmonic, the gripper is controlled through a ROS2 JointTrajectory Action Controller, while object handling is managed using the Gazebo LinkAttacher service.
+In Gazebo Harmonic, the gripper is controlled through the joint trajectory controller. Object grasping and releasing are handled automatically through a custom contact-based attachment system integrated into Gazebo.
 
-* `HAL.GripperSet(relative_closure, wait_time)`
-  * Controls the Robotiq gripper closure percentage.
-  * `0 = fully open`
-  * `100 = fully closed`
-  * Automatically performs a dettach if `relative_closure <= 5`.
+### `HAL.GripperSet(percentage_closure, wait_time)`
 
-Examples:
+Closes or opens the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds.
 
-```python
-HAL.GripperSet(0, 1.0)     # fully open
-HAL.GripperSet(30, 1.0)    # partially closed
-HAL.GripperSet(100, 1.0)   # fully closed
-```
+- A `percentage_closure` of **100** means fully closed.
+- A `percentage_closure` of **0** means fully opened.
 
----
+When the gripper starts closing (`percentage_closure > 5`), automatic attachment is enabled. If one of the graspable objects is detected in contact with the gripper fingers, the object is automatically attached to the gripper.
 
-* `HAL.attach(object_name)`
-  * Attaches an object to the gripper using the Gazebo LinkAttacher service.
-  * Supported objects:
-    * `"red_sphere"`
-    * `"green_sphere"`
-    * `"blue_sphere"`
-    * `"purple_sphere"`
-    * `"red_cylinder"`
-    * `"green_cylinder"`
-    * `"blue_cylinder"`
-    * `"purple_cylinder"`
+When the gripper is opened (`percentage_closure <= 5`), automatic attachment is disabled and any currently attached object is automatically detached.
 
----
+### Graspable Objects
 
-* `HAL.dettach()`
-  * Dettaches the currently attached object from the gripper.
-  * No arguments required.
-  * If no object is attached, the function safely returns.
+The following objects can be automatically grasped and attached:
 
-> Note: in this HAL the function name is `dettach()` (double `t`), not `detach()`.
+- `blue_sphere`
+- `red_sphere`
+- `green_sphere`
+- `purple_sphere`
+- `green_cylinder`
+- `red_cylinder`
+- `purple_cylinder`
+
+No manual attach or detach commands are required. Grasping and releasing are performed automatically based on gripper state and contact detection.
 
 ---
 
