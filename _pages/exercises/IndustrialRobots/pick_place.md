@@ -178,16 +178,29 @@ import HAL_Harmonic
 
 ### Gripper usage
 
-In Gazebo Harmonic, the gripper is controlled through the joint trajectory controller and object attachment is managed through the Gazebo LinkAttacher service.
+In Gazebo Harmonic, the gripper is controlled through the joint trajectory controller. Object grasping and releasing are handled automatically through a custom contact-based attachment system integrated into Gazebo.
 
-* `HAL.GripperSet(percentage_closure, wait_time)`
-  * Closes the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds. A percentage_closure of 100 means fully closed, 0 means fully opened.
+### `HAL.GripperSet(percentage_closure, wait_time)`
 
-* `HAL.attach(object_name)`
-  * Attaches the given object_name to the gripper using the Gazebo LinkAttacher service. Precise object names are given below.
+Closes or opens the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds.
 
-* `HAL.dettach()`
-  * Dettaches the attached object from the gripper using the Gazebo LinkAttacher service. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.
+- A `percentage_closure` of **100** means fully closed.
+- A `percentage_closure` of **0** means fully opened.
+
+When the gripper starts closing (`percentage_closure > 5`), automatic attachment is enabled. If one of the graspable objects is detected in contact with the gripper fingers, the object is automatically attached to the gripper.
+
+When the gripper is opened (`percentage_closure <= 5`), automatic attachment is disabled and any currently attached object is automatically detached.
+
+### Graspable Objects
+
+The following objects can be automatically grasped and attached:
+
+- `blue_ball`
+- `green_cylinder`
+- `yellow_box`
+- `red_box`
+
+No manual attach or detach commands are required. Grasping and releasing are performed automatically based on gripper state and contact detection.
 
 ## HAL API for C++
 
