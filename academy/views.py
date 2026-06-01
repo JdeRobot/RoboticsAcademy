@@ -455,6 +455,8 @@ def get_docker_universe_data(fal, request):
                 "ros_version": None,
                 "type": None,
                 "start_pose": None,
+                "entity": None,
+                "extra_config": None,
             },
             "tools": tools,
             "tools_config": tools_config,
@@ -473,6 +475,8 @@ def get_docker_universe_data(fal, request):
                 "ros_version": universe.world.ros_version,
                 "type": universe.world.type,
                 "start_pose": universe.world.start_pose,
+                "entity": universe.robot.entity,
+                "extra_config": universe.robot.extra_config,
             }
         else:
             robot_config = {
@@ -481,6 +485,8 @@ def get_docker_universe_data(fal, request):
                 "ros_version": None,
                 "type": None,
                 "start_pose": None,
+                "entity": None,
+                "extra_config": None,
             }
 
         config = {

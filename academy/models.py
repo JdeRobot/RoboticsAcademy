@@ -54,6 +54,8 @@ class Robot(models.Model):
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     launch_file_path = models.CharField(max_length=200, blank=False)
+    entity = models.CharField(max_length=32, blank=False)
+    extra_config = models.CharField(max_length=256, blank=False)
 
     def __str__(self):
         return str(self.name)

@@ -5,7 +5,6 @@ import rospy
 import os
 from subprocess import Popen, PIPE
 
-
 # If DRI_NAME is not set, set DRI_PATH to None
 DRI_NAME = os.environ.get("DRI_NAME")
 DRI_PATH = os.path.join("/dev/dri", DRI_NAME) if DRI_NAME else None

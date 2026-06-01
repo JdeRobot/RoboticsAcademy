@@ -718,7 +718,7 @@ class Pick_Place:
         wpose.position.z -= distance
         waypoints.append(copy.deepcopy(wpose))
 
-        (plan, fraction) = self.arm.compute_cartesian_path(
+        plan, fraction = self.arm.compute_cartesian_path(
             waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
         )  # jump_threshold
         self.arm.execute(plan, wait=True)
@@ -738,7 +738,7 @@ class Pick_Place:
         wpose.position.z += distance
         waypoints.append(copy.deepcopy(wpose))
 
-        (plan, fraction) = self.arm.compute_cartesian_path(
+        plan, fraction = self.arm.compute_cartesian_path(
             waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
         )  # jump_threshold
         self.arm.execute(plan, wait=True)
@@ -775,7 +775,7 @@ class Pick_Place:
         wpose.position.z -= distance
         waypoints.append(copy.deepcopy(wpose))
 
-        (plan, fraction) = self.arm.compute_cartesian_path(
+        plan, fraction = self.arm.compute_cartesian_path(
             waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
         )  # jump_threshold
         self.arm.execute(plan, wait=True)
@@ -796,7 +796,7 @@ class Pick_Place:
         wpose.position.z += distance
         waypoints.append(copy.deepcopy(wpose))
 
-        (plan, fraction) = self.arm.compute_cartesian_path(
+        plan, fraction = self.arm.compute_cartesian_path(
             waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
         )  # jump_threshold
         self.arm.execute(plan, wait=True)

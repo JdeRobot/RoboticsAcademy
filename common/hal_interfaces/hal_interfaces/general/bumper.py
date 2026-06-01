@@ -1,5 +1,5 @@
 from rclpy.node import Node
-from gazebo_msgs.msg import ContactsState
+from ros_gz_interfaces.msg import Contacts
 import rclpy
 
 if not rclpy.ok():
@@ -34,9 +34,7 @@ def contactsToBumperData(contacts):
     bumper_data = BumperData()
 
     for i in range(len(contacts)):
-
-        if len(contacts[i].states) > 0:
-
+        if len(contacts[i].contacts) > 0:
             bumper_data.state = 1
             bumper_data.bumper = i
             break
@@ -60,10 +58,10 @@ class BumperNode(Node):
 
         # Subscribe to all the callbacks
         for i in range(len(self.topics)):
-            self.create_subscription(ContactsState, topics[i], self.callbacks_[i], 10)
+            self.create_subscription(Contacts, topics[i], self.callbacks_[i], 10)
 
         # Right, center, left
-        self.contact_states_ = [ContactsState() for _ in range(3)]
+        self.contact_states_ = [Contacts() for _ in range(3)]
 
     def right_callback(self, contact):
         self.contact_states_[0] = contact
