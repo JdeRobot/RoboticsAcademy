@@ -32,7 +32,7 @@ set(COMMON_INTERFACES_LIB "/home/ws/install/common_interfaces_cpp/lib/libcommon_
 
 set(WEBGUI_ROS_DEPS  rclcpp std_msgs cv_bridge)
 set(WEBGUI_SYS_DEPS  Frequency Boost::system nlohmann_json::nlohmann_json)
-set(HAL_ROS_DEPS     rclcpp rclcpp_action ros2srrc_data control_msgs trajectory_msgs builtin_interfaces linkattacher_msgs)
+set(HAL_ROS_DEPS     rclcpp rclcpp_action ros2srrc_data control_msgs trajectory_msgs builtin_interfaces std_msgs)
 
 
 # --- libFrequency.so ---
