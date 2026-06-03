@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
+FROM nvidia/cuda:12.9.2-cudnn-runtime-ubuntu24.04
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -19,12 +19,12 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-ENV ROS_DISTRO=humble
+ENV ROS_DISTRO=jazzy
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins:
 ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
-ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
+ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.12/site-packages
 ENV ROS_PYTHON_VERSION=3
 ENV ROS_VERSION=2
 
@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
   net-tools \
   pciutils \
   nlohmann-json3-dev \
+  python3.12-venv \
   && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
@@ -58,32 +59,12 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo 11
-RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-RUN apt-get update && apt-get install -y \
-  gazebo11 \
-  ros-humble-gazebo-ros-pkgs \
-  gstreamer1.0-plugins-bad \
-  gstreamer1.0-plugins-good \
-  gstreamer1.0-plugins-ugly \
-  gstreamer1.0-libav \
-  libgstreamer-plugins-base1.0-dev \
-  libimage-exiftool-perl \
-  && apt-get -y autoremove \
-  && apt-get clean autoclean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
-
 # Install Gazebo Harmonic
 RUN apt-get update \
   && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && apt-get update && apt-get install -y -q \
-  gz-harmonic \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y \
-  ros-humble-ros-gzharmonic \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+  && apt-get update \
+  && apt-get install -y -q gz-jetty \
   && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
@@ -110,12 +91,15 @@ RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.
 # VirtualGL and TurboVNC
 COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
+RUN apt-get update && apt-get install -y \
+  libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev \
+  mesa-utils mesa-common-dev libglew-dev libglfw3-dev \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
   libxtst6:i386 \
   libxv1:i386 \
-  libglu1-mesa:i386 \
-  libegl1-mesa:i386 \
-  libegl1-mesa:amd64 \
+  libglu1-mesa:i386 libegl1:i386\
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
@@ -151,45 +135,50 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
   && npm install -g yarn \
   && rm -rf /var/lib/apt/lists/*
 
+
+# Create and use a virtual environment
+RUN python3.12 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
 # Install Python 3 pip build dependencies first
-RUN python3.10 -m pip install --no-cache-dir --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2 selenium
+RUN pip install --no-cache-dir --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2 selenium
 
 # pip install dependencies
-RUN python3.10 -m pip install --no-cache-dir \
+RUN pip install --no-cache-dir \
   pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
-  argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
-  matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
-  pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
-  onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
+  argparse coverage cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
+  matplotlib numpy nunavut==1.1.0 packaging==21.3 pkgconfig pyros-genmsg==0.5.8 \
+  pyulog==1.0.1 pyyaml requests==2.31.0 serial==0.0.97 six==1.16.0 toml psutil \
+  onnxruntime-gpu==1.22.0 Pillow opencv-python watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags chardet
 
 # install pytorch with CUDA 12.8 support 
-RUN python3.10 -m pip install --no-cache-dir --ignore-installed sympy==1.13.3
-RUN python3.10 -m pip install --no-cache-dir torch --extra-index-url https://download.pytorch.org/whl/cu128
+RUN python3.12 -m pip install --no-cache-dir --ignore-installed sympy==1.13.3
+RUN python3.12 -m pip install --no-cache-dir torch --extra-index-url https://download.pytorch.org/whl/cu128
 
 # monaco editor
-RUN python3.10 -m pip install --no-cache-dir black==24.10.0
+RUN python3.12 -m pip install --no-cache-dir black==26.5.1
 
 # Install ONNX Runtime C++ API
 RUN apt-get update && apt-get install -y wget && \
-    wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
-    tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
-    cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
-    cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
-    ldconfig && \
-    rm -rf /tmp/onnxruntime* && \
-    rm -rf /var/lib/apt/lists/*
+  wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
+  tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
+  cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
+  cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
+  ldconfig && \
+  rm -rf /tmp/onnxruntime* && \
+  rm -rf /var/lib/apt/lists/*
 
 # websocket server dependency
-RUN python3.10 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
+RUN python3.12 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
   django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
 
 # BT STUDIO hotfix
-RUN python3.10 -m pip install --no-cache-dir py-trees autopep8
+RUN python3.12 -m pip install --no-cache-dir py-trees autopep8
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
   && apt-get update && apt-get install -y \
-  ros-humble-py-trees \
-  ros-humble-py-trees-ros \
+  ros-${ROS_DISTRO}-py-trees \
+  ros-${ROS_DISTRO}-py-trees-ros \
   && rm -rf /var/lib/apt/lists/*
 
 ## Aerostack2
@@ -230,8 +219,8 @@ RUN pip3 install --no-cache-dir \
   colcon-lcov-result \
   PySimpleGUI-4-foss
 
-RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
-RUN colcon mixin update default
+# RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
+# RUN colcon mixin update default
 RUN rm -rf log 
 # remove log folder
 RUN mkdir -p /home/drones_ws/src/
@@ -250,7 +239,7 @@ RUN apt-get update && \
   apt-get install -y \
   libbenchmark-dev \
   libeigen3-dev \
-  libgeographic-dev \
+  # libgeographic-dev \
   libncurses-dev \
   libyaml-cpp-dev \
   pybind11-dev \
@@ -258,54 +247,54 @@ RUN apt-get update && \
   python3-pydantic \
   python3-pymap3d \
   python3-pytest \
-  ros-humble-action-msgs \
-  ros-humble-ament-cmake \
-  ros-humble-ament-cmake-gtest \
-  ros-humble-ament-cmake-lint-cmake \
-  ros-humble-ament-cmake-pytest \
-  ros-humble-ament-cmake-python \
-  ros-humble-ament-cmake-xmllint \
-  ros-humble-ament-copyright \
-  ros-humble-ament-flake8 \
-  ros-humble-ament-index-cpp \
-  ros-humble-ament-lint-auto \
-  ros-humble-ament-lint-common \
-  ros-humble-ament-pep257 \
-  ros-humble-backward-ros \
-  ros-humble-builtin-interfaces \
-  ros-humble-cv-bridge \
-  ros-humble-geographic-msgs \
-  ros-humble-geometry-msgs \
-  ros-humble-image-transport \
-  ros-humble-mocap4r2-msgs \
-  ros-humble-nav-msgs \
-  ros-humble-pluginlib \
-  ros-humble-rclcpp \
-  ros-humble-rclcpp-action \
-  ros-humble-rclcpp-components \
-  ros-humble-rclcpp-lifecycle \
-  ros-humble-rclpy \
-  ros-humble-robot-state-publisher \
-  ros-humble-rosidl-default-generators \
-  ros-humble-rosidl-default-runtime \
-  ros-humble-rviz2 \
-  ros-humble-sdformat-urdf \
-  ros-humble-sensor-msgs \
-  ros-humble-std-msgs \
-  ros-humble-std-srvs \
-  ros-humble-tf2 \
-  ros-humble-tf2-geometry-msgs \
-  ros-humble-tf2-msgs \
-  ros-humble-tf2-ros \
-  ros-humble-trajectory-msgs \
-  ros-humble-visualization-msgs \
-  ros-humble-moveit \
-  ros-humble-ros2-control \
-  ros-humble-ros2-controllers \
-  ros-humble-gripper-controllers \
-  ros-humble-rmw-cyclonedds-cpp \
-  ros-humble-ur \
-  ros-humble-ros-testing \
+  ros-${ROS_DISTRO}-action-msgs \
+  ros-${ROS_DISTRO}-ament-cmake \
+  ros-${ROS_DISTRO}-ament-cmake-gtest \
+  ros-${ROS_DISTRO}-ament-cmake-lint-cmake \
+  ros-${ROS_DISTRO}-ament-cmake-pytest \
+  ros-${ROS_DISTRO}-ament-cmake-python \
+  ros-${ROS_DISTRO}-ament-cmake-xmllint \
+  ros-${ROS_DISTRO}-ament-copyright \
+  ros-${ROS_DISTRO}-ament-flake8 \
+  ros-${ROS_DISTRO}-ament-index-cpp \
+  ros-${ROS_DISTRO}-ament-lint-auto \
+  ros-${ROS_DISTRO}-ament-lint-common \
+  ros-${ROS_DISTRO}-ament-pep257 \
+  ros-${ROS_DISTRO}-backward-ros \
+  ros-${ROS_DISTRO}-builtin-interfaces \
+  ros-${ROS_DISTRO}-cv-bridge \
+  ros-${ROS_DISTRO}-geographic-msgs \
+  ros-${ROS_DISTRO}-geometry-msgs \
+  ros-${ROS_DISTRO}-image-transport \
+  ros-${ROS_DISTRO}-mocap4r2-msgs \
+  ros-${ROS_DISTRO}-nav-msgs \
+  ros-${ROS_DISTRO}-pluginlib \
+  ros-${ROS_DISTRO}-rclcpp \
+  ros-${ROS_DISTRO}-rclcpp-action \
+  ros-${ROS_DISTRO}-rclcpp-components \
+  ros-${ROS_DISTRO}-rclcpp-lifecycle \
+  ros-${ROS_DISTRO}-rclpy \
+  ros-${ROS_DISTRO}-robot-state-publisher \
+  ros-${ROS_DISTRO}-rosidl-default-generators \
+  ros-${ROS_DISTRO}-rosidl-default-runtime \
+  ros-${ROS_DISTRO}-rviz2 \
+  ros-${ROS_DISTRO}-sdformat-urdf \
+  ros-${ROS_DISTRO}-sensor-msgs \
+  ros-${ROS_DISTRO}-std-msgs \
+  ros-${ROS_DISTRO}-std-srvs \
+  ros-${ROS_DISTRO}-tf2 \
+  ros-${ROS_DISTRO}-tf2-geometry-msgs \
+  ros-${ROS_DISTRO}-tf2-msgs \
+  ros-${ROS_DISTRO}-tf2-ros \
+  ros-${ROS_DISTRO}-trajectory-msgs \
+  ros-${ROS_DISTRO}-visualization-msgs \
+  ros-${ROS_DISTRO}-moveit \
+  ros-${ROS_DISTRO}-ros2-control \
+  ros-${ROS_DISTRO}-ros2-controllers \
+  ros-${ROS_DISTRO}-gripper-controllers \
+  ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-ur \
+  ros-${ROS_DISTRO}-ros-testing \
   libpoco-dev \
   && rm -rf /var/lib/apt/lists/*
 
@@ -323,46 +312,8 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
   else \
   colcon build \
-  --symlink-install \
-  --cmake-args \
-  -DCMAKE_BUILD_TYPE=Release ; \
+  --symlink-install; \
   fi
-
-# Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
-RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
-
-# Create workspace and add IndustrialRobots repo 
-RUN mkdir -p /home/dev_ws/src/
-WORKDIR /home/dev_ws/src/
-RUN git clone https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
-RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
-WORKDIR /home/dev_ws
-
-# --- PCL & ROS PCL deps (before colcon) ---
-RUN apt-get update && apt-get install -y \
-  libpcl-dev \
-  ros-humble-pcl-ros \
-  ros-humble-gazebo-ros-pkgs \
-  ros-humble-gazebo-plugins \
-  ros-humble-tf-transformations \
-  ros-humble-pcl-conversions && \
-  rm -rf /var/lib/apt/lists/*
-
-# (Optional but recommended) install missing deps via rosdep
-RUN . /opt/ros/humble/setup.sh && \
-  rosdep update && \
-  rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
-
-# Build (drop the duplicate)
-WORKDIR /home/dev_ws
-ARG TARGETARCH
-RUN . /opt/ros/humble/setup.sh && \
-  if [ "$TARGETARCH" = "arm64" ]; then \
-  export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
-  else \
-  colcon build && colcon build; \
-  fi
-RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
 RUN echo "source /usr/share/gazebo/setup.bash" >> ~/.bashrc
@@ -372,17 +323,16 @@ RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
 RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
 
 # Download and install OMPL library
-COPY install-ompl-ubuntu.sh /
-WORKDIR /
-RUN chmod u+x install-ompl-ubuntu.sh
-RUN ./install-ompl-ubuntu.sh --github --python
+# COPY install-ompl-ubuntu.sh /
+# WORKDIR /
+# RUN chmod u+x install-ompl-ubuntu.sh
+# RUN ./install-ompl-ubuntu.sh --github --python
 
-# Clone and build gz_ros2_control for Gazebo Harmonic (gz-sim8)
-# This is required for Pick Place Harmonic exercise controller loading
+# Clone and build gz_ros2_control for Gazebo jetty (gz-sim8)
 WORKDIR /home/ws/src
-RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b humble
+RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b ${ROS_DISTRO}
 WORKDIR /home/ws
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
-  export GZ_VERSION=harmonic && \
-  colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
+  export GZ_VERSION=jetty && \
+  colcon build"
 WORKDIR /
