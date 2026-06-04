@@ -5,7 +5,6 @@ WORKDIR /
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 ARG INFRA_OWNER=JdeRobot
-# Atomic RoboticsInfrastructure setup — eliminates ghost CoW layers from separate RUN mv steps.
 # Launchers/, Worlds/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
 # Only .git history is stripped to recover extra space.
 RUN mkdir -p /opt/jderobot /home/ws/src && \
