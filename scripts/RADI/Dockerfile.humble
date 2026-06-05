@@ -14,7 +14,15 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
     mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
     chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh && \
-    rm -rf /opt/jderobot/.git
+    rm -rf /opt/jderobot/.git \
+               /opt/jderobot/.github \
+               /opt/jderobot/database \
+               /opt/jderobot/deprecated_assets \
+               /opt/jderobot/Docs \
+               /opt/jderobot/scripts \
+               /opt/jderobot/test \
+               /opt/jderobot/Universes \
+               /opt/jderobot/utils
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
