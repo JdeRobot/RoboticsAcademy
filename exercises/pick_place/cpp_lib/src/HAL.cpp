@@ -14,27 +14,18 @@
 #include "control_msgs/action/follow_joint_trajectory.hpp"
 #include "trajectory_msgs/msg/joint_trajectory_point.hpp"
 
-// Link attachment services (Gazebo plugin)
-#include "linkattacher_msgs/srv/attach_link.hpp"
-#include "linkattacher_msgs/srv/detach_link.hpp"
+// Gripper auto-attach signalling topics
+#include "std_msgs/msg/bool.hpp"
+#include "std_msgs/msg/string.hpp"
 
 #include <cmath>
 #include <future>
 #include <thread>
 #include <chrono>
-#include <unordered_map>
 
 using namespace std::chrono_literals;
 
 namespace {
-
-// Map from item model name to the specific link used for attachment
-const std::unordered_map<std::string, std::string> kLinkMap = {
-    {"blue_ball",      "link_3"},
-    {"green_cylinder", "link_2"},
-    {"red_box",        "link"},
-    {"yellow_box",     "link"},
-};
 
 // Convert YPR in degrees to quaternion (ZYX Euler convention, same as Python HAL)
 void ypr_to_quat(const std::array<double, 3>& ypr,
@@ -56,19 +47,16 @@ void ypr_to_quat(const std::array<double, 3>& ypr,
 
 } // namespace
 
-// Internal ROS 2 node: action clients for /Move and /Robmove, gripper, and
-// service clients for link attachment. All blocking calls use promise/future
-// so that the background executor fires result callbacks while the caller waits.
+// Internal ROS 2 node: action clients for /Move, /Robmove and gripper, plus
+// publishers for gripper attachment signalling. All blocking calls use
+// promise/future so that the background executor fires result callbacks
+// while the caller waits.
 class HALNode : public rclcpp::Node
 {
 public:
     using Move    = ros2srrc_data::action::Move;
     using Robmove = ros2srrc_data::action::Robmove;
     using FJT     = control_msgs::action::FollowJointTrajectory;
-    using Attach  = linkattacher_msgs::srv::AttachLink;
-    using Detach  = linkattacher_msgs::srv::DetachLink;
-
-    std::string grasped_object;
 
     HALNode() : rclcpp::Node("hal_node")
     {
@@ -76,8 +64,9 @@ public:
         robmove_client_ = rclcpp_action::create_client<Robmove>(this, "/Robmove");
         gripper_client_ = rclcpp_action::create_client<FJT>(
             this, "/gripper_controller/follow_joint_trajectory");
-        attach_client_  = this->create_client<Attach>("/ATTACHLINK");
-        detach_client_  = this->create_client<Detach>("/DETACHLINK");
+
+        auto_attach_pub_ = this->create_publisher<std_msgs::msg::Bool>("/gripper_auto_attach", 10);
+        graspable_pub_   = this->create_publisher<std_msgs::msg::String>("/graspable_objects", 10);
 
         RCLCPP_INFO(get_logger(), "Waiting for /Move action server...");
         while (!move_client_->wait_for_action_server(1s))
@@ -91,15 +80,27 @@ public:
         while (!gripper_client_->wait_for_action_server(1s))
             RCLCPP_INFO(get_logger(), "Waiting for gripper controller...");
 
-        RCLCPP_INFO(get_logger(), "Waiting for /ATTACHLINK service...");
-        while (!attach_client_->wait_for_service(1s))
-            RCLCPP_INFO(get_logger(), "Waiting for /ATTACHLINK...");
+        std_msgs::msg::String graspable_msg;
+        graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box";
+        graspable_pub_->publish(graspable_msg);
 
-        RCLCPP_INFO(get_logger(), "Waiting for /DETACHLINK service...");
-        while (!detach_client_->wait_for_service(1s))
-            RCLCPP_INFO(get_logger(), "Waiting for /DETACHLINK...");
+        // Periodic republish so late-joining subscribers receive the list
+        graspable_timer_ = this->create_wall_timer(
+            std::chrono::seconds(1),
+            [this]() {
+                std_msgs::msg::String msg;
+                msg.data = "blue_ball,green_cylinder,yellow_box,red_box";
+                graspable_pub_->publish(msg);
+            });
 
         RCLCPP_INFO(get_logger(), "HAL ready");
+    }
+
+    void publish_auto_attach(bool enabled)
+    {
+        std_msgs::msg::Bool msg;
+        msg.data = enabled;
+        auto_attach_pub_->publish(msg);
     }
 
     // Send a /Move action goal and block until the result arrives.
@@ -174,52 +175,13 @@ public:
         return ok;
     }
 
-    // Call /ATTACHLINK service and block until response.
-    bool attach_link(const std::string& model2, const std::string& link2)
-    {
-        auto req = std::make_shared<Attach::Request>();
-        req->model1_name = "ur5_robotiq";
-        req->link1_name  = "wrist_3_link";
-        req->model2_name = model2;
-        req->link2_name  = link2;
-
-        std::promise<bool> prom;
-        auto fut = prom.get_future();
-
-        attach_client_->async_send_request(req,
-            [&prom](rclcpp::Client<Attach>::SharedFuture resp) {
-                prom.set_value(resp.get()->success);
-            });
-
-        return fut.get();
-    }
-
-    // Call /DETACHLINK service and block until response.
-    bool detach_link(const std::string& model2, const std::string& link2)
-    {
-        auto req = std::make_shared<Detach::Request>();
-        req->model1_name = "ur5_robotiq";
-        req->link1_name  = "wrist_3_link";
-        req->model2_name = model2;
-        req->link2_name  = link2;
-
-        std::promise<bool> prom;
-        auto fut = prom.get_future();
-
-        detach_client_->async_send_request(req,
-            [&prom](rclcpp::Client<Detach>::SharedFuture resp) {
-                prom.set_value(resp.get()->success);
-            });
-
-        return fut.get();
-    }
-
 private:
     rclcpp_action::Client<Move>::SharedPtr    move_client_;
     rclcpp_action::Client<Robmove>::SharedPtr robmove_client_;
     rclcpp_action::Client<FJT>::SharedPtr     gripper_client_;
-    rclcpp::Client<Attach>::SharedPtr         attach_client_;
-    rclcpp::Client<Detach>::SharedPtr         detach_client_;
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr   auto_attach_pub_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr graspable_pub_;
+    rclcpp::TimerBase::SharedPtr graspable_timer_;
 };
 
 // Static member definitions
@@ -331,47 +293,12 @@ void HAL::MoveRelReor(const std::array<double, 3>& ypr, double speed, double wai
 
 void HAL::GripperSet(double relative_closure, double wait_time)
 {
+    // Enable contact-based auto-attach when closing, release when opening.
+    hal_node_->publish_auto_attach(relative_closure > 5.0);
+
     // Convert percentage [0,100] to joint position [0.0,1.0]
     double position = relative_closure / 100.0;
 
     if (!hal_node_->gripper_execute(position, wait_time))
         RCLCPP_ERROR(rclcpp::get_logger("HAL"), "GripperSet failed");
-
-    // Auto-detach when gripper is opened (same threshold as Python HAL_Harmonic)
-    if (relative_closure <= 5.0)
-        dettach();
-}
-
-void HAL::attach(const std::string& item)
-{
-    auto it = kLinkMap.find(item);
-    if (it == kLinkMap.end()) {
-        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "Unknown item: %s", item.c_str());
-        return;
-    }
-
-    bool ok = hal_node_->attach_link(item, it->second);
-    if (ok) {
-        RCLCPP_INFO(rclcpp::get_logger("HAL"), "Attached %s", item.c_str());
-        hal_node_->grasped_object = item;
-    } else {
-        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "Attach failed for %s", item.c_str());
-    }
-}
-
-void HAL::dettach()
-{
-    if (!hal_node_ || hal_node_->grasped_object.empty()) return;
-
-    const std::string& item = hal_node_->grasped_object;
-    auto it = kLinkMap.find(item);
-    if (it == kLinkMap.end()) return;
-
-    bool ok = hal_node_->detach_link(item, it->second);
-    if (ok) {
-        RCLCPP_INFO(rclcpp::get_logger("HAL"), "Detached %s", item.c_str());
-        hal_node_->grasped_object.clear();
-    } else {
-        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "Detach failed for %s", item.c_str());
-    }
 }
