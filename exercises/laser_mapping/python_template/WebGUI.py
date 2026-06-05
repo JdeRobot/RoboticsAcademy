@@ -48,11 +48,11 @@ class GUIBridgeNode(Node):
             ROSImage, "/webgui/user_map", self.user_map_callback, qos_transient
         )
         self.create_subscription(
-            Odometry, "/turtlebot3/odom", self.odom_callback, qos_profile_sensor_data
+            Odometry, "/odom", self.odom_callback, qos_profile_sensor_data
         )
         self.create_subscription(
             Odometry,
-            "/turtlebot3/odom_noisy",
+            "/odom_noisy",
             self.noisy_odom_callback,
             qos_profile_sensor_data,
         )

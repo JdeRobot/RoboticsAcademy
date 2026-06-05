@@ -17,10 +17,10 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        odometry_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom", "hal_odometry");
-        noisy_odometry_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom_noisy", "hal_noisy_odometry_node");
-        motors_node_ = std::make_shared<MotorsNode>("/turtlebot3/cmd_vel", 4.0, 0.3, "hal_motors");
-        laser_node_ = std::make_shared<LaserNode>("/turtlebot3/laser/scan", "hal_laser");
+        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odometry");
+        noisy_odometry_node_ = std::make_shared<OdometryNode>("/odom_noisy", "hal_noisy_odometry_node");
+        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
+        laser_node_ = std::make_shared<LaserNode>("/laser/scan", "hal_laser");
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
         executor_->add_node(odometry_node_);
