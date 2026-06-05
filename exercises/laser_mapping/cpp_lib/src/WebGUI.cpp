@@ -22,8 +22,8 @@ public:
         , map_util_([this](){ return odom_node_->getPose3d(); },
                     [this](){ return noisy_odom_node_->getPose3d(); })
     {
-        odom_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom", "webgui_odom");
-        noisy_odom_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom_noisy", "webgui_noisy_odom");
+        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        noisy_odom_node_ = std::make_shared<OdometryNode>("/odom_noisy", "webgui_noisy_odom");
         aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 
         auto qos_transient = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();

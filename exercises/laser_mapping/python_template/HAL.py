@@ -31,12 +31,10 @@ def __auto_spin() -> None:
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
-motor_node = MotorsNode("/turtlebot3/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/turtlebot3/odom")
-noisy_odometry_node = OdometryNode(
-    "/turtlebot3/odom_noisy", node_name="noisy_odometry_node"
-)
-laser_node = LaserNode("/turtlebot3/laser/scan")
+motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/odom")
+noisy_odometry_node = OdometryNode("/odom_noisy", node_name="noisy_odometry_node")
+laser_node = LaserNode("/laser/scan")
 
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
