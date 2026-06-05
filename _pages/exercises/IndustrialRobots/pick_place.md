@@ -220,9 +220,7 @@ No manual attach or detach commands are required. Grasping and releasing are per
 
 ### Gripper
 
-- `HAL::GripperSet(relative_closure, wait_time);` - Controls the gripper. `relative_closure` in [0,100] (0 = fully open, 100 = fully closed).
-- `HAL::attach(item);` - Attaches the specified object to the gripper via the Gazebo LinkAttacher plugin. `item` is the object name as `std::string`.
-- `HAL::dettach();` - Detaches the currently attached object from the gripper.
+- `HAL::GripperSet(relative_closure, wait_time);` - Controls the gripper. `relative_closure` in [0,100] (0 = fully open, 100 = fully closed). When closing (`relative_closure` > 5), contact-based automatic attachment is enabled; when opening (`relative_closure` <= 5), the attached object is automatically released.
 
 In order to use the HAL-based controls you must include the following lines:
 
