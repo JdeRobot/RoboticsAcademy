@@ -92,6 +92,14 @@ feature_row:
     url: "/exercises/MobileRobots/laser_mapping"
     status: "running"
     order: 0;
+  - image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
+    alt: "Visibility Graph Navigation"
+    title: "Visibility Graph Navigation"
+    excerpt: "Path planning using visibility graph algorithm"
+    url: "/exercises/MobileRobots/visibility_graph"
+    status: "prototype"
+    order: 3;
+
     version: "v3.2"
   
   - image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
