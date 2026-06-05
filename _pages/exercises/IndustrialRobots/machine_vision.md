@@ -379,6 +379,122 @@ HAL.MoveAbsJ([...], speed, wait_time)
 
 ---
 
+## HAL API for C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI library. Used to display camera images in the browser.
+
+### Robot information
+
+- `HAL::get_TCP_position();` - Returns the current TCP position as `std::array<double, 3>` [x, y, z] in metres.
+- `HAL::get_TCP_orientation();` - Returns the current TCP orientation as `std::array<double, 3>` [yaw, pitch, roll] in degrees.
+- `HAL::get_Joint_states();` - Returns the current joint positions as `std::array<double, 6>` in degrees.
+
+### Direct Kinematics
+
+- `HAL::MoveAbsJ(joints, speed, wait_time);` - Moves the robot to the given angular position for each joint. `joints` is `std::array<double, 6>` in degrees, `speed` in [0,1], `wait_time` in seconds.
+- `HAL::MoveSingleJ(joint_number, relative_angle, speed, wait_time);` - Moves a single joint by a relative angular increment. `joint_number` in [1,6], angle in degrees.
+
+### Inverse Kinematics
+
+- `HAL::MoveJoint(xyz, ypr, speed, wait_time);` - Moves the TCP to an absolute Cartesian pose. `xyz` is `std::array<double, 3>` in metres, `ypr` in degrees.
+- `HAL::MoveLinear(xyz, ypr, speed, wait_time);` - Moves the TCP in a linear trajectory to an absolute Cartesian pose. `xyz` in metres, `ypr` in degrees.
+- `HAL::MoveRelLinear(xyz, speed, wait_time);` - Moves the TCP by a relative Cartesian increment. `xyz` is `std::array<double, 3>` in metres.
+- `HAL::MoveRelReor(ypr, speed, wait_time);` - Reorients the TCP by relative angular increments. `ypr` is `std::array<double, 3>` in degrees.
+
+### Gripper
+
+- `HAL::GripperSet(relative_closure, wait_time);` - Controls the gripper. `relative_closure` in [0,100] (0 = fully open, 100 = fully closed). When `relative_closure` <= 5 the gripper releases any attached object automatically.
+
+### Cameras
+
+- `HAL::getImage(camera);` - Returns a camera frame as `cv::Mat`. `camera` is `"hand"` (wrist-mounted) or `"base"` (fixed). Default: `"hand"`.
+- `WebGUI::showImage(image);` - Sends a `cv::Mat` frame to the browser image panel.
+
+### Perception filters
+
+- `HAL::start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin);` - Starts an RGB color filter. Supported colors: `"red"`, `"green"`, `"blue"`, `"purple"`. RGB values in [0,255].
+- `HAL::stop_color_filter(color);` - Stops the color filter for the given color.
+- `HAL::start_shape_filter(color, shape, radius);` - Starts shape detection on the color-filtered cloud. Supported shapes: `"sphere"`, `"cylinder"`. `radius` in metres.
+- `HAL::stop_shape_filter(color, shape);` - Stops the shape filter.
+
+### Object and target queries
+
+- `HAL::get_object_position(object_name);` - Returns the position of a known object as `std::array<double, 3>` [x, y, z] in metres. Returns `{0, 0, 0}` if not found.
+- `HAL::get_object_info(object_name);` - Returns an `ObjectInfo` struct with fields: `position`, `height`, `width`, `length`, `shape`, `color`. Check `info.shape.empty()` to detect a not-found object.
+- `HAL::get_target_position(target_name);` - Returns the position of a target zone as `std::array<double, 3>` in metres.
+
+### Workspace
+
+- `HAL::scan_workspace();` - Moves to a scan pose, triggers environment scanning, and returns home.
+- `HAL::buildmap();` - Runs a full environment mapping procedure.
+- `HAL::gripper_percentage_for(diameter, max_open_m);` - Converts an object diameter (m) to gripper closure percentage. `max_open_m` defaults to `0.085` m.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+    }
+}
+```
+
+### Argument examples
+
+#### Home and intermediate poses (joint space, in degrees)
+
+home      = {0.0, -90.0, 70.0, -70.0, -90.0, 0.0}
+
+pre_pick  = {0.0, -90.0, 90.0, -90.0, -90.0, 0.0}
+
+pre_place = {180.0, -90.0, 90.0, -90.0, -90.0, 0.0}
+
+#### Examples of absolute XYZ poses for MoveJoint and MoveLinear (in metres)
+
+above_object = {object_pos[0], object_pos[1], object_pos[2] + 0.15}
+
+at_object    = {object_pos[0], object_pos[1], object_pos[2] - 0.025}
+
+above_target = {target_pos[0], target_pos[1], 0.40}
+
+transition   = {-0.20, 0.0, 0.55}
+
+#### Example TCP orientation (YPR, in degrees)
+
+down = {180.0, 0.0, -90.0}
+
+#### Color filter presets
+
+red    - rmax=255, rmin=100, gmax=40,  gmin=0,   bmax=40,  bmin=0
+
+green  - rmax=40,  rmin=0,   gmax=255, gmin=100, bmax=40,  bmin=0
+
+blue   - rmax=40,  rmin=0,   gmax=40,  gmin=0,   bmax=255, bmin=100
+
+purple - rmax=255, rmin=100, gmax=120, gmin=0,   bmax=255, bmin=50
+
+#### Gripper closure per shape
+
+sphere   - HAL::GripperSet(25.0, 1.0)
+
+cylinder - HAL::GripperSet(45.0, 1.0)
+
+#### Object and target names
+
+Objects: "red_sphere", "green_sphere", "blue_sphere", "purple_sphere", "red_cylinder", "green_cylinder", "blue_cylinder", "purple_cylinder"
+
+Targets: "target1" .. "target16"
+
 ## Instructions for ROS 2 Node Templates
 
 > If you prefer a local ROS 2 workspace instead of Web Templates.
