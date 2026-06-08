@@ -171,13 +171,13 @@ RUN python3.10 -m pip install --no-cache-dir black==24.10.0
 
 # Install ONNX Runtime C++ API
 RUN apt-get update && apt-get install -y wget && \
-    wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
-    tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
-    cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
-    cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
-    ldconfig && \
-    rm -rf /tmp/onnxruntime* && \
-    rm -rf /var/lib/apt/lists/*
+  wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
+  tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
+  cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
+  cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
+  ldconfig && \
+  rm -rf /tmp/onnxruntime* && \
+  rm -rf /var/lib/apt/lists/*
 
 # websocket server dependency
 RUN python3.10 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
@@ -307,6 +307,13 @@ RUN apt-get update && \
   ros-humble-ur \
   ros-humble-ros-testing \
   libpoco-dev \
+  libpcl-dev \
+  ros-humble-pcl-ros \
+  ros-humble-gazebo-ros-pkgs \
+  ros-humble-gazebo-plugins \
+  ros-humble-tf-transformations \
+  ros-humble-pcl-conversions \
+  ros-humble-pcl-msgs \
   && rm -rf /var/lib/apt/lists/*
 
 # On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
@@ -330,39 +337,6 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
-
-# Create workspace and add IndustrialRobots repo 
-RUN mkdir -p /home/dev_ws/src/
-WORKDIR /home/dev_ws/src/
-RUN git clone --depth=1 https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
-RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
-WORKDIR /home/dev_ws
-
-# --- PCL & ROS PCL deps (before colcon) ---
-RUN apt-get update && apt-get install -y \
-  libpcl-dev \
-  ros-humble-pcl-ros \
-  ros-humble-gazebo-ros-pkgs \
-  ros-humble-gazebo-plugins \
-  ros-humble-tf-transformations \
-  ros-humble-pcl-conversions && \
-  rm -rf /var/lib/apt/lists/*
-
-# (Optional but recommended) install missing deps via rosdep
-RUN . /opt/ros/humble/setup.sh && \
-  rosdep update && \
-  rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
-
-# Build (drop the duplicate)
-WORKDIR /home/dev_ws
-ARG TARGETARCH
-RUN . /opt/ros/humble/setup.sh && \
-  if [ "$TARGETARCH" = "arm64" ]; then \
-  export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
-  else \
-  colcon build && colcon build; \
-  fi
-RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
 RUN echo "source /usr/share/gazebo/setup.bash" >> ~/.bashrc

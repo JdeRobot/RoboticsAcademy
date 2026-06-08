@@ -351,8 +351,7 @@ private:
     {
         // Mirror the Python HAL: prefer the mounted source path, fall back to installed package.
         const std::string hardcoded =
-            "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/"
-            "machine_vision_harmonic/config/models_info.yaml";
+            "/resources/exercises/machine_vision/models_info.yaml";
 
         std::string path;
         {
@@ -362,8 +361,7 @@ private:
 
         if (path.empty()) {
             try {
-                path = ament_index_cpp::get_package_share_directory("machine_vision_exercise")
-                       + "/config/models_info.yaml";
+                path = "/resources/exercises/machine_vision/models_info.yaml";
             } catch (...) {
                 RCLCPP_WARN(get_logger(), "models_info.yaml not found; workspace empty");
                 return;
