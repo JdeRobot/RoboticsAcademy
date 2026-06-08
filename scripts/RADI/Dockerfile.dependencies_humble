@@ -171,10 +171,10 @@ RUN python3.10 -m pip install --no-cache-dir black==24.10.0
 
 # Install ONNX Runtime C++ API
 RUN apt-get update && apt-get install -y wget && \
-  wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
+  wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.22.0/onnxruntime-linux-x64-1.22.0.tgz -O /tmp/onnxruntime.tgz && \
   tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
-  cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
-  cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
+  cp -r /tmp/onnxruntime-linux-x64-1.22.0/include/* /usr/local/include/ && \
+  cp -r /tmp/onnxruntime-linux-x64-1.22.0/lib/* /usr/local/lib/ && \
   ldconfig && \
   rm -rf /tmp/onnxruntime* && \
   rm -rf /var/lib/apt/lists/*
