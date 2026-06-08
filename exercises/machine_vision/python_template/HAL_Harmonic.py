@@ -234,7 +234,7 @@ class PerceptionManager(Node):
     def load_models_info(self):
         """Load object information from YAML configuration file"""
         try:
-            filename = "/home/ws/src/Industrial/ros2_SimRealRobotControl_gz/packages/ur5/machine_vision_harmonic/config/models_info.yaml"
+            filename = "/resources/exercises/machine_vision/models_info.yaml"
 
             with open(filename, "r") as file:
                 objects_info = yaml.safe_load(file)
@@ -308,8 +308,7 @@ class PerceptionManager(Node):
     def set_target_info(self):
         """Load target information from YAML configuration file"""
         try:
-            package_share_dir = get_package_share_directory("machine_vision_exercise")
-            filename = os.path.join(package_share_dir, "config", "models_info.yaml")
+            filename = "/resources/exercises/machine_vision/models_info.yaml"
 
             with open(filename, "r") as file:
                 objects_info = yaml.safe_load(file)
@@ -331,8 +330,7 @@ class PerceptionManager(Node):
     def get_workspace(self):
         """Load workspace configuration"""
         try:
-            package_share_dir = get_package_share_directory("machine_vision_exercise")
-            filename = os.path.join(package_share_dir, "config", "joints_setup.yaml")
+            filename = "/resources/exercises/machine_vision/joints_setup.yaml"
 
             with open(filename, "r") as file:
                 joints_setup = yaml.safe_load(file)
@@ -1042,8 +1040,8 @@ def custom_scan_sequence(scan_positions):
 
 def load_objects():
     """Load objects from YAML configuration file"""
-    pkg_path = get_package_share_directory("machine_vision_exercise")
-    filename = os.path.join(pkg_path, "config", "models_info.yaml")
+
+    filename = "/resources/exercises/machine_vision/models_info.yaml"
 
     object_list = {}
     goal_list = {}
