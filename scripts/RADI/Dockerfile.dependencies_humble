@@ -162,8 +162,25 @@ RUN python3.10 -m pip install --no-cache-dir \
   pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
   onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
 
-# Install minimal CUDA 12.8 runtime libs for onnxruntime-gpu CUDA EP
-# curand and cufft are hard ldd deps of libonnxruntime_providers_cuda.so
+# CUDA runtime wheels for onnxruntime-gpu==1.22.0 CUDA Execution Provider.
+#
+# All seven packages below must be upgraded together whenever onnxruntime-gpu
+# is bumped. Compatibility ranges declared by the wheel (via ~= operator):
+#   nvidia-cuda-runtime-cu12  ~= 12.0   nvidia-cuda-nvrtc-cu12 ~= 12.0
+#   nvidia-cublas-cu12        (runtime dep of cudnn)
+#   nvidia-cudnn-cu12         ~=  9.0
+#   nvidia-curand-cu12        ~= 10.0   nvidia-cufft-cu12      ~= 11.0
+#
+# Upgrade checklist:
+#   1. Check the new ORT release notes for CUDA / cuDNN major version changes.
+#   2. Run: pip show onnxruntime-gpu | grep Requires  — to see declared ~= ranges.
+#   3. Pick PyPI versions whose MAJOR matches those ranges (stay on CUDA 12.x,
+#      cuDNN 9.x, curand 10.x, cufft 11.x until ORT itself changes the range).
+#   4. After build, verify inside the container:
+#        python3 -c "import onnxruntime as ort; print(ort.get_available_providers())"
+#      CUDAExecutionProvider must appear first.
+#   5. Run: ldd $(python3 -c "import onnxruntime, os; print(os.path.dirname(onnxruntime.__file__))")/capi/libonnxruntime_providers_cuda.so
+#      Every .so must resolve (no "not found" lines).
 RUN python3.10 -m pip install --no-cache-dir \
     numpy \
     onnx \
@@ -172,8 +189,8 @@ RUN python3.10 -m pip install --no-cache-dir \
     nvidia-cudnn-cu12==9.10.2.21 \
     nvidia-nvjitlink-cu12==12.8.93 \
     nvidia-cuda-nvrtc-cu12==12.8.93 \
-    nvidia-curand-cu12 \
-    nvidia-cufft-cu12
+    nvidia-curand-cu12==10.3.10.19 \
+    nvidia-cufft-cu12==11.4.1.4
 
 # Register all pip-installed nvidia .so files with ldconfig so onnxruntime-gpu
 # finds them regardless of whether pip used site-packages or dist-packages
