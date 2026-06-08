@@ -104,8 +104,8 @@ RUN curl -L -o xorg.conf https://xpra.org/xorg.conf || echo "Download failed" \
   && rm -rf /tmp/*
 
 # Install noVNC and websockify
-RUN git clone -b v1.4.0 https://github.com/novnc/noVNC.git
-RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.git
+RUN git clone --depth=1 --single-branch -b v1.4.0 https://github.com/novnc/noVNC.git
+RUN cd /noVNC/utils && git clone --depth=1 --single-branch -b v0.11.0 https://github.com/novnc/websockify.git
 
 # VirtualGL and TurboVNC
 COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
@@ -236,7 +236,7 @@ RUN rm -rf log
 # remove log folder
 RUN mkdir -p /home/drones_ws/src/
 WORKDIR /home/drones_ws/src/
-RUN git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
+RUN git clone --depth=1 https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
 RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
 RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
 RUN touch aerostack2/as2_map_server/COLCON_IGNORE
@@ -334,7 +334,7 @@ RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 # Create workspace and add IndustrialRobots repo 
 RUN mkdir -p /home/dev_ws/src/
 WORKDIR /home/dev_ws/src/
-RUN git clone https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
+RUN git clone --depth=1 https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
 RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
 WORKDIR /home/dev_ws
 
