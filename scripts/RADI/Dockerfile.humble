@@ -15,14 +15,14 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
     chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh && \
     rm -rf /opt/jderobot/.git \
-               /opt/jderobot/.github \
-               /opt/jderobot/database \
-               /opt/jderobot/deprecated_assets \
-               /opt/jderobot/Docs \
-               /opt/jderobot/scripts \
-               /opt/jderobot/test \
-               /opt/jderobot/Universes \
-               /opt/jderobot/utils
+    /opt/jderobot/.github \
+    /opt/jderobot/database \
+    /opt/jderobot/deprecated_assets \
+    /opt/jderobot/Docs \
+    /opt/jderobot/scripts \
+    /opt/jderobot/test \
+    /opt/jderobot/Universes \
+    /opt/jderobot/utils
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
