@@ -92,6 +92,7 @@ feature_row:
     url: "/exercises/MobileRobots/laser_mapping"
     status: "running"
     order: 0;
+
   - image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
     alt: "Visibility Graph Navigation"
     title: "Visibility Graph Navigation"
@@ -100,8 +101,23 @@ feature_row:
     status: "prototype"
     order: 3;
 
-    version: "v3.2"
-  
+  - image_path: /assets/images/exercises/rrt/rrt_teaser.png
+    alt: "RRT Navigation"
+    title: "RRT Navigation"
+    excerpt: "Path planning using Rapidly-exploring Random Tree algorithm"
+    url: "/exercises/MobileRobots/rrt"
+    status: "prototype"
+    order: 4;
+
+
+  - image_path: /assets/images/exercises/line_mapper/line_mapper_teaser.png
+    alt: "Laser Line Mapping"
+    title: "Laser Line Mapping"
+    excerpt: "Geometric map building using laser line segment extraction"
+    url: "/exercises/MobileRobots/line_mapper_pr"
+    status: "prototype"
+    order: 5;  
+
   - image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
     alt: "Real Follow Person"
     title: "Real Follow Person (ROS2)"
