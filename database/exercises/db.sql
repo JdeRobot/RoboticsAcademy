@@ -137,6 +137,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
+27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
 \.
 
 --
@@ -215,6 +216,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 68	14	64	False
 69	14	65	False
 70	25	70	True
+71	27	71	True
 \.
 
 --
@@ -304,6 +306,8 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 79	15	video
 80	18	video
 81	19	video
+82	27	simulator
+83	27	console
 \.
 
 --
