@@ -18,7 +18,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 
 find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system thread)
 
 set(dependencies
   rclcpp
@@ -43,11 +43,21 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 add_library(${PROJECT_NAME} SHARED academy.cpp)
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
-target_link_libraries(${PROJECT_NAME} HAL WebGUI Frequency nlohmann_json::nlohmann_json Boost::system)
+target_link_libraries(${PROJECT_NAME}
+  nlohmann_json::nlohmann_json
+)
 
 add_executable(academyCode main.cpp)
 ament_target_dependencies(academyCode ${dependencies})
-target_link_libraries(academyCode ${PROJECT_NAME} HAL WebGUI Frequency nlohmann_json::nlohmann_json Boost::system)
+target_link_libraries(academyCode
+  ${PROJECT_NAME}
+  HAL
+  WebGUI
+  Frequency
+  nlohmann_json::nlohmann_json
+  Boost::system
+  Boost::thread
+)
 
 install(TARGETS
   academyCode
