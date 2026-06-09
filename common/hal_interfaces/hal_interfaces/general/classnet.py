@@ -236,6 +236,8 @@ class NeuralNetwork:
 
     # Get bounding boxes function
     def getBoundingBoxes(self, img):
+        rows = img.shape[0]
+        cols = img.shape[1]
         detections = self.detect(img)
         bounding_boxes = []
 
