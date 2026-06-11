@@ -28,6 +28,12 @@ ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
 ENV ROS_PYTHON_VERSION=3
 ENV ROS_VERSION=2
 
+# gz.msgs10 Python bindings (installed by gz-harmonic apt package) are compiled
+# with protoc 3.x and cannot create descriptors under protobuf 4.x / 5.x C++
+# extension. Force pure-Python protobuf parser (backward-compatible with all
+# .pb2 files) so gz.msgs10 and onnxruntime-gpu coexist without version pinning.
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
 # Install common tools
 RUN apt-get update && apt-get install -y \
   software-properties-common \
@@ -182,8 +188,6 @@ RUN python3.10 -m pip install --no-cache-dir \
 #   5. Run: ldd $(python3 -c "import onnxruntime, os; print(os.path.dirname(onnxruntime.__file__))")/capi/libonnxruntime_providers_cuda.so
 #      Every .so must resolve (no "not found" lines).
 RUN python3.10 -m pip install --no-cache-dir \
-    numpy \
-    onnx \
     nvidia-cuda-runtime-cu12==12.8.90 \
     nvidia-cublas-cu12==12.8.4.1 \
     nvidia-cudnn-cu12==9.10.2.21 \
