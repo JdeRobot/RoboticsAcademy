@@ -50,6 +50,16 @@ The robot must be able to:
 - `Frequency freq = Frequency();` - to instanciate the Frequency class.
 - `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+## Available Worlds
+
+This exercise offers three simulation worlds with different odometry noise levels. The world is selected at launch time and determines how accurate the robot's odometry readings will be:
+
+- **`laser_mapping`** (low noise) — Odometry with minimal noise, suitable for testing basic mapping algorithms.
+- **`laser_mapping_noise_med`** (medium noise) — Odometry with moderate noise, closer to real robot conditions.
+- **`laser_mapping_noise_high`** (high noise) — Odometry with significant noise, designed to challenge more robust mapping solutions.
+
+In all worlds, odometry is read through the same API (`HAL.getOdom()` in Python, `HAL::get_odom()` in C++).
+
 ## Robot API
 
 This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
@@ -63,15 +73,9 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 * `HAL.getPose3d().x` - to get position x of the robot.
 * `HAL.getPose3d().y` - to get position y of the robot.
 * `HAL.getPose3d().yaw` - to get the orientation of the robot.
-* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
-* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise).
-* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise).
-* `HAL.getOdom2().x` - to get the approximated X coordinate of the robot (with more noise than getOdom).
-* `HAL.getOdom2().y` - to get the approximated Y coordinate of the robot (with more noise than getOdom).
-* `HAL.getOdom2().yaw` - to get the approximated orientation position of the robot (with more noise than getOdom).
-* `HAL.getOdom3().x` - to get the approximated X coordinate of the robot (with even more noise than getOdom).
-* `HAL.getOdom3().y` - to get the approximated Y coordinate of the robot (with even more noise than getOdom).
-* `HAL.getOdom3().yaw` - to get the approximated orientation position of the robot (with even more noise than getOdom).
+* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise). The noise level depends on the selected world.
+* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise). The noise level depends on the selected world.
+* `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise). The noise level depends on the selected world.
 * `HAL.setW()` - to set the angular velocity.
 * `HAL.setV()` - to set the linear velocity.
 * `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
@@ -88,7 +92,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL::get_pose3d().x;` - gets the robot x position in world coordinates (`double`).
 - `HAL::get_pose3d().y;` - gets the robot y position in world coordinates (`double`).
 - `HAL::get_pose3d().yaw;` - gets the robot orientation around the vertical axis in world coordinates (`double`).
-- `HAL::get_odom();` - returns the noisy odometry pose as a `HAL::Pose3d`.
+- `HAL::get_odom();` - returns the noisy odometry pose as a `HAL::Pose3d`. The noise level depends on the selected world.
 - `HAL::get_odom().x;` - gets the noisy odometry x position (`double`).
 - `HAL::get_odom().y;` - gets the noisy odometry y position (`double`).
 - `HAL::get_odom().yaw;` - gets the noisy odometry orientation around the vertical axis (`double`).
