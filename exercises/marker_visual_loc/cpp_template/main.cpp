@@ -1,5 +1,7 @@
-#include "HAL.hpp"
 #include "WebGUI.hpp"
+#ifndef USER_NODE
+#include "HAL.hpp"
+#endif
 #include "academy.cpp"
 #include "rclcpp/rclcpp.hpp"
 #include <filesystem>
@@ -12,7 +14,7 @@ public:
     static void init_hal() {
         HAL::init();
     }
-    
+
     static void init_webgui() {
         WebGUI::init();
     }
