@@ -64,22 +64,6 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo 11
-RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-RUN apt-get update && apt-get install -y \
-  gazebo11 \
-  ros-humble-gazebo-ros-pkgs \
-  gstreamer1.0-plugins-bad \
-  gstreamer1.0-plugins-good \
-  gstreamer1.0-plugins-ugly \
-  gstreamer1.0-libav \
-  libgstreamer-plugins-base1.0-dev \
-  libimage-exiftool-perl \
-  && apt-get -y autoremove \
-  && apt-get clean autoclean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
-
 # Install Gazebo Harmonic
 RUN apt-get update \
   && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
@@ -188,22 +172,20 @@ RUN python3.10 -m pip install --no-cache-dir \
 #   5. Run: ldd $(python3 -c "import onnxruntime, os; print(os.path.dirname(onnxruntime.__file__))")/capi/libonnxruntime_providers_cuda.so
 #      Every .so must resolve (no "not found" lines).
 RUN python3.10 -m pip install --no-cache-dir \
-    nvidia-cuda-runtime-cu12==12.8.90 \
-    nvidia-cublas-cu12==12.8.4.1 \
-    nvidia-cudnn-cu12==9.10.2.21 \
-    nvidia-nvjitlink-cu12==12.8.93 \
-    nvidia-cuda-nvrtc-cu12==12.8.93 \
-    nvidia-curand-cu12==10.3.10.19 \
-    nvidia-cufft-cu12==11.4.1.4
+  nvidia-cuda-runtime-cu12==12.8.90 \
+  nvidia-cublas-cu12==12.8.4.1 \
+  nvidia-cudnn-cu12==9.10.2.21 \
+  nvidia-nvjitlink-cu12==12.8.93 \
+  nvidia-cuda-nvrtc-cu12==12.8.93 \
+  nvidia-curand-cu12==10.3.10.19 \
+  nvidia-cufft-cu12==11.4.1.4
 
 # Register all pip-installed nvidia .so files with ldconfig so onnxruntime-gpu
 # finds them regardless of whether pip used site-packages or dist-packages
-RUN python3.10 -c "\
-import sysconfig, pathlib; \
-site = pathlib.Path(sysconfig.get_path('purelib')); \
-conf = '\n'.join(str(d) for d in site.glob('nvidia/*/lib') if d.is_dir()); \
-pathlib.Path('/etc/ld.so.conf.d/nvidia-pip.conf').write_text(conf + '\n')" \
-    && ldconfig
+COPY config-nvidia-libs.py /
+WORKDIR /
+RUN chmod u+x config-nvidia-libs.py
+RUN python3.10 config-nvidia-libs.py && ldconfig
 
 # monaco editor
 RUN python3.10 -m pip install --no-cache-dir black==24.10.0
@@ -345,14 +327,12 @@ RUN apt-get update && \
   ros-humble-rmw-cyclonedds-cpp \
   ros-humble-ur \
   ros-humble-ros-testing \
-  libpoco-dev \
-  libpcl-dev \
   ros-humble-pcl-ros \
-  ros-humble-gazebo-ros-pkgs \
-  ros-humble-gazebo-plugins \
   ros-humble-tf-transformations \
   ros-humble-pcl-conversions \
   ros-humble-pcl-msgs \
+  libpoco-dev \
+  libpcl-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
