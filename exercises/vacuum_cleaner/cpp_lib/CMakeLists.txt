@@ -10,12 +10,9 @@ find_package(ament_cmake REQUIRED)
 set(ROS2_PACKAGES
     rclcpp
     nav_msgs
-    gazebo_msgs
     geometry_msgs
     sensor_msgs
     std_msgs
-    tf2
-    tf2_geometry_msgs
     ros_gz_interfaces
 )
 
@@ -23,14 +20,14 @@ foreach(pkg IN LISTS ROS2_PACKAGES)
     find_package(${pkg} REQUIRED)
 endforeach()
 
-find_package(Boost REQUIRED COMPONENTS system)
 find_package(nlohmann_json REQUIRED)
+find_package(OpenCV REQUIRED)
 
 set(COMMON_INTERFACES_INCLUDE "/home/ws/install/common_interfaces_cpp/include")
 set(COMMON_INTERFACES_LIB "/home/ws/install/common_interfaces_cpp/lib/libcommon_interfaces_cpp.so")
 
-set(WEBGUI_ROS_DEPS  rclcpp nav_msgs gazebo_msgs tf2 tf2_geometry_msgs)
-set(WEBGUI_SYS_DEPS  Frequency Boost::system nlohmann_json::nlohmann_json)
+set(WEBGUI_ROS_DEPS  rclcpp nav_msgs)
+set(WEBGUI_SYS_DEPS  nlohmann_json::nlohmann_json)
 set(HAL_ROS_DEPS     rclcpp geometry_msgs sensor_msgs std_msgs ros_gz_interfaces)
 
 
@@ -40,10 +37,10 @@ target_include_directories(Frequency PUBLIC include)
 
 # --- libWebGUI.so ---
 add_library(WebGUI SHARED src/WebGUI.cpp)
-target_include_directories(WebGUI PUBLIC include)
+target_include_directories(WebGUI PUBLIC include ${COMMON_INTERFACES_INCLUDE} ${OpenCV_INCLUDE_DIRS})
 
 ament_target_dependencies(WebGUI ${WEBGUI_ROS_DEPS})
-target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS})
+target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS} ${COMMON_INTERFACES_LIB} ${OpenCV_LIBS})
 
 # --- libHAL.so ---
 add_library(HAL SHARED src/HAL.cpp)
