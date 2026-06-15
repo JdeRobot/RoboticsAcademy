@@ -10,7 +10,6 @@ find_package(ament_cmake REQUIRED)
 set(ROS2_PACKAGES
     rclcpp
     nav_msgs
-    gazebo_msgs
     geometry_msgs
     sensor_msgs
     std_msgs
@@ -31,7 +30,7 @@ find_package(OpenCV REQUIRED)
 set(COMMON_INTERFACES_INCLUDE "/home/ws/install/common_interfaces_cpp/include")
 set(COMMON_INTERFACES_LIB "/home/ws/install/common_interfaces_cpp/lib/libcommon_interfaces_cpp.so")
 
-set(WEBGUI_ROS_DEPS  rclcpp nav_msgs gazebo_msgs tf2 tf2_geometry_msgs sensor_msgs cv_bridge)
+set(WEBGUI_ROS_DEPS  rclcpp nav_msgs tf2 tf2_geometry_msgs sensor_msgs cv_bridge)
 set(WEBGUI_SYS_DEPS  Frequency Boost::system nlohmann_json::nlohmann_json)
 set(HAL_ROS_DEPS     rclcpp geometry_msgs sensor_msgs std_msgs ros_gz_interfaces cv_bridge)
 
