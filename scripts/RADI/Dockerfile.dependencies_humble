@@ -358,7 +358,6 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 
 # Create workspace and add drone packages
-RUN echo "source /usr/share/gazebo/setup.bash" >> ~/.bashrc
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 RUN echo 'export AEROSTACK2_PATH=/home/drones_ws/src/aerostack2' >> ~/.bashrc
 RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
