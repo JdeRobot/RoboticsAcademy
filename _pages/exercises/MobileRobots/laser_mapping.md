@@ -21,6 +21,16 @@ Occupancy_grid:
     alt: "Occupancy Grid"
     title: "Occupancy Grid"
 
+world_selector:
+  - url: /assets/images/exercises/laser_mapping/flecha.png
+    image_path: /assets/images/exercises/laser_mapping/flecha.png
+    alt: "Universe selector in the bottom toolbar"
+    title: "Click on the universe name in the bottom toolbar"
+  - url: /assets/images/exercises/laser_mapping/mundo.png
+    image_path: /assets/images/exercises/laser_mapping/mundo.png
+    alt: "Universe dropdown"
+    title: "Choose the desired world from the dropdown"
+
 youtubeId1: obHhJ-_Y96c
 youtubeId2: 8pDsqMVAsv0
 ---
@@ -52,13 +62,28 @@ The robot must be able to:
 
 ## Available Worlds
 
-This exercise offers three simulation worlds with different odometry noise levels. The world is selected at launch time and determines how accurate the robot's odometry readings will be:
+This exercise has six universes divided into two environments, each with three odometry noise levels. The selected universe determines how much drift accumulates in the robot's odometry over time.
 
-- **`laser_mapping`** (low noise) — Odometry with minimal noise, suitable for testing basic mapping algorithms.
-- **`laser_mapping_noise_med`** (medium noise) — Odometry with moderate noise, closer to real robot conditions.
-- **`laser_mapping_noise_high`** (high noise) — Odometry with significant noise, designed to challenge more robust mapping solutions.
+**Small Warehouse** — compact environment, recommended for getting started:
 
-In all worlds, odometry is read through the same API (`HAL.getOdom()` in Python, `HAL::get_odom()` in C++).
+- **Small Laser Mapping Warehouse** — low odometry noise.
+- **Small Laser Mapping Warehouse Medium Noise** — medium odometry noise.
+- **Small Laser Mapping Warehouse High Noise** — high odometry noise.
+
+**Large Warehouse** — larger and more complex environment:
+
+- **Laser Mapping Warehouse Low Noise** — low odometry noise.
+- **Laser Mapping Warehouse Medium Noise** — medium odometry noise.
+- **Laser Mapping Warehouse High Noise** — high odometry noise.
+
+To select a universe, click on the universe name in the bottom toolbar and pick the desired world from the dropdown.
+
+{% include gallery id="world_selector" caption="Selecting a universe from the bottom toolbar." %}
+
+The robot provides two odometry sources:
+
+* `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` — absolute position of the robot.
+* `HAL.getOdom().x`, `HAL.getOdom().y`, `HAL.getOdom().yaw` — noisy odometry. The noise level depends on the selected universe.
 
 ## Robot API
 
