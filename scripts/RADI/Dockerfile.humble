@@ -22,7 +22,8 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     /opt/jderobot/scripts \
     /opt/jderobot/test \
     /opt/jderobot/Universes \
-    /opt/jderobot/utils
+    /opt/jderobot/utils \
+    && rm -f /opt/jderobot/Worlds/*.glb
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
