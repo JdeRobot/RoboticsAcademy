@@ -38,7 +38,7 @@ module.exports = {
   resolve: {
     alias: aliases(),
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
-    modules: ["...", "node_modules", path.resolve(__dirname, "node_modules")],
+    modules: ["node_modules", path.resolve(__dirname, "node_modules")],
   },
   module: {
     rules: [
@@ -109,6 +109,6 @@ module.exports = {
   mode: process.argv.includes("production") ? "production" : "development",
   devtool: process.argv.includes("production") ? false : "inline-source-map",
   optimization: {
-    minimize: process.argv.includes("production"),
+    minimize: isProduction,
   },
 };
