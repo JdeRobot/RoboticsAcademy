@@ -38,7 +38,7 @@ module.exports = {
   resolve: {
     alias: aliases(),
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
-    modules: ["node_modules", path.resolve(__dirname, "node_modules")],
+    // modules: ["node_modules", path.resolve(__dirname, "node_modules")],
   },
   module: {
     rules: [
