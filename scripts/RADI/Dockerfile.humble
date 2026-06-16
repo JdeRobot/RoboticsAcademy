@@ -1,3 +1,18 @@
+FROM node:20 AS ra-base
+
+RUN apt-get update && apt-get install -y git zip
+
+# RoboticsAcademy
+ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
+ARG ACADEMY_OWNER=JdeRobot
+RUN mkdir -p /tmp/dev
+RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /tmp/app
+WORKDIR /tmp/app
+RUN cd common && cd console_interfaces && zip -r ../common.zip console_interfaces/ && cd .. && cd gui_interfaces && zip -r -u ../common.zip gui_interfaces/ && cd .. && cd hal_interfaces && zip -r -u ../common.zip hal_interfaces/ && cd ../.. && mv common/common.zip react_frontend/src/common.zip
+WORKDIR /tmp/app/react_frontend
+RUN yarn install && yarn run build
+
+
 FROM jderobot/robotics-applications:dependencies-humble
 
 WORKDIR /
@@ -34,19 +49,23 @@ RUN python3 -m pip install --no-cache-dir robotics_application_manager
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
 ARG ACADEMY_OWNER=JdeRobot
-RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+# Build react_fronted and create commons
+RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/ \
+    && rm -rf /RoboticsAcademy/.git \
+    /RoboticsAcademy/compose_cfg \
+    /RoboticsAcademy/docs \
+    /RoboticsAcademy/scripts \
+    /RoboticsAcademy/tests \
+    /RoboticsAcademy/react_fronted \
+    /RoboticsAcademy/common
+
+COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static
+COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/react_frontend/webpack-stats.json
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
-
-# Compress commons
-WORKDIR /RoboticsAcademy/
-RUN cd /RoboticsAcademy/common && cd console_interfaces && zip -r ../common.zip console_interfaces/ && cd .. && cd gui_interfaces && zip -r -u ../common.zip gui_interfaces/ && cd .. && cd hal_interfaces && zip -r -u ../common.zip hal_interfaces/ && cd ../.. && mv common/common.zip react_frontend/src/common.zip
-
-# build react_fronted
-RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
 
 # Django server
 EXPOSE 7164
