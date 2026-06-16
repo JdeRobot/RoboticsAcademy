@@ -3,7 +3,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleTrackerPlugin = require("webpack-bundle-tracker");
 const path = require("path");
-const nodeExternals = require("webpack-node-externals");
 
 const aliases = () => {
   const aliasConfig = {
@@ -107,7 +106,6 @@ module.exports = {
       filename: "css/[name].css",
     }),
   ],
-  externals: [nodeExternals()],
   mode: process.argv.includes("production") ? "production" : "development",
   devtool: process.argv.includes("production") ? false : "inline-source-map",
   optimization: {
