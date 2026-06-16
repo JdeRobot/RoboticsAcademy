@@ -106,5 +106,9 @@ module.exports = {
       filename: "css/[name].css",
     }),
   ],
+  mode: process.argv.includes("production") ? "production" : "development",
   devtool: process.argv.includes("production") ? false : "inline-source-map",
+  optimization: {
+    minimize: isProduction,
+  },
 };
