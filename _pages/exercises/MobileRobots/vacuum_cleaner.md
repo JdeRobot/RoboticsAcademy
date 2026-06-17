@@ -106,7 +106,7 @@ if len(laser_data.values) > 0:
 - `HAL::get_laser_data();` - It allows to obtain the data of the laser sensor (LaserData), which consists of 180 pairs of values ​​(0-180º, distance in meters).
 - `HAL::set_v(velocity);` - to set the linear speed.
 - `HAL::set_w(velocity);` - to set the angular velocity.
-- `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
+- `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left. **DISABLED**: use laser data in the center (90) to get the same result.
 
 In order to use the HAL-based controls you must include the following lines:
 
@@ -135,9 +135,9 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 - `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`.**DISABLED**: use laser data in the center (90) to get the same result.
+- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
 
 #### Python
 
