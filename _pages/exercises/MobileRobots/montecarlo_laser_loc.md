@@ -51,8 +51,8 @@ The goal of this exercise is to develop a localization algorithm based on the pa
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
@@ -68,28 +68,28 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that receive information from the webcam.
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.setW()` - to set the angular velocity.
-* `HAL.setV()` - to set the linear velocity.
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that receive information from the webcam.
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.setW()` - to set the angular velocity.
+- `HAL.setV()` - to set the linear velocity.
 
-* `HAL.getPose3d().x` - to get the X coordinate of the robot.
-* `HAL.getPose3d().y` - to get the Y coordinate of the robot.
-* `HAL.getPose3d().yaw` - to get the orientation of the robot.
+- `HAL.getPose3d().x` - to get the X coordinate of the robot.
+- `HAL.getPose3d().y` - to get the Y coordinate of the robot.
+- `HAL.getPose3d().yaw` - to get the orientation of the robot.
 
-* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
-* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise).
-* `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise).
+- `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
+- `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise).
+- `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise).
 
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left.
-* `HAL.getLaserData()` - to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
+- `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed. **DISABLED**: use laser data in the center (90) to get the same result.
+- `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left. **DISABLED**: use laser data in the center (90) to get the same result.
+- `HAL.getLaserData()` - to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 
-* `WebGUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians, weight]. The values must be in gazebo world coordinate system.
-* `WebGUI.showPosition(x, y, yaw)` - shows the estimated user position in the map view in blue. Accepts a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system. The map view will also show the real position of the robot in red, so you can compare how good your algorithm is.
-* `WebGUI.mapToPose(x, y, yaw)`- converts a map pixel to gazebo world coordinate system position.
-* `WebGUI.poseToMap(x, y, yaw)`- converts a gazebo world coordinate system position to a map pixel.
-* `WebGUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The image is 1012x1012. The instruction to get the map is
+- `WebGUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians, weight]. The values must be in gazebo world coordinate system.
+- `WebGUI.showPosition(x, y, yaw)` - shows the estimated user position in the map view in blue. Accepts a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system. The map view will also show the real position of the robot in red, so you can compare how good your algorithm is.
+- `WebGUI.mapToPose(x, y, yaw)`- converts a map pixel to gazebo world coordinate system position.
+- `WebGUI.poseToMap(x, y, yaw)`- converts a gazebo world coordinate system position to a map pixel.
+- `WebGUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The image is 1012x1012. The instruction to get the map is
 
 ```python
 array = WebGUI.getMap('/resources/exercises/montecarlo_laser_loc/images/mapgrannyannie.png')
@@ -171,28 +171,29 @@ For WebGUI debugging:
 - `/webgui/particles` - Publish to this topic to display the particle set in the WebGUI. Message type: `geometry_msgs/msg/PoseArray`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
 
-    ```python
-    from geometry_msgs.msg import PoseArray, Pose
-    import math
+  ```python
+  from geometry_msgs.msg import PoseArray, Pose
+  import math
 
-    def publish_particles(self, particles):
-        msg = PoseArray()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = "map"
+  def publish_particles(self, particles):
+      msg = PoseArray()
+      msg.header.stamp = self.get_clock().now().to_msg()
+      msg.header.frame_id = "map"
 
-        for x, y, yaw in particles:
-            pose = Pose()
-            pose.position.x = float(x)
-            pose.position.y = float(y)
+      for x, y, yaw in particles:
+          pose = Pose()
+          pose.position.x = float(x)
+          pose.position.y = float(y)
 
-            # Convert yaw → quaternion (2D)
-            pose.orientation.z = math.sin(yaw / 2.0)
-            pose.orientation.w = math.cos(yaw / 2.0)
+          # Convert yaw → quaternion (2D)
+          pose.orientation.z = math.sin(yaw / 2.0)
+          pose.orientation.w = math.cos(yaw / 2.0)
 
-            msg.poses.append(pose)
+          msg.poses.append(pose)
 
-        self.particles_pub.publish(msg)
-    ```
+      self.particles_pub.publish(msg)
+  ```
+
 #### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
@@ -292,19 +293,19 @@ if len(laser_data.values) > 0:
 
 Probabilistic localisation seeks to estimate the position of the robot and the model of the surrounding environment:
 
-* A. Probabilistic motion model. Due to various sources of noise (bumps, friction, imperfections of the robot, etc.) it is very difficult to predict the movement of the robot accurately. Therefore, it would be more convenient to describe this movement by means of a probability function, which will move with the robot's movements [1].
-* B. Probabilistic model of sensory observation.  It is related to the sensor measurements at each instant of time. This model is built by taking observations at known positions in the environment and calculating the probability that the robot is in each of these positions [2].
-* C. Probability fusion.  This consists of accumulating the information obtained at each time instant, something that can be done using Bayes' theorem. This fusion achieves that in each observation some modes of the probability function go up and others go down, so that as the number of iterations advances, the probability will be concentrated in only one of the modes, which will indicate the position of the robot [3].
+- A. Probabilistic motion model. Due to various sources of noise (bumps, friction, imperfections of the robot, etc.) it is very difficult to predict the movement of the robot accurately. Therefore, it would be more convenient to describe this movement by means of a probability function, which will move with the robot's movements [1].
+- B. Probabilistic model of sensory observation. It is related to the sensor measurements at each instant of time. This model is built by taking observations at known positions in the environment and calculating the probability that the robot is in each of these positions [2].
+- C. Probability fusion. This consists of accumulating the information obtained at each time instant, something that can be done using Bayes' theorem. This fusion achieves that in each observation some modes of the probability function go up and others go down, so that as the number of iterations advances, the probability will be concentrated in only one of the modes, which will indicate the position of the robot [3].
 
-The following figure shows an example of probabilistic localisation. In the first phase, the robot does not know its initial state, the initial probability distribution is uniform. In the second phase, the robot is looking at a door, the sensory observation model determines that there are three zones or modes with equal probability of being the zone where the robot is.  In the third phase, the robot is moving forward so the probabilistic motion model is applied, the probability distribution should move the same distance that the robot has moved, but as estimating the motion is difficult, what is done is to smooth it. In the last phase, the robot detects another door and this observation is merged with the accumulated information. This causes the probability to concentrate on a single possible area where it can be found, and thus ends the global localisation process.
+The following figure shows an example of probabilistic localisation. In the first phase, the robot does not know its initial state, the initial probability distribution is uniform. In the second phase, the robot is looking at a door, the sensory observation model determines that there are three zones or modes with equal probability of being the zone where the robot is. In the third phase, the robot is moving forward so the probabilistic motion model is applied, the probability distribution should move the same distance that the robot has moved, but as estimating the motion is difficult, what is done is to smooth it. In the last phase, the robot detects another door and this observation is merged with the accumulated information. This causes the probability to concentrate on a single possible area where it can be found, and thus ends the global localisation process.
 
 {% include gallery id="model" caption="Probabilistic location model" %}
 
 ## Monte Carlo
 
-* Monte Carlo localisation is based on a collection of particles or samples. Particle filters allow the localisation problem to be solved by representing the a posteriori probability function, which estimates the most likely positions of the robot. The a posteriori probability distribution is sampled, in a way where each sample is called a particle [4].
-* Each particle represents a state (position) at time t and has an associated weight. At each movement of the robot, they perform a correction and decrease the accumulated error. After a number of iterations, the particles are grouped in the zones with the highest probability, until they converge to a single zone, which corresponds to the robot's position.
-* When the program starts, the robot does not know where it is. However, the actual samples are evenly distributed and the importance weights are all equal. After a long time, the samples near the current position have a higher probability, and those further away have a lower probability. The basic algorithm is as follows:
+- Monte Carlo localisation is based on a collection of particles or samples. Particle filters allow the localisation problem to be solved by representing the a posteriori probability function, which estimates the most likely positions of the robot. The a posteriori probability distribution is sampled, in a way where each sample is called a particle [4].
+- Each particle represents a state (position) at time t and has an associated weight. At each movement of the robot, they perform a correction and decrease the accumulated error. After a number of iterations, the particles are grouped in the zones with the highest probability, until they converge to a single zone, which corresponds to the robot's position.
+- When the program starts, the robot does not know where it is. However, the actual samples are evenly distributed and the importance weights are all equal. After a long time, the samples near the current position have a higher probability, and those further away have a lower probability. The basic algorithm is as follows:
   1. Initialise the set of samples. Their locations are evenly distributed and have the same weights.
   2. Repeat for each sample until: a) Move the robot a fixed distance and read the sensor. b) For each particle, update the location. c) Assign the importance weights of each particle to the probability of that sensor, and read that new location.
   3. Create a collection of samples, by sampling with replacements from the current set of samples, based on their importance weights.
@@ -312,18 +313,18 @@ The following figure shows an example of probabilistic localisation. In the firs
 
 {% include gallery id="diagram" caption="Diagram of the particle filter algorithm" %}
 
-* The following figure shows an example of the operation of the particle filter. At the initial instant the particles are uniformly distributed in the environment. As new observations are obtained, the particles accumulate in probability zones until they converge to the probability zone [5].
+- The following figure shows an example of the operation of the particle filter. At the initial instant the particles are uniformly distributed in the environment. As new observations are obtained, the particles accumulate in probability zones until they converge to the probability zone [5].
 
 {% include gallery id="evolution" caption="Probabilistic location model" %}
 
 ### Demonstrative video of the solution
- 
+
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Contributors
 
-* Contributors: [Jose María Cañas](https://github.com/jmplaza), [Vladislav Kravchenko](https://github.com/vladkrav)
-* Maintained by [David Valladares](https://github.com/dvalladaresv)
+- Contributors: [Jose María Cañas](https://github.com/jmplaza), [Vladislav Kravchenko](https://github.com/vladkrav)
+- Maintained by [David Valladares](https://github.com/dvalladaresv)
 
 ## References
 
