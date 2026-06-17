@@ -80,7 +80,7 @@ To select a universe, click on the universe name in the bottom toolbar and pick 
 
 {% include gallery id="world_selector" caption="Selecting a universe from the bottom toolbar." %}
 
-The robot provides two odometry sources:
+The robot provides two sources of position information:
 
 * `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` — absolute position of the robot.
 * `HAL.getOdom().x`, `HAL.getOdom().y`, `HAL.getOdom().yaw` — noisy odometry. The noise level depends on the selected universe.
