@@ -17,6 +17,7 @@ find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 
+find_package(yaml-cpp REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 
@@ -36,7 +37,6 @@ set(dependencies
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/libs/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/libs/include/vacuum_cleaner_cpp
 )
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
@@ -45,6 +45,7 @@ add_library(${PROJECT_NAME} SHARED academy.cpp)
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 target_link_libraries(${PROJECT_NAME}
   nlohmann_json::nlohmann_json
+  yaml-cpp
 )
 
 add_executable(academyCode main.cpp)
@@ -57,6 +58,7 @@ target_link_libraries(academyCode
   nlohmann_json::nlohmann_json
   Boost::system
   Boost::thread
+  yaml-cpp
 )
 
 install(TARGETS

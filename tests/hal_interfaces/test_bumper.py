@@ -7,6 +7,7 @@ from hal_interfaces.general.bumper import (
     LEFT_BUMPER,
 )
 
+
 # Simulate the structure of gazebo_msgs.msg.ContactsState
 class ContactsState:
     def __init__(self, states=None):

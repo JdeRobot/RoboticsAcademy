@@ -92,7 +92,7 @@ class Map:
             for i in range(angle):
                 dist = 20 * laser.values[i]
                 angle = math.radians(i)
-                if dist == float("inf"):
+                if dist == float("inf") or dist == float("-inf"):
                     dist = 20 * laser.maxRange
                 laser_return[i] = (dist, angle)
 

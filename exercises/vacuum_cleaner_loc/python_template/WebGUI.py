@@ -20,7 +20,6 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
 from console_interfaces.general.console import start_console
 from map import Map
 
-
 red = [0, 0, 255]
 orange = [0, 165, 255]
 yellow = [0, 255, 255]

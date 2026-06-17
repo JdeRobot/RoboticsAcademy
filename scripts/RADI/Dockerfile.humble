@@ -5,29 +5,30 @@ WORKDIR /
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 ARG INFRA_OWNER=JdeRobot
-RUN mkdir -p /opt/jderobot && \
-    git clone --depth 1 https://github.com/${INFRA_OWNER}/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
-
-# create workspace and add Robot packages
-RUN mkdir -p /home/ws/src
-RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /opt/jderobot/jderobot_drones_cpp /opt/jderobot/Industrial /opt/jderobot/common_interfaces_cpp /home/ws/src/
-RUN mv /opt/jderobot/resources /resources
+# Launchers/, Worlds/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
+# Only .git history is stripped to recover extra space.
+RUN mkdir -p /opt/jderobot /home/ws/src && \
+    git clone --depth 1 https://github.com/${INFRA_OWNER}/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot && \
+    mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /opt/jderobot/jderobot_drones_cpp /opt/jderobot/Industrial /opt/jderobot/common_interfaces_cpp /home/ws/src/ && \
+    mv /opt/jderobot/resources /resources && \
+    mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
+    mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
+    chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh && \
+    rm -rf /opt/jderobot/.git \
+    /opt/jderobot/.github \
+    /opt/jderobot/database \
+    /opt/jderobot/deprecated_assets \
+    /opt/jderobot/Docs \
+    /opt/jderobot/scripts \
+    /opt/jderobot/test \
+    /opt/jderobot/Universes \
+    /opt/jderobot/utils
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-RUN python3 -m pip install robotics_application_manager
-
-# copy scripts
-RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh
-
-# Move Window Manager config
-RUN mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml
-
-# give execution permissions
-WORKDIR /
-RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh
+RUN python3 -m pip install --no-cache-dir robotics_application_manager
 
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
@@ -37,7 +38,6 @@ RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
-RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
 
 # Compress commons

@@ -14,6 +14,7 @@ django.setup()
 # ROS environment setup
 os.environ["ROS_VERSION"] = "2"
 
+
 # Mock fixtures for ROS
 @pytest.fixture
 def mock_ros_node():

@@ -14,9 +14,9 @@ HAL::HAL() : Node("hal_node")
       "/roombaROS/events/left_bumper"
   };
 
-  motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 1.0, 1.0);
-  laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan");
-  bumper_node_ = std::make_shared<BumperNode>(bumper_topics);
+  motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 1.0, 1.0, "hal_motors");
+  laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan", "hal_laser");
+  bumper_node_ = std::make_shared<BumperNode>(bumper_topics, "hal_bumper");
 
   spin_thread_ = std::thread([]() {
       rclcpp::executors::SingleThreadedExecutor executor;

@@ -2,7 +2,6 @@
 #define INCLUDE_HAL_HPP_
 
 #include <array>
-#include <string>
 #include <memory>
 #include <thread>
 
@@ -36,10 +35,6 @@ public:
 
     // Gripper control. relative_closure in [0,100] (0 = fully open, 100 = fully closed).
     static void GripperSet(double relative_closure, double wait_time);
-
-    // Attach/detach object from gripper via Gazebo LinkAttacher plugin.
-    static void attach(const std::string& item);
-    static void dettach();
 
 private:
     static void init();

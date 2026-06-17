@@ -15,6 +15,8 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
+from std_msgs.msg import Bool, String
+
 # Paths
 PATH = os.path.join(get_package_share_directory("ros2srrc_execution"), "python")
 
@@ -31,6 +33,18 @@ UR5 = RBT()
 HAL = Node("hal_node")
 HAL.grasped_object = None
 
+HAL.auto_attach_pub = HAL.create_publisher(
+    Bool,
+    "/gripper_auto_attach",
+    10,
+)
+
+HAL.graspable_pub = HAL.create_publisher(
+    String,
+    "/graspable_objects",
+    10,
+)
+
 HAL.gripper_client = ActionClient(
     HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
 )
@@ -40,18 +54,27 @@ while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
     print("[HAL] Waiting for gripper controller...")
 print("[HAL] Gripper ready")
 
-HAL.attach_client = HAL.create_client(AttachLink, "/ATTACHLINK")
-HAL.detach_client = HAL.create_client(DetachLink, "/DETACHLINK")
-
-print("[HAL] Waiting for LinkAttacher services...")
-
-while not HAL.attach_client.wait_for_service(timeout_sec=1.0):
-    print("Waiting for /ATTACHLINK...")
-
-while not HAL.detach_client.wait_for_service(timeout_sec=1.0):
-    print("Waiting for /DETACHLINK...")
-
 print("[HAL] LinkAttacher ready")
+
+graspable_msg = String()
+
+graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box"
+
+HAL.graspable_pub.publish(graspable_msg)
+
+print("[HAL] Published graspable objects")
+
+
+def publish_graspable_objects():
+
+    graspable_msg = String()
+
+    graspable_msg.data = "blue_ball," "green_cylinder," "yellow_box"
+
+    HAL.graspable_pub.publish(graspable_msg)
+
+
+HAL.create_timer(1.0, publish_graspable_objects)
 
 # ==============================================================
 # MoveAbsJ (IDÉNTICO a classic)
@@ -286,126 +309,82 @@ def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
 
 def GripperSet(relative_closure, wait_time):
     """
-    Controls the Robotiq gripper.
-
-    0%   = fully open
-    100% = fully closed
-
-    IMPORTANT:
-    In Gazebo Harmonic, grasping is NOT done via attach plugin.
-    The object is held by physical contact and friction.
+    0%   = open
+    100% = closed
     """
 
-    # Gripper limits in simulation
+    print("\n==================================================")
+    print("[HAL] GripperSet() called")
+    print(f"[HAL] Requested closure: {relative_closure} %")
+    print(f"[HAL] Wait time: {wait_time} s")
+
+    # ==========================================================
+    # ENABLE/DISABLE AUTO ATTACH
+    # ==========================================================
+
+    auto_msg = Bool()
+
+    # If closing -> enable contact detection
+    if relative_closure > 5:
+
+        auto_msg.data = True
+
+        print("[HAL] AutoAttach ENABLED")
+
+    else:
+
+        auto_msg.data = False
+
+        print("[HAL] AutoAttach DISABLED")
+
+    HAL.auto_attach_pub.publish(auto_msg)
+
+    print("[HAL] AutoAttach message published")
+
+    # ==========================================================
+    # GRIPPER MOTION
+    # ==========================================================
+
     max_open = 1.0
     min_close = 0.0
 
-    # Convert percentage to joint position
-    position = min_close + (max_open - min_close) * (relative_closure / 100.0)
+    position = min_close + ((max_open - min_close) * (relative_closure / 100.0))
+
+    print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
+
     goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
 
     point = JointTrajectoryPoint()
+
     point.positions = [position]
     point.time_from_start = Duration(sec=1)
 
     goal_msg.trajectory.points.append(point)
 
+    print("[HAL] Sending gripper trajectory...")
+
     future = HAL.gripper_client.send_goal_async(goal_msg)
+
     rclpy.spin_until_future_complete(HAL, future)
+
     goal_handle = future.result()
 
     if not goal_handle.accepted:
-        print("Gripper trajectory rejected")
+
+        print("[HAL] ERROR: Gripper trajectory rejected")
         return
 
+    print("[HAL] Gripper trajectory accepted")
+
     result_future = goal_handle.get_result_async()
+
     rclpy.spin_until_future_complete(HAL, result_future)
 
-    if relative_closure <= 5:
-        dettach()
+    print("[HAL] Gripper motion completed")
 
     time.sleep(wait_time)
 
-
-def attach(item):
-    """
-    Attach object to gripper using Gazebo LinkAttacher plugin
-    """
-
-    request = AttachLink.Request()
-
-    request.model1_name = "ur5_robotiq"
-    request.link1_name = "wrist_3_link"
-
-    request.model2_name = item
-
-    link_map = {
-        "blue_ball": "link_3",
-        "green_cylinder": "link_2",
-        "red_box": "link",
-        "yellow_box": "link",
-    }
-
-    request.link2_name = link_map[item]
-
-    print(
-        f"[HAL DEBUG] ATTACH -> "
-        f"{request.model1_name}:{request.link1_name}  "
-        f"{request.model2_name}:{request.link2_name}"
-    )
-
-    future = HAL.attach_client.call_async(request)
-    rclpy.spin_until_future_complete(HAL, future)
-
-    result = future.result()
-
-    if result and result.success:
-        print(f"Attached {item}")
-        HAL.grasped_object = item
-    else:
-        print("Attach failed")
-
-
-def dettach():
-    """
-    Detach object from gripper
-    """
-
-    if HAL.grasped_object is None:
-        return
-
-    request = DetachLink.Request()
-
-    request.model1_name = "ur5_robotiq"
-    request.link1_name = "wrist_3_link"
-
-    request.model2_name = HAL.grasped_object
-
-    link_map = {
-        "blue_ball": "link_3",
-        "green_cylinder": "link_2",
-        "red_box": "link",
-        "yellow_box": "link",
-    }
-
-    request.link2_name = link_map[HAL.grasped_object]
-
-    print(
-        f"[HAL DEBUG] DETTACH -> "
-        f"{request.model1_name}:{request.link1_name}  "
-        f"{request.model2_name}:{request.link2_name}"
-    )
-
-    future = HAL.detach_client.call_async(request)
-    rclpy.spin_until_future_complete(HAL, future)
-
-    result = future.result()
-
-    if result and result.success:
-        print(f"Detached {HAL.grasped_object}")
-        HAL.grasped_object = None
-
-    else:
-        print("Detach failed")
+    print(f"[HAL] Waiting {wait_time} s")
+    print("==================================================\n")

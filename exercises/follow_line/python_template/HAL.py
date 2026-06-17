@@ -6,7 +6,6 @@ import time
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.camera import CameraNode
 
-
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 

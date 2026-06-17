@@ -135,9 +135,10 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
-25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
+25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
-27	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones","MULTI-AGENT"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
+27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
+28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones","MULTI-AGENT"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
 \.
 
 --
@@ -148,7 +149,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM stdin;
 1	2	1	True
 2	5	1	True
-3	6	2	True
+3	6	2	False
 4	7	31	False
 5	10	4	False
 6	1	5	False
@@ -192,7 +193,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 44	3	42	True
 45	3	43	True
 46	3	44	True
-47	6	11	False
+47	6	11	True
 48	2	45	False
 49	5	45	False
 50	11	45	False
@@ -215,7 +216,9 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 67	14	63	False
 68	14	64	False
 69	14	65	False
-70	27	71	True
+70	25	70	True
+71	27	71	True
+72	28	72	True
 \.
 
 --
@@ -305,9 +308,11 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 79	15	video
 80	18	video
 81	19	video
-82	27	console
-83	27	simulator
-84	27	web_gui
+82	27	simulator
+83	27	console
+84	28	console
+85	28	simulator
+86	28	web_gui
 \.
 
 --

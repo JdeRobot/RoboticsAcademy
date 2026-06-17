@@ -105,20 +105,18 @@ const PlayPauseButton = ({
     return undefined;
   };
 
-  const compareZips = (zip1: JSZip, zip2: JSZip) => {
+  const compareZips = async (zip1: JSZip, zip2: JSZip) => {
     for (const key in zip1.files) {
       if (!Object.hasOwn(zip1.files, key)) continue;
       if (!Object.hasOwn(zip2.files, key)) {
         return false;
       }
 
-      zip1.files[key]._data.then((value: string) => {
-        zip2.files[key]._data.then((old: string) => {
-          if (value !== old) {
-            return false;
-          }
-        });
-      });
+      const value = await zip1.files[key]._data;
+      const old = await zip2.files[key]._data;
+      if (value !== old) {
+        return false;
+      }
     }
     return true;
   };
@@ -207,7 +205,7 @@ const PlayPauseButton = ({
     const userZip = await loadFiles(entrypointRef.current, JSON.parse(files));
 
     if (state === states.PAUSED) {
-      const sameZips = compareZips(userZip, runningFilesRef.current);
+      const sameZips = await compareZips(userZip, runningFilesRef.current);
 
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
         try {
