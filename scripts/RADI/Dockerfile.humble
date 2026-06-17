@@ -49,6 +49,7 @@ RUN python3 -m pip install --no-cache-dir robotics_application_manager
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
 ARG ACADEMY_OWNER=JdeRobot
+
 # Build react_fronted and create commons
 RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/ \
     && rm -rf /RoboticsAcademy/.git \
