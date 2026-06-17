@@ -90,7 +90,7 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 - `HAL::set_v(velocity);` - to set the linear speed.
 - `HAL::set_w(velocity);` - to set the angular velocity.
 - `HAL::get_pose3d();` - Returns the current pose as a `HAL::Pose3d` struct with fields `x`, `y` (in m) and `yaw` (in rad).
-- `HAL::get_bumper_data();` - Returns bumper state as a `HAL::BumperData` struct with fields `state` (1 if collision, 0 otherwise) and `bumper` (0 = right, 1 = center, 2 = left).
+- `HAL::get_bumper_data();` - Returns bumper state as a `HAL::BumperData` struct with fields `state` (1 if collision, 0 otherwise) and `bumper` (0 = right, 1 = center, 2 = left). **DISABLED**: use laser data in the center (90) to get the same result.
 - `HAL::get_laser_data();` - Returns laser sensor data as a `HAL::LaserData` struct (180 measurements, 0–180°).
 - `WebGUI::show_image(image);` - Displays the given `cv::Mat` image in the WebGUI (equivalent to `WebGUI.showNumpy`).
 - `WebGUI::get_map(url);` - Returns the map image as a `cv::Mat`. The URL of the map is `/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png`.
@@ -123,9 +123,9 @@ Use standard ROS 2 topics for direct communication with the simulation. Load the
 - `/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
 - `/odom` - Subscribe to this topic to get the robot pose and orientation. Message type: `nav_msgs/msg/Odometry`
 - `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
 
 For image debugging:
 

@@ -109,9 +109,9 @@ array = WebGUI.getMap('/resources/exercises/montecarlo_laser_loc/images/mapgrann
 - `HAL::get_odom().x;` - gets the noisy odometry x position (`double`).
 - `HAL::get_odom().y;` - gets the noisy odometry y position (`double`).
 - `HAL::get_odom().yaw;` - gets the noisy odometry orientation around the vertical axis (`double`).
-- `HAL::get_bumper_data();` - returns the bumper sensor data as a `HAL::BumperData`.
-- `HAL::get_bumper_data().state;` - indicates whether the robot has collided (`int`). A value of `1` means collision and `0` means no collision.
-- `HAL::get_bumper_data().bumper;` - indicates which bumper detected the collision (`int`): `0` for right, `1` for center, and `2` for left.
+- `HAL::get_bumper_data();` - returns the bumper sensor data as a `HAL::BumperData`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `HAL::get_bumper_data().state;` - indicates whether the robot has collided (`int`). A value of `1` means collision and `0` means no collision. **DISABLED**: use laser data in the center (90) to get the same result.
+- `HAL::get_bumper_data().bumper;` - indicates which bumper detected the collision (`int`): `0` for right, `1` for center, and `2` for left. **DISABLED**: use laser data in the center (90) to get the same result.
 - `HAL::get_laser_data();` - returns the laser sensor data as a `HAL::LaserData`.
 - `HAL::get_laser_data().values;` - contains the laser distance readings as a `std::vector<float>`.
 - `HAL::get_laser_data().minAngle;` - minimum laser angle (`double`).
@@ -157,11 +157,11 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/roombaROS/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to receive right bumper events. Message type depends on the bumper interface used by the exercise.
+- `/roombaROS/events/right_bumper` - Subscribe to this topic to receive right bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to receive center bumper events. Message type depends on the bumper interface used by the exercise.
+- `/roombaROS/events/center_bumper` - Subscribe to this topic to receive center bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise.
+- `/roombaROS/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
 For WebGUI debugging:
 
