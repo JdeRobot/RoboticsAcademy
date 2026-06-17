@@ -13,6 +13,9 @@
   <depend>rclcpp_action</depend>
   <depend>as2_core</depend>
   <depend>as2_msgs</depend>
+  <depend>as2_motion_reference_handlers</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2</depend>
   <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
   <depend>libopencv-dev</depend>
