@@ -354,6 +354,22 @@ feature_row:
     url: "/exercises/AutonomousCars/end_to_end_visual_control/"
     status: "prototype"
     order: 0;
+
+  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
+    alt: "Dynamic Window Approach"
+    title: "Dynamic Window Approach"
+    excerpt: "Complete a lap using DWA method."
+    url: "/exercises/AutonomousCars/dynamic_window_approach/"
+    status: "prototype"
+    order: 0;
+
+  - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
+    alt: "Visual 3D Odom"
+    title: "Visual 3D Odom"
+    excerpt: "Locate the camera using inputs like rosbags or videos"
+    url: "/exercises/ComputerVision/visual_odom"
+    status: "prototype"
+    order: 0;
 ---
 
 
