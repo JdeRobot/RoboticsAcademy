@@ -79,7 +79,7 @@ class WebGUI(MeasuringThreadingGUI):
         args = ["ros2", "topic", "info", "/prius_autoparking/pc2"]
         topic_info = subprocess.Popen(args, stdout=subprocess.PIPE)
         for line in topic_info.stdout:
-            if line == b"Publisher count: 1\n":
+            if line.startswith(b"Publisher count:") and line.split(b": ")[1][0] != b"0":
                 self.mode = "Lidar"
 
         self.start()
