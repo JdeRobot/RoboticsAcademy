@@ -1,31 +1,31 @@
 ---
-permalink: /exercises/ComputerVision/visual_odometry
-title: "Visual Odometry with RGBD"
+permalink: /exercises/ComputerVision/visual_odom
+title: "Visual 3D Odometry"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Visual Odometry with RGBD"
+toc_label: "TOC Visual Odometry"
 toc_icon: "cog"
 
-gallery:
-  - url: /assets/images/exercises/visual_odometry/vo.png
-    image_path: /assets/images/exercises/visual_odometry/vo.png
-    alt: "Visual Odometry."
-    title: "Visual Odometry."
+correlation:
+  - url: /assets/images/exercises/visual_odometry/correlation.png
+    image_path: /assets/images/exercises/visual_odometry/correlation.png
+    alt: "Feature correlation between frames"
+    title: "Feature correlation between frames"
 
-flow:
-  - url: /assets/images/exercises/visual_odometry/flow.PNG
-    image_path: /assets/images/exercises/visual_odometry/flow.PNG
-    alt: "flowchart"
-    title: "Flowchart"
+trajectories:
+  - url: /assets/images/exercises/visual_odometry/trajectories.png
+    image_path: /assets/images/exercises/visual_odometry/trajectories.png
+    alt: "Ground truth and estimated trajectories"
+    title: "Ground truth and estimated trajectories"
 
-rgbd:
-  - url: /assets/images/exercises/visual_odometry/RGBD_img.png
-    image_path: /assets/images/exercises/visual_odometry/RGBD_img.png
-    alt: "RGBD"
-    title: "RGBD"
+spacethree:
+  - url: /assets/images/exercises/visual_odometry/3dspace.png
+    image_path: /assets/images/exercises/visual_odometry/3dspace.png
+    alt: "3D space trajectory visualization"
+    title: "3D space trajectory visualization"
 
 youtubeId: jPCaPXVb1BE
 ---
@@ -41,8 +41,7 @@ The system estimates the motion of a camera by tracking visual features over tim
 
 The performance of the algorithm is visualized in real time in a **3D viewer representing the robot workspace**, along with optional Ground Truth when available.
 
-
-{% include gallery caption="Gallery." %}
+{% include gallery id="spacethree" caption="Reconstructed camera trajectory in 3D space." %}
 
 ## How to run
 
@@ -175,6 +174,8 @@ Instead of using wheel encoders or IMU data, VO relies only on:
 - Pixel motion in the image
 - Camera calibration
 - Geometric constraints
+
+{% include gallery id="correlation" caption="Feature correspondences between consecutive frames used for motion estimation." %}
 
 ---
 
@@ -339,6 +340,8 @@ The system outputs:
 ...
 WebGUI.showEstimatedPoint([x, y, z])
 ...
+
+{% include gallery id="trajectories" caption="Example of ground-truth and estimated trajectories." %}
 
 ---
 
