@@ -27,7 +27,7 @@ spacethree:
     alt: "3D space trajectory visualization"
     title: "3D space trajectory visualization"
 
-youtubeId: jPCaPXVb1BE
+youtubeId: B95ZKyl_bIk
 ---
 
 ## Goal
