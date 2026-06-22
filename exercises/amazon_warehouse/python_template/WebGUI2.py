@@ -73,7 +73,10 @@ class GUIBridgeNode(Node):
         self.pose.yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
 
     def lift_callback(self, msg):
-        self.lift_state = msg.data > 0.0
+        if msg.data > 0.0:
+            self.lift_state = True
+        elif msg.data < 0.0:
+            self.lift_state = False
 
     def path_callback(self, msg):
         self.gui.update_path_array(msg.data)
