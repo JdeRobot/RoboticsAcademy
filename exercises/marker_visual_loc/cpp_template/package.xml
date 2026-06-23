@@ -16,7 +16,6 @@
   <depend>std_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>message_filters</depend>
-  <depend>gazebo_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>tf2_geometry_msgs</depend>
   <depend>nlohmann-json-dev</depend>

@@ -1,46 +1,28 @@
 #ifndef INCLUDE_WEBGUI_HPP_
 #define INCLUDE_WEBGUI_HPP_
 
-#include <boost/beast/core.hpp>
-#include <boost/beast/websocket.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/strand.hpp>
-#include <nlohmann/json.hpp>
-#include "rclcpp/rclcpp.hpp"
-#include "nav_msgs/msg/odometry.hpp"
-#include "gazebo_msgs/msg/performance_metrics.hpp"
-#include "Frequency.hpp"
+#include <memory>
+#include <thread>
 
-namespace beast = boost::beast;
-namespace websocket = beast::websocket;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
-using json = nlohmann::json;
+// Forward declarations to speed up compilation by avoiding heavy ROS 2 includes.
+// - WebGUINode links to "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
+class WebGUINode;
+namespace rclcpp::executors { class MultiThreadedExecutor; }
 
 class WebGUI
 {
 public:
-    WebGUI();
-    static std::string img_payload;
-};
-
-class WebGUINode : public rclcpp::Node
-{
-public:
-    WebGUINode();
-    static std::vector<double> get_pose();
-    static double get_performance();
+    // Prevent instantiation. WebGUI acts as a global static utility.
+    WebGUI() = delete;
 
 private:
-    void pose_callback(nav_msgs::msg::Odometry::UniquePtr msg);
-    void performance_callback(gazebo_msgs::msg::PerformanceMetrics::UniquePtr msg);
+    static void init();
+    friend class SystemBootstrapper;
 
-    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
-    rclcpp::Subscription<gazebo_msgs::msg::PerformanceMetrics>::SharedPtr perf_sub_;
-
-    static nav_msgs::msg::Odometry last_odom;
-    static gazebo_msgs::msg::PerformanceMetrics last_perf;
+    // Hidden internal state. Not accessible to the user.
+    static std::shared_ptr<WebGUINode> gui_node_;
+    static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
+    static std::thread spin_thread_;
 };
 
 #endif
