@@ -19,7 +19,9 @@ try:
 except ImportError:
     sys.exit("psutil not found. Run: pip3 install psutil")
 
-RADI_IMAGE = "robotics-backend"
+# Image-name substrings that identify a RADI container: robotics-backend (production)
+# and robotics-academy (the development image bundling frontend + backend).
+RADI_IMAGES = ("robotics-backend", "robotics-academy")
 
 CATEGORY_COLOR = {
     "Gazebo Server": "#d32f2f",
@@ -134,6 +136,24 @@ def check_container_gpu(cid):
     return None
 
 
+def check_container_python(cid):
+    """Verify python3 + psutil are usable inside the container.
+
+    Per-process metrics, the CPU-by-category chart and automatic exercise
+    detection all depend on this; without it they would stay empty silently.
+    """
+    try:
+        r = subprocess.run(
+            ["docker", "exec", cid, "python3", "-c", "import psutil"],
+            capture_output=True,
+            text=True,
+            timeout=8,
+        )
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
 def categorize(p):
     name, cmd = p.get("name", ""), p.get("cmd", "")
     # Gazebo Harmonic runs as 'ruby' with 'gz sim' in the cmdline
@@ -190,7 +210,7 @@ def find_container(override=None):
             cid, cname, cimage = parts
             if override and (override in cid or override in cname):
                 return cid, cname, cimage
-            if not override and RADI_IMAGE in cimage:
+            if not override and any(img in cimage for img in RADI_IMAGES):
                 return cid, cname, cimage
     except Exception:
         pass
@@ -258,35 +278,57 @@ def container_processes(cid):
     return []
 
 
-# Cached after first successful call so we don't probe both binaries every sample
+# Resolved once: "gz"/"ign" if present, "" if neither, None until probed. Caching by
+# existence (not by a successful RTF read) avoids probing both binaries every sample
+# while no simulation is running.
 _rtf_binary_cache = None
 
 
-def gazebo_rtf(cid):
-    """Query Gazebo RTF via gz/ign topic /stats. Returns float or None."""
+def _detect_rtf_binary(cid):
     global _rtf_binary_cache
-    candidates = [_rtf_binary_cache] if _rtf_binary_cache else ["gz", "ign"]
-    for binary in candidates:
+    if _rtf_binary_cache is not None:
+        return _rtf_binary_cache
+    for binary in ("gz", "ign"):
         try:
             r = subprocess.run(
-                [
-                    "docker",
-                    "exec",
-                    cid,
-                    "bash",
-                    "-c",
-                    f"timeout 0.8 {binary} topic -e -t /stats 2>/dev/null | grep -m1 real_time_factor",
-                ],
+                ["docker", "exec", cid, "bash", "-c", f"command -v {binary}"],
                 capture_output=True,
                 text=True,
                 timeout=4,
             )
-            m = re.search(r"real_time_factor:\s*([\d.]+)", r.stdout)
-            if m:
+            if r.returncode == 0 and r.stdout.strip():
                 _rtf_binary_cache = binary
-                return round(float(m.group(1)), 3)
+                return binary
         except Exception:
             pass
+    _rtf_binary_cache = ""
+    return ""
+
+
+def gazebo_rtf(cid):
+    """Query Gazebo RTF via gz/ign topic /stats. Returns float or None."""
+    binary = _detect_rtf_binary(cid)
+    if not binary:
+        return None
+    try:
+        r = subprocess.run(
+            [
+                "docker",
+                "exec",
+                cid,
+                "bash",
+                "-c",
+                f"timeout 0.8 {binary} topic -e -t /stats 2>/dev/null | grep -m1 real_time_factor",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=4,
+        )
+        m = re.search(r"real_time_factor:\s*([\d.]+)", r.stdout)
+        if m:
+            return round(float(m.group(1)), 3)
+    except Exception:
+        pass
     return None
 
 
