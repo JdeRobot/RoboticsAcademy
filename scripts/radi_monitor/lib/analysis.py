@@ -65,7 +65,11 @@ def session_summary(samples, cpu_threads):
 def per_exercise_stats(samples, exercise_events):
     rows = []
     for i, (t0, name, src) in enumerate(exercise_events):
-        t1 = exercise_events[i + 1][0] if i + 1 < len(exercise_events) else samples[-1]["t"]
+        t1 = (
+            exercise_events[i + 1][0]
+            if i + 1 < len(exercise_events)
+            else samples[-1]["t"]
+        )
         w = [s for s in samples if t0 <= s["t"] <= t1]
         if not w:
             continue
@@ -122,7 +126,7 @@ def process_inventory(samples):
 
 
 def measurement_summary(samples, summary):
-    """Return a list of objective (metric, avg, peak, detail) rows — no interpretation."""
+    """Return objective (metric, avg, peak, detail) rows, with no interpretation."""
     rows = []
     max_pct = summary["cpu_max_pct"]
     threads = max_pct // 100
@@ -163,7 +167,12 @@ def measurement_summary(samples, summary):
 
     if summary.get("gpu_avg") is not None:
         rows.append(
-            ("GPU utilization", f"{summary['gpu_avg']}%", f"{summary['gpu_peak']}%", "—")
+            (
+                "GPU utilization",
+                f"{summary['gpu_avg']}%",
+                f"{summary['gpu_peak']}%",
+                "—",
+            )
         )
     else:
         rows.append(("GPU utilization", "—", "—", "not detected on host"))

@@ -183,7 +183,9 @@ def friendly_name(p):
     name, cmd = p.get("name", ""), p.get("cmd", "")
     if name == "ruby" or "gz sim" in cmd:
         return (
-            "gz sim (client/GUI)" if ("-g" in cmd or "--gui" in cmd) else "gz sim (server/physics)"
+            "gz sim (client/GUI)"
+            if ("-g" in cmd or "--gui" in cmd)
+            else "gz sim (server/physics)"
         )
     if "ram_entrypoint" in cmd or "manager.py" in cmd:
         return "RAM Manager"

@@ -287,7 +287,7 @@ def main():
     )
     print(
         f"CPU        avg {summary['cpu_avg']}%  peak {summary['cpu_peak']}%"
-        f"  (of {summary['cpu_max_pct']}% max, {meta['sysinfo'].get('cpu_threads','?')} threads)"
+        f"  (of {summary['cpu_max_pct']}% max, {meta['sysinfo'].get('cpu_threads', '?')} threads)"
     )
     print(
         f"RAM        avg {summary['mem_avg_gb']} GiB  peak {summary['mem_peak_gb']} GiB"

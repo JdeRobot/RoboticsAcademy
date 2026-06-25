@@ -75,7 +75,12 @@ def _add_exercise_bands(ax, exercise_events, times, ymax):
                 fontsize=8,
                 color=color,
                 fontweight="bold",
-                bbox=dict(boxstyle="round,pad=0.2", facecolor="white", edgecolor=color, alpha=0.85),
+                bbox=dict(
+                    boxstyle="round,pad=0.2",
+                    facecolor="white",
+                    edgecolor=color,
+                    alpha=0.85,
+                ),
             )
 
 
@@ -89,7 +94,9 @@ def chart_cpu(samples, exercise_events, cpu_threads):
     ymax = max(max(cont_cpu), max(host_cpu), 10) * 1.18
 
     _add_exercise_bands(ax, exercise_events, times, ymax)
-    ax.plot(times, cont_cpu, color="#d32f2f", linewidth=2, label="Container CPU %", zorder=3)
+    ax.plot(
+        times, cont_cpu, color="#d32f2f", linewidth=2, label="Container CPU %", zorder=3
+    )
     ax.plot(
         times,
         host_cpu,
@@ -138,14 +145,22 @@ def chart_rtf(samples, exercise_events):
     ax.plot(rt, rv, color="#1565c0", linewidth=2, label="RTF", zorder=3)
     ax.fill_between(rt, rv, alpha=0.10, color="#1565c0", zorder=2)
     ax.axhline(
-        y=1.0, color="#2e7d32", linewidth=1, linestyle="--", alpha=0.6, label="Real-time (1.0)", zorder=4
+        y=1.0,
+        color="#2e7d32",
+        linewidth=1,
+        linestyle="--",
+        alpha=0.6,
+        label="Real-time (1.0)",
+        zorder=4,
     )
 
     ax.set_ylim(0, 1.15)
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Real-Time Factor")
     ax.set_title(
-        "Gazebo RTF over time  (gaps = no active simulation)", fontweight="bold", fontsize=13
+        "Gazebo RTF over time  (gaps = no active simulation)",
+        fontweight="bold",
+        fontsize=13,
     )
     ax.legend(fontsize=9, loc="lower right")
     fig.tight_layout()
@@ -181,7 +196,9 @@ def chart_process_bars(inventory):
     ax.set_yticklabels(labels)
     ax.set_xlabel("CPU %")
     ax.set_title(
-        "CPU per process  (solid bar = avg, light bar = peak)", fontweight="bold", fontsize=13
+        "CPU per process  (solid bar = avg, light bar = peak)",
+        fontweight="bold",
+        fontsize=13,
     )
     ax.grid(axis="x", alpha=0.35)
     ax.set_axisbelow(True)
@@ -199,10 +216,18 @@ def chart_memory(samples, exercise_events):
 
     _add_exercise_bands(ax1, exercise_events, times, max(cont_mem) * 1.25)
     ax2 = ax1.twinx()
-    (l1,) = ax1.plot(times, cont_mem, color="#e65100", linewidth=2, label="Container RAM (GiB)")
+    (l1,) = ax1.plot(
+        times, cont_mem, color="#e65100", linewidth=2, label="Container RAM (GiB)"
+    )
     ax1.fill_between(times, cont_mem, alpha=0.08, color="#e65100")
     (l2,) = ax2.plot(
-        times, host_mem, color="#555", linewidth=1, linestyle="--", alpha=0.5, label="Host RAM (GiB)"
+        times,
+        host_mem,
+        color="#555",
+        linewidth=1,
+        linestyle="--",
+        alpha=0.5,
+        label="Host RAM (GiB)",
     )
     ax1.set_ylim(0, max(cont_mem) * 1.25)
     ax1.set_xlabel("Time (s)")
@@ -277,7 +302,9 @@ def chart_category_cpu(samples, exercise_events):
     for i, (t0, name, *_) in enumerate(exercise_events):
         if name != "idle":
             color = _EXC_PALETTE[i % len(_EXC_PALETTE)]
-            ax.axvline(t0, color=color, linewidth=1.2, linestyle="--", alpha=0.7, zorder=5)
+            ax.axvline(
+                t0, color=color, linewidth=1.2, linestyle="--", alpha=0.7, zorder=5
+            )
             ymax = ax.get_ylim()[1] or 10
             ax.text(
                 t0 + (times[-1] - times[0]) * 0.005,
@@ -286,20 +313,27 @@ def chart_category_cpu(samples, exercise_events):
                 fontsize=7.5,
                 color=color,
                 va="top",
-                bbox=dict(boxstyle="round,pad=0.15", facecolor="white", edgecolor=color, alpha=0.88),
+                bbox=dict(
+                    boxstyle="round,pad=0.15",
+                    facecolor="white",
+                    edgecolor=color,
+                    alpha=0.88,
+                ),
                 zorder=6,
             )
 
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("CPU %  (sum of per-process measurements)")
-    ax.set_title("CPU distribution by category over time", fontweight="bold", fontsize=13)
+    ax.set_title(
+        "CPU distribution by category over time", fontweight="bold", fontsize=13
+    )
     ax.legend(loc="upper left", fontsize=9, ncol=3, framealpha=0.92)
     fig.tight_layout()
     return _fig_to_b64(fig)
 
 
 def chart_network(samples):
-    """Line chart of container network throughput (MB/s) derived from docker stats deltas."""
+    """Line chart of container network throughput (MB/s) from docker stats deltas."""
     if len(samples) < 2:
         return None
 
@@ -315,13 +349,23 @@ def chart_network(samples):
 
     # Per-interval throughput in MB/s
     dt = [max(times[i] - times[i - 1], 0.1) for i in range(1, len(times))]
-    rx_bps = [max(0.0, rx_cum[i] - rx_cum[i - 1]) / dt[i - 1] for i in range(1, len(rx_cum))]
-    tx_bps = [max(0.0, tx_cum[i] - tx_cum[i - 1]) / dt[i - 1] for i in range(1, len(tx_cum))]
+    rx_bps = [
+        max(0.0, rx_cum[i] - rx_cum[i - 1]) / dt[i - 1] for i in range(1, len(rx_cum))
+    ]
+    tx_bps = [
+        max(0.0, tx_cum[i] - tx_cum[i - 1]) / dt[i - 1] for i in range(1, len(tx_cum))
+    ]
     t_mid = times[1:]
 
     _chart_setup()
     fig, ax = plt.subplots(figsize=(14, 3))
-    ax.plot(t_mid, rx_bps, color="#1565c0", linewidth=1.8, label=f"RX  (total {total_rx:.1f} MB)")
+    ax.plot(
+        t_mid,
+        rx_bps,
+        color="#1565c0",
+        linewidth=1.8,
+        label=f"RX  (total {total_rx:.1f} MB)",
+    )
     ax.plot(
         t_mid,
         tx_bps,

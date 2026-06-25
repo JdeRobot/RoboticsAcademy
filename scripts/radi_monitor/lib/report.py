@@ -132,7 +132,11 @@ def generate_report(samples, meta, output_base, verbose=False):
     # System info block — includes nvidia-smi output if available
     gpu_str = " · ".join(sysinfo.get("gpus", ["not detected"]))
     cgpu = meta.get("container_gpu")
-    cgpu_str = f"yes — {cgpu}" if cgpu else "not accessible (container started without --gpus all)"
+    cgpu_str = (
+        f"yes — {cgpu}"
+        if cgpu
+        else "not accessible (container started without --gpus all)"
+    )
     nvidia_smi_html = ""
     if sysinfo.get("nvidia_smi"):
         nvidia_smi_html = (
@@ -143,20 +147,22 @@ def generate_report(samples, meta, output_base, verbose=False):
         )
     sysblock = (
         f'<div class="sysinfo">'
-        f'<strong>CPU:</strong> {sysinfo.get("cpu","?")} '
-        f'({sysinfo.get("cpu_cores","?")} cores / {sysinfo.get("cpu_threads","?")} threads)'
-        f" &nbsp;·&nbsp; <strong>RAM:</strong> {sysinfo.get('ram_gb','?')} GiB<br>"
+        f'<strong>CPU:</strong> {sysinfo.get("cpu", "?")} '
+        f'({sysinfo.get("cpu_cores", "?")} cores / {sysinfo.get("cpu_threads", "?")} threads)'
+        f" &nbsp;·&nbsp; <strong>RAM:</strong> {sysinfo.get('ram_gb', '?')} GiB<br>"
         f"<strong>Host GPU:</strong> {gpu_str}<br>"
         f"<strong>Container GPU access:</strong> {cgpu_str}<br>"
-        f'<strong>OS:</strong> {sysinfo.get("os","?")} (kernel {sysinfo.get("kernel","?")})'
+        f'<strong>OS:</strong> {sysinfo.get("os", "?")} (kernel {sysinfo.get("kernel", "?")})'
         f" &nbsp;·&nbsp; "
-        f'<strong>Image:</strong> {meta.get("image","jderobot/robotics-backend:latest")}'
-        f' &nbsp;·&nbsp; <strong>Container:</strong> {meta.get("container","?")}'
+        f'<strong>Image:</strong> {meta.get("image", "jderobot/robotics-backend:latest")}'
+        f' &nbsp;·&nbsp; <strong>Container:</strong> {meta.get("container", "?")}'
         f"{nvidia_smi_html}"
         f"</div>"
     )
 
-    rtf_val = f"{summary['rtf_avg']:.3f}" if summary.get("rtf_avg") is not None else "N/A"
+    rtf_val = (
+        f"{summary['rtf_avg']:.3f}" if summary.get("rtf_avg") is not None else "N/A"
+    )
     rtf_sub = (
         f"min {summary['rtf_min']:.3f}"
         if summary.get("rtf_min") is not None
@@ -182,7 +188,7 @@ def generate_report(samples, meta, output_base, verbose=False):
         f'<div class="ks">avg during session</div></div>'
         f'<div class="kb"><div class="kl">Duration</div>'
         f'<div class="kv">{_dur(summary["duration"])}</div>'
-        f'<div class="ks">{summary["n"]} samples · every {meta.get("interval_s","?")}s</div></div>'
+        f'<div class="ks">{summary["n"]} samples · every {meta.get("interval_s", "?")}s</div></div>'
         f"</div>"
     )
 
@@ -201,10 +207,12 @@ def generate_report(samples, meta, output_base, verbose=False):
     if exc_stats:
         rows = ""
         for e in exc_stats:
-            tag = ' <span class="tagm">[manual]</span>' if e["source"] == "manual" else ""
+            tag = (
+                ' <span class="tagm">[manual]</span>' if e["source"] == "manual" else ""
+            )
             name = e["name"].replace("_harmonic", "").replace("_", " ")
             rows += (
-                f'<tr><td><strong>{name}</strong>{tag}</td>'
+                f"<tr><td><strong>{name}</strong>{tag}</td>"
                 f'<td class="r">{_dur(e["duration"])}</td>'
                 f'<td class="r {_cpu_cls(e["cpu_avg"])}">{e["cpu_avg"]}%</td>'
                 f'<td class="r {_cpu_cls(e["cpu_peak"])}">{e["cpu_peak"]}%</td>'
@@ -249,25 +257,25 @@ def generate_report(samples, meta, output_base, verbose=False):
     )
 
     rtf_section = (
-        f'<h2>Gazebo RTF</h2>'
+        f"<h2>Gazebo RTF</h2>"
         f'<div class="chart"><img src="data:image/png;base64,{img_rtf}"></div>'
         if img_rtf
         else ""
     )
     cat_section = (
-        f'<h2>CPU by category</h2>'
+        f"<h2>CPU by category</h2>"
         f'<div class="chart"><img src="data:image/png;base64,{img_cat}"></div>'
         if img_cat
         else ""
     )
     gpu_section = (
-        f'<h2>GPU</h2>'
+        f"<h2>GPU</h2>"
         f'<div class="chart"><img src="data:image/png;base64,{img_gpu}"></div>'
         if img_gpu
         else ""
     )
     net_section = (
-        f'<h2>Network I/O</h2>'
+        f"<h2>Network I/O</h2>"
         f'<div class="chart"><img src="data:image/png;base64,{img_net}"></div>'
         if img_net
         else ""
