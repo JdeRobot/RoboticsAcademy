@@ -97,8 +97,12 @@ class WebGUI(MeasuringThreadingGUI):
             b64_right = None
             shape_right = 0
 
-        self.msg["image_left"] = json.dumps({"image_left": b64_left, "shape_left": shape_left})
-        self.msg["image_right"] = json.dumps({"image_right": b64_right, "shape_right": shape_right})
+        self.msg["image_left"] = json.dumps(
+            {"image_left": b64_left, "shape_left": shape_left}
+        )
+        self.msg["image_right"] = json.dumps(
+            {"image_right": b64_right, "shape_right": shape_right}
+        )
         self.send_to_client(json.dumps(self.msg))
 
     def setLeftImage(self, image):
