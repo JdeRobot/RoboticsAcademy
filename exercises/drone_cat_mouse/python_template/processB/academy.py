@@ -10,23 +10,23 @@ TAKEOFF_HEIGHT = 3.0
 ESCAPE_SPEED = 1.5
 # square around the mouse's spawn (x=20, y=5), 10m a side
 WAYPOINTS = [
-    (25.0,  5.0, TAKEOFF_HEIGHT),
+    (25.0, 5.0, TAKEOFF_HEIGHT),
     (25.0, 10.0, TAKEOFF_HEIGHT),
     (20.0, 10.0, TAKEOFF_HEIGHT),
     (15.0, 10.0, TAKEOFF_HEIGHT),
-    (15.0,  5.0, TAKEOFF_HEIGHT),
-    (15.0,  0.0, TAKEOFF_HEIGHT),
-    (20.0,  0.0, TAKEOFF_HEIGHT),
-    (25.0,  0.0, TAKEOFF_HEIGHT),
+    (15.0, 5.0, TAKEOFF_HEIGHT),
+    (15.0, 0.0, TAKEOFF_HEIGHT),
+    (20.0, 0.0, TAKEOFF_HEIGHT),
+    (25.0, 0.0, TAKEOFF_HEIGHT),
 ]
-REACH_THRESHOLD = 1.2   # how close counts as "reached this corner"
+REACH_THRESHOLD = 1.2  # how close counts as "reached this corner"
 
 
 def distance(pos, target):
     return math.sqrt(
-        (pos[0] - target[0]) ** 2 +
-        (pos[1] - target[1]) ** 2 +
-        (pos[2] - target[2]) ** 2
+        (pos[0] - target[0]) ** 2
+        + (pos[1] - target[1]) ** 2
+        + (pos[2] - target[2]) ** 2
     )
 
 
