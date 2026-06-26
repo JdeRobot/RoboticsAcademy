@@ -58,6 +58,7 @@ executor_thread.start()
 
 ### helpers ###
 
+
 def _call_state_event(event_value):
     """send a state machine event without using asyncio.
     the normal DroneWrapper does this through asyncio.run(), which doesn't work

@@ -3,8 +3,8 @@ import time
 import math
 
 TAKEOFF_HEIGHT = 3.0
-CHASE_SPEED = 2.0      # keep this above the mouse's 1.5 or the cat never catches up
-SLOW_RADIUS = 3.0      # once we're this close, ease off so we don't overshoot
+CHASE_SPEED = 2.0  # keep this above the mouse's 1.5 or the cat never catches up
+SLOW_RADIUS = 3.0  # once we're this close, ease off so we don't overshoot
 
 # get off the ground first
 HAL.takeoff(TAKEOFF_HEIGHT)
@@ -16,7 +16,7 @@ while True:
 
     dx = mouse[0] - cat[0]
     dy = mouse[1] - cat[1]
-    dz = TAKEOFF_HEIGHT - cat[2]   # hold our height
+    dz = TAKEOFF_HEIGHT - cat[2]  # hold our height
 
     dist = math.sqrt(dx * dx + dy * dy)
 

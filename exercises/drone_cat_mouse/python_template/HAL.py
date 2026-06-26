@@ -74,10 +74,12 @@ executor_thread.start()
 
 _mouse_position = [20.0, 5.0, 0.0]
 
+
 def _mouse_pose_callback(msg):
     _mouse_position[0] = msg.pose.position.x
     _mouse_position[1] = msg.pose.position.y
     _mouse_position[2] = msg.pose.position.z
+
 
 _mouse_pose_node = rclpy.create_node("cat_mouse_pose_tracker")
 # this topic is published as BEST_EFFORT. if you subscribe with the default
@@ -85,14 +87,17 @@ _mouse_pose_node = rclpy.create_node("cat_mouse_pose_tracker")
 # so get_mouse_position would just keep returning the default below. using
 # the sensor-data profile makes both sides BEST_EFFORT, so the messages flow.
 _mouse_pose_sub = _mouse_pose_node.create_subscription(
-    PoseStamped, '/drone1/self_localization/pose', _mouse_pose_callback,
-    qos_profile_sensor_data
+    PoseStamped,
+    "/drone1/self_localization/pose",
+    _mouse_pose_callback,
+    qos_profile_sensor_data,
 )
 
 executor.add_node(_mouse_pose_node)
 
 
 ### helpers ###
+
 
 def _call_state_event(event_value):
     """send a state machine event without using asyncio.
