@@ -122,40 +122,124 @@ This mode is useful for:
 
 ---
 
-## API
+## Frequency API
 
-### Input image
+### Python
 
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+## Robot API
+
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
+#### Python
+
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `WebGUI.getImage()` - to get the current camera frame (numpy array). It can be None.
+- `WebGUI.getGT()` - to get the ground-truth position `[x, y, z]`. It is None when no ground truth is available (video mode).
+- `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
+- `WebGUI.showEstimatedPoint([x, y, z])` - allows you to view your estimated camera position in the 3D viewer.
+
+#### C++
+
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `WebGUI::get_image();` - to get the current camera frame as a `cv::Mat`. It may be empty; check with `image.empty()`.
+- `WebGUI::get_gt();` - returns the ground-truth position as a `std::vector<double>` `{x, y, z}`. It is empty when no ground truth is available (video mode).
+- `WebGUI::show_image(image);` - allows you to view a debug image (`cv::Mat`) or one with relevant information.
+- `WebGUI::show_estimated_point(point);` - displays the user-estimated camera position in the 3D viewer. The input must be a `std::vector<double>` containing `{x, y, z}`. Returns `void`.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
 ```
-img = WebGUI.getImage()
+
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication.
+
+- `/visual_odom/image_raw` - Subscribe to this topic to receive the input camera frame (BGR8), whether it comes from the video or the rosbag. Message type: `sensor_msgs/msg/Image`
+
+- `/kitti/gt/pose` - Subscribe to this topic to receive the ground-truth pose (available only in rosbag mode). Message type: `geometry_msgs/msg/PoseStamped`
+
+For WebGUI debugging:
+
+- `/webgui/estimated_point` - Publish to this topic to display the estimated camera position in the 3D viewer. Message type: `geometry_msgs/msg/PointStamped`
+
+- `/webgui/image_debug` - Publish to this topic to display a debug image in the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
 ```
 
-Returns the current frame from:
+You must define `USER_NODE` and a `UserNode` node class.
 
-- ROS2 topic `/kitti/camera/gray/left/image_raw`
-- OR video input
+To have frequency control you may use a timer and a control function as follows:
 
----
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
 
-### Output estimated pose
+// More Code
 
+  void control_cycle(){
+    // Your function
+  };
 ```
-WebGUI.showEstimatedPoint([x, y, z])
-```
-
-Publishes the estimated camera position for 3D visualization.
-
----
-
-### Display image
-
-```
-WebGUI.showImage(frame)
-```
-
-Used to show debugging overlays (features, optical flow, etc.)
-
----
 
 ## Theory
 
