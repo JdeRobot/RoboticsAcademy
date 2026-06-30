@@ -4,6 +4,11 @@ import base64
 import threading
 import time
 import numpy as np
+import rclpy
+from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from sensor_msgs.msg import Image as RosImage
+from cv_bridge import CvBridge
 
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
@@ -11,25 +16,59 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
 from console_interfaces.general.console import start_console
 
 
+class ROS2BridgeNode(Node):
+    def __init__(self, gui_instance):
+        super().__init__("gui_bridge_node_drone")
+        self.gui = gui_instance
+        self.bridge = CvBridge()
+
+        self.create_subscription(
+            RosImage, "/webgui/image_debug_right", self.image_right_callback, 10
+        )
+        self.create_subscription(
+            RosImage, "/webgui/image_debug_left", self.image_left_callback, 10
+        )
+
+    def image_right_callback(self, msg):
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        self.gui.setRightImage(cv_image)
+
+    def image_left_callback(self, msg):
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        self.gui.setLeftImage(cv_image)
+
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
-
-        # Execution control vars
         self.right_image = None
         self.left_image = None
         self.image_lock = threading.Lock()
         self.msg = {"image_right": "", "image_left": ""}
 
+        self.bridge_node = None
+        self.executor = None
+        self.executor_thread = None
+
+        self._setup_ros2()
         self.start()
 
-    # Process outcoming messages from the GUI
+    def _setup_ros2(self):
+        if not rclpy.ok():
+            rclpy.init()
+        self.bridge_node = ROS2BridgeNode(self)
+        self.executor = MultiThreadedExecutor()
+        self.executor.add_node(self.bridge_node)
+        self.executor_thread = threading.Thread(
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
+        )
+        self.executor_thread.start()
+
     def gui_out_thread(self):
         while self.running:
             start_time = time.time()
             self.iteration_counter += 1
 
-            # Check if a new image should be sent
             with self.ack_lock:
                 with self.image_lock:
                     if self.ack:
@@ -37,14 +76,11 @@ class WebGUI(MeasuringThreadingGUI):
                             self.update_gui()
                             self.ack = False
 
-            # Maintain desired frequency
             elapsed = time.time() - start_time
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
-    # Prepares and send image to the websocket server
     def update_gui(self):
-
         if np.any(self.left_image):
             _, encoded_left_image = cv2.imencode(".JPEG", self.left_image)
             b64_left = base64.b64encode(encoded_left_image).decode("utf-8")
@@ -74,7 +110,6 @@ class WebGUI(MeasuringThreadingGUI):
         message = json.dumps(self.msg)
         self.send_to_client(message)
 
-    # Functions to set the next image to be sent
     def setLeftImage(self, image):
         with self.image_lock:
             self.left_image = image
@@ -83,15 +118,20 @@ class WebGUI(MeasuringThreadingGUI):
         with self.image_lock:
             self.right_image = image
 
+    def __del__(self):
+        try:
+            if self.executor:
+                self.executor.shutdown()
+        except Exception:
+            pass
+
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
-# Redirect the console
 start_console()
 
 
-# Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
 
