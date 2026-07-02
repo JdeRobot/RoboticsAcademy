@@ -6,55 +6,64 @@ sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "Pick and Place exercise"
+toc_label: "TOC Pick and Place"
 toc_icon: "cog"
+
+<!--- layout: archive --->
+
+<!--- classes: wide --->
 
 gallery:
   - url: /assets/images/exercises/pick_place/pick_place_ur_world.png
     image_path: /assets/images/exercises/pick_place/pick_place_ur_world.png
+    alt: "Pick and Place world"
+    title: "Gazebo World"
+  - url: /assets/images/exercises/pick_place/pick_place_world.png
+    image_path: /assets/images/exercises/pick_place/pick_place_world.png
+    alt: "Pick and Place world"
+    title: "Simulation scene"
+  - url: /assets/images/exercises/pick_place/pick_place_teaser.png
+    image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
     alt: "Pick and Place"
     title: "Pick and Place"
-
-workspace:
-  - url: /assets/images/exercises/pick_place/irb120_workspace.jpg
-    image_path: /assets/images/exercises/pick_place/irb120_workspace.jpg
-    alt: "IRB120 Workspace"
-    title: "IRB120 Workspace"
 
 rpy000:
   - url: /assets/images/exercises/pick_place/rpy000.png
     image_path: /assets/images/exercises/pick_place/rpy000.png
-    alt: "rpy000"
-    title: "rpy000"
+    alt: "TCP frame at YPR = (0, 0, 0)"
+    title: "TCP frame at YPR = (0, 0, 0)"
 
 rpy:
   - url: /assets/images/exercises/pick_place/roll90.png
     image_path: /assets/images/exercises/pick_place/roll90.png
-    alt: "roll90"
-    title: "roll90"
+    alt: "Roll = 90"
+    title: "Roll = 90"
   - url: /assets/images/exercises/pick_place/pitch90.png
     image_path: /assets/images/exercises/pick_place/pitch90.png
-    alt: "pitch90"
-    title: "pitch90"
+    alt: "Pitch = 90"
+    title: "Pitch = 90"
   - url: /assets/images/exercises/pick_place/yaw90.png
     image_path: /assets/images/exercises/pick_place/yaw90.png
-    alt: "yaw90"
-    title: "yaw90"
+    alt: "Yaw = 90"
+    title: "Yaw = 90"
 
 youtubeId: kJMPz80w9BM
 ---
+
 ## Goal
 
-The goal of this exercise is to learn the underlying infrastructure of Industrial Robot exercises(ROS + MoveIt + our industrial robotics HAL API) and get familiar with the key components needed for more complex exercises by completing the task of pick and place multiple objects and classify them by color or shape.
+The goal of this exercise is to learn the underlying infrastructure of the Industrial Robot exercises (ROS 2 + MoveIt 2 + our industrial robotics HAL API) and to get familiar with the key components needed for more complex exercises.
 
 {% include gallery caption="Gallery." %}
+
+The student will program a robot arm equipped with a two-finger gripper to pick and place several objects from a conveyor and classify them by colour on the corresponding target trays. The exercise runs on **Gazebo Harmonic**.
 
 ## Frequency API
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
@@ -64,163 +73,53 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 
 ## Robot API
 
-<!-- This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options. -->
+The robot is controlled through the HAL-based approach. Below you'll find the details for the Python and C++ options.
 
-## HAL API for Gazebo 11 (Classic).
+### HAL-based Implementation
 
-To use this HAL API, you need to import the HAL module:
+#### Python
 
-```python
-import HAL
-```
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 
-### Direct Kinematics
+**Direct Kinematics**
 
-* `HAL.MoveAbsJ(absolute_joints, rel_speed, wait_time)`
-  * Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
-* `HAL.MoveSingleJ("jointX", value_in_deg, rel_speed, wait_time)`
-  * Moves the joint X [0 to 6] of the robot to the given angle value (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+- `HAL.MoveAbsJ(absolute_joints, speed, wait_time)` - Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. `absolute_joints` is a list of 6 joint angles.
+- `HAL.MoveSingleJ(joint_number, relative_angle, speed, wait_time)` - Moves the joint `joint_number` [1 to 6] by a relative angular increment (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
 
-### Inverse Kinematics
+**Inverse Kinematics**
 
-#### Using absolute poses
+- `HAL.MoveJoint(absolute_XYZ, absolute_YPR, speed, wait_time)` - Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose (in metres) with an absolute orientation (Yaw,Pitch,Roll in degrees). The robot moves point-to-point, resulting in a non-linear trajectory.
+- `HAL.MoveLinear(absolute_XYZ, absolute_YPR, speed, wait_time)` - Moves the robot TCP to an absolute (X,Y,Z) pose (in metres) with an absolute orientation (Yaw,Pitch,Roll in degrees) following a linear trajectory.
+- `HAL.MoveRelLinear(increment_XYZ, speed, wait_time)` - Moves the robot TCP in a linear trajectory by the Cartesian displacement given in `increment_XYZ` (in metres). The tool orientation is not changed.
+- `HAL.MoveRelReor(increment_YPR, speed, wait_time)` - Reorients the robot TCP by the angular increments given in `increment_YPR` (Yaw,Pitch,Roll in degrees). The TCP position stays fixed.
 
-* `HAL.MoveJoint(absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
-  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll), at a given relative speed in the range [0-1], adding a final delay in seconds. The robot will move at constant rotational speeds in each joint, resulting in a non-linear trajectory
-* `HAL.MoveLinear (absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
-  * Moves the robot TCP to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll) in a linear trajectory, at a given relative speed in the range [0-1], adding a final delay in seconds.
+**Gripper**
 
-#### Using relative XYZ or YPR increments
+The gripper grasps and releases objects automatically through a contact-based attachment system, so **no manual attach/detach calls are required**.
 
-* `HAL.MoveRelLinear(increment_XYZ, rel_speed, wait_time)`
-  * Moves the robot TCP pose in a linear trajectory by the distances given in increment_XYZ argument, at a given relative speed in the range [0-1], adding a final delay in seconds. The tool orientation is not changed.
-* `HAL.MoveRelReor (increment_YPR, rel_speed, wait_time)`
-  * Reorients the robot TCP by the angular increments given in increment_YPR argument (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. The TCP (x,y,z) stay fixed.
+- `HAL.GripperSet(percentage_closure, wait_time)` - Closes (`100`) or opens (`0`) the two-finger gripper to the given closing percentage, adding a final delay in seconds. When it starts closing (`> 5`) automatic attachment is enabled; when it opens (`<= 5`) any attached object is automatically detached.
 
-### Gripper usage
+The objects that can be automatically grasped are: `blue_ball`, `green_cylinder`, `yellow_box` and `red_box`.
 
-* `HAL.GripperSet(percentage_closure, wait_time)`
-  * Controls the two-finger gripper opening.
-    * 0 → fully open  
-    * 100 → fully closed  
-  * When the gripper is opened (typically ≤ 5%), any attached object is automatically detached.
-
-* `HAL.attach(object_name)`
-  * Attaches the specified object to the gripper using the Gazebo LinkAttacher ROS2 service.
-  * The object must be one of the predefined simulation objects.
-
-* `HAL.dettach()`
-  * Detaches the currently attached object from the gripper using the LinkAttacher service.
-  * If no object is attached, the function does nothing.
-
-* `Notes:`
-  * Only one object can be attached at a time.
-  * The attach/detach operations rely on ROS2 service calls and are not instantaneous.
-
-### Argument examples
-
-#### Example of data targets for MoveAbsJ (angular position for each joint, in deg)
-
-absj_10 = [0, -90, 45, -135, -90, 0]
-
-absj_20 = [-45, -90, 90, -90, -90, 90]
-
-absj_30 = [20, -90, 45, -45, -90, 0]
-
-#### Examples of absolute XYZ poses for MoveJoint and MoveLinear (in meters, from the world frame)
-
-pose_10 = [0.5, 0, 1.3]
-
-pose_20 = [0, 0.5, 1.3]
-
-#### Examples of absolute YPR angular poses or MoveJoint and MoveLinear (in degrees)
-
-YPR_10 = [0, 90, 90]
-
-YPR_20 = [0, 90, 0]
-
-#### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters)
-
-increment_10 = [0.3, 0.1, -0.2]
-
-increment_20 = [-0.4, -0.1, 0.4]
-
-## HAL API for Gazebo Harmonic.
-
-To use this HAL API, you need to import the HAL_Harmonic module:
-
-```python
-import HAL_Harmonic
-```
-
-### Direct Kinematics
-
-* `HAL.MoveAbsJ(joints_deg, speed, wait_time)`
-  * Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
-* `HAL.MoveSingleJ("jointX", value_in_deg, rel_speed, wait_time)`
-  * Moves a single joint by a relative angular increment (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.s
-
-### Inverse Kinematics
-
-#### Using absolute poses
-
-* `HAL.MoveJoint(abs_xyz, abs_ypr, speed, wait_time)`
-  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (Roll,Pitch,Yaw in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
-* `HAL.MoveLinear (absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
-  * Moves the robot TCP to an absolute (X,Y,Z) pose with an absolute orientation (Roll,Pitch,Yaw in degrees) following a linear trajectory, at a given relative speed in the range [0-1], adding a final delay in seconds.
-
-#### Using relative XYZ or YPR increments
-
-* `HAL.MoveRelLinear(relative_xyz, speed, wait_time)`
-  * Moves the robot TCP in Cartesian space by the given relative displacement (in meters), maintaining orientation.
-* `HAL.MoveRelReor (relative_rpy, speed, wait_time)`
-  * Reorients the robot TCP by relative angular increments (Roll,Pitch,Yaw in degrees), keeping the TCP position fixed.
-
-### Gripper usage
-
-In Gazebo Harmonic, the gripper is controlled through the joint trajectory controller. Object grasping and releasing are handled automatically through a custom contact-based attachment system integrated into Gazebo.
-
-### `HAL.GripperSet(percentage_closure, wait_time)`
-
-Closes or opens the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds.
-
-- A `percentage_closure` of **100** means fully closed.
-- A `percentage_closure` of **0** means fully opened.
-
-When the gripper starts closing (`percentage_closure > 5`), automatic attachment is enabled. If one of the graspable objects is detected in contact with the gripper fingers, the object is automatically attached to the gripper.
-
-When the gripper is opened (`percentage_closure <= 5`), automatic attachment is disabled and any currently attached object is automatically detached.
-
-### Graspable Objects
-
-The following objects can be automatically grasped and attached:
-
-- `blue_ball`
-- `green_cylinder`
-- `yellow_box`
-- `red_box`
-
-No manual attach or detach commands are required. Grasping and releasing are performed automatically based on gripper state and contact detection.
-
-## HAL API for C++
+#### C++
 
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 
-### Direct Kinematics
+**Direct Kinematics**
 
 - `HAL::MoveAbsJ(joints, speed, wait_time);` - Moves the robot to the given angular position for each joint. `joints` is `std::array<double, 6>` in degrees, `speed` in [0,1], `wait_time` in seconds.
 - `HAL::MoveSingleJ(joint_number, relative_angle, speed, wait_time);` - Moves a single joint by a relative angular increment. `joint_number` in [1,6], angle in degrees.
 
-### Inverse Kinematics
+**Inverse Kinematics**
 
 - `HAL::MoveJoint(xyz, ypr, speed, wait_time);` - Moves the TCP to an absolute Cartesian pose. `xyz` is `std::array<double, 3>` in metres, `ypr` in degrees.
 - `HAL::MoveLinear(xyz, ypr, speed, wait_time);` - Moves the TCP in a linear trajectory to an absolute Cartesian pose. `xyz` in metres, `ypr` in degrees.
 - `HAL::MoveRelLinear(xyz, speed, wait_time);` - Moves the TCP by a relative Cartesian increment. `xyz` is `std::array<double, 3>` in metres.
 - `HAL::MoveRelReor(ypr, speed, wait_time);` - Reorients the TCP by relative angular increments. `ypr` is `std::array<double, 3>` in degrees.
 
-### Gripper
+**Gripper**
 
-- `HAL::GripperSet(relative_closure, wait_time);` - Controls the gripper. `relative_closure` in [0,100] (0 = fully open, 100 = fully closed). When closing (`relative_closure` > 5), contact-based automatic attachment is enabled; when opening (`relative_closure` <= 5), the attached object is automatically released.
+- `HAL::GripperSet(relative_closure, wait_time);` - Controls the gripper. `relative_closure` in [0,100] (0 = fully open, 100 = fully closed). When closing (`> 5`) contact-based automatic attachment is enabled; when opening (`<= 5`) the attached object is automatically released.
 
 In order to use the HAL-based controls you must include the following lines:
 
@@ -242,72 +141,62 @@ void exercise() {
 }
 ```
 
-<!-- ### ROS 2-direct Implementation
-
-Use standard ROS 2 topics for direct communication with the simulation.
-
-- `/compute_ik` - Service used to compute inverse kinematics for a Cartesian pose.  
-  Service type: `moveit_msgs/srv/GetPositionIK`
-
-- `/joint_trajectory_controller/follow_joint_trajectory` - Action used to move the arm joints.  
-  Action type: `control_msgs/action/FollowJointTrajectory`
-
-- `/gripper_controller/follow_joint_trajectory` - Action used to control the gripper joint.  
-  Action type: `control_msgs/action/FollowJointTrajectory`
-
-- `/ATTACHLINK` - Service used to attach an object to the gripper in simulation.  
-  Service type: `linkattacher_msgs/srv/AttachLink`
-
-- `/DETACHLINK` - Service used to detach an object from the gripper in simulation.  
-  Service type: `linkattacher_msgs/srv/DetachLink`
-
-- `/move_action` - MoveIt action server available in the system.  
-  Action type: `moveit_msgs/action/MoveGroup`
-
-**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
-
-`import WebGUI` - to enable the Web GUI for visualizing camera images.
-
-To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
-
-- `rclpy.spin()` - Event-driven execution using callbacks.
-- `rclpy.spin_once()` - Single-step processing, often with custom timers.
-- `rclpy.Rate()` - Loop-based frequency control. ecution pipeline.
-
-**Note**
-`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution. -->
-
 ### Argument examples
 
-#### Example of data targets for MoveAbsJ (angular position for each joint, in deg)
+**Data targets for `MoveAbsJ` (joint angles, in degrees)**
 
+```
 absj_home = [0, -90, 70, -70, -90, 0]
+```
 
-#### Examples of absolute XYZ poses for MoveJoint (in meters, from the world frame)
+**Absolute XYZ poses for `MoveJoint` and `MoveLinear` (in metres, world frame)**
 
-aprox_yellow_box = [0.6, 0.3, 0.4]
-
+```
+aprox_yellow_box    = [0.6, 0.3, 0.4]
 aprox_yellow_target = [-0.4, -0.45, 0.4]
+```
 
-#### Examples of absolute YPR angular poses for MoveJoint (in degrees)
+**Absolute YPR orientations for `MoveJoint` and `MoveLinear` (in degrees)**
 
-YPR_pick = [180, 0, -90]
-
+```
+YPR_pick  = [180, 0, -90]
 YPR_place = [0, 90, 0]
+```
 
-#### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters
+**Cartesian increments for `MoveRelLinear`, [Ax, Ay, Az] in metres**
 
+```
 decrease_z_10 = [0, 0, -0.10]
+increase_z_20 = [0, 0,  0.20]
+```
 
-decrease_z_15 = [0, 0, -0.15]
+## Theory
 
-increase_z_20 = [0, 0, 0.20]
+### TCP orientation (Yaw, Pitch, Roll)
 
-increase_z_25 = [0, 0, 0.25]
+The `MoveJoint` and `MoveLinear` functions receive the TCP orientation as a `[Yaw, Pitch, Roll]` list, in degrees, expressed in the world frame. At `[0, 0, 0]` the tool frame is aligned with the world frame:
 
-## Where to insert and run the code?
+{% include gallery id="rpy000" caption="TCP frame at YPR = (0, 0, 0)." %}
 
-In the launched webpage, type your code in the text editor and run it pressing the run button:
+A single 90º rotation on each axis (yaw, pitch or roll) reorients the tool as follows:
+
+{% include gallery id="rpy" caption="Effect of a 90º rotation on each axis: Roll (left), Pitch (centre), Yaw (right)." %}
+
+### Relationship among ROS 2, MoveIt 2, Gazebo and the JdeRobot API
+
+- [ROS](https://www.ros.org/) (Robot Operating System) is a robotics middleware which contains a set of open source libraries for developing robot applications.
+- [MoveIt](https://moveit.ros.org/) is an open source Motion Planning framework for industrial robots which integrates motion planning, collision checking, manipulation and 3D perception capabilities.
+- [RViz](https://github.com/ros2/rviz) is a 3D visualization tool for ROS. Many ROS topics can be visualized in RViz, including the planning scene of the MoveIt move group, but it does not contain any physics simulation capability.
+- [Gazebo](https://gazebosim.org/) is a physics simulator mainly used for robot simulation.
+- The HAL API provided by JdeRobot Robotics Academy is built on top of the above tools and the IFRA Cranfield repositories (see References), so you do not need to learn all of them to start simulating industrial robot manipulation.
+
+## Hints
+
+Simple hints to help you solve the Pick and Place exercise.
+
+### Where to insert and run the code
+
+In the launched web page, type your code in the text editor and run it by pressing the play button:
 
 ```python
 import HAL
@@ -317,97 +206,40 @@ while True:
     # Enter iterative code here!
 ```
 
-### Why does the robot sometimes cannot move to some desired pose?
+### Why does the robot sometimes fail to move to a desired pose?
 
-The most possible reason is that your specified pose is unreachable for the robot arm, so MoveIt cannot plan a trajectory from current pose to desired pose in limited time. You will see such a warning when this problem happened:
+The most likely reason is that your specified pose is unreachable for the robot arm, so MoveIt cannot plan a trajectory from the current pose to the desired pose within the allowed time. You will see a warning like this when that happens:
 
 ```bash
 Fail: ABORTED: No motion plan found. No execution attempted.
 ```
 
-## Object and Target lists, dimensions and poses
-
-### Gazebo 11 (Classic)
+### Object and target lists
 
 **Object list.** The four objects are located on a conveyor that is 1 m tall.
-* **yellow_box**
-  * Size (l,w,h) = (7,5,10) cm
-  * Pose (x,y) = (0.6,0.3) m
-* **red_box**
-  * Size (l,w,h) = (5,10,8) cm
-  * Pose (x,y) = (0.6,-0.3) m
-* **blue_ball**
-  * Size (r) = (4) cm
-  * Pose (x,y) = (0.7, 0.1) m
-* **green_cylinder**
-  * Size (r,h) = (4,15) cm
-  * Pose (x,y) = (0.5, -0.1) m
+
+- **yellow_box** — Size (l,w,h) = (7,5,10) cm — Pose (x,y) = (0.6, 0.3) m
+- **red_box** — Size (l,w,h) = (5,10,8) cm — Pose (x,y) = (0.6, -0.3) m
+- **blue_ball** — Size (r) = (4) cm — Pose (x,y) = (0.7, 0.1) m
+- **green_cylinder** — Size (r,h) = (4,15) cm — Pose (x,y) = (0.5, -0.1) m
 
 **Target list.** The four targets are located on a table that is 0.8 m tall.
-* **red_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,0.15) m
-* **green_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,-0.15) m
-* **blue_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,0.45) m
-* **yellow_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,-0.45) m
 
-### Gazebo Harmonic
-
-**Object list.** The four objects are located on a conveyor that is 1 m tall.  
-Object dimensions and positions are the same as in the Gazebo Classic version.
-
-* **yellow_box**
-  * Size (l,w,h) = (7,5,10) cm
-  * Pose (x,y) = (0.6,0.3) m
-* **red_box**
-  * Size (l,w,h) = (5,10,8) cm
-  * Pose (x,y) = (0.6,-0.3) m
-* **blue_sphere**
-  * Size (r) = (4) cm
-  * Pose (x,y) = (0.7, 0.1) m
-* **green_cylinder**
-  * Size (r,h) = (4,15) cm
-  * Pose (x,y) = (0.5, -0.1) m
-
-**Target list.** The four targets are located on a table that is 0.8 m tall.  
-Target dimensions and positions are identical to the Gazebo Classic version.
-
-* **red_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,0.15) m
-* **green_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,-0.15) m
-* **blue_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,0.45) m
-* **yellow_target**
-  * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (-0.6,-0.45) m
-  
-## Hints
-
-### Relationship among ROS2, MoveIt2, Gazebo, JdeRobot provided API
-
-- [ROS](https://www.ros.org/)(Robot Operating System) is a robotics middleware which contains a set of open source libraries for developing robot applications.
-* [MoveIt](https://moveit.ros.org/) is an open source Motion Planning framework for industrial robot which integrates motion planning, collision checking, manipulation, 3D perception capabilities.
-* [Rviz](http://wiki.ros.org/rviz) is a 3D visualization tool for ROS. Many ROS topics can be visualized in Rviz, including the planning scene of MoveIt move group, but it does not contain any physics simulation capability.
-* [Gazebo](http://gazebosim.org/) is a physics simulator mainly use for robot simulation.
-* The HAL API provided by JdeRobot Robotics Academy is based on the above tools and the IFRA Cranfield repositories (see Acknowledgements), so the user don't need to learn all of them to start simulation of industrial robot manipulation.
+- **red_target** — Pose (x,y) = (-0.4, 0.15) m
+- **green_target** — Pose (x,y) = (-0.4, -0.15) m
+- **blue_target** — Pose (x,y) = (-0.4, 0.45) m
+- **yellow_target** — Pose (x,y) = (-0.4, -0.45) m
 
 ## Videos
 
-### Demonstration video of the solution
-
 {% include youtubePlayer.html id=page.youtubeId %}
 
-## Acknowledgements
+## Contributors
 
-This exercise uses the excellent work of the IFRA Cranfield Group. Check out their repos at:
-IFRA-Cranfield (2023) ROS 2 Sim-to-Real Robot Control. URL: <https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl>.
+- Contributors: [Diego Martín](https://github.com/diegomrt), [José María Cañas](https://github.com/jmplaza) and [Javier Izquierdo](https://github.com/javizqh).
+
+## References
+
+1. IFRA-Cranfield (2023). ROS 2 Sim-to-Real Robot Control. [https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl](https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl)
+2. [https://moveit.ros.org/](https://moveit.ros.org/)
+3. [https://gazebosim.org/](https://gazebosim.org/)
