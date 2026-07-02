@@ -143,8 +143,7 @@ function WebGUI(props) {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage reference={canvasRef} id="map-img" src={mapImg} style={{ left: "0" }} />
-      <WebGUIImage src={userImage} style={{ left: "50%" }} />
+      <WebGUIImage reference={canvasRef} id="map-img" src={mapImg} style={{ left: "0", width: "100%" }} />
       {realPose &&
         <div id="real-pos" style={{rotate: "z "+ realPose[2]+"rad", top: realPose[0] -10 , left: realPose[1] -10}}>
           <img src={RobotGreen} id="real-pos"/>

@@ -1,9 +1,9 @@
 #real-pos {
   position: absolute;
   z-index: 3;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+  width: 40px; 
+  height: 40px;
+  border-radius: 20px;
   transition: left 0.1s ease-out, top 0.1s ease-out;
   left: 0;
 }
@@ -11,9 +11,9 @@
 #noisy-pos {
   position: absolute;
   z-index: 3;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   transition: left 0.1s ease-out, top 0.1s ease-out;
   left: 0;
 }

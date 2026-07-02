@@ -138,8 +138,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
-27	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
+27	o3de_laser_mapping	O3DE LaserMapping	Control an O3DE robot to organize a warehouse	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
 28	o3de_follow_line	O3DE FollowLine	Control an O3DE robot to follow a line	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
+29	o3de_follow_person	O3DE FollowPerson	Control an O3DE robot to follow a person	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
 \.
 
 --
@@ -191,6 +192,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 41	26	39
 42	27	40
 43	28	41
+44	29	42
 \.
 -- 30  16  3
 
@@ -282,6 +284,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 81	28	console
 82	28	simulator
 83	28	web_gui
+84	29	console
+85	29	simulator
+86	29	web_gui
 \.
 
 --

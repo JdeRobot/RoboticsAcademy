@@ -35,6 +35,10 @@ const WebGUI = () => {
 
   const updateCircuit = (universe) => {
     switch (universe) {
+      case "O3DE FollowLine":
+        circuitName = "o3de default";
+        setCircuitImg(defaultCircuit);
+        break;
       case "Simple Circuit":
         circuitName = "default";
         setCircuitImg(defaultCircuit);

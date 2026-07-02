@@ -39,8 +39,8 @@ if not rclpy.ok():
     rclpy.init(args=None)
 
 ### HAL INIT ###
-motor_node = AckerMotorsNode("/chassis_link/cmd_vel", 4, 0.3, 2)
-camera_node = CameraNode("/chassis_link/color/image_color")
+motor_node = AckerMotorsNode("/cmd_vel", 4, 0.3, 2)
+camera_node = CameraNode("/cam_f1_left/image_raw")
 
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(camera_node)

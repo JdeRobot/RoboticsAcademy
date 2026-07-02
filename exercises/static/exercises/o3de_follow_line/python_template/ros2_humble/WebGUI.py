@@ -47,7 +47,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "lap": "", "map": ""}
         self.bridge = CvBridge()
 
-        self.pose3d_object = OdometryNode("/chassis_link/odom")
+        self.pose3d_object = OdometryNode("/odom")
 
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.webgui_publisher)
@@ -66,6 +66,10 @@ class WebGUI(MeasuringThreadingGUI):
             self.auto_image_thread.start()
 
         self.start()
+        
+    def get_real_time_factor(self):
+        """Anula la función de la clase padre para que no busque 'world_name' ni use Gazebo."""
+        pass
 
     def _setup_auto_mode(self):
         """Set up automatic image subscription"""

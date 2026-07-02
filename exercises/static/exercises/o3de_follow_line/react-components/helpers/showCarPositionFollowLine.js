@@ -13,6 +13,10 @@ export const getCarPose = (circuit, position) => {
   }
 
   switch (circuit) {
+    case "o3de default":
+      scaleX = 2.05; offsetX = 11;
+  			scaleY = 1.03; offsetY = 73;
+      break;
     case "default":
       scaleY = 1.25; offsetY = 77
 			scaleX = -2.6; offsetX = 151
@@ -38,6 +42,13 @@ export const getCarPose = (circuit, position) => {
 
   var x = Math.round(pos[0]) * scaleX / ackMultiplier + offsetX;
   var y = Math.round(pos[1]) * scaleY / ackMultiplier + offsetY;
+  
+  if (circuit=="o3de default"){
+  	var x = Math.round(pos[1]) * scaleX / ackMultiplier + offsetX;
+  	var y = -Math.round(pos[0]) * scaleY / ackMultiplier + offsetY;
+  }
 
+  console.log("Pos simulador:", pos[0], pos[1], "-> Píxeles:", x, y);
+  
   return [x,y];
 };
