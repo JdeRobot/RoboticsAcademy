@@ -452,6 +452,145 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
+  _package_delivery: {
+    hal: [
+      {
+        type: "method",
+        label: "get_position()",
+        code: "get_position()",
+        docstring:
+          "Returns the actual position of the drone as a numpy array [x, y, z], in m.",
+      },
+      {
+        type: "method",
+        label: "get_velocity()",
+        code: "get_velocity()",
+        docstring:
+          "Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.",
+      },
+      {
+        type: "method",
+        label: "get_yaw_rate()",
+        code: "get_yaw_rate()",
+        docstring: "Returns the actual yaw rate of the drone, in rad/s.",
+      },
+      {
+        type: "method",
+        label: "get_orientation()",
+        code: "get_orientation()",
+        docstring:
+          "Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad.",
+      },
+      {
+        type: "method",
+        label: "get_roll()",
+        code: "get_roll()",
+        docstring: "Returns the roll angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_pitch()",
+        code: "get_pitch()",
+        docstring: "Returns the pitch angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_yaw()",
+        code: "get_yaw()",
+        docstring: "Returns the yaw angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_landed_state()",
+        code: "get_landed_state()",
+        docstring:
+          "Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.",
+      },
+      {
+        type: "method",
+        label: "set_cmd_pos(x, y, z, az)",
+        code: "set_cmd_pos(x, y, z, az)",
+        docstring:
+          "Commands the position (x,y,z) of the drone, in m and the yaw angle (az) (in rad) taking as reference the first takeoff point (map frame).",
+      },
+      {
+        type: "method",
+        label: "set_cmd_vel(vx, vy, vz, az)",
+        code: "set_cmd_vel(vx, vy, vz, az)",
+        docstring:
+          "Commands the linear velocity of the drone in the x, y and z directions (in m/s) and the yaw rate (az) (rad/s) in its body fixed frame.",
+      },
+      {
+        type: "method",
+        label: "set_cmd_mix(vx, vy, z, az)",
+        code: "set_cmd_mix(vx, vy, z, az)",
+        docstring:
+          "Commands the linear velocity of the drone in the x, y directions (in m/s), the height (z) related to the takeoff point and the yaw rate (az) (in rad/s)",
+      },
+      {
+        type: "method",
+        label: "takeoff(height)",
+        code: "takeoff(height)",
+        docstring:
+          "Takeoff at the current location, to the given height (in m).",
+      },
+      {
+        type: "method",
+        label: "land()",
+        code: "land()",
+        docstring: "Land at the current location.",
+      },
+      {
+        type: "method",
+        label: "get_frontal_image()",
+        code: "get_frontal_image()",
+        docstring:
+          "Returns the latest image from the frontal camera as a OpenCV cv2_image.",
+      },
+      {
+        type: "method",
+        label: "get_ventral_image()",
+        code: "get_ventral_image()",
+        docstring:
+          "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
+      },
+      {
+        type: "method",
+        label: "enable_magnet()",
+        code: "enable_magnet()",
+        docstring:
+          "Energizes the magnetic gripper. While energized, the nearest package within range is automatically attached to the drone.",
+      },
+      {
+        type: "method",
+        label: "disable_magnet()",
+        code: "disable_magnet()",
+        docstring:
+          "De-energizes the magnetic gripper, releasing any package currently carried.",
+      },
+      {
+        type: "method",
+        label: "is_carrying()",
+        code: "is_carrying()",
+        docstring:
+          "Returns True if the drone is currently carrying a package, False otherwise.",
+      },
+    ],
+    webgui: [
+      {
+        type: "method",
+        label: "showImage(cv2_image)",
+        code: "showImage(cv2_image)",
+        docstring: "Shows a image of the camera in the GUI.",
+      },
+      {
+        type: "method",
+        label: "showLeftImage(cv2_image)",
+        code: "showLeftImage(cv2_image)",
+        docstring: "Shows another image of the camera in the GUI.",
+      },
+    ],
+  },
   _obstacle_avoidance: {
     hal: [
       {
