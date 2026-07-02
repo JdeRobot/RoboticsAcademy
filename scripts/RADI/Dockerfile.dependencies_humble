@@ -381,6 +381,6 @@ RUN git clone https://${GH_USER}:${GH_TOKEN}@github.com/JdeRobot/o3de.git && \
     git -C ${O3DE_DIR} lfs install && \
     git -C ${O3DE_DIR} lfs pull 
     
-#COPY ./gme /data/workspace/o3de/gme
+#COPY ./gme_o3de /data/workspace/o3de/gme_o3de
     
 WORKDIR /
