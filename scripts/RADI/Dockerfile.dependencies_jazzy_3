@@ -1,0 +1,104 @@
+ARG ALPINE_VERSION=edge
+FROM alpine:${ALPINE_VERSION}
+LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
+LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
+
+ARG ALPINE_VERSION
+
+# Tested with: x86_64 / aarch64
+ENV ARCH="x86_64" \
+  USER="vnc-user" \
+  USER_BUILD="build" \
+  APK_ADD="openssl socat sway xkeyboard-config wayvnc xwayland libc-dev libffi-dev libxkbcommon-dev gcc geckodriver git python3 python3-dev py3-pip py3-wheel firefox" \
+  APK_DEL="bash curl" \
+  VNC_LISTEN_ADDRESS="0.0.0.0" \
+  VNC_AUTH_ENABLE="false" \
+  VNC_KEYFILE="key.pem" \
+  VNC_CERT="cert.pem" \
+  XDG_RUNTIME_DIR="/tmp" \
+  WLR_BACKENDS="headless" \
+  WLR_LIBINPUT_NO_DEVICES="1"\
+  SWAYSOCK="/tmp/sway-ipc.sock"\
+  PATH_VENV="/home/vnc-user/venv" \
+  MOZ_ENABLE_WAYLAND=1 \
+  BROWSER_FULLSCREEN=1 \
+  VNC_PASS="$(pwgen -yns 8 1)"
+
+# Add packages
+RUN apk add --no-cache $APK_ADD
+
+# Add fonts
+# As recommended by https://wiki.alpinelinux.org/wiki/Fonts
+RUN apk add font-terminus font-inconsolata font-dejavu font-noto font-noto-cjk font-awesome font-noto-extra
+# Additionally add MS fonts
+#RUN apk add --no-cache msttcorefonts-installer fontconfig \
+#    && update-ms-fonts
+
+# Add application user
+RUN addgroup -S $USER && adduser -S $USER -G $USER
+
+# Copy sway config
+COPY config /etc/sway/config
+
+# Add wayvnc to compositor startup and put IPC on the network
+RUN mkdir /etc/sway/config.d \
+  && echo "exec wayvnc 0.0.0.0 5910" >> /etc/sway/config.d/exec \
+  && echo "exec \"socat TCP-LISTEN:7023,fork UNIX-CONNECT:/tmp/sway-ipc.sock\"" >> /etc/sway/config.d/exec \
+  && mkdir -p /home/$USER/.config/wayvnc/ \
+  && printf "\
+  address=$VNC_LISTEN_ADDRESS\n\
+  enable_auth=$VNC_AUTH_ENABLE\n\
+  username=$USER\n\
+  password=$VNC_PASS\n\
+  private_key_file=/home/$USER/$VNC_KEYFILE\n\
+  certificate_file=/home/$USER/$VNC_CERT" > /home/$USER/.config/wayvnc/config
+
+# Generate certificates for VNC
+RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout key.pem -out cert.pem -subj /CN=localhost \
+  -addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
+
+USER root
+
+# Add application user and application
+# Cleanup: Remove files and users
+RUN echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+  # https://gitlab.alpinelinux.org/alpine/aports/-/issues/11768
+  && sed -i -e 's/https/http/' /etc/apk/repositories \
+  # Add packages
+  && apk add --no-cache ${APK_ADD} \
+  && apk del --no-cache ${APK_DEL} \
+  # Cleanup: Remove files
+  && rm -rf \
+  /usr/share/man/* \
+  /usr/includes/* \
+  /var/cache/apk/* \
+
+  # Add latest webdriver-util script for firefox automation
+  && wget -P /usr/local/bin https://raw.githubusercontent.com/bbusse/webdriver-util/main/webdriver_util.py \
+  && chmod +x /usr/local/bin/webdriver_util.py \
+  && wget -O /tmp/requirements_webdriver.txt https://raw.githubusercontent.com/bbusse/webdriver-util/main/requirements.txt \
+
+  && git clone -b dev https://github.com/bbusse/python-wayland /usr/local/src/python-wayland \
+
+  # Add iss-display-controller for view handling
+  && wget -P /usr/local/bin https://raw.githubusercontent.com/OpsBoost/iss-display-controller/dev/controller.py \
+  && chmod +x /usr/local/bin/controller.py \
+  && wget -O /tmp/requirements_controller.txt https://raw.githubusercontent.com/OpsBoost/iss-display-controller/dev/requirements.txt \
+  && sed '4 cstarlette == 0.38.0' /tmp/requirements_controller.txt > //tmp/requirements_controller2.txt && mv /tmp/requirements_controller2.txt /tmp/requirements_controller.txt \
+
+  # Run controller.py
+  && echo "exec /usr/bin/env sh -c 'source ${PATH_VENV}/bin/activate && controller.py --stream-source=vnc-browser --uri "https://grafana.example.com"'" \
+  > /etc/sway/config.d/firefox
+
+USER $USER
+
+RUN mkdir -p ${PATH_VENV} && \
+  python3 -m venv /home/${USER}/venv && \
+  . ${PATH_VENV}/bin/activate && \
+  pip3 install -r /tmp/requirements_controller.txt && \
+  pip3 install -r /tmp/requirements_webdriver.txt && \
+  deactivate
+
+# Add entrypoint
+ENTRYPOINT ["sway"]

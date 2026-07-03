@@ -1,0 +1,341 @@
+FROM nvidia/cuda:13.3.0-cudnn-runtime-ubuntu24.04
+
+# Make all NVIDIA GPUS visible
+ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
+
+# Install locales to prevent errors
+RUN apt-get clean && \
+  apt-get update && \
+  apt-get install --no-install-recommends -y locales && \
+  rm -rf /var/lib/apt/lists/* && \
+  locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ENV ROS_DISTRO=jazzy
+ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
+ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
+ENV LD_LIBRARY_PATH=/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:
+ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
+ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.12/site-packages
+ENV ROS_PYTHON_VERSION=3
+ENV ROS_VERSION=2
+
+# gz.msgs10 Python bindings (installed by gz-harmonic apt package) are compiled
+# with protoc 3.x and cannot create descriptors under protobuf 4.x / 5.x C++
+# extension. Force pure-Python protobuf parser (backward-compatible with all
+# .pb2 files) so gz.msgs10 and onnxruntime-gpu coexist without version pinning.
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
+# Install common tools
+RUN apt-get update && apt-get install -y \
+  software-properties-common \
+  bash-completion \
+  apt-utils \
+  build-essential \
+  git curl wget cmake \
+  nano vim \
+  gnupg \
+  lsb-release \
+  sudo \
+  net-tools \
+  pciutils \
+  nlohmann-json3-dev \
+  && add-apt-repository universe \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install ROS2 and ROS packages
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2-latest.list > /dev/null \
+  && apt-get update && apt-get install -y \
+  ros-${ROS_DISTRO}-ros-base \
+  ros-${ROS_DISTRO}-xacro \
+  ros-${ROS_DISTRO}-joint-state-publisher \
+  ros-${ROS_DISTRO}-rviz2 \
+  python3-pip python3-rosdep python3-vcstool \
+  python3-argcomplete \
+  && rosdep init && rosdep update \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Gazebo Jetty
+RUN apt-get update \
+  && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+  && apt-get update && apt-get install -y -q gz-jetty \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install noVNC and websockify
+RUN git clone --depth=1 --single-branch -b v1.7.0 https://github.com/novnc/noVNC.git
+RUN cd /noVNC/utils && git clone --depth=1 --single-branch -b v0.13.0 https://github.com/novnc/websockify.git
+
+# Install WayVNC
+RUN  apt-get update && apt install wayvnc -y
+
+# VirtualGL
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
+  libxtst6:i386 \
+  libxv1:i386 \
+  libglu1-mesa:i386 libegl1:i386\
+  && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q -O- https://packagecloud.io/dcommander/virtualgl/gpgkey | gpg --dearmor >/etc/apt/trusted.gpg.d/VirtualGL.gpg \
+  && echo "deb [signed-by=/etc/apt/trusted.gpg.d/VirtualGL.gpg] https://packagecloud.io/dcommander/virtualgl/any/ any main" | tee /etc/apt/sources.list.d/virtualgl-stable.list > /dev/null \
+  && apt-get update && apt-get install -y -q virtualgl virtualgl32 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+  apt-get install -y lxde-common && \
+  rm -rf /var/lib/apt/lists/*
+
+# Install postgreSQL-18
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  wget gnupg lsb-release ca-certificates \
+  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update && apt-get install -y --no-install-recommends postgresql-18 \
+  && rm -rf /var/lib/apt/lists/*
+
+# Create and use a virtual environment
+RUN apt-get update && apt-get install -y python3.12-venv && python3.12 -m venv /venv && rm -rf /var/lib/apt/lists/*
+ENV PATH="/venv/bin:$PATH"
+
+# Install Python 3 pip build dependencies first
+RUN pip install --no-cache-dir --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2
+
+# pip install dependencies
+RUN pip install --no-cache-dir \
+  pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
+  argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
+  matplotlib==3.11.0 numpy==2.4.6 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
+  pyulog==1.0.1 pyyaml==6.0.3 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
+  onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
+
+# # CUDA runtime wheels for onnxruntime-gpu==1.22.0 CUDA Execution Provider.
+# #
+# # All seven packages below must be upgraded together whenever onnxruntime-gpu
+# # is bumped. Compatibility ranges declared by the wheel (via ~= operator):
+# #   nvidia-cuda-runtime-cu12  ~= 12.0   nvidia-cuda-nvrtc-cu12 ~= 12.0
+# #   nvidia-cublas-cu12        (runtime dep of cudnn)
+# #   nvidia-cudnn-cu12         ~=  9.0
+# #   nvidia-curand-cu12        ~= 10.0   nvidia-cufft-cu12      ~= 11.0
+# #
+# # Upgrade checklist:
+# #   1. Check the new ORT release notes for CUDA / cuDNN major version changes.
+# #   2. Run: pip show onnxruntime-gpu | grep Requires  — to see declared ~= ranges.
+# #   3. Pick PyPI versions whose MAJOR matches those ranges (stay on CUDA 12.x,
+# #      cuDNN 9.x, curand 10.x, cufft 11.x until ORT itself changes the range).
+# #   4. After build, verify inside the container:
+# #        python3 -c "import onnxruntime as ort; print(ort.get_available_providers())"
+# #      CUDAExecutionProvider must appear first.
+# #   5. Run: ldd $(python3 -c "import onnxruntime, os; print(os.path.dirname(onnxruntime.__file__))")/capi/libonnxruntime_providers_cuda.so
+# #      Every .so must resolve (no "not found" lines).
+# RUN pip install --no-cache-dir \
+#   nvidia-cuda-runtime-cu12==12.8.90 \
+#   nvidia-cublas-cu12==12.8.4.1 \
+#   nvidia-cudnn-cu12==9.10.2.21 \
+#   nvidia-nvjitlink-cu12==12.8.93 \
+#   nvidia-cuda-nvrtc-cu12==12.8.93 \
+#   nvidia-curand-cu12==10.3.10.19 \
+#   nvidia-cufft-cu12==11.4.1.4
+
+# Register all pip-installed nvidia .so files with ldconfig so onnxruntime-gpu
+# finds them regardless of whether pip used site-packages or dist-packages
+COPY config-nvidia-libs.py /
+WORKDIR /
+RUN chmod u+x config-nvidia-libs.py
+RUN python3.12 config-nvidia-libs.py && ldconfig
+
+# monaco editor
+RUN pip install --no-cache-dir black==24.10.0
+
+# Install ONNX Runtime C++ API
+RUN apt-get update && apt-get install -y wget && \
+  wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.22.0/onnxruntime-linux-x64-1.22.0.tgz -O /tmp/onnxruntime.tgz && \
+  tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
+  cp -r /tmp/onnxruntime-linux-x64-1.22.0/include/* /usr/local/include/ && \
+  cp -r /tmp/onnxruntime-linux-x64-1.22.0/lib/* /usr/local/lib/ && \
+  ldconfig && \
+  rm -rf /tmp/onnxruntime* && \
+  rm -rf /var/lib/apt/lists/*
+
+# websocket server dependency
+RUN pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
+  django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
+
+# BT STUDIO hotfix
+RUN pip install --no-cache-dir py-trees autopep8
+
+## Aerostack2
+WORKDIR /root/
+
+RUN apt-get update && \
+  apt-get install apt-utils -y \
+  software-properties-common \
+  git \
+  tmux \
+  tmuxinator \
+  python3-rosdep \
+  python3-pip \
+  python3-colcon-common-extensions \
+  python3-colcon-mixin \
+  python-is-python3 \
+  ros-dev-tools \
+  python3-flake8 \
+  python3-flake8-builtins  \
+  python3-flake8-comprehensions \
+  python3-flake8-docstrings \
+  python3-flake8-import-order \
+  python3-flake8-quotes \
+  cppcheck \
+  lcov \
+  lsb-release \
+  wget \
+  gnupg \
+  && rm -rf /var/lib/apt/lists/* 
+
+RUN pip3 install --no-cache-dir \
+  pylint \
+  flake8==4.0.1 \
+  pycodestyle==2.8 \
+  cmakelint \
+  cpplint \
+  transforms3d \
+  PySimpleGUI-4-foss \
+  catkin_pkg lark
+
+RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
+RUN colcon mixin update default
+RUN rm -rf log 
+
+# remove log folder
+RUN mkdir -p /home/drones_ws/src/
+WORKDIR /home/drones_ws/src/
+RUN git clone --depth=1 https://github.com/aerostack2/aerostack2.git -b jazzy
+RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
+RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
+RUN touch aerostack2/as2_map_server/COLCON_IGNORE
+RUN touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE
+RUN touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE
+RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE
+
+RUN sed '41 c#include <cv_bridge\/cv_bridge.hpp>' /home/drones_ws/src/aerostack2/as2_core/include/as2_core/sensor.hpp > /tmp/sensor.hpp && mv /tmp/sensor.hpp /home/drones_ws/src/aerostack2/as2_core/include/as2_core/sensor.hpp
+WORKDIR /home/drones_ws/
+RUN pip3 install --no-cache-dir python-wayland
+
+
+# RUN apt-get update && \
+#   apt-get install -y \
+#   libbenchmark-dev \
+#   libeigen3-dev \
+#   libgeographiclib-dev \
+#   libncurses-dev \
+#   libyaml-cpp-dev \
+#   pybind11-dev \
+#   python3-jinja2 \
+#   python3-pydantic \
+#   python3-pymap3d \
+#   python3-pytest \
+#   ros-${ROS_DISTRO}-py-trees \
+#   ros-${ROS_DISTRO}-py-trees-ros \
+#   ros-${ROS_DISTRO}-action-msgs \
+#   ros-${ROS_DISTRO}-ament-cmake \
+#   ros-${ROS_DISTRO}-ament-cmake-gtest \
+#   ros-${ROS_DISTRO}-ament-cmake-lint-cmake \
+#   ros-${ROS_DISTRO}-ament-cmake-pytest \
+#   ros-${ROS_DISTRO}-ament-cmake-python \
+#   ros-${ROS_DISTRO}-ament-cmake-xmllint \
+#   ros-${ROS_DISTRO}-ament-copyright \
+#   ros-${ROS_DISTRO}-ament-flake8 \
+#   ros-${ROS_DISTRO}-ament-index-cpp \
+#   ros-${ROS_DISTRO}-ament-lint-auto \
+#   ros-${ROS_DISTRO}-ament-lint-common \
+#   ros-${ROS_DISTRO}-ament-pep257 \
+#   ros-${ROS_DISTRO}-backward-ros \
+#   ros-${ROS_DISTRO}-builtin-interfaces \
+#   ros-${ROS_DISTRO}-cv-bridge \
+#   ros-${ROS_DISTRO}-geographic-msgs \
+#   ros-${ROS_DISTRO}-geometry-msgs \
+#   ros-${ROS_DISTRO}-image-transport \
+#   ros-${ROS_DISTRO}-mocap4r2-msgs \
+#   ros-${ROS_DISTRO}-nav-msgs \
+#   ros-${ROS_DISTRO}-pluginlib \
+#   ros-${ROS_DISTRO}-rclcpp \
+#   ros-${ROS_DISTRO}-rclcpp-action \
+#   ros-${ROS_DISTRO}-rclcpp-components \
+#   ros-${ROS_DISTRO}-rclcpp-lifecycle \
+#   ros-${ROS_DISTRO}-rclpy \
+#   ros-${ROS_DISTRO}-robot-state-publisher \
+#   ros-${ROS_DISTRO}-rosidl-default-generators \
+#   ros-${ROS_DISTRO}-rosidl-default-runtime \
+#   ros-${ROS_DISTRO}-rviz2 \
+#   ros-${ROS_DISTRO}-sdformat-urdf \
+#   ros-${ROS_DISTRO}-sensor-msgs \
+#   ros-${ROS_DISTRO}-std-msgs \
+#   ros-${ROS_DISTRO}-std-srvs \
+#   ros-${ROS_DISTRO}-tf2 \
+#   ros-${ROS_DISTRO}-tf2-geometry-msgs \
+#   ros-${ROS_DISTRO}-tf2-msgs \
+#   ros-${ROS_DISTRO}-tf2-ros \
+#   ros-${ROS_DISTRO}-trajectory-msgs \
+#   ros-${ROS_DISTRO}-visualization-msgs \
+#   ros-${ROS_DISTRO}-moveit \
+#   ros-${ROS_DISTRO}-ros2-control \
+#   ros-${ROS_DISTRO}-ros2-controllers \
+#   ros-${ROS_DISTRO}-gripper-controllers \
+#   ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+#   ros-${ROS_DISTRO}-ur \
+#   ros-${ROS_DISTRO}-ros-testing \
+#   ros-${ROS_DISTRO}-pcl-ros \
+#   ros-${ROS_DISTRO}-tf-transformations \
+#   ros-${ROS_DISTRO}-pcl-conversions \
+#   ros-${ROS_DISTRO}-pcl-msgs \
+#   ros-${ROS_DISTRO}-xacro \
+#   ros-${ROS_DISTRO}-joint-state-publisher \
+#   libpoco-dev \
+#   libpcl-dev \
+#   && rm -rf /var/lib/apt/lists/*
+
+# # On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
+# # to avoid GNU make jobserver failures under amd64 emulation.
+
+# ARG TARGETARCH
+# RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+#   if [ "$TARGETARCH" = "arm64" ]; then \
+#   colcon build \
+#   --symlink-install \
+#   --executor sequential \
+#   --cmake-args \
+#   -DCMAKE_BUILD_TYPE=Release \
+#   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
+#   else \
+#   colcon build \
+#   --symlink-install \
+#   --cmake-args \
+#   -DCMAKE_BUILD_TYPE=Release ; \
+#   fi
+
+# # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
+# RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
+
+# # Create workspace and add drone packages
+# RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+# RUN echo 'export AEROSTACK2_PATH=/home/drones_ws/src/aerostack2' >> ~/.bashrc
+# RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bassh' >> ~/.bashrc
+# RUN echo "source /home/drones_ws/install/setup.sh" >> ~/.bashrc
+
+# # Download and install OMPL library
+# RUN pip3 install --no-cache-dir ompl
+
+# # Clone and build gz_ros2_control for Gazebo Harmonic (gz-sim8)
+# # This is required for Pick Place Harmonic exercise controller loading
+# WORKDIR /home/ws/src
+# RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b ${ROS_DISTRO}
+# WORKDIR /home/ws
+# RUN pip3 install --no-cache-dir colcon-common-extensions 
+# # RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
+# #   export GZ_VERSION=jetty && \
+# #   colcon build --packages-select gz_ros2_control"
+# WORKDIR /
