@@ -136,7 +136,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
-26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
+26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
 28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones","MULTI-AGENT"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
 29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
