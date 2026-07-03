@@ -201,12 +201,16 @@ def get_file_list(fal, request):
     Query params: project (str).
     """
     project = request.GET.get("project")
+    user = request.GET.get("user", None)
 
     base_group = "Code"
 
     path = fal.exercise_path(project)
 
-    file_list = fal.list_formatted(path, base_group)
+    try:
+        file_list = fal.list_formatted(path, base_group)
+    except Exception:
+        return Response({"file_list": EntryEncoder().encode([])})
 
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
@@ -360,6 +364,7 @@ def get_file(fal, request):
     """
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
+    user = request.GET.get("user", None)
 
     binary = request.GET.get("binary", None)
 

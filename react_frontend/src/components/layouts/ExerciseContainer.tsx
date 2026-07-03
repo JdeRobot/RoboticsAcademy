@@ -58,6 +58,8 @@ const ExerciseContainer = ({
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both"
   );
+  const userRef = useRef<string | undefined>(undefined);
+  const addressRef = useRef<string>(`ws://127.0.0.1:7163`);
 
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
@@ -101,7 +103,7 @@ const ExerciseContainer = ({
     callback?: () => void
   ) => {
     try {
-      const currManager = CommsManager.getInstance();
+      const currManager = CommsManager.getInstance(addressRef.current);
       hasTriedToConnect.current = true;
       await currManager.connect();
       getUniverseList(project);
@@ -122,7 +124,7 @@ const ExerciseContainer = ({
   };
 
   const waitManagerState = async (state: string, callback: () => void) => {
-    const currManager = CommsManager.getInstance();
+    const currManager = CommsManager.getInstance(addressRef.current);
     if (currManager?.getState() === state) {
       callback();
     } else {
@@ -175,7 +177,9 @@ const ExerciseContainer = ({
           supportedLanguages={multiLanguage ? ["python", "cpp"] : ["python"]}
           url={url}
           setLayout={setLayout}
+          commsManager={manager}
           connectManager={connectWithRetry}
+          userRef={userRef}
         />
         <IdeInterface
           commsManager={manager}
