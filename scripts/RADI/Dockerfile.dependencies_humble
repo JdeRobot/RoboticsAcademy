@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04 AS deps-builder 
 
 # Make all NVIDIA GPUS visible
 ENV NVIDIA_VISIBLE_DEVICES=all
@@ -371,4 +371,266 @@ WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
   export GZ_VERSION=harmonic && \
   colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+WORKDIR /
+
+# ==========================================================================
+# deps-final — Session B: fresh runtime install + explicit artifact COPYs.
+#
+# The blanket `COPY --from=deps-builder / /` is GONE. Instead this stage
+# fresh-installs its package set and copies over only the artifacts that
+# apt/pip did not produce (git clones, .deb-installed binaries, config
+# writes, and the two ROS workspaces).
+#
+# Toolchain policy (mentor ruling, Session B): the ROS build toolchain is
+# RETAINED here on purpose. Dockerfile.humble is built FROM this image and
+# runs `colcon build` in /home/ws (line ~68), compiling the CustomRobots /
+# jderobot_drones / Industrial packages moved in from RoboticsInfrastructure.
+# Stripping build-essential/cmake/colcon/ament-cmake/rosidl-generators/-dev
+# headers would break that child build. Only unambiguously-safe packages are
+# dropped: editors (vim/nano), coverage/lint tooling, and firmware-only pip.
+# See audit.md for the full DROP/KEEP/VERIFY classification and rationale.
+# ==========================================================================
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04 AS deps-final
+
+# Make all NVIDIA GPUS visible
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
+ENV VIRTUALGL_VERSION=3.1.4
+ENV TURBOVNC_VERSION=3.0.3
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Locale (locale files themselves come across via the wholesale COPY)
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+ENV ROS_DISTRO=humble
+ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
+ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins:
+ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
+ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
+ENV ROS_PYTHON_VERSION=3
+ENV ROS_VERSION=2
+
+# Force pure-Python protobuf parser (see builder stage for rationale)
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
+# VirtualGL + TurboVNC on PATH
+ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
+# --------------------------------------------------------------------------
+# 1. Apt repo configs + keyrings from the builder so a fresh apt-get update
+#    can resolve the ROS 2, Gazebo (OSRF) and PostgreSQL (PGDG) repositories.
+#    These are "config writes", not apt/pip packages, so they are copied.
+#    (ca-certificates is installed in the apt block below; the base image
+#    already ships certs, so the first https fetch against these repos works.)
+# --------------------------------------------------------------------------
+COPY --from=deps-builder /usr/share/keyrings/ /usr/share/keyrings/
+COPY --from=deps-builder /etc/apt/sources.list.d/ /etc/apt/sources.list.d/
+
+# --------------------------------------------------------------------------
+# 2. Locale (own layer: needs locale-gen after installing the locales pkg).
+# --------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y --no-install-recommends locales \
+  && locale-gen en_US.UTF-8 \
+  && rm -rf /var/lib/apt/lists/*
+
+# --------------------------------------------------------------------------
+# 3. Single runtime apt block — KEEP + build toolchain (see policy above),
+#    with i386 enabled for the 32-bit VirtualGL GL stack. DROPPED vs builder:
+#    bash-completion, vim, nano, sudo-NO(kept, see audit), software-properties-
+#    common, python3-rosdep, python3-vcstool, python3-argcomplete,
+#    python3-colcon-mixin, python3-flake8*, cppcheck, lcov, python3-pytest,
+#    ros-humble-ament-{cmake-gtest,cmake-lint-cmake,cmake-pytest,cmake-xmllint,
+#    copyright,flake8,lint-auto,lint-common,pep257}, ros-humble-ros-testing.
+# --------------------------------------------------------------------------
+RUN dpkg --add-architecture i386 \
+  && apt-get update && apt-get install -y --no-install-recommends \
+  apt-utils \
+  build-essential \
+  cmake \
+  git curl wget gnupg lsb-release ca-certificates \
+  sudo \
+  net-tools \
+  pciutils \
+  nlohmann-json3-dev \
+  python3-pip \
+  python-is-python3 \
+  ros-dev-tools \
+  python3-colcon-common-extensions \
+  ros-${ROS_DISTRO}-ros-base \
+  ros-${ROS_DISTRO}-xacro \
+  ros-${ROS_DISTRO}-joint-state-publisher \
+  ros-${ROS_DISTRO}-rviz2 \
+  gz-harmonic \
+  ros-${ROS_DISTRO}-ros-gzharmonic \
+  dbus-x11 \
+  libdbus-c++-1-0v5 \
+  xvfb xauth xfonts-base xkb-data x11-xkb-utils \
+  x11vnc \
+  xterm \
+  xserver-xorg-video-dummy \
+  x11-apps \
+  libxtst6:i386 \
+  libxv1:i386 \
+  libglu1-mesa:i386 \
+  libegl1-mesa:i386 \
+  libegl1-mesa:amd64 \
+  libpq5 \
+  ros-${ROS_DISTRO}-py-trees \
+  ros-${ROS_DISTRO}-py-trees-ros \
+  libbenchmark-dev \
+  libeigen3-dev \
+  libgeographic-dev \
+  libncurses-dev \
+  libyaml-cpp-dev \
+  pybind11-dev \
+  libpoco-dev \
+  libpcl-dev \
+  python3-jinja2 \
+  python3-pydantic \
+  python3-pymap3d \
+  ros-${ROS_DISTRO}-action-msgs \
+  ros-${ROS_DISTRO}-ament-cmake \
+  ros-${ROS_DISTRO}-ament-cmake-python \
+  ros-${ROS_DISTRO}-ament-index-cpp \
+  ros-${ROS_DISTRO}-backward-ros \
+  ros-${ROS_DISTRO}-builtin-interfaces \
+  ros-${ROS_DISTRO}-cv-bridge \
+  ros-${ROS_DISTRO}-geographic-msgs \
+  ros-${ROS_DISTRO}-geometry-msgs \
+  ros-${ROS_DISTRO}-image-transport \
+  ros-${ROS_DISTRO}-mocap4r2-msgs \
+  ros-${ROS_DISTRO}-nav-msgs \
+  ros-${ROS_DISTRO}-pluginlib \
+  ros-${ROS_DISTRO}-rclcpp \
+  ros-${ROS_DISTRO}-rclcpp-action \
+  ros-${ROS_DISTRO}-rclcpp-components \
+  ros-${ROS_DISTRO}-rclcpp-lifecycle \
+  ros-${ROS_DISTRO}-rclpy \
+  ros-${ROS_DISTRO}-robot-state-publisher \
+  ros-${ROS_DISTRO}-rosidl-default-generators \
+  ros-${ROS_DISTRO}-rosidl-default-runtime \
+  ros-${ROS_DISTRO}-sdformat-urdf \
+  ros-${ROS_DISTRO}-sensor-msgs \
+  ros-${ROS_DISTRO}-std-msgs \
+  ros-${ROS_DISTRO}-std-srvs \
+  ros-${ROS_DISTRO}-tf2 \
+  ros-${ROS_DISTRO}-tf2-geometry-msgs \
+  ros-${ROS_DISTRO}-tf2-msgs \
+  ros-${ROS_DISTRO}-tf2-ros \
+  ros-${ROS_DISTRO}-trajectory-msgs \
+  ros-${ROS_DISTRO}-visualization-msgs \
+  ros-${ROS_DISTRO}-moveit \
+  ros-${ROS_DISTRO}-ros2-control \
+  ros-${ROS_DISTRO}-ros2-controllers \
+  ros-${ROS_DISTRO}-gripper-controllers \
+  ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-ur \
+  ros-${ROS_DISTRO}-pcl-ros \
+  ros-${ROS_DISTRO}-tf-transformations \
+  ros-${ROS_DISTRO}-pcl-conversions \
+  ros-${ROS_DISTRO}-pcl-msgs \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+  apt-get install -y lxde-common && \
+  rm -rf /var/lib/apt/lists/*
+
+# --------------------------------------------------------------------------
+# 4. Runtime pip re-install (mentor ruling: re-install, do NOT copy site-
+#    packages). Mirrors the builder's pip blocks minus firmware/test/lint-only
+#    wheels: DROPPED selenium, coverage, kconfiglib, nunavut, pyros-genmsg,
+#    flake8, pycodestyle, cmakelint, cpplint, colcon-lcov-result.
+#    KEPT pylint/jedi/black — declared runtime deps in RAM's pyproject.toml.
+# --------------------------------------------------------------------------
+RUN python3.10 -m pip install --no-cache-dir --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2
+
+RUN python3.10 -m pip install --no-cache-dir \
+  pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
+  argparse==1.4.0 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 \
+  matplotlib==3.0.* numpy==1.24.3 packaging==21.3 pkgconfig==1.5.5 \
+  pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
+  onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
+
+# CUDA runtime wheels for onnxruntime-gpu CUDA EP (see builder stage for the
+# version-lock rationale — keep in lockstep with the builder block).
+RUN python3.10 -m pip install --no-cache-dir \
+  nvidia-cuda-runtime-cu12==12.8.90 \
+  nvidia-cublas-cu12==12.8.4.1 \
+  nvidia-cudnn-cu12==9.10.2.21 \
+  nvidia-nvjitlink-cu12==12.8.93 \
+  nvidia-cuda-nvrtc-cu12==12.8.93 \
+  nvidia-curand-cu12==10.3.10.19 \
+  nvidia-cufft-cu12==11.4.1.4
+
+# Register the pip-installed nvidia .so files with ldconfig (same as builder).
+COPY config-nvidia-libs.py /
+RUN chmod u+x /config-nvidia-libs.py && python3.10 /config-nvidia-libs.py && ldconfig
+
+# monaco editor formatter (RAM runtime dep)
+RUN python3.10 -m pip install --no-cache-dir black==24.10.0
+
+# websocket server + Django stack
+RUN python3.10 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
+  django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
+
+# BT studio + drone runtime pip (lint/coverage wheels from this builder block
+# dropped; transforms3d + PySimpleGUI kept for the drone/teleop runtime).
+RUN python3.10 -m pip install --no-cache-dir py-trees autopep8 transforms3d PySimpleGUI-4-foss
+
+# --------------------------------------------------------------------------
+# 5. Non-apt/pip artifacts from the builder (git clones, .deb-installed
+#    binaries, downloaded files, config writes). These replace what the old
+#    blanket `COPY / /` used to drag across.
+# --------------------------------------------------------------------------
+# VirtualGL + TurboVNC (installed from .deb; the .deb files were removed in
+# the builder, so the installed trees + setuid faker libs are copied instead).
+COPY --from=deps-builder /opt/VirtualGL /opt/VirtualGL
+COPY --from=deps-builder /opt/TurboVNC /opt/TurboVNC
+COPY --from=deps-builder /usr/lib/libvglfaker.so /usr/lib/libvglfaker.so
+COPY --from=deps-builder /usr/lib/libdlfaker.so /usr/lib/libdlfaker.so
+COPY --from=deps-builder /usr/lib32/libvglfaker.so /usr/lib32/libvglfaker.so
+COPY --from=deps-builder /usr/lib32/libdlfaker.so /usr/lib32/libdlfaker.so
+COPY --from=deps-builder /usr/lib/i386-linux-gnu/libvglfaker.so /usr/lib/i386-linux-gnu/libvglfaker.so
+COPY --from=deps-builder /usr/lib/i386-linux-gnu/libdlfaker.so /usr/lib/i386-linux-gnu/libdlfaker.so
+
+# noVNC + websockify (git clones)
+COPY --from=deps-builder /noVNC /noVNC
+
+# Downloaded X config
+COPY --from=deps-builder /xorg.conf /xorg.conf
+
+# OMPL + onnxruntime C++ API — the ONLY genuinely non-reinstalled content
+# under the builder's /usr/local (everything else there is pip
+# dist-packages, already covered fresh by the RUN blocks in section 4
+# above). Scoped explicitly instead of a blanket `COPY /usr/local/
+# /usr/local/`, which used to duplicate ~3.5GB of already-reinstalled pip
+# packages on top of itself (confirmed via `docker history` + `dive`;
+# see scripts/RADI/size-regression-rootcause.md). Paths verified against
+# the actual built image, not guessed.
+COPY --from=deps-builder /usr/local/lib/libompl.so* /usr/local/lib/
+COPY --from=deps-builder /usr/local/lib/libonnxruntime* /usr/local/lib/
+COPY --from=deps-builder /usr/local/lib/cmake/ /usr/local/lib/cmake/
+COPY --from=deps-builder /usr/local/lib/pkgconfig/ /usr/local/lib/pkgconfig/
+COPY --from=deps-builder /usr/local/include/ompl-1.7/ /usr/local/include/ompl-1.7/
+COPY --from=deps-builder /usr/local/include/core/ /usr/local/include/core/
+COPY --from=deps-builder /usr/local/include/*.h /usr/local/include/
+COPY --from=deps-builder /usr/local/share/ompl/ /usr/local/share/ompl/
+COPY --from=deps-builder /usr/local/share/man/ /usr/local/share/man/
+COPY --from=deps-builder /usr/local/share/ament_index/ /usr/local/share/ament_index/
+COPY --from=deps-builder /usr/local/bin/onnxruntime_test /usr/local/bin/onnxruntime_test
+COPY --from=deps-builder /usr/local/bin/ompl_benchmark_statistics.py /usr/local/bin/ompl_benchmark_statistics.py
+RUN ldconfig
+
+# Shell env writes (RMW impl, ROS/aerostack2 sourcing) — root's .bashrc
+COPY --from=deps-builder /root/.bashrc /root/.bashrc
+
+# ROS workspaces — WHOLESALE per mentor ruling (install/ + src/, no subsetting)
+COPY --from=deps-builder /home/ws /home/ws
+COPY --from=deps-builder /home/drones_ws /home/drones_ws
+
 WORKDIR /
