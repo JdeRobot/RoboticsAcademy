@@ -154,14 +154,14 @@ const getHelperFileList = async (
   }
 };
 
-const getFileList = async (project: string) => {
+const getFileList = async (project: string, user?: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
   // TODO:add whitelist parameter
 
-  const apiUrl = `/academy/get_file_list?project=${encodeURIComponent(
-    project
-  )}`;
+  let apiUrl = `/academy/get_file_list?project=${encodeURIComponent(project)}`;
+
+  if (user !== undefined) apiUrl += `&user=${encodeURIComponent(user)}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -172,7 +172,12 @@ const getFileList = async (project: string) => {
   }
 };
 
-const getFile = async (project: string, fileName: string, binary?: boolean) => {
+const getFile = async (
+  project: string,
+  fileName: string,
+  user?: string,
+  binary?: boolean
+) => {
   if (!project) throw new Error("Project name is not set");
   if (!fileName) throw new Error("File name is not set");
 
@@ -180,6 +185,7 @@ const getFile = async (project: string, fileName: string, binary?: boolean) => {
     project
   )}&filename=${encodeURIComponent(fileName)}`;
 
+  if (user !== undefined) apiUrl += `&user=${encodeURIComponent(user)}`;
   if (binary) apiUrl += `&binary=true`;
 
   try {

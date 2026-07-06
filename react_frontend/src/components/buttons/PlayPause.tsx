@@ -1,3 +1,4 @@
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
 import {
@@ -9,10 +10,8 @@ import {
 } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
-import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React from "react";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
@@ -22,19 +21,17 @@ import { getFileList, getHelperFileList } from "Api";
 const PlayPauseButton = ({
   project,
   supportedLanguages,
-  connectManager,
+  userRef,
+  entrypointRef,
 }: {
   project: string;
   supportedLanguages: string[];
-  connectManager: (
-    desiredState?: string,
-    callback?: () => void
-  ) => Promise<void>;
+  userRef: MutableRefObject<string | undefined>;
+  entrypointRef: MutableRefObject<Entry | undefined>;
 }) => {
   const theme = useAcademyTheme();
-  const { warning, error, info, close } = useError();
+  const { warning, error } = useError();
   const filesRef = useRef<Entry[]>([]);
-  const entrypointRef = useRef<Entry | undefined>(undefined);
   const runningFilesRef = useRef<JSZip>(JSZip);
   const runningEntrypointRef = useRef<Entry | undefined>(undefined);
   const runningContentRef = useRef<string | undefined>(undefined);
@@ -55,24 +52,15 @@ const PlayPauseButton = ({
     }
   };
 
-  const updateCurrent = (e: unknown) => {
-    const T = CustomEvent<{ detail: { file?: Entry } }>;
-    if (e instanceof T) {
-      entrypointRef.current = e.detail.file;
-    }
-  };
-
   useEffect(() => {
     subscribe("autoSaveCompleted", () => {
       updateCode(true);
     });
     subscribe("CommsManagerStateChange", updateState);
-    subscribe("currentFile", updateCurrent);
 
     return () => {
       unsubscribe("autoSaveCompleted", () => {});
       unsubscribe("CommsManagerStateChange", () => {});
-      unsubscribe("currentFile", () => {});
     };
   }, []);
 
@@ -134,21 +122,11 @@ const PlayPauseButton = ({
 
   // App handling
 
-  const onAppStateChange = async (save?: boolean) => {
+  const onAppStateChange = async (save?: boolean): Promise<void> => {
     const manager = CommsManager.getInstance();
     const state = manager.getState();
 
     setLoading(true);
-
-    if (state === states.IDLE) {
-      info("Connecting with the Robotics Backend ...");
-      connectManager(states.TOOLS_READY, () => {
-        setLoading(false);
-        close();
-        onAppStateChange();
-      });
-      return;
-    }
 
     if (state === states.WORLD_READY || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
@@ -197,16 +175,20 @@ const PlayPauseButton = ({
     }
 
     if (!isCodeUpdatedRef.current) {
-      return setTimeout(onAppStateChange, 100, true);
+      setTimeout(onAppStateChange, 100, true);
+      return;
     }
 
-    const files = await getFileList(project);
+    const files = await getFileList(project, userRef.current);
     filesRef.current = JSON.parse(files);
-    const userZip = await loadFiles(entrypointRef.current, JSON.parse(files));
+    const userZip = await loadFiles(
+      entrypointRef.current,
+      filesRef.current,
+      userRef.current
+    );
 
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
-
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
         try {
           await manager.resume();
@@ -283,10 +265,10 @@ const PlayPauseButton = ({
       }
     }
 
-    async function loadFiles(entrypoint: Entry, files: Entry[]) {
+    async function loadFiles(entrypoint: Entry, files: Entry[], user?: string) {
       const zip = new JSZip();
 
-      await zipCodeFiles(zip, files, project);
+      await zipCodeFiles(zip, files, project, user);
 
       zip.files[entrypoint.path]._data.then(
         (value: string) => (runningContentRef.current = value)
