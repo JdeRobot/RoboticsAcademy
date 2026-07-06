@@ -39,8 +39,9 @@ frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
 ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
 
-# Talks to the drone_gripper gz-sim plugin: energize the magnet and read
-# whether a package is currently attached.
+# Talks to the drone_gripper gz-sim plugin: energize the magnet and read whether
+# a package is attached. The grabbable list is published from WebGUI instead, so
+# it also works in ROS2-direct mode (which imports WebGUI but not HAL).
 class GripperNode(Node):
     def __init__(self):
         super().__init__("gripper_hal")
