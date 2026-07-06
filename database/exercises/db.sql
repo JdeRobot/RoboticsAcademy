@@ -136,8 +136,10 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
-26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
+26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
+28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones","MULTI-AGENT"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
+29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
 \.
 
 --
@@ -148,24 +150,11 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM stdin;
 1	2	1	True
 2	5	1	True
-3	6	2	False
 4	7	31	False
-5	10	4	False
 6	1	5	False
 7	1	6	False
-8	4	7	False
-9	4	8	False
-10	3	9	False
 11	11	1	True
-12	8	10	False
 13	9	12	True
-14	3	13	False
-15	3	14	False
-16	3	15	False
-17	3	16	False
-18	10	17	False
-19	10	18	False
-20	10	19	False
 21	1	20	False
 22	1	21	False
 23	1	22	False
@@ -177,7 +166,6 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 29	14	30	False
 30	16	32	False
 31	14	33	False
-32	17	34	False
 33	22 	5	False
 34	22	6	False
 35	22	20	False
@@ -185,7 +173,6 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 37	20	36	False
 38	21	37	False
 39	24	35	False
-40	25	38	False
 41	26	39	False
 42	8	40	True
 43	3	41	True
@@ -193,17 +180,8 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 45	3	43	True
 46	3	44	True
 47	6	11	True
-48	2	45	False
-49	5	45	False
-50	11	45	False
-51	9	46	False
 52	1	48	False
 53	1	49	False
-54	1	50	False
-55	1	51	False
-56	1	52	False
-57	1	53	False
-58	12	54	False
 59	17	56	True
 60	10	58	True
 61	10	59	True
@@ -217,6 +195,8 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 69	14	65	False
 70	25	70	True
 71	27	71	True
+72	28	72	True
+73	29	57	True
 \.
 
 --
@@ -310,6 +290,12 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 83	27	console
 84	27	rviz
 85	27	web_gui
+86	28	console
+87	28	simulator
+88	28	web_gui
+89	29	console
+90	29	simulator
+91	29	web_gui
 \.
 
 --

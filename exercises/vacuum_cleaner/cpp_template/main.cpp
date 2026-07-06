@@ -7,6 +7,11 @@
 #include <string>
 #include <thread>
 
+class SystemBootstrapper {
+public:
+    static void init_webgui() { WebGUI::init(); }
+};
+
 void start_console()
 {
   int virtual_terminal = 0;
@@ -36,34 +41,31 @@ void start_console()
   {
     std::cerr << "Error redirecting stdin!" << std::endl;
   }
-};
+}
 
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
   start_console();
 
+  SystemBootstrapper::init_webgui();
+
   rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
 
   auto HAL_node = std::make_shared<HAL>();
   executor.add_node(HAL_node);
 
-  auto WebGUI_node = std::make_shared<WebGUINode>();
-  executor.add_node(WebGUI_node);
-
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
   executor.add_node(user_node);
+  std::thread ros([&executor]{ executor.spin(); });
+  ros.join();
 #else
   std::thread user(exercise);
-#endif
-  std::thread ros([&executor]{executor.spin();});
-  WebGUI();
-
-#ifndef USER_NODE
+  std::thread ros([&executor]{ executor.spin(); });
   user.join();
-#endif
   ros.join();
+#endif
 
   rclcpp::shutdown();
   return 0;

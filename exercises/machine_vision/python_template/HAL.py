@@ -36,12 +36,15 @@ import tf2_geometry_msgs.tf2_geometry_msgs
 
 from sensor_msgs.msg import JointState
 from ros2srrc_data.msg import Robpose
-from linkattacher_msgs.srv import AttachLink, DetachLink
 from ament_index_python.packages import get_package_share_directory
 from std_msgs.msg import String, Bool
 from geometry_msgs.msg import Point, Pose, PoseStamped, Quaternion
 from pcl_filter_msgs.msg import ColorFilter, ShapeFilter
 from tf_transformations import euler_from_quaternion, quaternion_from_euler
+from rclpy.action import ActionClient
+from control_msgs.action import FollowJointTrajectory
+from trajectory_msgs.msg import JointTrajectoryPoint
+from builtin_interfaces.msg import Duration
 from hal_interfaces.general.camera import CameraNode
 
 # Build PATH and import Python classes from IFRA package:
@@ -65,18 +68,93 @@ UR5 = RBT()
 _home_joints = [0.0, -90.0, 0.0, 0.0, -90.0, 0.0]
 _perception_manager = None
 
-# Camera node
-camera_node = CameraNode("/hand_camera/image_raw")
+# Camera nodes
+hand_camera_node = CameraNode("/hand_camera/image")
+base_camera_node = CameraNode("/base_camera/image")
+
+HAL = Node("hal_node")
+HAL.current_joint_states = None
+HAL.grasped_object = None
+
+HAL.auto_attach_pub = HAL.create_publisher(
+    Bool,
+    "/gripper_auto_attach",
+    10,
+)
+
+HAL.graspable_pub = HAL.create_publisher(
+    String,
+    "/graspable_objects",
+    10,
+)
+
+
+def joint_state_callback(msg):
+    HAL.current_joint_states = msg
+
+
+HAL.joint_sub = HAL.create_subscription(
+    JointState, "/joint_states", joint_state_callback, 10
+)
+
+HAL.gripper_client = ActionClient(
+    HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
+)
+
+print("[HAL] Waiting for gripper controller...")
+while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
+    print("[HAL] Waiting for gripper controller...")
+print("[HAL] Gripper ready")
+
+print("[HAL] LinkAttacher ready")
+
+graspable_msg = String()
+
+graspable_msg.data = (
+    "blue_sphere,"
+    "red_sphere,"
+    "green_sphere,"
+    "purple_sphere,"
+    "green_cylinder,"
+    "purple_cylinder,"
+    "red_cylinder,"
+)
+
+HAL.graspable_pub.publish(graspable_msg)
+
+print("[HAL] Published graspable objects")
+
+
+def publish_graspable_objects():
+
+    graspable_msg = String()
+
+    graspable_msg.data = (
+        "blue_sphere,"
+        "red_sphere,"
+        "green_sphere,"
+        "purple_sphere,"
+        "green_cylinder,"
+        "purple_cylinder,"
+        "red_cylinder,"
+    )
+
+    HAL.graspable_pub.publish(graspable_msg)
+
+
+HAL.create_timer(1.0, publish_graspable_objects)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = MultiThreadedExecutor()
-executor.add_node(camera_node)
+executor.add_node(HAL)
+executor.add_node(hand_camera_node)
+executor.add_node(base_camera_node)
 
 
 def __auto_spin():
     while rclpy.ok():
         try:
-            executor.spin_once(timeout_sec=0)
+            executor.spin_once(timeout_sec=0.01)
         except Exception:
             pass
         time.sleep(1 / 90.0)
@@ -156,8 +234,7 @@ class PerceptionManager(Node):
     def load_models_info(self):
         """Load object information from YAML configuration file"""
         try:
-            package_share_dir = get_package_share_directory("machine_vision_exercise")
-            filename = os.path.join(package_share_dir, "config", "models_info.yaml")
+            filename = "/resources/exercises/machine_vision/models_info.yaml"
 
             with open(filename, "r") as file:
                 objects_info = yaml.safe_load(file)
@@ -231,8 +308,7 @@ class PerceptionManager(Node):
     def set_target_info(self):
         """Load target information from YAML configuration file"""
         try:
-            package_share_dir = get_package_share_directory("machine_vision_exercise")
-            filename = os.path.join(package_share_dir, "config", "models_info.yaml")
+            filename = "/resources/exercises/machine_vision/models_info.yaml"
 
             with open(filename, "r") as file:
                 objects_info = yaml.safe_load(file)
@@ -254,8 +330,7 @@ class PerceptionManager(Node):
     def get_workspace(self):
         """Load workspace configuration"""
         try:
-            package_share_dir = get_package_share_directory("machine_vision_exercise")
-            filename = os.path.join(package_share_dir, "config", "joints_setup.yaml")
+            filename = "/resources/exercises/machine_vision/joints_setup.yaml"
 
             with open(filename, "r") as file:
                 joints_setup = yaml.safe_load(file)
@@ -336,30 +411,28 @@ class PerceptionManager(Node):
         return None
 
     def get_object_position(self, object_name):
-        """Get object position using TF2"""
-        try:
-            transform = self.tf_buffer.lookup_transform(
-                "world",
-                object_name,
-                rclpy.time.Time(),
-                timeout=rclpy.duration.Duration(seconds=1.0),
-            )
+        """Get object position from loaded YAML models"""
 
-            position = [
-                float(transform.transform.translation.x),
-                float(transform.transform.translation.y),
-                float(transform.transform.translation.z + 0.03),
-            ]
+        if object_name not in self.object_list:
 
-            self.get_logger().info("*************************************")
-            self.get_logger().info(f"Detected position of {object_name}:")
-            self.get_logger().info(f"{position}")
-            self.get_logger().info("*************************************")
-            return position
+            self.get_logger().error(f"Object '{object_name}' not found")
 
-        except Exception as e:
-            self.get_logger().error(f"Cannot find desired object {object_name}: {e}")
             return None
+
+        pose = self.object_list[object_name].relative_pose
+
+        position = [
+            float(pose.position.x),
+            float(pose.position.y),
+            float(pose.position.z),
+        ]
+
+        self.get_logger().info("*************************************")
+        self.get_logger().info(f"Detected position of {object_name}:")
+        self.get_logger().info(f"{position}")
+        self.get_logger().info("*************************************")
+
+        return position
 
     def get_object_info(self, object_name):
         """Get object information"""
@@ -377,6 +450,9 @@ class PerceptionManager(Node):
     def gripper_setting_percentage(self, diameter, max_open_m=0.085):
         """Convert object diameter to gripper closure percentage"""
         percentage = (1 - (diameter / max_open_m)) * 100.0
+
+        percentage = max(0.0, min(100.0, percentage))
+
         return percentage
 
     def is_inside_workspace(self, x, y, z):
@@ -385,7 +461,7 @@ class PerceptionManager(Node):
             dx = x - self.workspace.x
             dy = y - self.workspace.y
             dz = z - self.workspace.z
-            r = math.sqrt(dx**2 + dy**2 + dz**2)
+            r = math.sqrt(dx**2 + dy**2)
             if self.workspace.min_r < r < self.workspace.max_r:
                 return True
         return False
@@ -493,7 +569,7 @@ class PerceptionManager(Node):
         print("Workspace mapping completed")
 
 
-def _get_perception_manager():
+def get_perception_manager():
     """Get or create the global perception manager instance"""
     global _perception_manager
     if _perception_manager is None:
@@ -510,7 +586,7 @@ def _get_perception_manager():
 
 
 def MoveAbsJ(absolute_joints, speed, wait_time):
-    """Move robot to absolute joint positions"""
+
     ACTION = Action()
     ACTION.action = "MoveJ"
     ACTION.speed = float(speed)
@@ -526,7 +602,7 @@ def MoveAbsJ(absolute_joints, speed, wait_time):
 
     EXECUTION = UR5.Move_EXECUTE(ACTION)
 
-    if EXECUTION["Success"] == True:
+    if EXECUTION["Success"]:
         print(f"Robot moved to Joint Angular Goal: {absolute_joints}")
         print(
             f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
@@ -535,12 +611,16 @@ def MoveAbsJ(absolute_joints, speed, wait_time):
         print("Robot movement FAILED, check REASON in MoveIt output")
 
     time.sleep(wait_time)
-    print(f"Waiting {wait_time} s")
-    print("")
+    print(f"Waiting {wait_time} s\n")
+
+
+# ==============================================================
+# MoveLinear
+# ==============================================================
 
 
 def MoveLinear(abs_xyz, abs_ypr, speed, wait_time):
-    """Linear movement to absolute pose"""
+
     roll = math.radians(abs_ypr[0])  # Converts XYR to rad
     pitch = math.radians(abs_ypr[1])
     yaw = math.radians(abs_ypr[2])
@@ -570,6 +650,7 @@ def MoveLinear(abs_xyz, abs_ypr, speed, wait_time):
 
     EXECUTION = UR5.RobMove_EXECUTE("LIN", float(speed), InputPose)
 
+    # Print movement results if movement succeeded
     if EXECUTION["Success"] == True:
         print(f"Robot moved linearly to Abs XYZ: {abs_xyz} and Abs YPR: {abs_ypr}")
         print(
@@ -578,18 +659,23 @@ def MoveLinear(abs_xyz, abs_ypr, speed, wait_time):
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
+    # Wait till next movement
     time.sleep(wait_time)
     print(f"Waiting {wait_time} s")
     print("")
 
 
+# ==============================================================
+# MoveJoint
+# ==============================================================
+
+
 def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
-    """Point-to-point movement to absolute pose"""
-    roll = math.radians(abs_ypr[0])  # Converts XYR to rad
+
+    roll = math.radians(abs_ypr[0])
     pitch = math.radians(abs_ypr[1])
     yaw = math.radians(abs_ypr[2])
 
-    # Quaternion from YPT in rad
     qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(
         roll / 2
     ) * np.sin(pitch / 2) * np.sin(yaw / 2)
@@ -614,7 +700,7 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
 
     EXECUTION = UR5.RobMove_EXECUTE("PTP", float(speed), InputPose)
 
-    if EXECUTION["Success"] == True:
+    if EXECUTION["Success"]:
         print(
             f"Robot moved Point-to-Point to Abs XYZ: {abs_xyz} and Abs YPR: {abs_ypr}"
         )
@@ -625,12 +711,16 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
         print("Robot movement FAILED, check REASON in MoveIt output")
 
     time.sleep(wait_time)
-    print(f"Waiting {wait_time} s")
-    print("")
+    print(f"Waiting {wait_time} s\n")
+
+
+# ==============================================================
+# MoveRelLinear
+# ==============================================================
 
 
 def MoveRelLinear(relative_xyz, speed, wait_time):
-    """Linear movement, relative cartesian coordinates"""
+
     ACTION = Action()
     ACTION.action = "MoveL"
     ACTION.speed = float(speed)
@@ -643,7 +733,7 @@ def MoveRelLinear(relative_xyz, speed, wait_time):
 
     EXECUTION = UR5.Move_EXECUTE(ACTION)
 
-    if EXECUTION["Success"] == True:
+    if EXECUTION["Success"]:
         print(f"Robot moved LINEARLY by a relative increment of : {relative_xyz}")
         print(
             f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
@@ -651,35 +741,17 @@ def MoveRelLinear(relative_xyz, speed, wait_time):
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
-
-def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
-    """Relative angle in degrees, speed max 1.0, wait time after movement in seconds"""
-    ACTION = Action()
-    ACTION.action = "MoveR"
-    ACTION.speed = float(speed)
-
-    INPUT = Joint()
-    INPUT.joint = str(joint_number)
-    INPUT.value = float(relative_angle)
-    ACTION.mover = INPUT
-
-    EXECUTION = UR5.Move_EXECUTE(ACTION)
-
-    if EXECUTION["Success"] == True:
-        print(f"Robot moved {joint_number} in {relative_angle} degrees")
-        print(
-            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
-        )
-    else:
-        print("Robot movement FAILED, check REASON in MoveIt output")
-
     time.sleep(wait_time)
-    print(f"Waiting {wait_time} s")
-    print("")
+    print(f"Waiting {wait_time} s\n")
+
+
+# ==============================================================
+# MoveRelReor
+# ==============================================================
 
 
 def MoveRelReor(relative_ypr, speed, wait_time):
-    """Relative Reorient given relative Euler Angles"""
+
     ACTION = Action()
     ACTION.action = "MoveROT"
     ACTION.speed = float(speed)
@@ -692,7 +764,7 @@ def MoveRelReor(relative_ypr, speed, wait_time):
 
     EXECUTION = UR5.Move_EXECUTE(ACTION)
 
-    if EXECUTION["Success"] == True:
+    if EXECUTION["Success"]:
         print(f"TCP reoriented by a relative increment of : {relative_ypr}")
         print(
             f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
@@ -701,158 +773,197 @@ def MoveRelReor(relative_ypr, speed, wait_time):
         print("Robot movement FAILED, check REASON in MoveIt output")
 
     time.sleep(wait_time)
-    print(f"Waiting {wait_time} s")
-    print("")
+    print(f"Waiting {wait_time} s\n")
+
+
+# ==============================================================
+# MoveSingleJ
+# ==============================================================
+
+
+def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
+
+    ACTION = Action()
+    ACTION.action = "MoveR"
+    ACTION.speed = float(speed)
+
+    INPUT = Joint()
+    INPUT.joint = str(joint_number)
+    INPUT.value = float(relative_angle)
+    ACTION.mover = INPUT
+
+    EXECUTION = UR5.Move_EXECUTE(ACTION)
+
+    if EXECUTION["Success"]:
+        print(f"Robot moved {joint_number} in {relative_angle} degrees")
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
+    else:
+        print("Robot movement FAILED, check REASON in MoveIt output")
+
+    time.sleep(wait_time)
+    print(f"Waiting {wait_time} s\n")
 
 
 ###################################### ROBOT INFO ###################################################
 
 
 def get_TCP_pose():
-    """Get current TCP pose in XYZ coordinates and YPR orientation (degrees)"""
-    current_pose = UR5.RobGet_POSE()
-    if current_pose:
-        xyz = [current_pose.x, current_pose.y, current_pose.z]
-        qx, qy, qz, qw = (
-            current_pose.qx,
-            current_pose.qy,
-            current_pose.qz,
-            current_pose.qw,
+    """Get current TCP pose using TF2"""
+
+    try:
+
+        pm = get_perception_manager()
+
+        transform = pm.tf_buffer.lookup_transform(
+            "world",
+            "tool0",
+            rclpy.time.Time(),
+            timeout=rclpy.duration.Duration(seconds=1.0),
         )
 
-        # Convert quaternion to Euler angles (YPR)
-        # Roll (x-axis rotation)
+        # Position
+        x = transform.transform.translation.x
+        y = transform.transform.translation.y
+        z = transform.transform.translation.z
+
+        xyz = [x, y, z]
+
+        # Quaternion
+        qx = transform.transform.rotation.x
+        qy = transform.transform.rotation.y
+        qz = transform.transform.rotation.z
+        qw = transform.transform.rotation.w
+
+        # Quaternion -> Euler
+
         sinr_cosp = 2 * (qw * qx + qy * qz)
         cosr_cosp = 1 - 2 * (qx * qx + qy * qy)
         roll = math.atan2(sinr_cosp, cosr_cosp)
 
-        # Pitch (y-axis rotation)
         sinp = 2 * (qw * qy - qz * qx)
+
         if abs(sinp) >= 1:
             pitch = math.copysign(math.pi / 2, sinp)
         else:
             pitch = math.asin(sinp)
 
-        # Yaw (z-axis rotation)
         siny_cosp = 2 * (qw * qz + qx * qy)
         cosy_cosp = 1 - 2 * (qy * qy + qz * qz)
         yaw = math.atan2(siny_cosp, cosy_cosp)
 
-        ypr = [math.degrees(yaw), math.degrees(pitch), math.degrees(roll)]
+        ypr = [
+            math.degrees(yaw),
+            math.degrees(pitch),
+            math.degrees(roll),
+        ]
 
         print(f"Current TCP Pose - XYZ: {xyz}, YPR: {ypr}")
+
         return xyz, ypr
-    else:
-        print("Failed to get TCP pose")
+
+    except Exception as e:
+
+        print("TF ERROR:")
+        print(repr(e))
+
         return None, None
 
 
 def get_Joint_states():
     """Get current joint states in degrees"""
-    joint_states = UR5.RobGet_JOINTS()
-    if joint_states:
-        joints = [
-            math.degrees(joint_states.joint1),
-            math.degrees(joint_states.joint2),
-            math.degrees(joint_states.joint3),
-            math.degrees(joint_states.joint4),
-            math.degrees(joint_states.joint5),
-            math.degrees(joint_states.joint6),
-        ]
-        print(f"Current Joint States (degrees): {joints}")
-        return joints
-    else:
-        print("Failed to get joint states")
-        return None
+
+    timeout = time.time() + 3.0
+
+    while HAL.current_joint_states is None:
+
+        if time.time() > timeout:
+            print("Timeout waiting for /joint_states")
+            return None
+
+        time.sleep(0.01)
+
+    msg = HAL.current_joint_states
+
+    joints = [math.degrees(x) for x in msg.position[:6]]
+
+    print(f"Current Joint States (degrees): {joints}")
+
+    return joints
 
 
 ###################################### GRIPPER ###################################################
 
 
-class LinkAttacherClient(Node):
-    def __init__(self):
-        super().__init__("link_attacher_client")
-        self.attach_client = self.create_client(AttachLink, "/ATTACHLINK")
-        self.detach_client = self.create_client(DetachLink, "/DETACHLINK")
-
-        while not self.attach_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("Attach service not available, waiting again...")
-        while not self.detach_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("Detach service not available, waiting again...")
-
-    def send_attach_request(self, model1_name, link1_name, model2_name, link2_name):
-        request = AttachLink.Request()
-        request.model1_name = model1_name
-        request.link1_name = link1_name
-        request.model2_name = model2_name
-        request.link2_name = link2_name
-
-        future = self.attach_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        return future.result()
-
-    def send_detach_request(self, model1_name, link1_name, model2_name, link2_name):
-        request = DetachLink.Request()
-        request.model1_name = model1_name
-        request.link1_name = link1_name
-        request.model2_name = model2_name
-        request.link2_name = link2_name
-
-        future = self.detach_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        return future.result()
-
-
-def attach(item):
-    """Attach object to gripper"""
-    link_attacher_client = LinkAttacherClient()
-    attach_response = link_attacher_client.send_attach_request(
-        "ur5", "EE_robotiq_2f85", item, item
-    )
-    link_attacher_client.get_logger().info(
-        "Attach Response: %s" % attach_response.success
-    )
-
-
-def detach():
-    """Detach all objects from gripper"""
-    link_attacher_client = LinkAttacherClient()
-    objects = [
-        "blue_sphere",
-        "red_sphere",
-        "green_sphere",
-        "purple_sphere",
-        "green_cylinder",
-        "purple_cylinder",
-        "red_cylinder",
-        "blue_cylinder",
-    ]
-    for obj in objects:
-        link_attacher_client.send_detach_request("ur5", "EE_robotiq_2f85", obj, obj)
-
-
 def GripperSet(relative_closure, wait_time):
-    """Set gripper closure percentage (0% full open, 100% full closed)"""
-    ACTION = Action()
-    ACTION.action = "MoveG"
-    ACTION.speed = float(1)  # Gripper speed not working for Robotiq 85, set to 100%
 
-    ACTION.moveg = float(relative_closure)
+    print("\n==================================================")
+    print("[HAL] GripperSet() called")
+    print(f"[HAL] Requested closure: {relative_closure} %")
+    print(f"[HAL] Wait time: {wait_time} s")
 
-    EXECUTION = UR5.Move_EXECUTE(ACTION)
+    auto_msg = Bool()
 
-    if EXECUTION["Success"] == True:
-        print(f"Gripper set to a percentage of: {relative_closure} %")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s")
-        if relative_closure == 0:
-            detach()  # Automatic object dettach from gripper when full open (0%)
+    if relative_closure > 5:
+
+        auto_msg.data = True
+
+        print("[HAL] AutoAttach ENABLED")
 
     else:
-        print("Gripper closing FAILED, check REASON in MoveIt output")
+
+        auto_msg.data = False
+
+        print("[HAL] AutoAttach DISABLED")
+
+    HAL.auto_attach_pub.publish(auto_msg)
+
+    print("[HAL] AutoAttach message published")
+
+    max_open = 1.0
+    min_close = 0.0
+
+    position = min_close + ((max_open - min_close) * (relative_closure / 100.0))
+
+    print(f"[HAL] Target gripper joint position: {position}")
+
+    goal_msg = FollowJointTrajectory.Goal()
+
+    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
+
+    point = JointTrajectoryPoint()
+
+    point.positions = [position]
+    point.time_from_start = Duration(sec=1)
+
+    goal_msg.trajectory.points.append(point)
+
+    print("[HAL] Sending gripper trajectory...")
+
+    future = HAL.gripper_client.send_goal_async(goal_msg)
+
+    rclpy.spin_until_future_complete(HAL, future)
+
+    goal_handle = future.result()
+
+    if not goal_handle.accepted:
+
+        print("[HAL] ERROR: Gripper trajectory rejected")
+        return
+
+    print("[HAL] Gripper trajectory accepted")
+
+    result_future = goal_handle.get_result_async()
+
+    rclpy.spin_until_future_complete(HAL, result_future)
+
+    print("[HAL] Gripper motion completed")
 
     time.sleep(wait_time)
-    print(f"Waiting {wait_time} s")
-    print("")
+
+    print(f"[HAL] Waiting {wait_time} s")
+    print("==================================================\n")
 
 
 #################################### WORKSPACE MANAGEMENT ###################################################
@@ -891,7 +1002,7 @@ def move_joint_arm(joint_0, joint_1, joint_2, joint_3, joint_4, joint_5):
 def custom_scan_sequence(scan_positions):
     """Perform workspace scanning using custom joint positions"""
     print(f"Starting custom scan sequence with {len(scan_positions)} positions...")
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.send_message("Starting custom scanning sequence")
 
     all_detected_objects = {}
@@ -929,8 +1040,8 @@ def custom_scan_sequence(scan_positions):
 
 def load_objects():
     """Load objects from YAML configuration file"""
-    pkg_path = get_package_share_directory("machine_vision_exercise")
-    filename = os.path.join(pkg_path, "config", "models_info.yaml")
+
+    filename = "/resources/exercises/machine_vision/models_info.yaml"
 
     object_list = {}
     goal_list = {}
@@ -999,19 +1110,21 @@ def load_objects():
 
 def get_object_position(object_name):
     """Get object position using perception system"""
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     return perception_mgr.get_object_position(object_name)
 
 
 def get_object_info(object_name):
     """Get object information - returns height, width, length, shape, color"""
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     return perception_mgr.get_object_info(object_name)
 
 
 def scan_workspace():
     """Perform comprehensive workspace scanning"""
-    perception_mgr = _get_perception_manager()
+
+    perception_mgr = get_perception_manager()
+
     perception_mgr.send_message("Starting workspace scan...")
 
     # Move to scanning position
@@ -1020,52 +1133,73 @@ def scan_workspace():
 
     # Start environment scanning
     perception_mgr.start_environment_scan()
+
     time.sleep(2)
+
     perception_mgr.stop_environment_scan()
+
+    # DEBUG
+    print("Detected objects:")
+    print(perception_mgr.object_list.keys())
 
     # Return to home
     back_to_home()
 
     print("Workspace scan completed")
-    return {}  # Return detected objects dictionary
+
+    return perception_mgr.object_list
 
 
 def buildmap():
     """Alias for workspace mapping - calls the PerceptionManager's buildmap method"""
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.buildmap()
 
 
 def start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin):
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin)
 
 
 def stop_color_filter(color):
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.stop_color_filter(color)
 
 
 def start_shape_filter(color, shape, radius):
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.start_shape_filter(color, shape, radius)
 
 
 def stop_shape_filter(color, shape):
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     perception_mgr.stop_shape_filter(color, shape)
 
 
 def get_target_position(target_name):
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
     return perception_mgr.get_target_position(target_name)
 
 
-def getImage():
-    image = camera_node.getImage()
+def getImage(camera="hand"):
+
+    if camera == "hand":
+        node = hand_camera_node
+
+    elif camera == "base":
+        node = base_camera_node
+
+    else:
+        print(f"[HAL] Unknown camera '{camera}'")
+        return None
+
+    image = node.getImage()
 
     while image is None:
-        image = camera_node.getImage()
+
+        image = node.getImage()
+
+        time.sleep(0.01)
 
     return image.data
 
@@ -1078,7 +1212,7 @@ def main(args=None):
     print("HAL system ready!")
 
     # Initialize perception manager
-    perception_mgr = _get_perception_manager()
+    perception_mgr = get_perception_manager()
 
     try:
         while rclpy.ok():

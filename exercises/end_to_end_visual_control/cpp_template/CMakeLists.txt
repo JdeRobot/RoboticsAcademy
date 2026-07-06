@@ -12,7 +12,6 @@ find_package(std_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(gazebo_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
@@ -29,7 +28,6 @@ set(dependencies
   nav_msgs
   geometry_msgs
   std_msgs
-  gazebo_msgs
   message_filters
   tf2_ros
   tf2_geometry_msgs

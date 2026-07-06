@@ -25,6 +25,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guidelines.
 - [Generate a RADI.][]
 - [Publishing a RADI.][]
 - [Humble RADI structure.][]
+- [RADI Performance Monitor.][]
 - [Troubleshooting Robotics Academy][]
 - [Exercises Status][]
 
@@ -35,5 +36,6 @@ Take a look at the [contributing](CONTRIBUTING.md) guidelines.
 [Generate a RADI.]: ./docs/generate_a_radi.md
 [Publishing a RADI.]: ./.github/workflows/README.md
 [Humble RADI structure.]: ./scripts/RADI/README.md
+[RADI Performance Monitor.]: ./docs/radi_monitor.md
 [Troubleshooting Robotics Academy]: ./docs/troubleshooting.md
 [Exercises Status]: ./docs/exercise-status.md

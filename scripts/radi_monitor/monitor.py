@@ -50,6 +50,7 @@ import psutil
 from lib.analysis import _dur, get_exercise_events
 from lib.collector import (
     check_container_gpu,
+    check_container_python,
     collect_system_info,
     container_processes,
     detect_exercise,
@@ -186,6 +187,14 @@ def main():
                 print(
                     f"Monitoring {container_name} ({container_id[:12]}) · {container_img}"
                 )
+                if not check_container_python(container_id):
+                    print(
+                        "  WARNING: python3+psutil not usable inside the container — "
+                        "per-process metrics,\n"
+                        "  CPU-by-category and automatic exercise detection will be empty. "
+                        "Use manual\n"
+                        "  tagging (type a name + Enter) or install psutil in the image."
+                    )
 
             t0 = time.time()
             elapsed = t0 - meta["_start_time"]
