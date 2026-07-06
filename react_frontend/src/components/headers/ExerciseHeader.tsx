@@ -113,8 +113,11 @@ const ExecutionControl = ({
   );
   const entrypointRef = useRef<Entry | undefined>(undefined);
 
-  const updateState = (e: any) => {
-    setState(e.detail.state);
+  const updateState = (e: unknown) => {
+    const T = CustomEvent<{ detail: unknown }>;
+    if (e instanceof T) {
+      setState(e.detail.state);
+    }
   };
 
   const updateCurrent = (e: unknown) => {
