@@ -792,6 +792,12 @@ def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
     INPUT.value = float(relative_angle)
     ACTION.mover = INPUT
 
+    print("----------------")
+    print(ACTION.action)
+    print(INPUT.joint)
+    print(INPUT.value)
+    print("----------------")
+
     EXECUTION = UR5.Move_EXECUTE(ACTION)
 
     if EXECUTION["Success"]:
