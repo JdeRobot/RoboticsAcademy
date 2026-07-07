@@ -1,7 +1,7 @@
 services:
   my-postgres:
     image: jderobot/robotics-database:latest
-    container_name: universe_db
+    container_name: world_db
     environment:
       POSTGRES_DB: academy_db 
       POSTGRES_USER: user-dev 

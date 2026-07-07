@@ -19,7 +19,7 @@ from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
 from .templates import select_template
-from .models import Exercise, Universe, ExerciseUniverses
+from .models import Exercise, World, ExerciseWorlds
 from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
@@ -30,13 +30,13 @@ def save_exercise_db(request):
     """
     Trigger a PostgreSQL dump of exercise-related tables to the repository.
 
-    Dumps tables: exercises, exercises_universes, exercises_tools.
+    Dumps tables: exercises, exercises_worlds, exercises_tools.
     Output is written to RoboticsAcademy/database/exercises/db.sql.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.exercises --table public.exercises_universes --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -49,17 +49,17 @@ def save_exercise_db(request):
 
 @csrf_exempt
 @api_view(["GET"])
-def save_universe_db(request):
+def save_world_db(request):
     """
-    Trigger a PostgreSQL dump of universe-related tables to a SQL file.
+    Trigger a PostgreSQL dump of world-related tables to a SQL file.
 
-    Dumps tables: universes, worlds, robots, tools.
-    Output is written to /universes.sql inside the container.
+    Dumps tables: worlds, scenes, robots, tools.
+    Output is written to /worlds.sql inside the container.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.universes --table public.worlds --table public.robots --table public.tools > /universes.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.scenes --table public.robots --table public.tools > /worlds.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -403,37 +403,37 @@ def save_file(fal, request):
 
 
 @error_wrapper("GET", ["project"])
-def get_universes_list(fal, request):
+def get_worlds_list(fal, request):
     """
-    Return the list of universes associated with an exercise.
+    Return the list of worlds associated with an exercise.
     """
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    universes_list = []
+    worlds_list = []
 
-    proj_univs = project.universes.all()
-    proj_univs = sorted(
-        proj_univs,
-        key=lambda univ: not ExerciseUniverses.objects.get(
-            exercise=project, universe=univ
+    proj_worlds = project.worlds.all()
+    proj_worlds = sorted(
+        proj_worlds,
+        key=lambda world: not ExerciseWorlds.objects.get(
+            exercise=project, world=world
         ).is_default,
     )
 
-    for universe in proj_univs:
-        universes_list.append(universe.name)
+    for world in proj_worlds:
+        worlds_list.append(world.name)
 
-    return Response({"universes_list": universes_list})
+    return Response({"worlds_list": worlds_list})
 
 
 @error_wrapper("GET", ["project"])
-def get_docker_universe_data(fal, request):
+def get_docker_world_data(fal, request):
     """
-    Retrieve docker and universe configuration for an exercise.
+    Retrieve docker and world configuration for an exercise.
     """
-    name = request.GET.get("universe")
+    name = request.GET.get("world")
     project_id = request.GET.get("project")
-    project = Exercise.objects.prefetch_related("tools", "universes").get(
+    project = Exercise.objects.prefetch_related("tools", "worlds").get(
         exercise_id=project_id
     )
 
@@ -444,10 +444,10 @@ def get_docker_universe_data(fal, request):
         if base_config != "None":
             tools_config[tool_name] = base_config
 
-    if not project.universes.exists():
+    if not project.worlds.exists():
         config = {
             "name": None,
-            "world": {
+            "scene": {
                 "name": None,
                 "launch_file_path": None,
                 "ros_version": None,
@@ -467,21 +467,21 @@ def get_docker_universe_data(fal, request):
             "tools_config": tools_config,
         }
     else:
-        universe = Universe.objects.get(name=name)
+        world = World.objects.get(name=name)
 
         tools_configuration = None
-        if universe.world.tools_config != "None":
-            tools_configuration = json.loads(universe.world.tools_config)
+        if world.scene.tools_config != "None":
+            tools_configuration = json.loads(world.scene.tools_config)
 
-        if universe.robot.name != "None":
+        if world.robot.name != "None":
             robot_config = {
-                "name": universe.robot.name,
-                "launch_file_path": universe.robot.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "start_pose": universe.world.start_pose,
-                "entity": universe.robot.entity,
-                "extra_config": universe.robot.extra_config,
+                "name": world.robot.name,
+                "launch_file_path": world.robot.launch_file_path,
+                "ros_version": world.scene.ros_version,
+                "type": world.scene.type,
+                "start_pose": world.scene.start_pose,
+                "entity": world.robot.entity,
+                "extra_config": world.robot.extra_config,
             }
         else:
             robot_config = {
@@ -495,12 +495,12 @@ def get_docker_universe_data(fal, request):
             }
 
         config = {
-            "name": universe.name,
-            "world": {
-                "name": universe.world.name,
-                "launch_file_path": universe.world.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
+            "name": world.name,
+            "scene": {
+                "name": world.scene.name,
+                "launch_file_path": world.scene.launch_file_path,
+                "ros_version": world.scene.ros_version,
+                "type": world.scene.type,
                 "tools_config": tools_configuration,
             },
             "robot": robot_config,
@@ -508,7 +508,7 @@ def get_docker_universe_data(fal, request):
             "tools_config": tools_configuration,
         }
 
-    return Response({"success": True, "universe": config})
+    return Response({"success": True, "world": config})
 
 
 @error_wrapper("POST", ["project_id", "file_name", ("location", -1), "content"])

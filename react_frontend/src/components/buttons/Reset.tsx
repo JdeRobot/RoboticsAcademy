@@ -22,7 +22,7 @@ const ResetButton = () => {
     ) {
       console.error("Simulation is not ready!");
       warning(
-        "Failed to found a running simulation. Please make sure an universe is selected."
+        "Failed to found a running simulation. Please make sure a world is selected."
       );
       return;
     }

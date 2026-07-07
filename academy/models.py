@@ -1,7 +1,7 @@
 """
 Django ORM models for Robotics Academy.
 
-Defines the database schema for exercises, universes, worlds,
+Defines the database schema for exercises, scenes, worlds,
 robots, and tools used by the Robotics Academy platform.
 """
 
@@ -64,17 +64,17 @@ class Robot(models.Model):
         db_table = '"robots"'
 
 
-class World(models.Model):
+class Scene(models.Model):
     """
-    Represents a simulation world in the Robotics Academy platform.
+    Represents a simulation scene in the Robotics Academy platform.
 
     Attributes:
-        name: Unique name identifying the world.
-        launch_file_path: Path to the ROS launch file for this world.
+        name: Unique name identifying the scene.
+        launch_file_path: Path to the ROS launch file for this scene.
         tools_config: JSON string with tool configuration overrides.
         ros_version: ROS version used (ROS or ROS2).
-        type: Simulator type (none, gazebo, gz, physical).
-        start_pose: List of starting poses for robots in this world.
+        type: Simulator type (none, gz, physical).
+        start_pose: List of starting poses for robots in this scene.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
@@ -97,22 +97,22 @@ class World(models.Model):
         return str(self.name)
 
     class Meta:
-        db_table = '"worlds"'
+        db_table = '"scenes"'
 
 
-class Universe(models.Model):
+class World(models.Model):
     """
-    Represents a universe combining a world and a robot.
+    Represents a world combining a scene and one or more robots.
 
     Attributes:
-        name: Unique name identifying the universe.
-        world: Associated World instance.
+        name: Unique name identifying the world.
+        scene: Associated Scene instance.
         robot: Associated Robot instance.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
-    world = models.OneToOneField(
-        World, default=None, on_delete=models.CASCADE, db_column="world_id"
+    scene = models.OneToOneField(
+        Scene, default=None, on_delete=models.CASCADE, db_column="scene_id"
     )
     robot = models.OneToOneField(
         Robot, default=None, on_delete=models.CASCADE, db_column="robot_id"
@@ -122,7 +122,7 @@ class Universe(models.Model):
         return str(self.name)
 
     class Meta:
-        db_table = '"universes"'
+        db_table = '"worlds"'
 
 
 # Create your models here.
@@ -138,7 +138,7 @@ class Exercise(models.Model):
         description: Short description of the exercise goals.
         tags: JSON-encoded list of tags (e.g. MULTILANGUAGE).
         status: Lifecycle status (ACTIVE, INACTIVE, PROTOTYPE).
-        universes: Associated Universe instances via ExerciseUniverses.
+        worlds: Associated Universe instances via ExerciseWorlds.
         tools: Associated Tool instances.
         url: Optional URL for additional exercise resources.
     """
@@ -148,9 +148,7 @@ class Exercise(models.Model):
     description = models.CharField(max_length=400, blank=False)
     tags = models.CharField(max_length=2000, default=[])
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
-    universes = models.ManyToManyField(
-        Universe, default=None, through="ExerciseUniverses"
-    )
+    worlds = models.ManyToManyField(World, default=None, through="ExerciseWorlds")
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
     url = models.CharField(max_length=200, blank=True, default="")
 
@@ -161,19 +159,19 @@ class Exercise(models.Model):
         db_table = '"exercises"'
 
 
-class ExerciseUniverses(models.Model):
+class ExerciseWorlds(models.Model):
     """
-    Through model linking Exercise and Universe with a default flag.
+    Through model linking Exercise and World with a default flag.
 
     Attributes:
         exercise: Related Exercise instance.
-        universe: Related Universe instance.
-        is_default: Whether this universe is the default for the exercise.
+        world: Related World instance.
+        is_default: Whether this world is the default for the exercise.
     """
 
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
     is_default = models.BooleanField()
 
     class Meta:
-        db_table = '"exercises_universes"'
+        db_table = '"exercises_worlds"'

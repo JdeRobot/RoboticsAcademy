@@ -131,7 +131,7 @@ const PlayPauseButton = ({
     if (state === states.WORLD_READY || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
       warning(
-        "Failed to found a running simulation. Please make sure an universe is selected."
+        "Failed to found a running simulation. Please make sure a world is selected."
       );
       setLoading(false);
       return;

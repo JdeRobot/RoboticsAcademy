@@ -269,7 +269,7 @@ docker run --hostname my-postgres --name academy_db -d\
     -e POSTGRES_PASSWORD=robotics-academy-dev \
     -e POSTGRES_PORT=5432 \
     -d -p 5432:5432 \
-    -v ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql \
+    -v ./RoboticsInfrastructure/database/worlds.sql:/docker-entrypoint-initdb.d/1.sql \
     -v ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql \
     -v ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql \
     jderobot/robotics-database:latest
