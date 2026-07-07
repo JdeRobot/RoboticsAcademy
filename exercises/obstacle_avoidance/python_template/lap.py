@@ -1,34 +1,35 @@
 from datetime import datetime
+import signal
 
 
 class Lap:
-    def __init__(self, map_object):
-        self.map = map_object
-
-        self.target_start = "target01"
-        self.target_end = "NaN"
-
+    def __init__(self, pose3d):
+        self.pose3d = pose3d
         self.reset()
 
+        def signal_handler(sign, frame):
+            self.start_time = datetime.now()
+
+        signal.signal(signal.SIGCONT, signal_handler)
+
     # Function to check for threshold
+    # And incrementing the running time
     def check_threshold(self):
-        target = self.map.getNextTarget()
-        targetid = target.getId()
 
-        # Time activated after collecting the first target
-        if targetid != self.target_end and targetid != self.target_start:
-            if self.buffer == True:
-                self.start_time = datetime.now()
-                self.buffer = False
+        # Running condition to calculate the current time
+        # Time calculated by adding increments from each iteration
+        if self.start_time != 0 and self.lap_rest == False:
+            if self.lap_time == 0:
+                self.lap_time = datetime.now() - self.start_time
+            else:
+                self.lap_time += datetime.now() - self.start_time
 
-            # Time calculated by adding increments from each iteration
-            if self.pause_condition == False:
-                if self.lap_time == 0:
-                    self.lap_time = datetime.now() - self.start_time
-                else:
-                    self.lap_time += datetime.now() - self.start_time
+            self.start_time = datetime.now()
 
-                self.start_time = datetime.now()
+        # Condition when the time starts running
+        if self.start_time == 0 and self.lap_rest == True:
+            self.start_time = datetime.now()
+            self.lap_rest = False
 
         return self.lap_time
 
@@ -42,18 +43,5 @@ class Lap:
         self.start_time = 0
         self.lap_time = 0
 
-        self.buffer = True
-        self.pause_condition = False
-
-    # Function to pause
-    def pause(self):
-        self.pause_condition = True
-
-    # Function to unpause
-    def unpause(self):
-        # To enable unpause button to be used again and again
-        if self.pause_condition == True:
-            # Next time the time will be incremented accordingly
-            self.start_time = datetime.now()
-
-        self.pause_condition = False
+        self.lap_rest = True
+        self.buffer = False

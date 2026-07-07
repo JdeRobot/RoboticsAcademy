@@ -77,12 +77,7 @@ const WebGUI = () => {
     if (manager === null) {
       return;
     }
-
-    if (state === states.RUNNING) {
-      manager.send("gui", "startLap");
-    } else if (state === states.PAUSED) {
-      manager.send("gui", "pause");
-    } else if (state === states.TOOLS_READY) {
+    if (state === states.TOOLS_READY) {
       setCarPose(undefined);
       setLapTime(undefined);
       setImage(undefined);

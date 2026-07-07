@@ -144,10 +144,6 @@ class WebGUI(MeasuringThreadingGUI):
     def showLocalTarget(self, newVec):
         self.map.setTargetPos(newVec[0], newVec[1])
 
-    def reset_gui(self):
-        self.map.reset()
-        self.lap.reset()
-
     def __del__(self):
         try:
             if self.executor:
