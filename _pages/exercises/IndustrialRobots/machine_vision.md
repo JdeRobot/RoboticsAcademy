@@ -73,7 +73,7 @@ Two depth cameras are available (one fixed to the world and another mounted on t
 
 ## Robot API
 
-The robot is controlled through the HAL-based approach. Below you'll find the details for the Python and C++ options.
+This exercise supports a ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options, in Python and C++.
 
 ### HAL-based Implementation
 
@@ -199,6 +199,108 @@ void exercise() {
     }
 }
 ```
+
+### ROS 2-direct Implementation
+
+Instead of the HAL, you can write your own ROS 2 node (importing only `WebGUI`) and talk straight to the simulation through standard topics and actions. The robot, gripper and perception are provided by the simulator; `WebGUI` exposes the debug image topic used by the browser.
+
+All the interfaces below use the default QoS (reliable, keep-last, depth 10). In particular, publish to `/webgui_image` with this default profile so it stays compatible with the GUI subscriber.
+
+**Cameras** (`sensor_msgs/msg/Image`, BGR8)
+
+- `/hand_camera/image` - Subscribe to receive the wrist-mounted camera image.
+- `/base_camera/image` - Subscribe to receive the fixed base camera image.
+
+**Image debugging**
+
+- `/webgui_image` - Publish a `sensor_msgs/msg/Image` here to display it in the browser image panel (the equivalent of `WebGUI.showImage`).
+
+**Arm motion** (IFRA `ros2srrc` action servers)
+
+- `/Move` - `ros2srrc_data/action/Move` action. Send `action: "MoveJ"` with the six target joints in `movej` (degrees) for joint-space motion (equivalent to `MoveAbsJ`).
+- `/Robmove` - `ros2srrc_data/action/Robmove` action. Send `type: "PTP"` (point-to-point) or `type: "LIN"` (linear) with the absolute Cartesian goal (`x, y, z` in metres and the `qx, qy, qz, qw` orientation quaternion). Equivalent to `MoveJoint` / `MoveLinear`.
+
+**Gripper**
+
+- `/gripper_controller/follow_joint_trajectory` - `control_msgs/action/FollowJointTrajectory` action controlling the `robotiq_85_left_knuckle_joint` (`0.0` open .. `1.0` closed).
+- `/gripper_auto_attach` - Publish `std_msgs/msg/Bool` (`true` while closing, `false` while opening) to enable/disable the contact-based attachment.
+- `/graspable_objects` - Publish a comma-separated `std_msgs/msg/String` with the objects that may be attached.
+
+**Perception filters**
+
+- `/start_color_filter` - Publish `pcl_filter_msgs/msg/ColorFilter` to start/stop RGB colour filtering (`color` id, RGB `rmin/rmax/gmin/gmax/bmin/bmax`, `status`).
+- `/start_shape_filter` - Publish `pcl_filter_msgs/msg/ShapeFilter` to start/stop shape detection (`color` id, `shape` id, `radius`, `status`).
+
+The numeric ids used by the filter messages are `red=1, green=2, blue=3, purple=4` and `sphere=1, cylinder=2`.
+
+**Robot feedback**
+
+- `/joint_states` - `sensor_msgs/msg/JointState`, the current joint positions (radians).
+- The current TCP pose is available from TF (`world` → `tool0`).
+
+#### Object and target positions
+
+In the HAL-based version, `get_object_position()` and `get_target_position()` read these values from the exercise configuration file. A ROS 2-direct node does not have access to that file (and the C++ template does not parse it), so use the known scene positions directly. The robot base is at the origin, so all values below are base-relative, in metres. The object `Z` is the value `get_object_position()` returns: the object centre plus its radius (spheres) or half its height (cylinders).
+
+**Objects** `[x, y, z]`:
+
+| Object | Position |
+| ---------------- | ------------------------ |
+| `red_sphere`     | `[0.45, -0.25, 0.31]`    |
+| `green_sphere`   | `[0.45,  0.09, 0.31]`    |
+| `blue_sphere`    | `[0.45,  0.25, 0.31]`    |
+| `purple_sphere`  | `[0.45, -0.09, 0.31]`    |
+| `red_cylinder`   | `[0.65,  0.09, 0.31]`    |
+| `green_cylinder` | `[0.65, -0.09, 0.305]`   |
+| `blue_cylinder`  | `[0.65, -0.25, 0.315]`   |
+| `purple_cylinder`| `[0.65,  0.25, 0.31]`    |
+
+**Targets** `[x, y, z]` (all at `z = 0.25`):
+
+| Target | Position | Target | Position |
+| --------- | ---------------------- | ---------- | ---------------------- |
+| `target1` | `[-0.68, -0.18, 0.25]` | `target9`  | `[-0.44, -0.18, 0.25]` |
+| `target2` | `[-0.68, -0.06, 0.25]` | `target10` | `[-0.44, -0.06, 0.25]` |
+| `target3` | `[-0.68,  0.06, 0.25]` | `target11` | `[-0.44,  0.06, 0.25]` |
+| `target4` | `[-0.68,  0.18, 0.25]` | `target12` | `[-0.44,  0.18, 0.25]` |
+| `target5` | `[-0.56, -0.18, 0.25]` | `target13` | `[-0.32, -0.18, 0.25]` |
+| `target6` | `[-0.56, -0.06, 0.25]` | `target14` | `[-0.32, -0.06, 0.25]` |
+| `target7` | `[-0.56,  0.06, 0.25]` | `target15` | `[-0.32,  0.06, 0.25]` |
+| `target8` | `[-0.56,  0.18, 0.25]` | `target16` | `[-0.32,  0.18, 0.25]` |
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the browser GUI and its `/webgui_image` bridge.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so guard your own initialization with `if not rclpy.ok(): rclpy.init()`.
+
+#### C++
+
+In order to use direct ROS controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class. In this mode only `WebGUI` is initialized (the HAL is not), so the arm, gripper and filters are commanded through the topics and actions listed above.
 
 ### Argument examples
 
