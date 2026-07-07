@@ -19,7 +19,7 @@ type ApiError = AxiosError<Record<string, string>, Record<string, unknown>>;
 
 const getProjectData = async (
   projectId?: string
-): Promise<Omit<ExerciseData, "universes">> => {
+): Promise<Omit<ExerciseData, "worlds">> => {
   if (!projectId) throw new Error("Current Project ID is not set");
 
   const apiUrl = `/academy/enter_exercise/?project_id=${projectId}`;
@@ -64,39 +64,36 @@ const getExerciseList = async (): Promise<Exercise[]> => {
   }
 };
 
-const listUniverses = async (project: string) => {
+const listWorlds = async (project: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
-  const apiUrl = `/academy/get_universes_list?project=${encodeURIComponent(
+  const apiUrl = `/academy/get_worlds_list?project=${encodeURIComponent(
     project
   )}`;
 
   try {
     const response = await axios.get(apiUrl);
-    return response.data.universes_list;
+    return response.data.worlds_list;
   } catch (e: unknown) {
     const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
 
-const getRoboticsBackendUniverse = async (
-  project: string,
-  universe: string
-) => {
+const getRoboticsBackendWorld = async (project: string, world: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
-  const apiUrl = `/academy/get_docker_universe_data?universe=${encodeURIComponent(
-    universe
+  const apiUrl = `/academy/get_docker_world_data?world=${encodeURIComponent(
+    world
   )}&project=${encodeURIComponent(project)}`;
 
   try {
     const response = await axios.get(apiUrl);
     return {
-      world: response.data.universe.world,
-      robot: response.data.universe.robot,
-      tools: response.data.universe.tools,
-      tools_config: response.data.universe.tools_config,
+      scene: response.data.world.scene,
+      robot: response.data.world.robot,
+      tools: response.data.world.tools,
+      tools_config: response.data.world.tools_config,
     };
   } catch (e: unknown) {
     const error = e as ApiError;
@@ -401,8 +398,8 @@ export {
   getHelperFileList,
   getHelperFile,
   getExerciseList,
-  getRoboticsBackendUniverse,
-  listUniverses,
+  getRoboticsBackendWorld,
+  listWorlds,
   getFile,
   saveFile,
   getFileList,

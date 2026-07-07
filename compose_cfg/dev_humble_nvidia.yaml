@@ -1,7 +1,7 @@
 services:
   my-postgres:
     image: jderobot/robotics-database:latest
-    container_name: universe_db
+    container_name: world_db
     networks:
       - db_network
     environment:
@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./RoboticsInfrastructure/database/worlds.sql:/docker-entrypoint-initdb.d/1.sql
       - ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql
       - ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql
     healthcheck:
@@ -49,7 +49,7 @@ services:
       - type: bind
         source: ./src
         target: /RoboticsApplicationManager
-      - ./RoboticsInfrastructure/database/universes.sql:/universes.sql
+      - ./RoboticsInfrastructure/database/worlds.sql:/worlds.sql
     tty: true
     stdin_open: true
     depends_on:

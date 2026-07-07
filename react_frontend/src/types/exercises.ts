@@ -12,7 +12,7 @@ export interface ExerciseData {
   url: string;
   tools: string[];
   tags: string[];
-  universes: object[];
+  worlds: object[];
 }
 
 export type ExerciseStatus = "ACTIVE" | "INACTIVE" | "PROTOTYPE";
