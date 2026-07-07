@@ -4405,6 +4405,13 @@ jderobot-commsmanager@1.0.27:
   dependencies:
     uuid "^11.1.0"
 
+jderobot-commsmanager@1.0.28:
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.28.tgz#1cca34b48a8c34e48ac907b602fac026190d40af"
+  integrity sha512-Jmr3cfoiuLklvLQ3fGEbhMfiDZEAb4kytj3wrFRAO54EEx/MbeTBVLE4F+bfJUkoR8zbghpLyVVRBAyLU8kYpg==
+  dependencies:
+    uuid "^11.1.0"
+
 jderobot-ide-interface@0.2.155:
   version "0.2.155"
   resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.155.tgz#f8da1cb9e803f11e0a3cac19e1c61ceee87608a5"
