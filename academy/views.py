@@ -454,15 +454,17 @@ def get_docker_world_data(fal, request):
                 "type": None,
                 "tools_config": None,
             },
-            "robot": {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-                "entity": None,
-                "extra_config": None,
-            },
+            "robot": [
+                {
+                    "name": None,
+                    "launch_file_path": None,
+                    "ros_version": None,
+                    "type": None,
+                    "start_pose": None,
+                    "entity": None,
+                    "extra_config": None,
+                }
+            ],
             "tools": tools,
             "tools_config": tools_config,
         }
@@ -474,25 +476,29 @@ def get_docker_world_data(fal, request):
             tools_configuration = json.loads(world.scene.tools_config)
 
         if world.robot.name != "None":
-            robot_config = {
-                "name": world.robot.name,
-                "launch_file_path": world.robot.launch_file_path,
-                "ros_version": world.scene.ros_version,
-                "type": world.scene.type,
-                "start_pose": world.scene.start_pose,
-                "entity": world.robot.entity,
-                "extra_config": world.robot.extra_config,
-            }
+            robot_config = [
+                {
+                    "name": world.robot.name,
+                    "launch_file_path": world.robot.launch_file_path,
+                    "ros_version": world.scene.ros_version,
+                    "type": world.scene.type,
+                    "start_pose": world.scene.start_pose,
+                    "entity": world.robot.entity,
+                    "extra_config": world.robot.extra_config,
+                }
+            ]
         else:
-            robot_config = {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-                "entity": None,
-                "extra_config": None,
-            }
+            robot_config = [
+                {
+                    "name": None,
+                    "launch_file_path": None,
+                    "ros_version": None,
+                    "type": None,
+                    "start_pose": None,
+                    "entity": None,
+                    "extra_config": None,
+                }
+            ]
 
         config = {
             "name": world.name,
