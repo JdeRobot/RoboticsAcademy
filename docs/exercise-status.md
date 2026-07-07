@@ -26,7 +26,7 @@
 | DL image classification              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_classification]     | -                            |       none        |        none        |             |
 | DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                            |       none        |        none        |             |
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |        ok         |         ok         |             |
-| Machine Vision with industrial robot |        ok        |             |      ok       |          | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |             |
+| Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |             |
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |                   |         ok         |             |
 | Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | -     |                   |         ok         |        |
 |                                      |                  |             |               |          |                                   |                              |                   |                    |             |
