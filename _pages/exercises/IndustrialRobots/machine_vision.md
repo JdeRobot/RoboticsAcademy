@@ -202,9 +202,9 @@ void exercise() {
 
 ### ROS 2-direct Implementation
 
-Instead of the HAL, you can write your own ROS 2 node (importing only `WebGUI`) and talk straight to the simulation through standard topics and actions. The robot, gripper and perception are provided by the simulator; `WebGUI` exposes the debug image topic used by the browser.
+Instead of the HAL, you can write your own ROS 2 node (importing only `WebGUI`) and talk straight to the simulation through standard ROS 2 topics, services and actions. The arm is driven with the standard MoveIt 2 and ros2_control interfaces; the gripper, perception and camera come from the simulator, and `WebGUI` exposes the debug image topic used by the browser.
 
-All the interfaces below use the default QoS (reliable, keep-last, depth 10). In particular, publish to `/webgui_image` with this default profile so it stays compatible with the GUI subscriber.
+Unless noted otherwise, the interfaces below use the default QoS (reliable, keep-last, depth 10); publish to `/webgui_image` with this default profile so it stays compatible with the GUI subscriber.
 
 **Cameras** (`sensor_msgs/msg/Image`, BGR8)
 
@@ -215,10 +215,16 @@ All the interfaces below use the default QoS (reliable, keep-last, depth 10). In
 
 - `/webgui_image` - Publish a `sensor_msgs/msg/Image` here to display it in the browser image panel (the equivalent of `WebGUI.showImage`).
 
-**Arm motion** (IFRA `ros2srrc` action servers)
+**Arm motion** (MoveIt 2 + ros2_control)
 
-- `/Move` - `ros2srrc_data/action/Move` action. Send `action: "MoveJ"` with the six target joints in `movej` (degrees) for joint-space motion (equivalent to `MoveAbsJ`).
-- `/Robmove` - `ros2srrc_data/action/Robmove` action. Send `type: "PTP"` (point-to-point) or `type: "LIN"` (linear) with the absolute Cartesian goal (`x, y, z` in metres and the `qx, qy, qz, qw` orientation quaternion). Equivalent to `MoveJoint` / `MoveLinear`.
+The arm is commanded with the standard MoveIt / ros2_control interfaces:
+
+- `/compute_ik` - `moveit_msgs/srv/GetPositionIK` service. Solves inverse kinematics for a Cartesian goal. Fill `ik_request.group_name = "ur5_manipulator"`, `ik_request.ik_link_name = "tool0"` and the target `PoseStamped`; an `error_code.val == 1` in the response means success and the joint solution comes in `solution.joint_state`.
+- `/joint_trajectory_controller/follow_joint_trajectory` - `control_msgs/action/FollowJointTrajectory` action. Executes a joint trajectory for the six arm joints (`shoulder_pan_joint`, `shoulder_lift_joint`, `elbow_joint`, `wrist_1_joint`, `wrist_2_joint`, `wrist_3_joint`), positions in radians.
+
+So a Cartesian move (the equivalent of `MoveJoint`) is two steps: call `/compute_ik` to turn the pose into joint angles, then send those angles to `/joint_trajectory_controller`. A joint-space move (the equivalent of `MoveAbsJ`) sends the joints straight to the controller, without IK. Note that `/compute_ik` only solves IK — it does not plan a Cartesian path, so a straight-line `MoveLinear` approach falls back to a point-to-point motion.
+
+- `/current_target` - Publish the Cartesian goal as a `geometry_msgs/msg/PoseStamped` (latched, QoS **TransientLocal**) to visualise it in RViz.
 
 **Gripper**
 
@@ -300,7 +306,7 @@ class UserNode : public rclcpp::Node {
 #endif
 ```
 
-You must define `USER_NODE` and a `UserNode` node class. In this mode only `WebGUI` is initialized (the HAL is not), so the arm, gripper and filters are commanded through the topics and actions listed above.
+You must define `USER_NODE` and a `UserNode` node class. In this mode only `WebGUI` is initialized (the HAL is not), so the arm, gripper and filters are commanded through the topics, services and actions listed above.
 
 ### Argument examples
 
