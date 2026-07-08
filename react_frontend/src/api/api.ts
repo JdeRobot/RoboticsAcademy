@@ -197,17 +197,24 @@ const getFile = async (
   }
 };
 
-const saveFile = async (project: string, fileName: string, content: string) => {
+const saveFile = async (
+  project: string,
+  fileName: string,
+  content: string,
+  user?: string
+) => {
   if (!project) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("Current File name is not set");
 
   const apiUrl = "/academy/save_file/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project: project,
     content: content,
     filename: fileName,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -222,7 +229,8 @@ const createFile = async (
   fileName: string,
   location: string,
   template?: string,
-  warning?: (msg: string) => void
+  warning?: (msg: string) => void,
+  user?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -230,12 +238,14 @@ const createFile = async (
 
   const apiUrl = "/academy/create_file/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     location: location,
     file_name: fileName,
-    template: template,
   };
+
+  if (template !== undefined) params["template"] = template;
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -256,7 +266,8 @@ const createFile = async (
 const renameFile = async (
   projectId: string,
   path: string,
-  new_path: string
+  new_path: string,
+  user?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -264,11 +275,13 @@ const renameFile = async (
 
   const apiUrl = "/academy/rename_file/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     path: path,
     rename_to: new_path,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -278,16 +291,18 @@ const renameFile = async (
   }
 };
 
-const deleteFile = async (projectId: string, path: string) => {
+const deleteFile = async (projectId: string, path: string, user?: string) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
 
   const apiUrl = "/academy/delete_file/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     path: path,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -301,7 +316,8 @@ const uploadFile = async (
   projectId: string,
   fileName: string,
   location: string,
-  content: string
+  content: string,
+  user?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -309,12 +325,14 @@ const uploadFile = async (
   if (!content) throw new Error("Content is not defined");
 
   const apiUrl = "/academy/upload/";
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     file_name: fileName,
     location: location,
     content: content,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -327,7 +345,8 @@ const uploadFile = async (
 const createFolder = async (
   projectId: string,
   location: string,
-  folderName: string
+  folderName: string,
+  user?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!folderName) throw new Error("Folder name is not set");
@@ -335,11 +354,13 @@ const createFolder = async (
 
   const apiUrl = "/academy/create_folder/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     location: location,
     folder_name: folderName,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -352,7 +373,8 @@ const createFolder = async (
 const renameFolder = async (
   projectId: string,
   path: string,
-  new_path: string
+  new_path: string,
+  user?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -360,11 +382,13 @@ const renameFolder = async (
 
   const apiUrl = "/academy/rename_folder/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     path: path,
     rename_to: new_path,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
@@ -374,16 +398,18 @@ const renameFolder = async (
   }
 };
 
-const deleteFolder = async (projectId: string, path: string) => {
+const deleteFolder = async (projectId: string, path: string, user?: string) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
 
   const apiUrl = "/academy/delete_folder/";
 
-  const params = {
+  const params: { [key: string]: string } = {
     project_id: projectId,
     path: path,
   };
+
+  if (user !== undefined) params["user"] = user;
 
   try {
     await axios.post(apiUrl, params, axiosExtra());
