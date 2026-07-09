@@ -1,4 +1,4 @@
-FROM node:20 AS ra-base
+FROM node:24 AS ra-base
 
 RUN apt-get update && apt-get install -y git zip
 
@@ -57,7 +57,7 @@ RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git 
     /RoboticsAcademy/docs \
     /RoboticsAcademy/scripts \
     /RoboticsAcademy/tests \
-    /RoboticsAcademy/react_fronted \
+    /RoboticsAcademy/react_frontend \
     /RoboticsAcademy/common
 
 COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static
