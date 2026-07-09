@@ -408,6 +408,12 @@ ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 # VirtualGL + TurboVNC on PATH
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
+# Install ca-certificates before the PGDG source is copied in below, else the
+# HTTPS apt update against apt.postgresql.org fails on an untrusted cert
+# (base image has no certs). Same order as deps-builder (certs, then pgdg.list).
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
 # Repo keyrings/sources from the builder so apt-get update can resolve
 # the ROS 2/Gazebo/PGDG repos here too.
 COPY --from=deps-builder /usr/share/keyrings/ /usr/share/keyrings/
@@ -454,6 +460,7 @@ RUN dpkg --add-architecture i386 \
   libegl1-mesa:i386 \
   libegl1-mesa:amd64 \
   libpq5 \
+  postgresql-client-18 \
   ros-${ROS_DISTRO}-py-trees \
   ros-${ROS_DISTRO}-py-trees-ros \
   libbenchmark-dev \
@@ -583,6 +590,12 @@ COPY --from=deps-builder /usr/local/share/man/ /usr/local/share/man/
 COPY --from=deps-builder /usr/local/share/ament_index/ /usr/local/share/ament_index/
 COPY --from=deps-builder /usr/local/bin/onnxruntime_test /usr/local/bin/onnxruntime_test
 COPY --from=deps-builder /usr/local/bin/ompl_benchmark_statistics.py /usr/local/bin/ompl_benchmark_statistics.py
+# OMPL Python bindings (SWIG-generated .py wrappers + compiled _*.so modules).
+# install-ompl-ubuntu.sh --python installs these into the system dist-packages
+# via `make install` (PYTHON_EXEC=/usr/bin/python3), NOT under /usr/local, so
+# the /usr/local COPY lines above miss them. The modules link libompl.so.18,
+# already provided by the /usr/local/lib/libompl.so* copy + ldconfig below.
+COPY --from=deps-builder /usr/lib/python3/dist-packages/ompl/ /usr/lib/python3/dist-packages/ompl/
 RUN ldconfig
 
 # Shell env writes (RMW impl, ROS/aerostack2 sourcing) — root's .bashrc
