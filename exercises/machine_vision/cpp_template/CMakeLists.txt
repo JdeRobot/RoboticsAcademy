@@ -17,7 +17,7 @@ find_package(builtin_interfaces REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(pcl_filter_msgs REQUIRED)
-find_package(ros2srrc_data REQUIRED)
+find_package(moveit_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
@@ -38,7 +38,7 @@ set(dependencies
   tf2_ros
   tf2_geometry_msgs
   pcl_filter_msgs
-  ros2srrc_data
+  moveit_msgs
   cv_bridge
   ament_index_cpp
   common_interfaces_cpp
