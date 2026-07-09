@@ -476,17 +476,33 @@ def get_docker_world_data(fal, request):
             tools_configuration = json.loads(world.scene.tools_config)
 
         if world.robot.name != "None":
-            robot_config = [
-                {
-                    "name": world.robot.name,
-                    "launch_file_path": world.robot.launch_file_path,
-                    "ros_version": world.scene.ros_version,
-                    "type": world.scene.type,
-                    "start_pose": world.scene.start_pose,
-                    "entity": world.robot.entity,
-                    "extra_config": world.robot.extra_config,
-                }
-            ]
+            # one robot per start pose. scene.start_pose is either a single pose
+            # [x, y, z, r, p, yaw] or a list of them, so a normal single-robot
+            # scene is just a list of one and needs no special case. the robot
+            # type is shared; each robot gets its own entity name, which its
+            # launch file uses as the ros/gazebo namespace so N robots don't
+            # collide on topics, and which lets gazebo spawn and remove them
+            # one by one.
+            poses = world.scene.start_pose or []
+            if poses and not isinstance(poses[0], (list, tuple)):
+                poses = [poses]
+
+            robot_config = []
+            for index, pose in enumerate(poses):
+                entity = world.robot.entity
+                if len(poses) > 1:
+                    entity = f"{entity}_{index}"
+                robot_config.append(
+                    {
+                        "name": world.robot.name,
+                        "launch_file_path": world.robot.launch_file_path,
+                        "ros_version": world.scene.ros_version,
+                        "type": world.scene.type,
+                        "start_pose": pose,
+                        "entity": entity,
+                        "extra_config": world.robot.extra_config,
+                    }
+                )
         else:
             robot_config = [
                 {
