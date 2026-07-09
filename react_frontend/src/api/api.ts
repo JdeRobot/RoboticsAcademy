@@ -18,7 +18,7 @@ const axiosExtra = () => ({
 type ApiError = AxiosError<Record<string, string>, Record<string, unknown>>;
 
 const getProjectData = async (
-  projectId?: string
+  projectId?: string,
 ): Promise<Omit<ExerciseData, "worlds">> => {
   if (!projectId) throw new Error("Current Project ID is not set");
 
@@ -32,7 +32,7 @@ const getProjectData = async (
     return data;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -48,7 +48,7 @@ const exitProject = async () => {
     }
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -60,7 +60,7 @@ const getExerciseList = async (): Promise<Exercise[]> => {
     return response.data.exercises;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -68,7 +68,7 @@ const listWorlds = async (project: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
   const apiUrl = `/academy/get_worlds_list?project=${encodeURIComponent(
-    project
+    project,
   )}`;
 
   try {
@@ -76,7 +76,7 @@ const listWorlds = async (project: string) => {
     return response.data.worlds_list;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -84,7 +84,7 @@ const getRoboticsBackendWorld = async (project: string, world: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
   const apiUrl = `/academy/get_docker_world_data?world=${encodeURIComponent(
-    world
+    world,
   )}&project=${encodeURIComponent(project)}`;
 
   try {
@@ -97,7 +97,7 @@ const getRoboticsBackendWorld = async (project: string, world: string) => {
     };
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -105,16 +105,16 @@ const getHelperFile = async (
   project: string,
   language: string,
   fileName: string,
-  binary?: boolean
+  binary?: boolean,
 ) => {
   if (!project) throw new Error("Current Project id is not set");
   if (!language) throw new Error("Current Language is not set");
   if (!fileName) throw new Error("File name is not set");
 
   let apiUrl = `/academy/get_helper_file?project=${encodeURIComponent(
-    project
+    project,
   )}&language=${encodeURIComponent(language)}&filename=${encodeURIComponent(
-    fileName
+    fileName,
   )}`;
 
   if (binary) apiUrl += `&binary=true`;
@@ -127,19 +127,19 @@ const getHelperFile = async (
     return response.data.content;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
 const getHelperFileList = async (
   project: string,
-  language: string
+  language: string,
 ): Promise<Entry[]> => {
   if (!project) throw new Error("Current Project id is not set");
   if (!language) throw new Error("Current Language is not set");
 
   const apiUrl = `/academy/get_helper_file_list?project=${encodeURIComponent(
-    project
+    project,
   )}&language=${encodeURIComponent(language)}`;
 
   try {
@@ -147,7 +147,7 @@ const getHelperFileList = async (
     return JSON.parse(response.data.file_list);
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -165,7 +165,7 @@ const getFileList = async (project: string, user?: string) => {
     return response.data.file_list;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -173,13 +173,13 @@ const getFile = async (
   project: string,
   fileName: string,
   user?: string,
-  binary?: boolean
+  binary?: boolean,
 ) => {
   if (!project) throw new Error("Project name is not set");
   if (!fileName) throw new Error("File name is not set");
 
   let apiUrl = `/academy/get_file?project=${encodeURIComponent(
-    project
+    project,
   )}&filename=${encodeURIComponent(fileName)}`;
 
   if (user !== undefined) apiUrl += `&user=${encodeURIComponent(user)}`;
@@ -193,7 +193,7 @@ const getFile = async (
     return response.data.content;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -213,7 +213,7 @@ const saveFile = async (project: string, fileName: string, content: string) => {
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -222,7 +222,7 @@ const createFile = async (
   fileName: string,
   location: string,
   template?: string,
-  warning?: (msg: string) => void
+  warning?: (msg: string) => void,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -249,14 +249,14 @@ const createFile = async (
       `);
     }
 
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
 const renameFile = async (
   projectId: string,
   path: string,
-  new_path: string
+  new_path: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -274,7 +274,7 @@ const renameFile = async (
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -293,7 +293,7 @@ const deleteFile = async (projectId: string, path: string) => {
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -301,7 +301,7 @@ const uploadFile = async (
   projectId: string,
   fileName: string,
   location: string,
-  content: string
+  content: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -320,14 +320,14 @@ const uploadFile = async (
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
 const createFolder = async (
   projectId: string,
   location: string,
-  folderName: string
+  folderName: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!folderName) throw new Error("Folder name is not set");
@@ -345,14 +345,14 @@ const createFolder = async (
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
 const renameFolder = async (
   projectId: string,
   path: string,
-  new_path: string
+  new_path: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -370,7 +370,7 @@ const renameFolder = async (
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 
@@ -389,7 +389,7 @@ const deleteFolder = async (projectId: string, path: string) => {
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message);
+    throw Error(error.response?.data.message, { cause: e });
   }
 };
 

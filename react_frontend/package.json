@@ -30,7 +30,7 @@
     "binary-loader": "^0.0.1",
     "css-loader": "^7.1.4",
     "cypress": "^15.18.1",
-    "eslint": "^10.6.0",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -61,13 +61,15 @@
     "@types/node": "^26.1.1",
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.34",
+    "@types/three": "^0.185.1",
     "axios": "1.18.1",
     "glob": "^13.0.6",
     "jderobot-commsmanager": "1.1.0",
     "jderobot-ide-interface": "0.3.1",
     "jszip": "^3.10.1",
     "react-router-dom": "^7.18.1",
-    "styled-components": "^6.4.3"
+    "styled-components": "^6.4.3",
+    "three": "^0.185.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
