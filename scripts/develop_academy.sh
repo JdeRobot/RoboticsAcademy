@@ -106,7 +106,7 @@ if ! command -v yarn &> /dev/null; then
     
     # Detect OS and install npm and node.js accordingly
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+      curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
       sudo apt-get install -y nodejs
     elif [[ "$OSTYPE" == "darwin"* ]]; then
       if command -v brew &> /dev/null; then
@@ -141,8 +141,8 @@ cd ../..
 mv common/common.zip react_frontend/src/common.zip
 
 # Prepare the frontend
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 
 # Checking if the frontend needs compilation
 cd react_frontend/

@@ -4,7 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
 import FALLBACK_IMAGE from "../images/default_card.svg";
-import { Exercise } from "src/types/exercises";
+import { Exercise } from "Types/exercises";
 import {
   StyledExerciseCardArea,
   StyledExerciseCardContainer,
