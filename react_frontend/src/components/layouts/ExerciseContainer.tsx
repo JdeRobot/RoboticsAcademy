@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { useState, useEffect, useRef } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
 
@@ -51,12 +51,12 @@ const ExerciseContainer = ({
   const [worlds, setWorlds] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
-    "both"
+    "both",
   );
   const userRef = useRef<string | undefined>(undefined);
   const addressRef = useRef<string>(`ws://127.0.0.1:7163`);
 
-  const getUniverseList = async (project: string) => {
+  const getWorldList = async (project: string) => {
     const list = await listWorlds(project);
     if (list.length === 0) {
       list.push("");
@@ -65,7 +65,7 @@ const ExerciseContainer = ({
     setWorlds(list);
   };
 
-  const resetUniverse = (e: unknown) => {
+  const resetWorld = (e: unknown) => {
     const T = CustomEvent<{ detail: unknown }>;
     if (e instanceof T) {
       if (e.detail.state == states.IDLE) {
@@ -75,7 +75,7 @@ const ExerciseContainer = ({
   };
 
   useEffect(() => {
-    subscribe("CommsManagerStateChange", resetUniverse);
+    subscribe("CommsManagerStateChange", resetWorld);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
@@ -95,13 +95,13 @@ const ExerciseContainer = ({
 
   const connectWithRetry = async (
     desiredState?: string,
-    callback?: () => void
+    callback?: () => void,
   ) => {
     try {
       const currManager = CommsManager.getInstance(addressRef.current);
       hasTriedToConnect.current = true;
       await currManager.connect();
-      getUniverseList(project);
+      getWorldList(project);
       console.log("Connected!", currManager.getState());
       setManager(currManager);
       if (callback) {
@@ -113,7 +113,7 @@ const ExerciseContainer = ({
         connectWithRetry,
         2000,
         desiredState,
-        callback
+        callback,
       );
     }
   };
@@ -127,7 +127,7 @@ const ExerciseContainer = ({
         waitManagerState,
         100,
         state,
-        callback
+        callback,
       );
     }
   };
