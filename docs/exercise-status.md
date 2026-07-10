@@ -30,10 +30,10 @@
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |                   |         ok         |             |
 | Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | -     |                   |         ok         |        |
 |                                      |                  |             |               |          |                                   |                              |                   |                    |             |
-| Dynamic Window Approach              |        ok        |             |      ok       |          | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
-| Visual Odometry                      |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Visibility Graph Navigation          |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Rapidly Exploring Random Trees nav   |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
+| Dynamic Window Approach              |        ok        |      ok     |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
+| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 | Line Mapping                         |        ok        |             |               |          | -                                 |                              |                   |                    |             |
 
 ## 🚧 Exercises under repair / workshop state
