@@ -32,8 +32,8 @@
 |                                      |                  |             |               |          |                                   |                              |                   |                    |             |
 | Dynamic Window Approach              |        ok        |             |      ok       |          | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
 | Visual Odometry                      |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Visibility Graph Navigation          |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Rapidly Exploring Random Trees nav   |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
+| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 | Line Mapping                         |        ok        |             |               |          | -                                 |                              |                   |                    |             |
 
 ## 🚧 Exercises under repair / workshop state
