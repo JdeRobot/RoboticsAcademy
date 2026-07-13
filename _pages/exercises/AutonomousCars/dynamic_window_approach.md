@@ -6,7 +6,7 @@ sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Visual Follow Line"
+toc_label: "TOC Dynamic Window Approach"
 toc_icon: "cog"
 
 <!--- layout: archive --->
@@ -38,7 +38,15 @@ This allows the robot to reach the target while avoiding obstacles in a smooth a
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
+
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -46,22 +54,27 @@ This allows the robot to reach the target while avoiding obstacles in a smooth a
 
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-- `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
-- `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
-- `HAL.getPose3d().yaw` - to get the orientation of the robot with
-  regarding the map
-- `HAL.getLaserData()` - to obtain laser sensor data
-  It is composed of 180 pairs of values: (0-180º distance in meters)
-- `HAL.setV()` - to set the linear speed
-- `HAL.setW()` - to set the angular velocity
+- `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
+- `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate).
+- `HAL.getPose3d().yaw` - to get the orientation of the robot with regard to the map.
+- `HAL.getLaserData()` - to obtain laser sensor data. It is composed of 180 pairs of values: (0-180º distance in meters).
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
+- `HAL.getVelocity()` - returns the current real velocity of the robot as read from its odometry, `(v, w)`.
+- `HAL.getDynamicWindowLimits(A_V, A_W, DT, V_MAX, W_MAX)` - computes the admissible velocity range around the current velocity, given the acceleration limits `A_V`, `A_W`, the time step `DT` and the maximum speeds `V_MAX`, `W_MAX`. Returns `(v_min, v_max, w_min, w_max)`. All arguments are optional and default to `A_V=3.0`, `A_W=3.0`, `DT=0.1`, `V_MAX=2.0`, `W_MAX=2.0`.
 - `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
-- `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
-- `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
+- `WebGUI.setTargetx(x)` - sets the x coordinate of the target on the WebGUI.
+- `WebGUI.setTargety(y)` - sets the y coordinate of the target on the WebGUI.
+- `WebGUI.showLocalTarget([x, y])` - displays the local target the robot is currently steering towards on the WebGUI.
+- `WebGUI.showDynamicWindow(dynamic_window)` - displays the sampled velocity space on the WebGUI. `dynamic_window` is a list of `(v, w, score)` tuples.
+- `WebGUI.showBestVelocity([v, w])` - displays the selected velocity command on the WebGUI.
 
-To access the target 'x' and 'y' coordinates use (target is the object obtained from WebGUI.getNextTarget):
+To access the target 'x' and 'y' coordinates use (target is the object obtained from `WebGUI.getNextTarget()`):
 
-- `target.getPose().x` - to obtain the x position of the target
-- `target.getPose().y` - to obtain the y position of the target
+- `target.getPose().x` - to obtain the x position of the target.
+- `target.getPose().y` - to obtain the y position of the target.
+- `target.isReached()` - returns `True` if the target has already been marked as reached.
+- `target.setReached(True)` - marks the target as reached, so the next call to `WebGUI.getNextTarget()` returns the following one.
 
 **Own API**
 
@@ -82,29 +95,130 @@ As well as the destination that we have assigned:
 # Current target
 target = [1.0, 1.0]
 WebGUI.showLocalTarget(target)
-
 ```
 
-<!---
-**API**
+#### C++
 
-* `pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
-* `pose3d.getPose3d().y` - to obtain the position of the robot (y coordinate)
-* `pose3d.getPose3d().yaw` - to get the orientation of the robot with
-  regarding the map
-* `laser.getLaserData()` - to obtain laser sensor data
-  It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `setV()` - to set and send the linear speed
-* `setW()` - to set and send the angular velocity
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::set_v(velocity);` - sets the linear velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity);` - sets the angular velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d();` - returns the ground-truth robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x;` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y;` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw;` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `HAL::get_laser_data();` - returns the laser sensor data as a `HAL::LaserData`, composed of 180 pairs of values (0-180º distance in meters).
+- `HAL::get_velocity();` - returns the current real velocity of the robot as read from its odometry, `std::pair<double, double>` `{v, w}`.
+- `HAL::get_dynamic_window_limits(A_V, A_W, DT, V_MAX, W_MAX);` - computes the admissible velocity range around the current velocity. Returns a `std::tuple<double, double, double, double>` `{v_min, v_max, w_min, w_max}`. All arguments are optional `double` and default to `A_V=3.0`, `A_W=3.0`, `DT=0.1`, `V_MAX=2.0`, `W_MAX=2.0`.
+- `WebGUI::get_next_target();` - returns a `std::shared_ptr<Target>` to the next target on the scenario.
+- `WebGUI::set_target_x(x);` / `WebGUI::set_target_y(y);` - set the x/y coordinate of the target on the WebGUI. Input is `double`.
+- `WebGUI::show_local_target({x, y});` - displays the local target the robot is currently steering towards on the WebGUI. Input is `std::array<double, 2>`.
+- `WebGUI::show_dynamic_window(dw);` - displays the sampled velocity space on the WebGUI. `dw` is a `std::vector<std::array<double, 3>>` of `{v, w, score}`.
+- `WebGUI::show_best_velocity({v, w});` - displays the selected velocity command on the WebGUI. Input is `std::array<double, 2>`.
+- `WebGUI::mark_target_reached();` - marks the current target as reached, so the next call to `WebGUI::get_next_target()` returns the following one.
 
-**Own API**
+The `Target` object returned by `WebGUI::get_next_target()` exposes:
 
-To simplify, the implementation of control points is offered.
-To use it, only two actions must be carried out:
-1. Obtain the following point:
-   `self.currentTarget = self.getNextTarget()`
-2. Mark it as visited when necessary:
-   `self.currentTarget.setReached(True)` --->
+- `target->get_pose();` - returns the target pose as a `HAL::Pose3d` (use `.x` and `.y`).
+- `target->is_reached();` - returns `bool`.
+- `target->set_reached(true);` - marks the target as reached.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to receive the robot odometry. Both the pose (`x`, `y`, `yaw`) and the real velocity (`v`, `w`, from the twist fields) are available here. Message type: `nav_msgs/msg/Odometry`
+
+- `/f1/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+
+The `/webgui/*` topics mirror the WebGUI debugging and target-tracking methods:
+
+- `/webgui/local_target` - Publish to this topic to display the local target the robot is steering towards, equivalent to `showLocalTarget`. Message type: `geometry_msgs/msg/Point`.
+
+- `/webgui/dynamic_window` - Publish to this topic to display the sampled velocity space, equivalent to `showDynamicWindow`. Message type: `std_msgs/msg/String`, containing a JSON array of `[v, w, score]` entries.
+
+- `/webgui/best_velocity` - Publish to this topic to display the selected velocity command, equivalent to `showBestVelocity`. Message type: `std_msgs/msg/String`, containing a JSON array `[v, w]`.
+
+- `/webgui/target_reached` - Publish `true` to this topic to mark the current target as reached and advance to the next one. Message type: `std_msgs/msg/Bool`.
+
+- `/webgui/current_target` - Subscribe to this topic to receive the `(x, y)` coordinates of the target the robot must currently reach. Message type: `geometry_msgs/msg/Point`. QoS: `TRANSIENT_LOCAL`, depth `1`, so a late-joining node still receives the current target.
+
+All other `/webgui/*` topics use the default QoS profile with a history depth of `10`.
+
+The dynamic window limits are not exposed as a topic, since they only depend on quantities already available through `/odom`: a ROS 2-direct solution should compute `(v_min, v_max, w_min, w_max)` from the current `(v, w)` read from the odometry twist, following the same formula used by `HAL.getDynamicWindowLimits()`.
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing debug information.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### Conversion of types
 
@@ -112,7 +226,7 @@ To use it, only two actions must be carried out:
 
 The following function parses laser data taking into account 1) laser only has 180º coverage and 2) the measure read at 90º corresponds to the 'front' of the robot.
 
-You must apply the conversions needed to transform that laser data to a vector of the polar coordinates and a vector in the relavite coodinate system of the robot.
+You must apply the conversions needed to transform that laser data to a vector of the polar coordinates and a vector in the relative coordinate system of the robot.
 
 ```python
 import math
@@ -196,12 +310,7 @@ The main subproblems are:
 - **Planning**: Compute a path to the goal.
 - **Exploration**: Discover unknown areas.
 
-Navigation is typically divided into:
-
-- **Global Navigation** → computes a path using a map.
-- **Local Navigation** → reacts to the environment in real time.
-
----
+Navigation is typically divided into global navigation, which computes a path using a map, and local navigation, which reacts to the environment in real time.
 
 ### Local Navigation
 
@@ -209,143 +318,73 @@ Local navigation adapts the robot motion based on sensor data and robot constrai
 
 Unlike methods based on artificial forces, the **Dynamic Window Approach (DWA)** operates directly in the **velocity space**, selecting the best motion command at each iteration.
 
----
-
 ### Dynamic Window Approach
 
 The Dynamic Window Approach selects the optimal control command by evaluating possible velocities of the robot.
 
-Instead of computing forces, the robot:
-
-- Evaluates possible velocities (v, w)
-- Simulates their resulting trajectories
-- Selects the best one according to a cost function
-
----
+Instead of computing forces, the robot evaluates a set of candidate velocities `(v, w)`, simulates their resulting trajectories and selects the best one according to a cost function.
 
 ### Algorithm Steps
 
 At each control cycle:
 
-1. **Obtain Dynamic Window**
-
-   The valid velocity ranges are provided by the system:
+1. **Obtain Dynamic Window.** The valid velocity ranges are provided by the system:
 
    ```python
-   v_min, v_max, w_min, w_max = getDynamicWindowLimits()
+   v_min, v_max, w_min, w_max = HAL.getDynamicWindowLimits()
    ```
 
-   These limits already take into account:
-   - Current robot velocity
-   - Maximum acceleration
-   - Velocity constraints
+   These limits already take into account the current robot velocity, the maximum acceleration and the velocity constraints. **Note:** you are not required to implement this step.
 
-   **Note:** You are not required to implement this step.
+2. **Sample Velocities.** Generate candidate velocity pairs `(v, w)` within the dynamic window.
 
----
-
-2. **Sample Velocities**
-
-   Generate candidate velocity pairs (v, w) within the dynamic window.
-
----
-
-3. **Simulate Trajectories**
-
-   For each candidate velocity, predict the robot motion over a short time horizon.
-
-   The motion model is:
+3. **Simulate Trajectories.** For each candidate velocity, predict the robot motion over a short time horizon using the motion model:
 
    ```python
-   x = x + v * cos(theta) * dt  
-   y = y + v * sin(theta) * dt  
+   x = x + v * cos(theta) * dt
+   y = y + v * sin(theta) * dt
    theta = theta + w * dt
    ```
 
----
+4. **Evaluate Trajectories.** Each trajectory is scored based on its heading, meaning the alignment with the goal, its clearance, meaning the distance to obstacles, and its velocity, meaning the forward speed.
 
-4. **Evaluate Trajectories**
-
-   Each trajectory is scored based on:
-
-   - **Heading** → alignment with the goal  
-   - **Clearance** → distance to obstacles  
-   - **Velocity** → forward speed  
-
----
-
-5. **Select Best Command**
-
-   The velocity pair (v, w) with the highest score is applied to the robot.
-
----
+5. **Select Best Command.** The velocity pair `(v, w)` with the highest score is applied to the robot.
 
 ### Cost Function
 
 Each trajectory is evaluated using a weighted sum:
 
 ```python
-score = α * heading + β * clearance + γ * velocity
+score = alpha * heading + beta * clearance + gamma * velocity
 ```
 
-Where:
-
-- **heading**: how well the robot is oriented towards the goal  
-- **clearance**: distance to the closest obstacle  
-- **velocity**: forward speed  
-
-The weights (α, β, γ) determine the robot behavior.
-
----
+Where **heading** measures how well the robot is oriented towards the goal, **clearance** measures the distance to the closest obstacle and **velocity** measures the forward speed. The weights `alpha`, `beta` and `gamma` determine the robot behavior.
 
 ### Debugging and Visualization
 
 To help understand the behavior of the Dynamic Window Approach, the WebGUI provides visualization tools.
 
-#### Dynamic Window
-
 You can visualize the sampled velocity space:
 
 ```python
-showDynamicWindow(dynamic_window)
+WebGUI.showDynamicWindow(dynamic_window)
 ```
 
-Where:
-- `dynamic_window` contains the sampled velocity pairs (v, w)
-
-This allows you to see which velocities are being considered at each iteration.
-
----
-
-#### Best Velocity
+Where `dynamic_window` contains the sampled velocity pairs `(v, w, score)`. This allows you to see which velocities are being considered at each iteration.
 
 You can also visualize the selected control command:
 
 ```python
-showBestVelocity(best_vw)
+WebGUI.showBestVelocity(best_vw)
 ```
 
-Where:
-- `best_vw` is the selected pair (v, w)
+Where `best_vw` is the selected pair `(v, w)`. This helps to understand how the algorithm chooses the optimal motion.
 
-This helps to understand how the algorithm chooses the optimal motion.
-
----
-
-#### Notes
-
-- Use these functions for debugging and tuning
-- They are especially useful to verify:
-  - Velocity sampling
-  - Cost function behavior
-  - Stability of the controller
+Use these functions for debugging and tuning. They are especially useful to verify the velocity sampling, the cost function behavior and the stability of the controller.
 
 ### Advantages of DWA
 
-- Considers robot dynamics  
-- Produces smooth and realistic motion  
-- Avoids oscillations present in force-based methods  
-- Ensures feasible velocity commands  
+DWA takes the robot dynamics into account, so it produces smooth and realistic motion, avoids the oscillations typical of force-based methods, and always selects velocity commands that the robot can actually reach.
 
 ## Hints
 
@@ -360,8 +399,6 @@ When displaying the dynamic window in the WebGUI, it may be useful to **normaliz
 - Use normalization only when sending data to the GUI.
 
 This improves readability of the dynamic window representation, making it easier to compare candidate velocities visually.
-
----
 
 For example, you can scale values to the range [0, 1]:
 
