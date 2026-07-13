@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Params, useLoaderData } from "react-router-dom";
+import { Params, useLoaderData } from "react-router";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
@@ -30,7 +30,7 @@ const Exercise = () => {
       (error) => {
         console.error("Component Failed Loading:", error);
         return { default: WebGUIPreview };
-      }
+      },
     );
   });
 

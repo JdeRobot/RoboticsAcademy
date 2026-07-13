@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, JSX } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
 
 import IdeInterface, {
@@ -51,7 +51,7 @@ const ExerciseContainer = ({
   const [worlds, setWorlds] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
-    "both"
+    "both",
   );
   const userRef = useRef<string | undefined>(undefined);
   const addressRef = useRef<string>(`ws://127.0.0.1:7163`);
@@ -95,7 +95,7 @@ const ExerciseContainer = ({
 
   const connectWithRetry = async (
     desiredState?: string,
-    callback?: () => void
+    callback?: () => void,
   ) => {
     try {
       const currManager = CommsManager.getInstance(addressRef.current);
@@ -113,7 +113,7 @@ const ExerciseContainer = ({
         connectWithRetry,
         2000,
         desiredState,
-        callback
+        callback,
       );
     }
   };
@@ -127,7 +127,7 @@ const ExerciseContainer = ({
         waitManagerState,
         100,
         state,
-        callback
+        callback,
       );
     }
   };

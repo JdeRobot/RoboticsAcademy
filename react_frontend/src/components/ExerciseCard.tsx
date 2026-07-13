@@ -11,7 +11,7 @@ import {
   StyledExerciseCardInfoContainer,
   StyledExerciseCardTagList,
 } from "Styles/ExerciseCard.styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const ExerciseCard = ({
   exercise_id,
