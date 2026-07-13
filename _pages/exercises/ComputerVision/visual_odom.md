@@ -45,82 +45,36 @@ The performance of the algorithm is visualized in real time in a **3D viewer rep
 
 ## How to run
 
-The exercise supports two input modes:
+The exercise supports two input modes.
 
----
+### 1. ROS 2 Bag Mode (Dataset)
 
-### 1. ROS2 Bag Mode (Dataset)
+In this mode, the system reads data from a ROS 2 bag file. The rosbag must contain the following topics:
 
-In this mode, the system reads data from a **ROS2 bag file**.
+- `/kitti/camera/gray/left/image_raw` - the monocular image stream. Message type: `sensor_msgs/msg/Image`.
+- `/kitti/gt/pose` - the ground truth camera position, used to draw the reference trajectory. Message type: `geometry_msgs/msg/PoseStamped`.
 
-#### Dataset requirements
+The rosbag must be compatible with ROS 2 Humble, otherwise playback may fail.
 
-The rosbag must contain:
-
-```
-/kitti/camera/gray/left/image_raw
-```
-
-- Ground truth:
-```
-/kitti/oxts/gps/fix
-```
-
----
-
-#### Where to place the rosbag
-
-Place your dataset inside:
-
-```
-/RoboticsAcademy/exercises/visual_odom/frontend/resources/
-```
-
-Example:
+Place your dataset inside `/RoboticsAcademy/exercises/visual_odom/frontend/resources/`, for example:
 
 ```
 /RoboticsAcademy/exercises/visual_odom/frontend/resources/your_rosbag_name/
-    ├── metadata.yaml
-    ├── *.db3
+    metadata.yaml
+    your_rosbag_name.db3
 ```
 
----
-
-#### IMPORTANT (ROS2 compatibility)
-
-The rosbag must be compatible with **ROS2 Humble**.
-
-If not, playback may fail.
-
----
-
-#### How to run rosbag
-
-Inside the Unibotics / Docker environment:
+Then, inside the Unibotics / Docker environment, play it with:
 
 ```
 ros2 bag play /RoboticsAcademy/exercises/visual_odom/frontend/resources/your_rosbag_name
 ```
 
-Make sure ROS2 topics are being published correctly before starting the exercise.
-
----
+Make sure the ROS 2 topics are being published correctly before starting the exercise.
 
 ### 2. Video Mode (User Input)
 
-In this mode, the user selects a **video file from their local machine**.
-
-- The video is streamed frame-by-frame to the algorithm
-- No rosbag is required
-- No ROS topics are used
-- Ground truth is not mandatory
-
-This mode is useful for:
-- debugging
-- testing algorithms quickly
-- offline development
-
----
+In this mode, the user selects a video file from their local machine. The video is streamed frame by frame to the algorithm, no rosbag or ROS topics are involved, and ground truth is not available. This mode is useful for debugging, testing algorithms quickly and offline development.
 
 ## Frequency API
 
@@ -181,15 +135,15 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication.
 
-- `/visual_odom/image_raw` - Subscribe to this topic to receive the input camera frame (BGR8), whether it comes from the video or the rosbag. Message type: `sensor_msgs/msg/Image`
+- `/visual_odom/image_raw` - Subscribe to this topic to receive the input camera frame (BGR8), whether it comes from the video or the rosbag. WebGUI republishes it on this single topic so a ROS 2-direct node does not need to care about the source. Message type: `sensor_msgs/msg/Image`. QoS: default profile, depth `10`, `RELIABLE`.
 
-- `/kitti/gt/pose` - Subscribe to this topic to receive the ground-truth pose (available only in rosbag mode). Message type: `geometry_msgs/msg/PoseStamped`
+- `/kitti/gt/pose` - Subscribe to this topic to receive the ground-truth pose (available only in rosbag mode, published directly by the rosbag). Message type: `geometry_msgs/msg/PoseStamped`. QoS: `BEST_EFFORT`, depth `10`. The KITTI rosbag publishes with `BEST_EFFORT` reliability, so a `RELIABLE` subscriber would silently receive nothing.
 
 For WebGUI debugging:
 
-- `/webgui/estimated_point` - Publish to this topic to display the estimated camera position in the 3D viewer. Message type: `geometry_msgs/msg/PointStamped`
+- `/webgui/estimated_point` - Publish to this topic to display the estimated camera position in the 3D viewer. Message type: `geometry_msgs/msg/PointStamped`. QoS: default profile, depth `10`.
 
-- `/webgui/image_debug` - Publish to this topic to display a debug image in the WebGUI. Message type: `sensor_msgs/msg/Image`
+- `/webgui/image_debug` - Publish to this topic to display a debug image in the WebGUI. Message type: `sensor_msgs/msg/Image`, encoding `bgr8`. QoS: default profile, depth `10`.
 
 #### Python
 
@@ -243,246 +197,137 @@ To have frequency control you may use a timer and a control function as follows:
 
 ## Theory
 
-Visual Odometry (VO) is the process of **estimating the motion of a camera over time by analyzing the changes between consecutive images**.
+Visual Odometry (VO) is the process of estimating the motion of a camera over time by analyzing the changes between consecutive images.
 
-In this exercise, the input is a **monocular camera stream (KITTI dataset or video)**, and the goal is to reconstruct the trajectory of the camera in 3D.
-
----
+In this exercise, the input is a monocular camera stream, either the KITTI dataset or a video, and the goal is to reconstruct the trajectory of the camera in 3D.
 
 ### Key idea
 
-We estimate motion by tracking how **image features move between frames**.
-
-Instead of using wheel encoders or IMU data, VO relies only on:
-
-- Pixel motion in the image
-- Camera calibration
-- Geometric constraints
+We estimate motion by tracking how image features move between frames. Instead of using wheel encoders or IMU data, VO relies only on the pixel motion in the image, the camera calibration and geometric constraints.
 
 {% include gallery id="correlation" caption="Feature correspondences between consecutive frames used for motion estimation." %}
 
----
+### Camera model and intrinsic matrix
 
-## 1. Camera model and intrinsic matrix (K)
+To convert pixel motion into real geometric motion, we need the intrinsic camera matrix:
 
-To convert pixel motion into real geometric motion, we need the **intrinsic camera matrix**:
-
-...
+```
 K = [[fx,  0, cx],
      [ 0, fy, cy],
      [ 0,  0,  1]]
-...
+```
 
-This matrix encodes:
+`fx` and `fy` are the focal length, which sets the scale of the projection, and `cx` and `cy` are the principal point, the optical center of the image. In this exercise we use the KITTI calibration:
 
-- fx, fy → focal length (scale of projection)
-- cx, cy → principal point (optical center)
-
-In this exercise we use the KITTI calibration:
-
-...
+```python
 K = np.array([
     [718.8560, 0.0, 607.1928],
     [0.0, 718.8560, 185.2157],
     [0.0, 0.0, 1.0]
 ])
-...
+```
 
-Without K, we cannot recover real motion from pixel coordinates.
+Without this matrix we cannot recover real motion from pixel coordinates.
 
----
+### Feature detection
 
-## 2. Feature detection
+The first step is to extract salient points in the image that are easy to track over time, using Shi-Tomasi corner detection (`cv2.goodFeaturesToTrack`) or, as an optional improvement, FAST features. These points typically represent corners of objects, textured regions and other high-gradient areas.
 
-The first step is to extract **salient points in the image** that are easy to track over time.
+### Feature tracking with optical flow
 
-We use:
+Once features are detected, we track them between consecutive frames using Lucas-Kanade optical flow:
 
-- Shi-Tomasi corner detection (cv2.goodFeaturesToTrack)
-- or FAST features (optional improvement)
-
-These points represent:
-
-- corners of objects
-- textured regions
-- high-gradient areas
-
----
-
-## 3. Feature tracking (Optical Flow)
-
-Once features are detected, we track them between consecutive frames using:
-
-...
+```python
 cv2.calcOpticalFlowPyrLK(prev_gray, gray, prev_pts)
-...
+```
 
-This gives us:
+This gives us `p1`, the points in the previous frame, and `p2`, the corresponding points in the current frame, which together describe the 2D motion of pixels over time.
 
-- p1 → points in previous frame
-- p2 → corresponding points in current frame
+### Outlier rejection
 
-This step gives the **2D motion of pixels over time**.
+Not all tracked points are valid: some carry large motion caused by noise, some are incorrect matches and some are simply unstable tracks. On top of discarding these, we use RANSAC inside the essential matrix estimation itself:
 
----
-
-## 4. Outlier rejection
-
-Not all tracked points are valid.
-
-We remove:
-
-- points with large motion (noise)
-- incorrect matches
-- unstable tracks
-
-Additionally, we use **RANSAC** inside:
-
-...
+```python
 cv2.findEssentialMat(p1, p2, K, method=cv2.RANSAC)
-...
+```
 
 This removes geometric outliers automatically.
 
----
+### Essential matrix estimation
 
-## 5. Essential matrix estimation
+The essential matrix `E` encodes the relative rotation and translation between two camera frames. It is computed as:
 
-The Essential Matrix (E) encodes the **relative rotation and translation between two camera frames**.
-
-It is computed as:
-
-...
+```python
 E = cv2.findEssentialMat(p1, p2, K)
-...
+```
 
-It satisfies:
+and satisfies the epipolar constraint `p2^T * E * p1 = 0`, which is the key geometric relationship used to recover the camera motion.
 
-...
-p2^T * E * p1 = 0
-...
+### Pose recovery
 
-This is the key geometric constraint of epipolar geometry.
+From the essential matrix, we recover the rotation `R` and the translation direction `t`:
 
----
-
-## 6. Pose recovery
-
-From the Essential Matrix, we recover:
-
-- Rotation (R)
-- Translation direction (t)
-
-...
+```python
 retval, R, t, _ = cv2.recoverPose(E, p1, p2, K)
-...
+```
 
-Important:
+The translation is recovered only up to scale: its direction is correct, but its magnitude is unknown.
 
-- Translation is recovered only up to scale
-- Direction is correct, magnitude is unknown
+### Scale problem
 
----
+Monocular VO cannot directly recover real scale. In this exercise the scale can be approximated heuristically, normalized per frame, or accumulated with a constant factor, for example:
 
-## 7. Scale problem
+```python
+t = t / np.linalg.norm(t)
+```
 
-Monocular VO cannot directly recover real scale.
+### Trajectory integration
 
-In this exercise:
+The final camera position is obtained by accumulating motion frame by frame:
 
-- scale is approximated heuristically
-- or normalized per frame
-- or accumulated with a constant factor
-
-...
-t = t / ||t||
-...
-
----
-
-## 8. Trajectory integration
-
-The final camera position is obtained by accumulating motion:
-
-...
+```python
 t_global = t_global + R_global @ t
 R_global = R_global @ R
-...
+```
 
-This builds the full trajectory frame by frame.
+### Output
 
----
+The system outputs the estimated camera trajectory in 3D, together with a live visualization of the feature tracking and an overlay of the motion in the GUI:
 
-## 9. Output
-
-The system outputs:
-
-- Estimated camera trajectory (3D)
-- Live visualization of feature tracking
-- Overlay of motion in GUI
-
-...
+```python
 WebGUI.showEstimatedPoint([x, y, z])
-...
+```
 
 {% include gallery id="trajectories" caption="Example of ground-truth and estimated trajectories." %}
 
----
+### Summary
 
-## Summary
+The full pipeline is feature detection, followed by optical flow tracking, outlier rejection with RANSAC, essential matrix estimation, pose recovery and, finally, trajectory integration.
 
-The full pipeline is:
-
-Feature detection  
-→ Optical flow tracking  
-→ Outlier rejection (RANSAC)  
-→ Essential matrix estimation  
-→ Pose recovery  
-→ Trajectory integration  
-
----
-
-## Key insight
-
-The entire system works because:
-
-- 2D pixel motion + calibration (K)
-→ allows recovery of 3D camera motion
-
-This is the core principle of monocular visual odometry.
+The whole system works because 2D pixel motion, combined with the calibration matrix `K`, allows the recovery of 3D camera motion. This is the core principle of monocular visual odometry.
 
 ## Hint
 
 Simple hints provided to help you solve the exercise. Please note that the **following hint is only a suggestive approach. Any other algorithm to solve the exercise is acceptable.**
 
-1) Get the RGB images either from:
-   - ROS2 bag topic `/kitti/camera/gray/left/image_raw`
-   - or video input selected by the user
+1) Get the RGB images either from the ROS 2 bag topic `/kitti/camera/gray/left/image_raw` or from the video input selected by the user.
 
-2) Detect feature points in the first frame using FAST or Shi-Tomasi corner detector.
+2) Detect feature points in the first frame using FAST or the Shi-Tomasi corner detector.
 
-3) Track the detected features in the next frame using Lucas-Kanade Optical Flow Algorithm.
+3) Track the detected features in the next frame using the Lucas-Kanade optical flow algorithm.
 
-4) Filter incorrect correspondences using:
-   - Optical flow status output
-   - RANSAC consistency check
+4) Filter incorrect correspondences using the optical flow status output and a RANSAC consistency check.
 
-5) Estimate the relative motion between consecutive frames using:
-   - Essential Matrix (`cv2.findEssentialMat`)
-   - Pose recovery (`cv2.recoverPose`)
+5) Estimate the relative motion between consecutive frames using the essential matrix (`cv2.findEssentialMat`) and pose recovery (`cv2.recoverPose`).
 
 6) Integrate the estimated motion over time to reconstruct the trajectory of the camera.
 
 7) Show the estimated position in the 3D viewer using the provided GUI function.
 
----
-
-## Demonstration video:
+## Demonstration video
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
 ## Contributors
 
-- Contributors: , [Jose María Cañas](https://github.com/jmplaza)
-
-- Maintained by . 
+- Contributors: Jose Miguel Jiménez, [Jose María Cañas](https://github.com/jmplaza).
