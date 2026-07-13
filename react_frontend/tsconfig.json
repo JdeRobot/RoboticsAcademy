@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2025",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["./svg.d.ts", "./png.d.ts", "./jpg.d.ts", "./zip.d.ts"],
     "paths": {
@@ -27,8 +27,8 @@
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
