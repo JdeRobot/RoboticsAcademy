@@ -1,5 +1,5 @@
-import React, { JSX } from "react";
-import { useState, useEffect, useRef } from "react";
+import React from "react";
+import { useState, useEffect, useRef, JSX } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
 
 import IdeInterface, {

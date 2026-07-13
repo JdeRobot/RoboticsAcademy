@@ -67,7 +67,6 @@
     "jderobot-commsmanager": "1.1.0",
     "jderobot-ide-interface": "0.3.1",
     "jszip": "^3.10.1",
-    "react-router-dom": "^7.18.1",
     "styled-components": "^6.4.3",
     "three": "^0.185.1"
   },

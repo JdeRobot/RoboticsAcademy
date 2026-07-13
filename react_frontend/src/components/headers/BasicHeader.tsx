@@ -7,7 +7,7 @@ import { StyledHeaderButtonContainer } from "Styles/headers/HeaderMenu.styles";
 
 import { ForumButton } from "Components/buttons";
 import { HomeButton, ThemeButton } from "Components/buttons";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const BasicHeader = () => {
   const theme = useAcademyTheme();
