@@ -17,9 +17,6 @@ public:
   void pause();
   void unpause();
 
-  void myHandler(int signum) { start_time_ = std::chrono::system_clock::now(); }
-  static void static_myHandler(int signum) { instance.myHandler(signum); }
-
 private:
   std::shared_ptr<OdometryNode> pose3d_;
   std::chrono::system_clock::time_point start_time_;
@@ -28,7 +25,6 @@ private:
   bool buffer_;
   bool pause_condition_;
   std::mutex lap_mutex_;
-  static Lap instance;
 };
 
 #endif

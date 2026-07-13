@@ -1,16 +1,25 @@
 #include "Lap.hpp"
 #include <cmath>
+#include <csignal>
 #include <iomanip>
 #include <sstream>
 
+static volatile std::sig_atomic_t flag;
+
+void set_flag(int signal) { flag = 1; }
+
 Lap::Lap(std::shared_ptr<OdometryNode> pose3d) : pose3d_(pose3d) {
   reset();
-
-  signal(SIGCONT, Lap::static_myHandler);
+  signal(SIGCONT, set_flag);
 }
 
 std::string Lap::check_threshold() {
   std::lock_guard<std::mutex> lock(lap_mutex_);
+
+  if (flag == 1) {
+    flag = 0;
+    start_time_ = std::chrono::system_clock::now();
+  }
 
   if (start_time_.time_since_epoch().count() != 0 && !lap_rest_) {
     auto now = std::chrono::system_clock::now();

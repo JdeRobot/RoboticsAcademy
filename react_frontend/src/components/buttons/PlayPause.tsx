@@ -1,4 +1,10 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
 import {
@@ -26,8 +32,8 @@ const PlayPauseButton = ({
 }: {
   project: string;
   supportedLanguages: string[];
-  userRef: MutableRefObject<string | undefined>;
-  entrypointRef: MutableRefObject<Entry | undefined>;
+  userRef: RefObject<string | undefined>;
+  entrypointRef: RefObject<Entry | undefined>;
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -114,7 +120,7 @@ const PlayPauseButton = ({
     for (const zipObject of [zip1, zip2]) {
       mergeZip = await mergeZip.loadAsync(
         await zipObject.generateAsync({ type: "blob" }),
-        { createFolders: true }
+        { createFolders: true },
       );
     }
     return mergeZip;
@@ -131,7 +137,7 @@ const PlayPauseButton = ({
     if (state === states.WORLD_READY || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
       warning(
-        "Failed to found a running simulation. Please make sure a world is selected."
+        "Failed to found a running simulation. Please make sure a world is selected.",
       );
       setLoading(false);
       return;
@@ -144,7 +150,7 @@ const PlayPauseButton = ({
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
-          "Failed to stop the application. See the traces in the terminal."
+          "Failed to stop the application. See the traces in the terminal.",
         );
       }
       setLoading(false);
@@ -153,7 +159,7 @@ const PlayPauseButton = ({
 
     if (entrypointRef.current === undefined) {
       error(
-        "Failed to run the application. Make sure to select an entrypoint by opening it in the editor."
+        "Failed to run the application. Make sure to select an entrypoint by opening it in the editor.",
       );
       setLoading(false);
       return;
@@ -163,7 +169,7 @@ const PlayPauseButton = ({
 
     if (language === undefined || !supportedLanguages.includes(language)) {
       error(
-        `Failed to run the application. Entrypoint ${entrypointRef.current.path} is not supported.`
+        `Failed to run the application. Entrypoint ${entrypointRef.current.path} is not supported.`,
       );
       setLoading(false);
       return;
@@ -184,7 +190,7 @@ const PlayPauseButton = ({
     const userZip = await loadFiles(
       entrypointRef.current,
       filesRef.current,
-      userRef.current
+      userRef.current,
     );
 
     if (state === states.PAUSED) {
@@ -196,7 +202,7 @@ const PlayPauseButton = ({
         } catch (e: unknown) {
           console.error("Error resuming app: " + (e as Error).message);
           error(
-            "Failed to resume the application. See the traces in the terminal."
+            "Failed to resume the application. See the traces in the terminal.",
           );
         }
         setLoading(false);
@@ -217,7 +223,7 @@ const PlayPauseButton = ({
 
       const helper_files = await getHelperFileList(
         project,
-        language ?? "python"
+        language ?? "python",
       );
 
       await zipHelperFiles(
@@ -225,7 +231,7 @@ const PlayPauseButton = ({
         helper_files,
         project,
         language ?? "python",
-        entrypointRef.current
+        entrypointRef.current,
       );
 
       const finalZip = await mergeZips(helperZip, userZip);
@@ -240,11 +246,11 @@ const PlayPauseButton = ({
             await manager.run(
               `/workspace/code/${runningEntrypointRef.current.path}`,
               [runningEntrypointRef.current.path],
-              base64data as string
+              base64data as string,
             );
           } catch {
             error(
-              "Failed to run the application. See the traces in the terminal."
+              "Failed to run the application. See the traces in the terminal.",
             );
             setLoading(false);
           }
@@ -271,7 +277,7 @@ const PlayPauseButton = ({
       await zipCodeFiles(zip, files, project, user);
 
       zip.files[entrypoint.path]._data.then(
-        (value: string) => (runningContentRef.current = value)
+        (value: string) => (runningContentRef.current = value),
       );
       return zip;
     }
