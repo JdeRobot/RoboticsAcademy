@@ -487,8 +487,6 @@ int main(int argc, char *argv[])
 
 #### Source code: inside `cpp_lib`
 
-**WORK IN PROGRESS**
-
 This directory contains the source code for the C++ libraries WebGUI, HAL, Frequency and others.
 
 It must contain:
