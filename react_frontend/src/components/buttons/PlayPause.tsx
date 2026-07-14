@@ -1,10 +1,4 @@
-import React, {
-  RefObject,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
 import {
