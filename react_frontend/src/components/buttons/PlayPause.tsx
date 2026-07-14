@@ -1,5 +1,5 @@
 import React, {
-  MutableRefObject,
+  RefObject,
   RefObject,
   useEffect,
   useRef,

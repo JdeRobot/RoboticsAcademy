@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router";
@@ -43,7 +43,7 @@ const ExerciseHeader = ({
   url?: string;
   setLayout: (layout: Layout) => void;
   commsManager: CommsManager | null;
-  userRef: MutableRefObject<string | undefined>;
+  userRef: RefObject<string | undefined>;
   connectManager: (
     desiredState?: string,
     callback?: () => void,
@@ -102,7 +102,7 @@ const ExecutionControl = ({
   project: string;
   supportedLanguages: string[];
   commsManager: CommsManager | null;
-  userRef: MutableRefObject<string | undefined>;
+  userRef: RefObject<string | undefined>;
   connectManager: (
     desiredState?: string,
     callback?: () => void,
