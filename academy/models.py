@@ -177,12 +177,12 @@ class ExerciseWorlds(models.Model):
 
 class WorldRobots(models.Model):
     """
-    Through model linking Exercise and World with a default flag.
+    Through model linking World and Robot with the number of instances of said robot.
 
     Attributes:
-        exercise: Related Exercise instance.
         world: Related World instance.
-        is_default: Whether this world is the default for the exercise.
+        robot: Related Robot instance.
+        instances: Number of instances of the robot in a world (defaults to 1).
     """
 
     world = models.ForeignKey(World, on_delete=models.CASCADE)
