@@ -107,7 +107,7 @@ class World(models.Model):
     Attributes:
         name: Unique name identifying the world.
         scene: Associated Scene instance.
-        robot: Associated Robots instances.
+        robots: Associated Robots instances.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
