@@ -9,7 +9,6 @@ toc: true
 toc_label: "TOC Laser Mapping"
 toc_icon: "cog"
 
-
 gallery:
   - url: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
@@ -40,10 +39,11 @@ youtubeId2: 8pDsqMVAsv0
 The goal of this exercise is to develop a navigation algorithm that allows a robot to autonomously explore a warehouse environment while generating an accurate 2D map of the surroundings using LIDAR sensor data.
 
 The robot must be able to:
-* Perceive obstacles and free space using laser measurements
-* Build and update a map of the environment while moving
-* Navigate safely without prior knowledge of the environment
-* Continue exploration until the reachable area is sufficiently covered
+
+- Perceive obstacles and free space using laser measurements
+- Build and update a map of the environment while moving
+- Navigate safely without prior knowledge of the environment
+- Continue exploration until the reachable area is sufficiently covered
 
 {% include gallery caption="Laser Mapping." %}
 
@@ -82,8 +82,8 @@ To select a universe, click on the universe name in the bottom toolbar and pick 
 
 The robot provides two sources of position information:
 
-* `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` — absolute position of the robot.
-* `HAL.getOdom().x`, `HAL.getOdom().y`, `HAL.getOdom().yaw` — noisy odometry. The noise level depends on the selected universe.
+- `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` — absolute position of the robot.
+- `HAL.getOdom().x`, `HAL.getOdom().y`, `HAL.getOdom().yaw` — noisy odometry. The noise level depends on the selected universe.
 
 ## Robot API
 
@@ -93,19 +93,19 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL library class. This class contains the functions that receive information from the sensors or work with the actuators.
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d().x` - to get position x of the robot.
-* `HAL.getPose3d().y` - to get position y of the robot.
-* `HAL.getPose3d().yaw` - to get the orientation of the robot.
-* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise). The noise level depends on the selected world.
-* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise). The noise level depends on the selected world.
-* `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise). The noise level depends on the selected world.
-* `HAL.setW()` - to set the angular velocity.
-* `HAL.setV()` - to set the linear velocity.
-* `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
-* `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
-* `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
+- `import HAL` - to import the HAL library class. This class contains the functions that receive information from the sensors or work with the actuators.
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.getPose3d().x` - to get position x of the robot.
+- `HAL.getPose3d().y` - to get position y of the robot.
+- `HAL.getPose3d().yaw` - to get the orientation of the robot.
+- `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise). The noise level depends on the selected world.
+- `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise). The noise level depends on the selected world.
+- `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise). The noise level depends on the selected world.
+- `HAL.setW()` - to set the angular velocity.
+- `HAL.setV()` - to set the linear velocity.
+- `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
+- `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
+- `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
 #### C++
 
@@ -155,53 +155,53 @@ void exercise() {
 
 1. Example to get the robot pose:
 
-    ```cpp
-    HAL::Pose3d odom = HAL::get_odom();
+   ```cpp
+   HAL::Pose3d odom = HAL::get_odom();
 
-    double odom_x = odom.x;
-    double odom_y = odom.y;
-    double odom_yaw = odom.yaw;
-    ```
+   double odom_x = odom.x;
+   double odom_y = odom.y;
+   double odom_yaw = odom.yaw;
+   ```
 
 2. Example to get laser data:
 
-    ```cpp
-    HAL::LaserData laser = HAL::get_laser_data();
+   ```cpp
+   HAL::LaserData laser = HAL::get_laser_data();
 
-    if (!laser.values.empty()) {
-        float first_distance = laser.values[0];
-    }
-    ```
+   if (!laser.values.empty()) {
+       float first_distance = laser.values[0];
+   }
+   ```
 
 3. Example to convert a robot pose to map coordinates:
 
-    ```cpp
-    std::vector<double> map_pose = WebGUI::pose_to_map(robot_x, robot_y, robot_yaw);
+   ```cpp
+   std::vector<double> map_pose = WebGUI::pose_to_map(robot_x, robot_y, robot_yaw);
 
-    double map_x = map_pose[0];
-    double map_y = map_pose[1];
-    double map_yaw = map_pose[2];
-    ```
+   double map_x = map_pose[0];
+   double map_y = map_pose[1];
+   double map_yaw = map_pose[2];
+   ```
 
 4. Example to show the generated occupancy map:
 
-    ```cpp
-    cv::Mat user_map(970, 1500, CV_8UC1, cv::Scalar(127));
+   ```cpp
+   cv::Mat user_map(970, 1500, CV_8UC1, cv::Scalar(127));
 
-    WebGUI::set_user_map(user_map);
-    ```
+   WebGUI::set_user_map(user_map);
+   ```
 
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/turtlebot3/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/do150/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/turtlebot3/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
+- `/do150/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/turtlebot3/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
+- `/do150/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/turtlebot3/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/do150/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
 For image debugging:
 
@@ -209,6 +209,7 @@ For image debugging:
   QoS: `TRANSIENT_LOCAL`, depth `1` The map sent to `/webgui/user_map` must be a `mono8` image with **1500 pixels width** and **970 pixels height**.
 
 #### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -221,7 +222,6 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
-
 
 #### C++
 
@@ -259,32 +259,39 @@ To have frequency control you may use a timer and a control function as follows:
 ```
 
 ## Theory
+
 Laser mapping is the process by which a robot builds a representation of an unknown environment using distance measurements obtained from a LIDAR sensor while moving through the space.
 The robot continuously senses its surroundings, updates the map, and decides where to move next in order to reduce unexplored areas.
 
 ### Mapping with known possitions
+
 The robot uses its current position and orientation to correctly place sensor measurements into a global map. Each laser beam is described by a distance and an angle relative to the robot, which are converted into Cartesian coordinates. These points are then projected onto a grid map representing the environment. By repeating this process over time, the robot consistently marks free space and obstacles in the correct locations, gradually building an accurate map of its surroundings.
 
 ## Analyzing Coverage Algorithms
+
 Mapping with known positions assumes that the current position of the robot is known. This technique consists of converting the distance measurements of the different laser beams into Cartesian coordinates relative to the robot. The distance mesured by the beam can reflect the existence of an obstacle; therefore, these Cartesian coordinates are inserted reflecting obstacles in an occupation grid relative to the current position of the robot.
 This technique is not entirely real because in most cases, the position of the robot is unknown. Therefore, other techniques such as SLAM are used in real life.
 
 ### Occupancy grid
+
 An occupation grid is a discretization of the robot's environment in cells. This discretization will be given by the size of the world in which the robot is located. Each cell can represent free space, an obstacle, or an unexplored area. Instead of using fixed binary values, the belief of a cell is updated probabilistically using laser sensor measurements. When a laser beam passes through a cell, the confidence that the cell is free increases. When a laser beam ends at a cell, the confidence that the cell is occupied increases.
 
 To combine observations over time in a stable way, the grid is updated using a log-odds representation. In this representation, probabilities are stored in a logarithmic form, allowing evidence from multiple measurements to be added incrementally. Positive log-odds values indicate a higher confidence of an obstacle, negative values indicate free space, and values close to zero correspond to unknown areas.
 
 ### Laser Ray Interpretation and Measurement Independence
+
 A single laser measurement provides information about both free space and obstacles. The space between the robot and the detected point is considered free, while the point where the laser ends represents an obstacle. Only the region up to the detected obstacle is interpreted, so areas behind walls are not incorrectly marked.
 
 For probabilistic mapping to remain consistent, laser measurements should be treated as independent observations. Since repeated scans taken without sufficient movement are highly correlated, updates are considered meaningful only after the robot has moved or changed its orientation. This helps prevent overconfidence and improves the overall quality of the map.
 
 ### Exploration and Coverage
+
 Exploration defines the path that the robot follows to observe and map unknown areas of the environment. Different exploration algorithms generate different robot paths.
-* Random Exploration-The robot moves along irregular paths, changing direction when obstacles are encountered.
-* Wall-Following Exploration-The robot follows paths that remain close to walls or obstacles, allowing it to trace boundaries and gradually reveal the structure of the environment.
-* Systematic Coverage (Lawn-Mower Motion)-The robot follows parallel back-and-forth paths that sweep the environment in an organized manner, ensuring uniform and predictable coverage.
-* Frontier-Based Exploration-The robot’s path is directed toward the boundary between explored and unexplored regions, causing the mapped area to expand outward until no unknown space remains.
+
+- Random Exploration-The robot moves along irregular paths, changing direction when obstacles are encountered.
+- Wall-Following Exploration-The robot follows paths that remain close to walls or obstacles, allowing it to trace boundaries and gradually reveal the structure of the environment.
+- Systematic Coverage (Lawn-Mower Motion)-The robot follows parallel back-and-forth paths that sweep the environment in an organized manner, ensuring uniform and predictable coverage.
+- Frontier-Based Exploration-The robot’s path is directed toward the boundary between explored and unexplored regions, causing the mapped area to expand outward until no unknown space remains.
 
 Any exploration algorithm that guides the robot safely through the environment and progressively reduces unknown areas is considered valid for this exercise.
 
@@ -296,14 +303,13 @@ Any exploration algorithm that guides the robot safely through the environment a
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-*This is a demostrative solution on unibotics.org*
+_This is a demostrative solution on unibotics.org_
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-*This solution is an illustration for the Web Templates*
+_This solution is an illustration for the Web Templates_
 
 <br/>
-
 
 ## Contributors
 
