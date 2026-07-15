@@ -19,7 +19,7 @@ from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
 from .templates import select_template
-from .models import Exercise, World, ExerciseWorlds
+from .models import Exercise, World, ExerciseWorlds, WorldRobots
 from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
@@ -437,8 +437,11 @@ def get_docker_world_data(fal, request):
         exercise_id=project_id
     )
 
+    robots = []
+    robots_config = []
     tools = []
     tools_config = {}
+
     for tool_name, base_config in project.tools.values_list("name", "base_config"):
         tools.append(tool_name)
         if base_config != "None":
@@ -454,65 +457,54 @@ def get_docker_world_data(fal, request):
                 "type": None,
                 "tools_config": None,
             },
-            "robot": [
-                {
-                    "name": None,
-                    "launch_file_path": None,
-                    "ros_version": None,
-                    "type": None,
-                    "start_pose": None,
-                    "entity": None,
-                    "extra_config": None,
-                }
-            ],
+            "robot": robots,
             "tools": tools,
             "tools_config": tools_config,
         }
-    else:
-        world = World.objects.get(name=name)
+        return Response({"success": True, "world": config})
 
-        tools_configuration = None
-        if world.scene.tools_config != "None":
-            tools_configuration = json.loads(world.scene.tools_config)
+    world = World.objects.get(name=name)
 
-        if world.robot.name != "None":
-            robot_config = [
-                {
-                    "name": world.robot.name,
-                    "launch_file_path": world.robot.launch_file_path,
-                    "ros_version": world.scene.ros_version,
-                    "type": world.scene.type,
-                    "start_pose": world.scene.start_pose,
-                    "entity": world.robot.entity,
-                    "extra_config": world.robot.extra_config,
-                }
-            ]
-        else:
-            robot_config = [
-                {
-                    "name": None,
-                    "launch_file_path": None,
-                    "ros_version": None,
-                    "type": None,
-                    "start_pose": None,
-                    "entity": None,
-                    "extra_config": None,
-                }
-            ]
+    ros_version = world.scene.ros_version
+    world_type = world.scene.type
+    spawn_poses = world.scene.start_pose
 
-        config = {
-            "name": world.name,
-            "scene": {
-                "name": world.scene.name,
-                "launch_file_path": world.scene.launch_file_path,
-                "ros_version": world.scene.ros_version,
-                "type": world.scene.type,
-                "tools_config": tools_configuration,
-            },
-            "robot": robot_config,
-            "tools": tools,
-            "tools_config": tools_configuration,
+    if world.scene.tools_config != "None":
+        tools_configuration = json.loads(world.scene.tools_config)
+
+    robot_models = world.robots.all()
+    for robot in robot_models:
+        robot_config = {
+            "name": robot.name,
+            "launch_file_path": robot.launch_file_path,
+            "ros_version": ros_version,
+            "type": world_type,
+            "start_pose": [0, 0, 0, 0, 0, 0],
+            "entity": robot.entity,
+            "extra_config": robot.extra_config,
         }
+        n_instances = WorldRobots.objects.get(world=world, robot=robot).instances
+        robots_config.extend([robot_config for i in range(n_instances)])
+
+    if len(robots_config) > len(spawn_poses):
+        raise Exception("More robots than possible spawn points")
+
+    for robot_index in range(len(robots_config)):
+        robots_config[robot_index]["start_pose"] = spawn_poses[robot_index]
+
+    config = {
+        "name": world.name,
+        "scene": {
+            "name": world.scene.name,
+            "launch_file_path": world.scene.launch_file_path,
+            "ros_version": ros_version,
+            "type": world_type,
+            "tools_config": tools_configuration,
+        },
+        "robot": robots_config,
+        "tools": tools,
+        "tools_config": tools_configuration,
+    }
 
     return Response({"success": True, "world": config})
 

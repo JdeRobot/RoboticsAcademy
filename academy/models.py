@@ -107,16 +107,14 @@ class World(models.Model):
     Attributes:
         name: Unique name identifying the world.
         scene: Associated Scene instance.
-        robot: Associated Robot instance.
+        robots: Associated Robots instances.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     scene = models.OneToOneField(
         Scene, default=None, on_delete=models.CASCADE, db_column="scene_id"
     )
-    robot = models.OneToOneField(
-        Robot, default=None, on_delete=models.CASCADE, db_column="robot_id"
-    )
+    robots = models.ManyToManyField(Robot, default=None, through="WorldRobots")
 
     def __str__(self):
         return str(self.name)
@@ -175,3 +173,21 @@ class ExerciseWorlds(models.Model):
 
     class Meta:
         db_table = '"exercises_worlds"'
+
+
+class WorldRobots(models.Model):
+    """
+    Through model linking World and Robot with the number of instances of said robot.
+
+    Attributes:
+        world: Related World instance.
+        robot: Related Robot instance.
+        instances: Number of instances of the robot in a world (defaults to 1).
+    """
+
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
+    instances = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        db_table = '"worlds_robots"'
