@@ -24,7 +24,7 @@ function WebGUI() {
   const [mapSize, setMapSize] = useState(Map1Size);
   const [vehicleType, setVehicleType] = useState(0); // 0=normal 1=ackermann
   const [vehiclePose, setVehiclePose] = useState<number[] | undefined>(
-    undefined
+    undefined,
   );
   const [targetPose, setTargetPose] = useState<number[] | undefined>(undefined);
   const [trail, setTrail] = useState<string>("");
@@ -145,7 +145,7 @@ function WebGUI() {
     }
 
     if (state === states.TOOLS_READY) {
-      const world = manager.getUniverse();
+      const world = manager.getWorld();
 
       if (world.includes("2")) {
         setMap(Map2);
@@ -175,7 +175,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver
+    resizeObserver,
   );
 
   return (
@@ -186,7 +186,7 @@ function WebGUI() {
           id="vehic-pos"
           className={liftState ? "lifting" : ""}
           style={{
-            rotate: "z " + (vehiclePose[2] + Math.PI/2) + "rad",
+            rotate: "z " + (vehiclePose[2] + Math.PI / 2) + "rad",
             top: vehiclePose[0] - 10,
             left: vehiclePose[1] - 10,
           }}

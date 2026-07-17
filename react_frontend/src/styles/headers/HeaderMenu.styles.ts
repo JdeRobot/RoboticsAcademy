@@ -41,6 +41,7 @@ interface StyledHeaderButtonProps {
   bgColor?: string;
   hoverColor?: string;
   roundness?: number;
+  color?: string;
 }
 
 export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
@@ -82,6 +83,50 @@ export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
   #loading-spin {
     animation: spin 2s linear infinite;
     opacity: 50%;
+  }
+`;
+
+export const StyledHeaderConnectButton = styled.button<StyledHeaderButtonProps>`
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  padding: 0 8px;
+  height: 32px;
+  background-color: ${(p) => p.bgColor ?? primaryColor};
+  font-weight: 500;
+  font-size: 18px;
+  color: ${(p) => p.color ?? primaryColor};
+
+  border: 0;
+  margin-left: 6px;
+  margin-right: 6px;
+  align-content: center;
+  flex-wrap: wrap;
+  border-radius: ${(p) => p.roundness ?? 1}px;
+
+  // &:hover {
+  //   animation: unset;
+  // }
+
+  &:focus {
+    outline: none;
+  }
+
+  animation: pulse2 3s infinite;
+  z-index: 100000;
+
+  @keyframes pulse2 {
+    0% {
+      box-shadow: unset;
+    }
+
+    50% {
+      box-shadow: 0px 0px 6px 6px ${(p) => p.bgColor ?? primaryColor};
+    }
+
+    100% {
+      box-shadow: unset;
+    }
   }
 `;
 

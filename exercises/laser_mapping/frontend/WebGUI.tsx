@@ -129,7 +129,7 @@ function WebGUI() {
       noisyTrail = [];
       setUserImage(undefined);
 
-      if (manager.getUniverse().startsWith("Small")) {
+      if (manager.getWorld().startsWith("Small")) {
         setMapImg(smallWarehouse);
       } else {
         setMapImg(warehouse);

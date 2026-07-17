@@ -26,15 +26,15 @@
 | DL image classification              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_classification]     | -                            |       none        |        none        |             |
 | DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                            |       none        |        none        |             |
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |        ok         |         ok         |             |
-| Machine Vision with industrial robot |        ok        |             |      ok       |          | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |             |
+| Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |             |
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |                   |         ok         |             |
 | Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | -     |                   |         ok         |        |
 |                                      |                  |             |               |          |                                   |                              |                   |                    |             |
-| Dynamic Window Approach              |        ok        |             |      ok       |          | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
-| Visual Odometry                      |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Visibility Graph Navigation          |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Rapidly Exploring Random Trees nav   |        ok        |             |      ok       |          | -                                 |                              |                   |                    |             |
-| Line Mapping                         |        ok        |             |               |          | -                                 |                              |                   |                    |             |
+| Dynamic Window Approach              |        ok        |      ok     |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
+| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Line Mapping                         |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 
 ## 🚧 Exercises under repair / workshop state
 

@@ -1,4 +1,4 @@
-FROM node:20 AS ra-base
+FROM node:24 AS ra-base
 
 RUN apt-get update && apt-get install -y git zip
 
@@ -20,15 +20,15 @@ WORKDIR /
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 ARG INFRA_OWNER=JdeRobot
-# Launchers/, Worlds/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
+# Launchers/, Scenes/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
 # Only .git history is stripped to recover extra space.
 RUN mkdir -p /opt/jderobot /home/ws/src && \
     git clone --depth 1 https://github.com/${INFRA_OWNER}/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot && \
     mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /opt/jderobot/jderobot_drones_cpp /opt/jderobot/Industrial /opt/jderobot/common_interfaces_cpp /home/ws/src/ && \
     mv /opt/jderobot/resources /resources && \
-    mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
+    mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
     mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
-    chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh && \
+    chmod +x /entrypoint.sh /set_dri_name.sh && \
     rm -rf /opt/jderobot/.git \
     /opt/jderobot/.github \
     /opt/jderobot/database \
@@ -38,7 +38,7 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     /opt/jderobot/test \
     /opt/jderobot/Universes \
     /opt/jderobot/utils \
-    && rm -f /opt/jderobot/Worlds/*.glb
+    && rm -f /opt/jderobot/Scenes/*.glb
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
@@ -57,7 +57,7 @@ RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git 
     /RoboticsAcademy/docs \
     /RoboticsAcademy/scripts \
     /RoboticsAcademy/tests \
-    /RoboticsAcademy/react_fronted \
+    /RoboticsAcademy/react_frontend \
     /RoboticsAcademy/common
 
 COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static

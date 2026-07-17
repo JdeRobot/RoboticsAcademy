@@ -1,4 +1,5 @@
 from datetime import datetime
+import signal
 
 
 class Lap:
@@ -6,26 +7,29 @@ class Lap:
         self.pose3d = pose3d
         self.reset()
 
+        def signal_handler(sign, frame):
+            self.start_time = datetime.now()
+
+        signal.signal(signal.SIGCONT, signal_handler)
+
     # Function to check for threshold
     # And incrementing the running time
     def check_threshold(self):
 
-        # Variable for pause
-        if self.pause_condition == False:
-            # Running condition to calculate the current time
-            # Time calculated by adding increments from each iteration
-            if self.start_time != 0 and self.lap_rest == False:
-                if self.lap_time == 0:
-                    self.lap_time = datetime.now() - self.start_time
-                else:
-                    self.lap_time += datetime.now() - self.start_time
+        # Running condition to calculate the current time
+        # Time calculated by adding increments from each iteration
+        if self.start_time != 0 and self.lap_rest == False:
+            if self.lap_time == 0:
+                self.lap_time = datetime.now() - self.start_time
+            else:
+                self.lap_time += datetime.now() - self.start_time
 
-                self.start_time = datetime.now()
+            self.start_time = datetime.now()
 
-            # Condition when the time starts running
-            if self.start_time == 0 and self.lap_rest == True:
-                self.start_time = datetime.now()
-                self.lap_rest = False
+        # Condition when the time starts running
+        if self.start_time == 0 and self.lap_rest == True:
+            self.start_time = datetime.now()
+            self.lap_rest = False
 
         return self.lap_time
 
@@ -41,18 +45,3 @@ class Lap:
 
         self.lap_rest = True
         self.buffer = False
-
-        self.pause_condition = False
-
-    # Function to pause
-    def pause(self):
-        self.pause_condition = True
-
-    # Function to unpause
-    def unpause(self):
-        # To enable unpause button to be used again and again
-        if self.pause_condition == True:
-            # Next time the time will be incremented accordingly
-            self.start_time = datetime.now()
-
-        self.pause_condition = False

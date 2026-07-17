@@ -36,7 +36,7 @@ find_package(yaml-cpp REQUIRED)
 set(COMMON_INTERFACES_INCLUDE "/home/ws/install/common_interfaces_cpp/include")
 set(COMMON_INTERFACES_LIB "/home/ws/install/common_interfaces_cpp/lib/libcommon_interfaces_cpp.so")
 
-set(WEBGUI_ROS_DEPS  rclcpp std_msgs cv_bridge)
+set(WEBGUI_ROS_DEPS  rclcpp std_msgs sensor_msgs cv_bridge)
 set(WEBGUI_SYS_DEPS  Frequency Boost::system nlohmann_json::nlohmann_json)
 set(HAL_ROS_DEPS     rclcpp rclcpp_action ros2srrc_data control_msgs trajectory_msgs
                      builtin_interfaces std_msgs sensor_msgs tf2_ros tf2_geometry_msgs

@@ -28,14 +28,14 @@ academy_urls = [
     ),
     path("get_helper_file/", views.get_helper_file, name="get_helper_file"),
     path(
-        "get_universes_list/",
-        views.get_universes_list,
-        name="get_universes_list",
+        "get_worlds_list/",
+        views.get_worlds_list,
+        name="get_worlds_list",
     ),
     path(
-        "get_docker_universe_data/",
-        views.get_docker_universe_data,
-        name="get_docker_universe_data",
+        "get_docker_world_data/",
+        views.get_docker_world_data,
+        name="get_docker_world_data",
     ),
     # File Management
     path("create_file/", views.create_file, name="create_file"),
@@ -57,5 +57,5 @@ urlpatterns = [
     path("academy/", include("react_frontend.urls")),
     path("academy/", include(academy_urls)),
     path("save_exercise_db/", views.save_exercise_db, name="save_exercise_db"),
-    path("save_universe_db/", views.save_universe_db, name="save_universe_db"),
+    path("save_world_db/", views.save_world_db, name="save_world_db"),
 ]

@@ -1,32 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": [
-      "./svg.d.ts",
-      "./png.d.ts",
-      "./jpg.d.ts",
-      "./zip.d.ts"
-    ],
+    "types": ["./svg.d.ts", "./png.d.ts", "./jpg.d.ts", "./zip.d.ts"],
     "paths": {
-      "Assets/*": [ "src/assets/*"],
-      "Components/*": [ "src/components/*"],
-      "Utils/*": [ "src/utils/*"],
-      "Contexts/*": [ "src/contexts/*"],
-      "Helpers/*": [ "src/helpers/*"],
-      "Icons/*": [ "src/icons/*"],
-      "Styles/*": [ "src/styles/*"],
-      "Types/*": [ "src/types/*"],
-      "Constants/*": [ "src/constants/*"],
-      "Api": [ "src/api/index.ts"],
-      "Routes": [ "src/routes/index.ts"],
-      "exercises": ["../exercises/*"]
+      "Assets/*": ["./src/assets/*"],
+      "Components/*": ["./src/components/*"],
+      "Utils/*": ["./src/utils/*"],
+      "Contexts/*": ["./src/contexts/*"],
+      "Helpers/*": ["./src/helpers/*"],
+      "Icons/*": ["./src/icons/*"],
+      "Styles/*": ["./src/styles/*"],
+      "Types/*": ["./src/types/*"],
+      "Constants/*": ["./src/constants/*"],
+      "Api": ["./src/api/index.ts"],
+      "Routes": ["./src/routes/index.ts"],
+      "exercises": ["./../exercises/*"]
     },
-    "baseUrl": "./",
-    "rootDirs": [
-      "./src",
-      "../exercises/"
-    ],
+    "rootDirs": ["./src", "./../exercises/"],
     "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -37,7 +28,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -46,10 +37,10 @@
   "include": [
     "src",
     "eslint.config.mts",
-    "../exercises/**/*",
+    "./../exercises/**/*",
     "svg.d.ts",
     "jpg.d.ts",
     "png.d.ts",
-    "zip.d.ts",
+    "zip.d.ts"
   ]
 }

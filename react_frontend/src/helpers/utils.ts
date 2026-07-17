@@ -1,12 +1,12 @@
 import { getFile, getHelperFile } from "Api";
 import { Entry } from "jderobot-ide-interface";
 import JSZip from "jszip";
-import { MutableRefObject } from "react";
+import { RefObject } from "react";
 
 export const saveCode = (
   fileName: string,
   python_code: string,
-  language?: string
+  language?: string,
 ) => {
   let extension = ".py";
   if (language === "cpp") {
@@ -43,7 +43,7 @@ export const zipHelperFiles = async (
   files: Entry[],
   project: string,
   language: string,
-  entrypoint: Entry
+  entrypoint: Entry,
 ) => {
   for (const file of files) {
     if (file.is_dir) {
@@ -55,7 +55,7 @@ export const zipHelperFiles = async (
         file.name,
         project,
         language,
-        entrypoint
+        entrypoint,
       );
     }
   }
@@ -68,7 +68,7 @@ const zipHelperFile = async (
   project: string,
   language: string,
   entrypoint: Entry,
-  binary?: boolean
+  binary?: boolean,
 ) => {
   let content = await getHelperFile(project, language, file_path, binary);
 
@@ -89,7 +89,7 @@ const zipHelperFolder = async (
   file: Entry,
   project: string,
   language: string,
-  entrypoint: Entry
+  entrypoint: Entry,
 ) => {
   const folder = zip.folder(file.name);
 
@@ -109,7 +109,7 @@ const zipHelperFolder = async (
         project,
         language,
         entrypoint,
-        element.binary
+        element.binary,
       );
     }
   }
@@ -118,23 +118,34 @@ const zipHelperFolder = async (
 export const zipCodeFiles = async (
   zip: JSZip,
   files: Entry[],
-  project: string
+  project: string,
+  user?: string,
 ) => {
   for (const file of files) {
     if (file.is_dir) {
-      await zipCodeFolder(zip, file, project);
+      await zipCodeFolder(zip, file, project, user);
     } else {
-      await zipCodeFile(zip, file, project);
+      await zipCodeFile(zip, file, project, user);
     }
   }
 };
 
-const zipCodeFile = async (zip: JSZip, file: Entry, project: string) => {
-  const content = await getFile(project, file.path, file.binary);
+const zipCodeFile = async (
+  zip: JSZip,
+  file: Entry,
+  project: string,
+  user?: string,
+) => {
+  const content = await getFile(project, file.path, user, file.binary);
   zip.file(file.name, content, { binary: file.binary });
 };
 
-const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {
+const zipCodeFolder = async (
+  zip: JSZip,
+  file: Entry,
+  project: string,
+  user?: string,
+) => {
   const folder = zip.folder(file.name);
 
   if (folder === null) {
@@ -144,16 +155,14 @@ const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {
   for (let index = 0; index < file.files.length; index++) {
     const element = file.files[index];
     if (element.is_dir) {
-      await zipCodeFolder(folder, element, project);
+      await zipCodeFolder(folder, element, project, user);
     } else {
-      await zipCodeFile(folder, element, project);
+      await zipCodeFile(folder, element, project, user);
     }
   }
 };
 
-export const clearTimeouts = (
-  timeoutsRef: MutableRefObject<number | null>[]
-) => {
+export const clearTimeouts = (timeoutsRef: RefObject<number | null>[]) => {
   for (const element of timeoutsRef) {
     if (element.current) {
       window.clearTimeout(element.current);

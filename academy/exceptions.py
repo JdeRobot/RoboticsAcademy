@@ -26,7 +26,7 @@ class ResourceAlreadyExists(Exception):
     """Exception raised for finding a resource that already exists."""
 
     def __init__(self, msg):
-        self.message = f" {msg} already exists"
+        self.message = f"{msg} already exists"
         super().__init__(self.message)
         self.error_code = 409
 
@@ -38,7 +38,7 @@ class ResourceAlreadyExistsHelpers(Exception):
     """Exception raised for finding a resource that already exists in the helpers."""
 
     def __init__(self, msg):
-        self.message = f" {msg} already exists in the helpers"
+        self.message = f"{msg} already exists in the helpers"
         super().__init__(self.message)
         self.error_code = 412
 
@@ -50,7 +50,7 @@ class ResourceNotExists(Exception):
     """Exception raised for not finding a resource."""
 
     def __init__(self, msg):
-        self.message = f" {msg} does not exist"
+        self.message = f"{msg} does not exist"
         super().__init__(self.message)
         self.error_code = 404
 

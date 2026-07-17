@@ -92,18 +92,6 @@ class WebGUI(MeasuringThreadingGUI):
             except Exception:
                 threading.Event().wait(1.0)
 
-    def gui_in_thread(self, ws, message):
-        if "ack" in message:
-            with self.ack_lock:
-                self.ack = True
-        elif "start" in message:
-            with self.ack_lock:
-                self.ack_frontend = True
-        elif "startLap" in message:
-            self.lap.unpause()
-        elif "pause" in message:
-            self.lap.pause()
-
     def update_gui(self):
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)

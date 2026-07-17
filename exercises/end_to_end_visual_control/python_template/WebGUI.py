@@ -4,17 +4,16 @@ import json
 import threading
 import sys
 import rclpy
-from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
-
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
 from console_interfaces.general.console import start_console
 from lap import Lap
+from cv_bridge import CvBridge
 from hal_interfaces.general.odometry import OdometryNode
+from sensor_msgs.msg import Image
+from rclpy.node import Node
 
 
 class WebGUINode(Node):
@@ -61,18 +60,6 @@ class WebGUI(MeasuringThreadingGUI):
         self.lap = Lap(self.odom_node)
 
         self.start()
-
-    def gui_in_thread(self, ws, message):
-        if "ack" in message:
-            with self.ack_lock:
-                self.ack = True
-        elif "start" in message:
-            with self.ack_lock:
-                self.ack_frontend = True
-        elif "startLap" in message:
-            self.lap.unpause()
-        elif "pause" in message:
-            self.lap.pause()
 
     def update_gui(self):
         payload = self.payloadImage()

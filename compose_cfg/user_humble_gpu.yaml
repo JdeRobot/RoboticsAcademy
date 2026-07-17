@@ -1,10 +1,10 @@
 services:
   my-postgres:
     image: jderobot/robotics-database:latest
-    container_name: universe_db
+    container_name: world_db
     environment:
-      POSTGRES_DB: academy_db 
-      POSTGRES_USER: user-dev 
+      POSTGRES_DB: academy_db
+      POSTGRES_USER: user-dev
       POSTGRES_PASSWORD: robotics-academy-dev
     ports:
       - "5432:5432"
@@ -13,11 +13,11 @@ services:
       interval: 3s
       timeout: 1s
       retries: 20
-  
+
   robotics-academy:
     image: jderobot/robotics-academy:latest
     container_name: developer-container
-    command:  "-s"
+    command: "-s"
     devices:
       - /dev/dri:/dev/dri
     ports:
@@ -26,6 +26,6 @@ services:
       - "6080-6090:6080-6090"
     tty: true
     stdin_open: true
-    depends_on: 
+    depends_on:
       my-postgres:
         condition: service_healthy

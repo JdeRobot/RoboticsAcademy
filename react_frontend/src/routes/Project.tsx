@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Params, useLoaderData } from "react-router-dom";
+import { Params, useLoaderData } from "react-router";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
@@ -17,20 +17,20 @@ export const loader = async ({
   params,
 }: {
   params: Params<string>;
-}): Promise<Omit<ExerciseData, "universes">> => {
+}): Promise<Omit<ExerciseData, "worlds">> => {
   return await getProjectData(params.proj_id);
 };
 
 const Exercise = () => {
   const hasRender = useRef(false);
-  const data = useLoaderData<Omit<ExerciseData, "universes">>();
+  const data = useLoaderData<Omit<ExerciseData, "worlds">>();
 
   const WebGui = lazy(async () => {
     return import(`exercises/${data.exercise_id}/frontend/WebGUI.tsx`).catch(
       (error) => {
         console.error("Component Failed Loading:", error);
         return { default: WebGUIPreview };
-      }
+      },
     );
   });
 

@@ -1,6 +1,8 @@
 #include "WebGUI.hpp"
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
 #include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
+#include "sensor_msgs/msg/image.hpp"
+#include <cv_bridge/cv_bridge.h>
 #include <rcutils/logging.h>
 #include <atomic>
 #include <cmath>
@@ -16,11 +18,24 @@ public:
         , gui_iterations_(0)
         , rtf_monitor_("/stats", std::chrono::milliseconds(500))
     {
+        // ROS2 direct support: subscribe to /webgui_image so a user node that
+        // only links WebGUI can display images by publishing to this topic.
+        aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
+        auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).durability_volatile().best_effort();
+        debug_sub_ = aux_node_->create_subscription<sensor_msgs::msg::Image>(
+            "/webgui_image", qos,
+            [this](const sensor_msgs::msg::Image::SharedPtr msg) {
+                try {
+                    cv::Mat img = cv_bridge::toCvShare(msg, "bgr8")->image;
+                    show_image(img);
+                } catch (...) {}
+            });
+
         last_stat_time_ = std::chrono::steady_clock::now();
     }
 
     std::vector<rclcpp::Node::SharedPtr> get_internal_nodes() {
-        return { shared_from_this() };
+        return { shared_from_this(), aux_node_ };
     }
 
     void show_image(const cv::Mat& img) {
@@ -87,6 +102,8 @@ protected:
         return last_image_payload_;
     }
 
+    rclcpp::Node::SharedPtr aux_node_;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr debug_sub_;
     cv::Mat img_buf_;
     std::mutex img_mtx_;
     std::atomic<bool> image_updated_;

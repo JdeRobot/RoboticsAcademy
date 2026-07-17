@@ -19,7 +19,7 @@ from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
 from .templates import select_template
-from .models import Exercise, Universe, ExerciseUniverses
+from .models import Exercise, World, ExerciseWorlds, WorldRobots
 from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
@@ -30,13 +30,13 @@ def save_exercise_db(request):
     """
     Trigger a PostgreSQL dump of exercise-related tables to the repository.
 
-    Dumps tables: exercises, exercises_universes, exercises_tools.
+    Dumps tables: exercises, exercises_worlds, exercises_tools.
     Output is written to RoboticsAcademy/database/exercises/db.sql.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.exercises --table public.exercises_universes --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -49,17 +49,17 @@ def save_exercise_db(request):
 
 @csrf_exempt
 @api_view(["GET"])
-def save_universe_db(request):
+def save_world_db(request):
     """
-    Trigger a PostgreSQL dump of universe-related tables to a SQL file.
+    Trigger a PostgreSQL dump of world-related tables to a SQL file.
 
-    Dumps tables: universes, worlds, robots, tools.
-    Output is written to /universes.sql inside the container.
+    Dumps tables: worlds, scenes, robots, tools.
+    Output is written to /worlds.sql inside the container.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.universes --table public.worlds --table public.robots --table public.tools > /universes.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.scenes --table public.robots --table public.tools > /worlds.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -201,12 +201,16 @@ def get_file_list(fal, request):
     Query params: project (str).
     """
     project = request.GET.get("project")
+    user = request.GET.get("user", None)
 
     base_group = "Code"
 
     path = fal.exercise_path(project)
 
-    file_list = fal.list_formatted(path, base_group)
+    try:
+        file_list = fal.list_formatted(path, base_group)
+    except Exception:
+        return Response({"file_list": EntryEncoder().encode([])})
 
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
@@ -360,6 +364,7 @@ def get_file(fal, request):
     """
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
+    user = request.GET.get("user", None)
 
     binary = request.GET.get("binary", None)
 
@@ -398,112 +403,110 @@ def save_file(fal, request):
 
 
 @error_wrapper("GET", ["project"])
-def get_universes_list(fal, request):
+def get_worlds_list(fal, request):
     """
-    Return the list of universes associated with an exercise.
+    Return the list of worlds associated with an exercise.
     """
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    universes_list = []
+    worlds_list = []
 
-    proj_univs = project.universes.all()
-    proj_univs = sorted(
-        proj_univs,
-        key=lambda univ: not ExerciseUniverses.objects.get(
-            exercise=project, universe=univ
+    proj_worlds = project.worlds.all()
+    proj_worlds = sorted(
+        proj_worlds,
+        key=lambda world: not ExerciseWorlds.objects.get(
+            exercise=project, world=world
         ).is_default,
     )
 
-    for universe in proj_univs:
-        universes_list.append(universe.name)
+    for world in proj_worlds:
+        worlds_list.append(world.name)
 
-    return Response({"universes_list": universes_list})
+    return Response({"worlds_list": worlds_list})
 
 
 @error_wrapper("GET", ["project"])
-def get_docker_universe_data(fal, request):
+def get_docker_world_data(fal, request):
     """
-    Retrieve docker and universe configuration for an exercise.
+    Retrieve docker and world configuration for an exercise.
     """
-    name = request.GET.get("universe")
+    name = request.GET.get("world")
     project_id = request.GET.get("project")
-    project = Exercise.objects.prefetch_related("tools", "universes").get(
+    project = Exercise.objects.prefetch_related("tools", "worlds").get(
         exercise_id=project_id
     )
 
+    robots = []
+    robots_config = []
     tools = []
     tools_config = {}
+
     for tool_name, base_config in project.tools.values_list("name", "base_config"):
         tools.append(tool_name)
         if base_config != "None":
             tools_config[tool_name] = base_config
 
-    if not project.universes.exists():
+    if not project.worlds.exists():
         config = {
             "name": None,
-            "world": {
+            "scene": {
                 "name": None,
                 "launch_file_path": None,
                 "ros_version": None,
                 "type": None,
                 "tools_config": None,
             },
-            "robot": {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-                "entity": None,
-                "extra_config": None,
-            },
+            "robot": robots,
             "tools": tools,
             "tools_config": tools_config,
         }
-    else:
-        universe = Universe.objects.get(name=name)
+        return Response({"success": True, "world": config})
 
-        tools_configuration = None
-        if universe.world.tools_config != "None":
-            tools_configuration = json.loads(universe.world.tools_config)
+    world = World.objects.get(name=name)
 
-        if universe.robot.name != "None":
-            robot_config = {
-                "name": universe.robot.name,
-                "launch_file_path": universe.robot.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "start_pose": universe.world.start_pose,
-                "entity": universe.robot.entity,
-                "extra_config": universe.robot.extra_config,
-            }
-        else:
-            robot_config = {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-                "entity": None,
-                "extra_config": None,
-            }
+    ros_version = world.scene.ros_version
+    world_type = world.scene.type
+    spawn_poses = world.scene.start_pose
 
-        config = {
-            "name": universe.name,
-            "world": {
-                "name": universe.world.name,
-                "launch_file_path": universe.world.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "tools_config": tools_configuration,
-            },
-            "robot": robot_config,
-            "tools": tools,
-            "tools_config": tools_configuration,
+    if world.scene.tools_config != "None":
+        tools_configuration = json.loads(world.scene.tools_config)
+
+    robot_models = world.robots.all()
+    for robot in robot_models:
+        robot_config = {
+            "name": robot.name,
+            "launch_file_path": robot.launch_file_path,
+            "ros_version": ros_version,
+            "type": world_type,
+            "start_pose": [0, 0, 0, 0, 0, 0],
+            "entity": robot.entity,
+            "extra_config": robot.extra_config,
         }
+        n_instances = WorldRobots.objects.get(world=world, robot=robot).instances
+        robots_config.extend([robot_config for i in range(n_instances)])
 
-    return Response({"success": True, "universe": config})
+    if len(robots_config) > len(spawn_poses):
+        raise Exception("More robots than possible spawn points")
+
+    for robot_index in range(len(robots_config)):
+        robots_config[robot_index]["start_pose"] = spawn_poses[robot_index]
+
+    config = {
+        "name": world.name,
+        "scene": {
+            "name": world.scene.name,
+            "launch_file_path": world.scene.launch_file_path,
+            "ros_version": ros_version,
+            "type": world_type,
+            "tools_config": tools_configuration,
+        },
+        "robot": robots_config,
+        "tools": tools,
+        "tools_config": tools_configuration,
+    }
+
+    return Response({"success": True, "world": config})
 
 
 @error_wrapper("POST", ["project_id", "file_name", ("location", -1), "content"])

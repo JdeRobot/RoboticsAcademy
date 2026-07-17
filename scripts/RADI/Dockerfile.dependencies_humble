@@ -251,7 +251,7 @@ RUN rm -rf log
 # remove log folder
 RUN mkdir -p /home/drones_ws/src/
 WORKDIR /home/drones_ws/src/
-RUN git clone --depth=1 https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
+RUN git clone --depth=1 https://github.com/aerostack2/aerostack2.git -b 1.1.3
 RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
 RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
 RUN touch aerostack2/as2_map_server/COLCON_IGNORE

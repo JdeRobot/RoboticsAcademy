@@ -1,3 +1,4 @@
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
 import {
@@ -9,10 +10,8 @@ import {
 } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
-import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React from "react";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
@@ -22,19 +21,17 @@ import { getFileList, getHelperFileList } from "Api";
 const PlayPauseButton = ({
   project,
   supportedLanguages,
-  connectManager,
+  userRef,
+  entrypointRef,
 }: {
   project: string;
   supportedLanguages: string[];
-  connectManager: (
-    desiredState?: string,
-    callback?: () => void
-  ) => Promise<void>;
+  userRef: RefObject<string | undefined>;
+  entrypointRef: RefObject<Entry | undefined>;
 }) => {
   const theme = useAcademyTheme();
-  const { warning, error, info, close } = useError();
+  const { warning, error } = useError();
   const filesRef = useRef<Entry[]>([]);
-  const entrypointRef = useRef<Entry | undefined>(undefined);
   const runningFilesRef = useRef<JSZip>(JSZip);
   const runningEntrypointRef = useRef<Entry | undefined>(undefined);
   const runningContentRef = useRef<string | undefined>(undefined);
@@ -55,24 +52,15 @@ const PlayPauseButton = ({
     }
   };
 
-  const updateCurrent = (e: unknown) => {
-    const T = CustomEvent<{ detail: { file?: Entry } }>;
-    if (e instanceof T) {
-      entrypointRef.current = e.detail.file;
-    }
-  };
-
   useEffect(() => {
     subscribe("autoSaveCompleted", () => {
       updateCode(true);
     });
     subscribe("CommsManagerStateChange", updateState);
-    subscribe("currentFile", updateCurrent);
 
     return () => {
       unsubscribe("autoSaveCompleted", () => {});
       unsubscribe("CommsManagerStateChange", () => {});
-      unsubscribe("currentFile", () => {});
     };
   }, []);
 
@@ -126,7 +114,7 @@ const PlayPauseButton = ({
     for (const zipObject of [zip1, zip2]) {
       mergeZip = await mergeZip.loadAsync(
         await zipObject.generateAsync({ type: "blob" }),
-        { createFolders: true }
+        { createFolders: true },
       );
     }
     return mergeZip;
@@ -134,26 +122,16 @@ const PlayPauseButton = ({
 
   // App handling
 
-  const onAppStateChange = async (save?: boolean) => {
+  const onAppStateChange = async (save?: boolean): Promise<void> => {
     const manager = CommsManager.getInstance();
     const state = manager.getState();
 
     setLoading(true);
 
-    if (state === states.IDLE) {
-      info("Connecting with the Robotics Backend ...");
-      connectManager(states.TOOLS_READY, () => {
-        setLoading(false);
-        close();
-        onAppStateChange();
-      });
-      return;
-    }
-
     if (state === states.WORLD_READY || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
       warning(
-        "Failed to found a running simulation. Please make sure an universe is selected."
+        "Failed to found a running simulation. Please make sure a world is selected.",
       );
       setLoading(false);
       return;
@@ -166,7 +144,7 @@ const PlayPauseButton = ({
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
-          "Failed to stop the application. See the traces in the terminal."
+          "Failed to stop the application. See the traces in the terminal.",
         );
       }
       setLoading(false);
@@ -175,7 +153,7 @@ const PlayPauseButton = ({
 
     if (entrypointRef.current === undefined) {
       error(
-        "Failed to run the application. Make sure to select an entrypoint by opening it in the editor."
+        "Failed to run the application. Make sure to select an entrypoint by opening it in the editor.",
       );
       setLoading(false);
       return;
@@ -185,7 +163,7 @@ const PlayPauseButton = ({
 
     if (language === undefined || !supportedLanguages.includes(language)) {
       error(
-        `Failed to run the application. Entrypoint ${entrypointRef.current.path} is not supported.`
+        `Failed to run the application. Entrypoint ${entrypointRef.current.path} is not supported.`,
       );
       setLoading(false);
       return;
@@ -197,16 +175,20 @@ const PlayPauseButton = ({
     }
 
     if (!isCodeUpdatedRef.current) {
-      return setTimeout(onAppStateChange, 100, true);
+      setTimeout(onAppStateChange, 100, true);
+      return;
     }
 
-    const files = await getFileList(project);
+    const files = await getFileList(project, userRef.current);
     filesRef.current = JSON.parse(files);
-    const userZip = await loadFiles(entrypointRef.current, JSON.parse(files));
+    const userZip = await loadFiles(
+      entrypointRef.current,
+      filesRef.current,
+      userRef.current,
+    );
 
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
-
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
         try {
           await manager.resume();
@@ -214,7 +196,7 @@ const PlayPauseButton = ({
         } catch (e: unknown) {
           console.error("Error resuming app: " + (e as Error).message);
           error(
-            "Failed to resume the application. See the traces in the terminal."
+            "Failed to resume the application. See the traces in the terminal.",
           );
         }
         setLoading(false);
@@ -235,7 +217,7 @@ const PlayPauseButton = ({
 
       const helper_files = await getHelperFileList(
         project,
-        language ?? "python"
+        language ?? "python",
       );
 
       await zipHelperFiles(
@@ -243,7 +225,7 @@ const PlayPauseButton = ({
         helper_files,
         project,
         language ?? "python",
-        entrypointRef.current
+        entrypointRef.current,
       );
 
       const finalZip = await mergeZips(helperZip, userZip);
@@ -258,11 +240,11 @@ const PlayPauseButton = ({
             await manager.run(
               `/workspace/code/${runningEntrypointRef.current.path}`,
               [runningEntrypointRef.current.path],
-              base64data as string
+              base64data as string,
             );
           } catch {
             error(
-              "Failed to run the application. See the traces in the terminal."
+              "Failed to run the application. See the traces in the terminal.",
             );
             setLoading(false);
           }
@@ -283,13 +265,13 @@ const PlayPauseButton = ({
       }
     }
 
-    async function loadFiles(entrypoint: Entry, files: Entry[]) {
+    async function loadFiles(entrypoint: Entry, files: Entry[], user?: string) {
       const zip = new JSZip();
 
-      await zipCodeFiles(zip, files, project);
+      await zipCodeFiles(zip, files, project, user);
 
       zip.files[entrypoint.path]._data.then(
-        (value: string) => (runningContentRef.current = value)
+        (value: string) => (runningContentRef.current = value),
       );
       return zip;
     }

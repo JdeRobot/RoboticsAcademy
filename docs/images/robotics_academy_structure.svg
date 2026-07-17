@@ -7,8 +7,34 @@
    viewBox="0 0 276.13428 161.0491"
    version="1.1"
    id="svg1"
+   sodipodi:docname="robotics_academy_structure.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   inkscape:export-filename="robotics_academy_structure.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.1198664"
+     inkscape:cx="550.5121"
+     inkscape:cy="282.17652"
+     inkscape:window-width="2048"
+     inkscape:window-height="1211"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4-6-9-8" />
   <defs
      id="defs1" />
   <g
@@ -450,7 +476,7 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.61008"
            x="25.198324"
            y="36.306293"
-           id="tspan4-3-0-64">Worlds</tspan></text>
+           id="tspan4-3-0-64">Scenes</tspan></text>
     </g>
     <g
        id="g4-6-9-9-6"

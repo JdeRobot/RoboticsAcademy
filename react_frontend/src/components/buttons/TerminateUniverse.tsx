@@ -14,7 +14,7 @@ const TerminateUniverseButton = () => {
   const terminateUniverse = async () => {
     const manager = CommsManager.getInstance();
 
-    if (manager.getUniverse() === undefined || manager.getUniverse() === "") {
+    if (manager.getWorld() === undefined || manager.getWorld() === "") {
       return;
     }
 
@@ -23,7 +23,7 @@ const TerminateUniverseButton = () => {
     if (state === states.IDLE || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
       warning(
-        "Failed to found a running simulation. Please make sure an universe is selected."
+        "Failed to found a running simulation. Please make sure a world is selected."
       );
       return;
     }
@@ -33,12 +33,12 @@ const TerminateUniverseButton = () => {
     if (state === states.RUNNING || state === states.PAUSED) {
       await manager.terminateApplication();
       await manager.terminateTools();
-      await manager.terminateUniverse();
+      await manager.terminateWorld();
     } else if (state === states.TOOLS_READY) {
       await manager.terminateTools();
-      await manager.terminateUniverse();
+      await manager.terminateWorld();
     } else {
-      await manager.terminateUniverse();
+      await manager.terminateWorld();
     }
 
     setLoading(false);
@@ -49,9 +49,9 @@ const TerminateUniverseButton = () => {
       bgColor={theme.palette.primary}
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
-      id="stop-universe"
+      id="stop-world"
       onClick={terminateUniverse}
-      title="Stop Universe"
+      title="Stop World"
       disabled={loading}
     >
       {loading ? (
