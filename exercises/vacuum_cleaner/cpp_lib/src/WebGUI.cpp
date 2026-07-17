@@ -12,7 +12,7 @@ public:
         , rtf_monitor_("/stats", std::chrono::milliseconds(500))
         , gui_iterations_(0)
     {
-        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        odom_node_ = std::make_shared<OdometryNode>("/vacuum_cleaner/odom", "webgui_odom");
         last_stat_time_ = std::chrono::steady_clock::now();
         stats_timer_ = this->create_wall_timer(
             std::chrono::milliseconds(500),

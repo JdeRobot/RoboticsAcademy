@@ -33,7 +33,7 @@ odometry_node = OdometryNode("/autonomous_car/odom")
 laser_front_node = LaserNode("/autonomous_car/laser_front/scan")
 laser_right_node = LaserNode("/autonomous_car/laser_side/scan")
 laser_back_node = LaserNode("/autonomous_car/laser_back/scan")
-lidar_node = LidarNode("/autonomous_car/lidar/pc2")
+lidar_node = LidarNode("/autonomous_car/lidar/pc2/points")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -149,6 +149,7 @@ def getLidarData():
             x, y, z = point
     """
     lidar = lidar_node.getLidarData()
+    print(lidar)
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
         lidar = lidar_node.getLidarData()

@@ -16,7 +16,7 @@ public:
         last_image_payload_("{\"image\":\"\",\"shape\":[]}"),
         gui_iterations_(0),
         rtf_monitor_("/stats", std::chrono::milliseconds(500)) {
-    odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+    odom_node_ = std::make_shared<OdometryNode>("/f1/odom", "webgui_odom");
     lap_ = std::make_shared<Lap>(odom_node_);
     aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 

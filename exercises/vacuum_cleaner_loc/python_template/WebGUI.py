@@ -47,7 +47,7 @@ class ROS2BridgeNode(Node):
             durability=DurabilityPolicy.TRANSIENT_LOCAL,
         )
 
-        self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
+        self.create_subscription(Odometry, "/vacuum_cleaner/odom", self.odom_callback, 10)
 
         self.create_subscription(
             ROSImage,

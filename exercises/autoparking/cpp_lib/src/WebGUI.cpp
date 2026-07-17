@@ -18,10 +18,10 @@ public:
         : BaseWebGUI("autoparking_gui_node", "127.0.0.1", "2303", 30.0)
         , gui_iterations_(0)
         , rtf_monitor_("/stats", std::chrono::milliseconds(500))
-        , laser_front_node_(std::make_shared<LaserNode>("/prius_autoparking/scan_front", "webgui_laser_front"))
-        , laser_right_node_(std::make_shared<LaserNode>("/prius_autoparking/scan_side", "webgui_laser_right"))
-        , laser_back_node_(std::make_shared<LaserNode>("/prius_autoparking/scan_back", "webgui_laser_back"))
-        , lidar_node_(std::make_shared<LidarNode>("/prius_autoparking/pc2", "webgui_lidar"))
+        , laser_front_node_(std::make_shared<LaserNode>("/autonomous_car/laser_front/scan", "webgui_laser_front"))
+        , laser_right_node_(std::make_shared<LaserNode>("/autonomous_car/laser_side/scan", "webgui_laser_right"))
+        , laser_back_node_(std::make_shared<LaserNode>("/autonomous_car/laser_back/scan", "webgui_laser_back"))
+        , lidar_node_(std::make_shared<LidarNode>("/autonomous_car/lidar/pc2/points", "webgui_lidar"))
         , aux_node_(std::make_shared<rclcpp::Node>("webgui_aux"))
         , map_util_([this](){ return laser_front_node_->getLaserData(); },
                     [this](){ return laser_right_node_->getLaserData(); },
@@ -44,7 +44,7 @@ protected:
 
         // Detect mode elegantly using ROS 2 native publisher count instead of a subprocess
         std::string mode = "Laser";
-        if (aux_node_->count_publishers("/prius_autoparking/pc2") > 0) {
+        if (aux_node_->count_publishers("/autonomous_car/lidar/pc2/points") > 0) {
             mode = "Lidar";
         }
 

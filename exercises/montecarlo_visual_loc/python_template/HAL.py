@@ -29,11 +29,11 @@ if not rclpy.ok():
     rclpy.init(args=None)
 
 ### HAL INIT ###
-motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/odom")
-noisy_odometry_node = OdometryNode("/odom_noisy", node_name="noisy_odometry_node")
-laser_node = LaserNode("/roombaROS/laser/scan")
-camera_node = CameraNode("/camera/image_raw")
+motor_node = MotorsNode("/vacuum_cleaner/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/vacuum_cleaner/odom")
+noisy_odometry_node = OdometryNode("/vacuum_cleaner/odom_noisy", node_name="noisy_odometry_node")
+laser_node = LaserNode("/vacuum_cleaner/laser/scan")
+camera_node = CameraNode("/vacuum_cleaner/camera/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
