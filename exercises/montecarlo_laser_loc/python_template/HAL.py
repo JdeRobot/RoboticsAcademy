@@ -26,7 +26,9 @@ if not rclpy.ok():
 
 motor_node = MotorsNode("/vacuum_cleaner/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/vacuum_cleaner/odom")
-noisy_odometry_node = OdometryNode("/vacuum_cleaner/odom_noisy", node_name="noisy_odometry_node")
+noisy_odometry_node = OdometryNode(
+    "/vacuum_cleaner/odom_noisy", node_name="noisy_odometry_node"
+)
 laser_node = LaserNode("/vacuum_cleaner/laser/scan")
 bumper_node = BumperNode(
     [

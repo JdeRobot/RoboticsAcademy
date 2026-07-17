@@ -31,7 +31,9 @@ if not rclpy.ok():
 ### HAL INIT ###
 motor_node = MotorsNode("/vacuum_cleaner/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/vacuum_cleaner/odom")
-noisy_odometry_node = OdometryNode("/vacuum_cleaner/odom_noisy", node_name="noisy_odometry_node")
+noisy_odometry_node = OdometryNode(
+    "/vacuum_cleaner/odom_noisy", node_name="noisy_odometry_node"
+)
 laser_node = LaserNode("/vacuum_cleaner/laser/scan")
 camera_node = CameraNode("/vacuum_cleaner/camera/image_raw")
 
