@@ -15,11 +15,11 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!drone_node_) {
-        drone_node_ = std::make_shared<DroneWrapper>("drone0");
+        drone_node_ = std::make_shared<DroneWrapper>("drone");
         
         // Setup standard CameraNodes with their respective topics
-        frontal_camera_node_ = std::make_shared<CameraNode>("/drone0/frontal_cam/image_raw", "hal_frontal_camera");
-        ventral_camera_node_ = std::make_shared<CameraNode>("/drone0/ventral_cam/image_raw", "hal_ventral_camera");
+        frontal_camera_node_ = std::make_shared<CameraNode>("/drone/frontal_cam/image_raw", "hal_frontal_camera");
+        ventral_camera_node_ = std::make_shared<CameraNode>("/drone/ventral_cam/image_raw", "hal_ventral_camera");
 
         // MultiThreadedExecutor spins nodes concurrently
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();

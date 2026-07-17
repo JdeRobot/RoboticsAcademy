@@ -24,8 +24,8 @@ if not rclpy.ok():
     rclpy.init(args=None)
     rclpy.create_node("HAL")
 
-pose3d = OdometryNode("/odom")
-motors = MotorsNode("/cmd_vel", 4, 0.3)
+pose3d = OdometryNode("/autonomous_car/odom")
+motors = MotorsNode("/autonomous_car/cmd_vel", 4, 0.3)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()

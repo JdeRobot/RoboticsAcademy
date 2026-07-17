@@ -86,7 +86,7 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
-        self.pose3d_node = OdometryNode("/odom")
+        self.pose3d_node = OdometryNode("/autonomous_car/odom")
         self.bridge_node = ROS2BridgeNode(self)
 
         self.executor = MultiThreadedExecutor()

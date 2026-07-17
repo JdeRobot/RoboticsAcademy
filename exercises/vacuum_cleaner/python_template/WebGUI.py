@@ -24,7 +24,7 @@ class ROS2Node(Node):
         super().__init__("gui_data")
         self.pose = None
         self.pose_lock = threading.Lock()  # Thread safety
-        self.create_subscription(Odometry, "/odom", self.callback, 10)
+        self.create_subscription(Odometry, "/vacuum_cleaner/odom", self.callback, 10)
 
     def callback(self, msg):
         with self.pose_lock:

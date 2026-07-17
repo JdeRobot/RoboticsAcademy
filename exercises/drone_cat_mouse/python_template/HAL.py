@@ -6,20 +6,16 @@ import sys
 
 from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
-from as2_msgs.srv import SetPlatformStateMachineEvent
-from as2_msgs.msg import PlatformStateMachineEvent
-from geometry_msgs.msg import PoseStamped
-from rclpy.qos import qos_profile_sensor_data
 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
-DRONE_NAMESPACE = "drone0"
+DRONE_NAMESPACE = "drone"
 
 
+# Mutes exceptions
 def custom_thread_excepthook(args):
-    # ignore the errors the spin threads print while things are shutting down
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
@@ -27,9 +23,9 @@ def custom_thread_excepthook(args):
 
 threading.excepthook = custom_thread_excepthook
 
-### hal init ###
+### HAL INIT ###
 
-print("HAL initializing drone0 (cat)", flush=True)
+print("HAL initializing drone (cat)", flush=True)
 if not rclpy.ok():
     rclpy.init()
 
@@ -40,15 +36,13 @@ drone = DroneWrapper(drone_id=DRONE_NAMESPACE)
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
 ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
+# Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
 
 
 def __auto_spin() -> None:
-    # spin the cameras (and the mouse tracker) - do a little work, then sleep
-    # for a moment. the sleep is important: it lets the drone's own thread run
-    # too, instead of this loop taking all the cpu time for itself.
     while rclpy.ok():
         try:
             executor.spin_once(timeout_sec=0)
@@ -95,26 +89,7 @@ _mouse_pose_sub = _mouse_pose_node.create_subscription(
 
 executor.add_node(_mouse_pose_node)
 
-
-### helpers ###
-
-
-def _call_state_event(event_value):
-    """send a state machine event without using asyncio.
-    the normal DroneWrapper does this through asyncio.run(), which doesn't work
-    with rclpy's futures and crashes. so instead we send the request and just
-    check if it's done in a small loop - the drone's own background thread
-    finishes the request for us."""
-    request = SetPlatformStateMachineEvent.Request()
-    request.event.event = event_value
-    while not drone.state_event_service_client.wait_for_service(timeout_sec=1.0):
-        pass
-    future = drone.state_event_service_client.call_async(request)
-    while not future.done():
-        time.sleep(0.01)
-
-
-### getters ###
+### GETTERS ###
 
 
 def get_frontal_image():
@@ -132,42 +107,50 @@ def get_ventral_image():
 
 
 def get_position():
-    return drone.get_position()
+    pos = drone.get_position()
+    return pos
 
 
 def get_velocity():
-    return drone.get_velocity()
+    vel = drone.get_velocity()
+    return vel
 
 
 def get_yaw_rate():
-    return drone.get_yaw_rate()
+    yaw_rate = drone.get_yaw_rate()
+    return yaw_rate
 
 
 def get_orientation():
-    return drone.get_orientation()
+    orientation = drone.get_orientation()
+    return orientation
 
 
 def get_roll():
-    return drone.get_roll()
+    roll = drone.get_roll()
+    return roll
 
 
 def get_pitch():
-    return drone.get_pitch()
+    pitch = drone.get_pitch()
+    return pitch
 
 
 def get_yaw():
-    return drone.get_yaw()
+    yaw = drone.get_yaw()
+    return yaw
 
 
 def get_landed_state():
-    return drone.get_landed_state()
+    state = drone.get_landed_state()
+    return state
 
 
 def get_mouse_position():
     return list(_mouse_position)
 
 
-### setters ###
+### SETTERS ###
 
 
 def set_cmd_pos(x, y, z, az):
@@ -183,22 +166,8 @@ def set_cmd_mix(vx, vy, z, az):
 
 
 def takeoff(h=3):
-    # arm, go offboard, tell the state machine we're taking off, then just hold
-    # the target height until we're basically there and mark it done
-    drone.arm()
-    drone.offboard()
-    _call_state_event(PlatformStateMachineEvent.TAKE_OFF)
-    while abs(drone.position[2] - h) > 0.2:
-        drone.set_cmd_pos(drone.position[0], drone.position[1], h, drone.get_yaw())
-        time.sleep(0.05)
-    _call_state_event(PlatformStateMachineEvent.TOOK_OFF)
+    drone.takeoff(h)
 
 
 def land():
-    # come straight down to the ground then disarm
-    _call_state_event(PlatformStateMachineEvent.LAND)
-    while abs(drone.position[2]) > 0.3:
-        drone.set_cmd_pos(drone.position[0], drone.position[1], 0.0, drone.get_yaw())
-        time.sleep(0.05)
-    _call_state_event(PlatformStateMachineEvent.LANDED)
-    drone.disarm()
+    drone.land()

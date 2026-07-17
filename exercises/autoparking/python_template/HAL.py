@@ -28,12 +28,12 @@ if not rclpy.ok():
     rclpy.init(args=None)
 
 ### HAL INIT ###
-motor_node = MotorsNode("/prius_autoparking/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/prius_autoparking/odom")
-laser_front_node = LaserNode("/prius_autoparking/scan_front")
-laser_right_node = LaserNode("/prius_autoparking/scan_side")
-laser_back_node = LaserNode("/prius_autoparking/scan_back")
-lidar_node = LidarNode("/prius_autoparking/pc2")
+motor_node = MotorsNode("/autonomous_car/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/autonomous_car/odom")
+laser_front_node = LaserNode("/autonomous_car/laser_front/scan")
+laser_right_node = LaserNode("/autonomous_car/laser_side/scan")
+laser_back_node = LaserNode("/autonomous_car/laser_back/scan")
+lidar_node = LidarNode("/autonomous_car/lidar/pc2/points")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -149,6 +149,7 @@ def getLidarData():
             x, y, z = point
     """
     lidar = lidar_node.getLidarData()
+    print(lidar)
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
         lidar = lidar_node.getLidarData()

@@ -19,14 +19,14 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
-        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odom");
-        laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan", "hal_laser");
+        motors_node_ = std::make_shared<MotorsNode>("/vacuum_cleaner/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/vacuum_cleaner/odom", "hal_odom");
+        laser_node_ = std::make_shared<LaserNode>("/vacuum_cleaner/laser/scan", "hal_laser");
 
         std::vector<std::string> bumper_topics = {
-            "/roombaROS/events/right_bumper",
-            "/roombaROS/events/center_bumper",
-            "/roombaROS/events/left_bumper"
+            "/vacuum_cleaner/events/right_bumper",
+            "/vacuum_cleaner/events/center_bumper",
+            "/vacuum_cleaner/events/left_bumper"
         };
         bumper_node_ = std::make_shared<BumperNode>(bumper_topics, "hal_bumper");
 
