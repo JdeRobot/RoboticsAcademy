@@ -13,6 +13,7 @@ freq = 30.0
 
 DRONE_NAMESPACE = "drone_1"
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
