@@ -43,7 +43,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "lap": "", "map": ""}
         self.bridge = CvBridge()
 
-        self.pose3d_object = OdometryNode("/odom")
+        self.pose3d_object = OdometryNode("/f1/odom")
 
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.webgui_publisher)

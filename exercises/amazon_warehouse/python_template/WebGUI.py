@@ -56,9 +56,14 @@ class GUIBridgeNode(Node):
         qos_transient = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
         self.create_subscription(
-            Odometry, "/amazon_robot/odom", self.odom_callback, qos_profile_sensor_data
+            Odometry,
+            "/logistic_robot/odom",
+            self.odom_callback,
+            qos_profile_sensor_data,
         )
-        self.create_subscription(Float64, "/platform/cmd_vel", self.lift_callback, 10)
+        self.create_subscription(
+            Float64, "/logistic_robot/platform/cmd_vel", self.lift_callback, 10
+        )
         self.create_subscription(
             String, "/webgui/path", self.path_callback, qos_transient
         )

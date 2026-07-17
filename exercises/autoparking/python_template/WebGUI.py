@@ -26,16 +26,16 @@ class WebGUINode(Node):
         super().__init__("autoparking_gui_node")
 
         self.sub_scan_front = self.create_subscription(
-            LaserScan, "/prius_autoparking/scan_front", self.scan_f_cb, 10
+            LaserScan, "/autonomous_car/laser_front/scan", self.scan_f_cb, 10
         )
         self.sub_scan_side = self.create_subscription(
-            LaserScan, "/prius_autoparking/scan_side", self.scan_r_cb, 10
+            LaserScan, "/autonomous_car/laser_side/scan", self.scan_r_cb, 10
         )
         self.sub_scan_back = self.create_subscription(
-            LaserScan, "/prius_autoparking/scan_back", self.scan_b_cb, 10
+            LaserScan, "/autonomous_car/laser_back/scan", self.scan_b_cb, 10
         )
         self.sub_pc2 = self.create_subscription(
-            PointCloud2, "/prius_autoparking/pc2", self.pc2_cb, 10
+            PointCloud2, "/autonomous_car/lidar/pc2/points", self.pc2_cb, 10
         )
 
         self.laser_f = None
@@ -76,14 +76,13 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.mode = "Laser"
 
-        args = ["ros2", "topic", "info", "/prius_autoparking/pc2"]
+        args = ["ros2", "topic", "info", "/autonomous_car/lidar/pc2/points"]
         topic_info = subprocess.Popen(args, stdout=subprocess.PIPE)
         for line in topic_info.stdout:
             if line.startswith(b"Publisher count:") and line.split(b": ")[1][0] != ord(
                 "0"
             ):
                 self.mode = "Lidar"
-
         self.start()
 
     def get_front(self):
