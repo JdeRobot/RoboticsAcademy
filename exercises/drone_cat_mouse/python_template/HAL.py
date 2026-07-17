@@ -13,7 +13,6 @@ freq = 30.0
 
 DRONE_NAMESPACE = "drone"
 
-
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
@@ -144,7 +143,10 @@ def get_yaw():
 def get_landed_state():
     state = drone.get_landed_state()
     return state
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5f1bdec3a (Compile cpp changes)
 
 def get_mouse_position():
     return list(_mouse_position)
