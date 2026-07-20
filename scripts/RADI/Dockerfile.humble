@@ -65,7 +65,6 @@ COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
-RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
 
 # Django server
