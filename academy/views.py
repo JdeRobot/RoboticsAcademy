@@ -440,12 +440,12 @@ def get_docker_world_data(fal, request):
     robots = []
     robots_config = []
     tools = []
-    tools_config = {}
+    tools_configuration = {}
 
     for tool_name, base_config in project.tools.values_list("name", "base_config"):
         tools.append(tool_name)
         if base_config != "None":
-            tools_config[tool_name] = base_config
+            tools_configuration[tool_name] = base_config
 
     if not project.worlds.exists():
         config = {
@@ -459,7 +459,7 @@ def get_docker_world_data(fal, request):
             },
             "robot": robots,
             "tools": tools,
-            "tools_config": tools_config,
+            "tools_config": tools_configuration,
         }
         return Response({"success": True, "world": config})
 
@@ -484,7 +484,7 @@ def get_docker_world_data(fal, request):
             "extra_config": robot.extra_config,
         }
         n_instances = WorldRobots.objects.get(world=world, robot=robot).instances
-        robots_config.extend([robot_config for i in range(n_instances)])
+        robots_config.extend([robot_config.copy() for i in range(n_instances)])
 
     if len(robots_config) > len(spawn_poses):
         raise Exception("More robots than possible spawn points")

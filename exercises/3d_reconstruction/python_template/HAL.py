@@ -30,8 +30,8 @@ threading.excepthook = custom_thread_excepthook
 if not rclpy.ok():
     rclpy.init(args=None)
 
-cameraL = CameraNode("/cam_turtlebot_left/image_raw")
-cameraR = CameraNode("/cam_turtlebot_right/image_raw")
+cameraL = CameraNode("/turtlebot2/camera_left/image_raw")
+cameraR = CameraNode("/turtlebot2/camera_right/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()

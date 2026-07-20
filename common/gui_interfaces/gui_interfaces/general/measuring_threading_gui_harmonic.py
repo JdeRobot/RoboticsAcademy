@@ -6,9 +6,11 @@ import time
 import websocket
 from threading import Timer
 import re
-
-
 import sys
+
+from gz.transport13 import Node
+from gz.msgs10.world_stats_pb2 import WorldStatistics
+from gz.msgs10.empty_pb2 import Empty
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
@@ -69,6 +71,9 @@ class MeasuringThreadingGUI:
             target=self.gui_out_thread, name="gui_out_thread", daemon=True
         ).start()
 
+    def rtf_callback(self, msg: WorldStatistics):
+        self.real_time_factor = round(msg.real_time_factor, 2)
+
     # Init websocket client
     def run_websocket(self):
         while self.running:
@@ -79,42 +84,14 @@ class MeasuringThreadingGUI:
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
+
+        node = Node()
+        node.subscribe(
+            WorldStatistics, f"/world/{self.world_name}/stats", self.rtf_callback
+        )
+
         while self.running:
-            time.sleep(2)
-
-            args = ["gz", "topic", "-e", "-t", f"/world/{self.world_name}/stats"]
-            real_time_factor = None
-
-            try:
-                harmonic_process = subprocess.Popen(
-                    args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
-                )
-
-                # timer
-                timeout_seconds = 1
-                timer = Timer(timeout_seconds, harmonic_process.kill)
-                timer.start()
-
-                for line in iter(harmonic_process.stdout.readline, b""):
-                    line_decoded = line.decode("utf-8")
-                    if "real_time_factor" in line_decoded:
-                        match = re.search(
-                            r"real_time_factor:\s*([\d\.]+)", line_decoded
-                        )
-                        if match:
-                            real_time_factor = float(match.group(1))
-                            break
-
-                timer.cancel()
-
-            except Exception as e:
-                print(f"Error: {e}")
-            finally:
-                if harmonic_process.poll() is None:
-                    harmonic_process.kill()
-
-            if real_time_factor is not None:
-                self.real_time_factor = round(real_time_factor, 3)
+            time.sleep(0.001)
 
     def measure_and_send_frequency(self):
         """Measures and sends the frequency of GUI updates and brain cycles."""

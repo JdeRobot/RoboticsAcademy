@@ -42,7 +42,9 @@ class ROS2BridgeNode(Node):
         self.bridge = CvBridge()
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
-        self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
+        self.create_subscription(
+            Odometry, "/vacuum_cleaner/odom", self.odom_callback, 10
+        )
         self.create_subscription(
             PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos
         )

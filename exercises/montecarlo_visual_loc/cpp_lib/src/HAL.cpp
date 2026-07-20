@@ -19,11 +19,11 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
-        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odometry");
-        noisy_odometry_node_ = std::make_shared<OdometryNode>("/odom_noisy", "hal_noisy_odometry_node");
-        laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan", "hal_laser");
-        camera_node_ = std::make_shared<CameraNode>("/camera/image_raw", "hal_camera");
+        motors_node_ = std::make_shared<MotorsNode>("/vacuum_cleaner/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/vacuum_cleaner/odom", "hal_odometry");
+        noisy_odometry_node_ = std::make_shared<OdometryNode>("/vacuum_cleaner/odom_noisy", "hal_noisy_odometry_node");
+        laser_node_ = std::make_shared<LaserNode>("/vacuum_cleaner/laser/scan", "hal_laser");
+        camera_node_ = std::make_shared<CameraNode>("/vacuum_cleaner/camera/image_raw", "hal_camera");
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
         executor_->add_node(motors_node_);

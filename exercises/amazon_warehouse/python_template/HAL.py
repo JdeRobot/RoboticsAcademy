@@ -31,14 +31,16 @@ if not rclpy.ok():
     rclpy.init(args=None)
 
 ### HAL INIT ###
-motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/amazon_robot/odom")
-laser_node = LaserNode("/amazon_robot/scan")
+motor_node = MotorsNode("/logistic_robot/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/logistic_robot/odom")
+laser_node = LaserNode("/logistic_robot/laser/scan")
 sim_time_node = SimTimeNode()
 
 # Platform control (Harmonic direct topic)
 platform_node = rclpy.create_node("platform_cmd_node")
-platform_pub = platform_node.create_publisher(Float64, "/platform/cmd_vel", 10)
+platform_pub = platform_node.create_publisher(
+    Float64, "/logistic_robot/platform/cmd_vel", 10
+)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()

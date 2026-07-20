@@ -93,7 +93,7 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
-        self.pose3d_node = OdometryNode("/odom")
+        self.pose3d_node = OdometryNode("/f1/odom")
         self.laser_node = LaserNode("/f1/laser/scan")
 
         self.map = Map(self.get_laser_data, self.get_pose3d)

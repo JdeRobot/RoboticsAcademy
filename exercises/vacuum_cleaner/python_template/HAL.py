@@ -25,14 +25,14 @@ if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
 ### HAL INIT ###
-motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/odom")
-laser_node = LaserNode("/roombaROS/laser/scan")
+motor_node = MotorsNode("/vacuum_cleaner/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/vacuum_cleaner/odom")
+laser_node = LaserNode("/vacuum_cleaner/laser/scan")
 bumper_node = BumperNode(
     [
-        "/roombaROS/events/right_bumper",
-        "/roombaROS/events/center_bumper",
-        "/roombaROS/events/left_bumper",
+        "/vacuum_cleaner/events/right_bumper",
+        "/vacuum_cleaner/events/center_bumper",
+        "/vacuum_cleaner/events/left_bumper",
     ]
 )
 

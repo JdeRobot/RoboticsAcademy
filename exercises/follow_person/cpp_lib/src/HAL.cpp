@@ -21,10 +21,10 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
-        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odometry");
-        laser_node_ = std::make_shared<LaserNode>("/scan", "hal_laser");
-        camera_node_ = std::make_shared<CameraNode>("/depth_camera/image_raw", "hal_camera");
+        motors_node_ = std::make_shared<MotorsNode>("/turtlebot2/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/turtlebot2/odom", "hal_odometry");
+        laser_node_ = std::make_shared<LaserNode>("/turtlebot2/laser/scan", "hal_laser");
+        camera_node_ = std::make_shared<CameraNode>("/turtlebot2/camera/image_raw", "hal_camera");
         neural_network_ = std::make_shared<NeuralNetwork>();
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();

@@ -24,7 +24,7 @@ public:
         , rtf_monitor_("/stats", std::chrono::milliseconds(500))
         , map_util_([this](){ return odom_node_->getPose3d(); })
     {
-        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        odom_node_ = std::make_shared<OdometryNode>("/autonomous_car/odom", "webgui_odom");
         aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 
         auto qos_transient = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
