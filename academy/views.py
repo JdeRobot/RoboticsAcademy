@@ -467,31 +467,25 @@ def get_docker_world_data(fal, request):
 
     ros_version = world.scene.ros_version
     world_type = world.scene.type
-    spawn_poses = world.scene.start_pose
 
     if world.scene.tools_config != "None":
         tools_configuration = json.loads(world.scene.tools_config)
 
     robot_models = world.robots.all()
     for robot in robot_models:
-        robot_config = {
-            "name": robot.name,
-            "launch_file_path": robot.launch_file_path,
-            "ros_version": ros_version,
-            "type": world_type,
-            "start_pose": [0, 0, 0, 0, 0, 0],
-            "entity": robot.entity,
-            "extra_config": robot.extra_config,
-        }
-        n_instances = WorldRobots.objects.get(world=world, robot=robot).instances
-        robots_config.extend([robot_config.copy() for i in range(n_instances)])
+        for pose in WorldRobots.objects.get(world=world, robot=robot).poses:
+            robot_config = {
+                "name": robot.name,
+                "launch_file_path": robot.launch_file_path,
+                "ros_version": ros_version,
+                "type": world_type,
+                "start_pose": pose,
+                "entity": robot.entity,
+                "extra_config": robot.extra_config,
+            }
+            robots_config.append(robot_config.copy())
 
-    if len(robots_config) > len(spawn_poses):
-        raise Exception("More robots than possible spawn points")
-
-    for robot_index in range(len(robots_config)):
-        robots_config[robot_index]["start_pose"] = spawn_poses[robot_index]
-
+    print(robots_config)
     config = {
         "name": world.name,
         "scene": {
