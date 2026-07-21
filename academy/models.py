@@ -85,14 +85,6 @@ class Scene(models.Model):
         max_length=50, choices=UniverseType, default="none", blank=False
     )
 
-    start_pose = ArrayField(
-        ArrayField(
-            models.DecimalField(
-                decimal_places=4, max_digits=10, default=None, blank=False
-            )
-        )
-    )
-
     def __str__(self):
         return str(self.name)
 
@@ -187,7 +179,13 @@ class WorldRobots(models.Model):
 
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
-    instances = models.PositiveSmallIntegerField(default=1)
+    poses = ArrayField(
+        ArrayField(
+            models.DecimalField(
+                decimal_places=4, max_digits=10, default=None, blank=False
+            )
+        )
+    )
 
     class Meta:
         db_table = '"worlds_robots"'

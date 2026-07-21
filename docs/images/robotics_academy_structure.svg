@@ -28,13 +28,13 @@
      inkscape:document-units="mm"
      inkscape:zoom="1.1198664"
      inkscape:cx="550.5121"
-     inkscape:cy="282.17652"
+     inkscape:cy="283.06948"
      inkscape:window-width="2048"
      inkscape:window-height="1211"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g4-6-9-8" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
   <g
@@ -64,7 +64,7 @@
        transform="matrix(0.99984598,0,0,1.0554698,0.00458562,-1.4477144)"
        style="display:inline">
       <rect
-         style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#ffb9b9;fill-opacity:1;stroke:#ff0c0c;stroke-width:1.03022721;stroke-dasharray:4.12090885,4.12090885;stroke-opacity:1;stroke-dashoffset:0"
          id="rect1-1"
          width="46.864742"
          height="44.945469"
@@ -100,7 +100,7 @@
        transform="matrix(1.4882739,0,0,1.5710701,-3.0274384,39.240973)"
        style="display:inline">
       <rect
-         style="fill:#ffb9b9;fill-opacity:1;stroke:#000000;stroke-width:0.161936;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#ffb9b9;fill-opacity:1;stroke:#ff0c0c;stroke-width:0.69212297;stroke-dasharray:4.15273797, 4.15273797;stroke-opacity:1;stroke-dashoffset:0"
          id="rect1-1-4"
          width="173.06941"
          height="46.1021"
@@ -149,7 +149,7 @@
        transform="translate(206.39989)"
        style="display:inline">
       <rect
-         style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.176021;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#a6fffc;fill-opacity:1;stroke:#000000;stroke-width:0.176021;stroke-dasharray:none;stroke-opacity:1"
          id="rect1-1-7-8"
          width="63.009865"
          height="14.795498"
@@ -197,7 +197,7 @@
        transform="translate(206.56069,32.74597)"
        style="display:inline">
       <rect
-         style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.176021;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#feffa6;fill-opacity:1;stroke:#000000;stroke-width:0.176021;stroke-dasharray:none;stroke-opacity:1"
          id="rect1-1-7-8-9-0"
          width="63.009865"
          height="14.795498"
@@ -338,7 +338,7 @@
          id="g7-6"
          transform="translate(-159.95498,20.351101)">
         <rect
-           style="fill:#feffa6;fill-opacity:1;stroke:#000000;stroke-width:0.160384;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.26458333;stroke-dasharray:none;stroke-opacity:1"
            id="rect1-1-7-3-4-9-2"
            width="69.855965"
            height="11.079664"
@@ -362,7 +362,7 @@
          transform="translate(2.3102257,20.942766)"
          style="display:inline">
         <rect
-           style="fill:#dddde3;fill-opacity:1;stroke:#000000;stroke-width:0.171336;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.26458333;stroke-dasharray:none;stroke-opacity:1"
            id="rect1-1-7-3-4-8"
            width="70.496605"
            height="12.529508"
@@ -507,7 +507,7 @@
        transform="translate(139.71843,72.096118)"
        style="display:inline">
       <rect
-         style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.15852;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#dddde3;fill-opacity:1;stroke:#000000;stroke-width:0.15852;stroke-dasharray:none;stroke-opacity:1"
          id="rect1-1-7-5-6"
          width="51.067055"
          height="14.805841"
@@ -555,7 +555,7 @@
        transform="translate(139.71843,104.84214)"
        style="display:inline">
       <rect
-         style="fill:#e5ffa6;fill-opacity:1;stroke:#000000;stroke-width:0.165627;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#a6fffc;fill-opacity:1;stroke:#000000;stroke-width:0.165627;stroke-dasharray:none;stroke-opacity:1"
          id="rect1-1-7-3-6-2-1"
          width="55.775715"
          height="14.798734"
