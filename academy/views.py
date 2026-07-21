@@ -485,7 +485,6 @@ def get_docker_world_data(fal, request):
             }
             robots_config.append(robot_config.copy())
 
-    print(robots_config)
     config = {
         "name": world.name,
         "scene": {
