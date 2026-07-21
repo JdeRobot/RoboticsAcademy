@@ -41,7 +41,7 @@ class ROS2BridgeNode(Node):
         # also receives the list (otherwise it would grab nothing after a reset).
         latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.graspable_pub = self.create_publisher(
-            String, "/drone0/gripper/graspable", latched
+            String, "/drone/gripper/graspable", latched
         )
         self.__publish_graspable()
         self.create_timer(1.0, self.__publish_graspable)

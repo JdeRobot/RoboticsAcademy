@@ -16,9 +16,9 @@ public:
     GripperNode() : rclcpp::Node("gripper_hal"), carrying_(false)
     {
         magnet_pub_ = this->create_publisher<std_msgs::msg::Bool>(
-            "/drone0/gripper/magnet", 10);
+            "/drone/gripper/magnet", 10);
         attached_sub_ = this->create_subscription<std_msgs::msg::Bool>(
-            "/drone0/gripper/attached", 10,
+            "/drone/gripper/attached", 10,
             [this](const std_msgs::msg::Bool::SharedPtr msg) {
                 carrying_.store(msg->data);
             });
@@ -48,11 +48,11 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!drone_node_) {
-        drone_node_ = std::make_shared<DroneWrapper>("drone0");
+        drone_node_ = std::make_shared<DroneWrapper>("drone");
 
         // Setup standard CameraNodes with their respective topics
-        frontal_camera_node_ = std::make_shared<CameraNode>("/drone0/frontal_cam/image_raw", "hal_frontal_camera");
-        ventral_camera_node_ = std::make_shared<CameraNode>("/drone0/ventral_cam/image_raw", "hal_ventral_camera");
+        frontal_camera_node_ = std::make_shared<CameraNode>("/drone/frontal_cam/image_raw", "hal_frontal_camera");
+        ventral_camera_node_ = std::make_shared<CameraNode>("/drone/ventral_cam/image_raw", "hal_ventral_camera");
 
         gripper_node_ = std::make_shared<GripperNode>();
 

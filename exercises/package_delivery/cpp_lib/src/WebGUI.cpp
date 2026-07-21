@@ -57,7 +57,7 @@ public:
         // also receives it (otherwise it would grab nothing after a reset).
         auto qos_latched = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
         graspable_pub_ = aux_node_->create_publisher<std_msgs::msg::String>(
-            "/drone0/gripper/graspable", qos_latched);
+            "/drone/gripper/graspable", qos_latched);
         publish_graspable();
         graspable_timer_ = aux_node_->create_wall_timer(
             std::chrono::seconds(1),

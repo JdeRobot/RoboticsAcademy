@@ -31,10 +31,10 @@ if not rclpy.ok():
     rclpy.init()
 
 
-CAM_FRONTAL_TOPIC = "/" + "drone0" + "/frontal_cam/image_raw"
-CAM_VENTRAL_TOPIC = "/" + "drone0" + "/ventral_cam/image_raw"
+CAM_FRONTAL_TOPIC = "/" + "drone" + "/frontal_cam/image_raw"
+CAM_VENTRAL_TOPIC = "/" + "drone" + "/ventral_cam/image_raw"
 
-drone = DroneWrapper()
+drone = DroneWrapper("drone")
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
 ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
@@ -45,9 +45,9 @@ ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 class GripperNode(Node):
     def __init__(self):
         super().__init__("gripper_hal")
-        self.magnet_pub = self.create_publisher(Bool, "/drone0/gripper/magnet", 10)
+        self.magnet_pub = self.create_publisher(Bool, "/drone/gripper/magnet", 10)
         self.carrying = False
-        self.create_subscription(Bool, "/drone0/gripper/attached", self.__on_state, 10)
+        self.create_subscription(Bool, "/drone/gripper/attached", self.__on_state, 10)
 
     def __on_state(self, msg):
         self.carrying = msg.data
