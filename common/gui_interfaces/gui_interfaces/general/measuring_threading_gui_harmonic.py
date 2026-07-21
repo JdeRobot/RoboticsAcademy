@@ -10,7 +10,6 @@ import sys
 
 from gz.transport13 import Node
 from gz.msgs10.world_stats_pb2 import WorldStatistics
-from gz.msgs10.empty_pb2 import Empty
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
