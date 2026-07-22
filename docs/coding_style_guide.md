@@ -124,8 +124,8 @@ This is the coding style guide for languages used in the JdeRobot repositories.
 pip install flake8 flake8-docstrings pydocstyle black
 ```
 
--   Install the [flake8 linter vscode extension](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8)
--   Install the [black formatter vscode extension](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter)
+-   Install the [flake8 linter vscode extension](http://web.archive.org/web/20260513042652/https://marketplace.visualstudio.com/items?itemName=ms-python.flake8)
+-   Install the [black formatter vscode extension](http://web.archive.org/web/20260706050044/https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter)
 -   Add the following to your `settings.json` file
 
 ```json
@@ -152,8 +152,8 @@ pip install flake8 flake8-docstrings pydocstyle black
 
 ### Javascript - HTML - CSS
 
--   Install the [prettier vscode extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
--   Install the [eslint vscode extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+-   Install the [prettier vscode extension](http://web.archive.org/web/20260721074104/http://web.archive.org/web/20260721074104/https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+-   Install the [eslint vscode extension](http://web.archive.org/web/20260717081418/https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 -   add the following `.prettierrc` file to the source code
 
@@ -235,7 +235,7 @@ npm install --save-dev @eslint/css
 
 #### CSS
 
--   Install the [Stylelint VSCode Extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
+-   Install the [Stylelint VSCode Extension](http://web.archive.org/web/20260708072138/https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
 -   Install the `stylelint` needed modules
 
 ```bash
@@ -253,7 +253,7 @@ npm install --save-dev stylelint stylelint-config-standard
 ### YAML
 
 -   Install the [Prettier Vscode Extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
--   Install the [RedHat YAML Extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+-   Install the [RedHat YAML Extension](http://web.archive.org/web/20260717031044/https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 -   add the following `.prettierrc` file to the projects source code
 
 ```json
@@ -305,7 +305,7 @@ npm install --save-dev stylelint stylelint-config-standard
 
 ### XML
 
--   install the [RedHat XML Extenstion](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
+-   install the [RedHat XML Extenstion](http://web.archive.org/web/20260510153048/https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
 -   Add the following to your vscode `settings.json` file
 
 ```json
@@ -331,7 +331,7 @@ pip install cpplint
 sudo apt install uncrustify
 ```
 
--   Install the [cpplint VSCode Extension](https://marketplace.visualstudio.com/items?itemName=mine.cpplint)
+-   Install the [cpplint VSCode Extension](http://web.archive.org/web/20260314133016/https://marketplace.visualstudio.com/items?itemName=mine.cpplint)
 -   Add the following to your vscode `settings.json` file
     -   run `which cpplint` to find `<your-cpplint-path>`
 
@@ -367,7 +367,7 @@ sudo apt install uncrustify
 }
 ```
 
--   Install the [uncrustify VSCode Extension](https://marketplace.visualstudio.com/items?itemName=zachflower.uncrustify)
+-   Install the [uncrustify VSCode Extension](http://web.archive.org/web/20240528174332/https://marketplace.visualstudio.com/items?itemName=zachflower.uncrustify)
     -   Add an `uncrustify.cfg` file to your project if not present
         -   content should be the same as the [ROS2 config file](https://github.com/ament/ament_lint/blob/humble/ament_uncrustify/ament_uncrustify/configuration/ament_code_style.cfg)
 
@@ -379,7 +379,7 @@ sudo apt install uncrustify
 pip install cmakelint cmake-format
 ```
 
--   Install the [cmake-format VSCode Extension](https://marketplace.visualstudio.com/items?itemName=cheshirekow.cmake-format)
+-   Install the [cmake-format VSCode Extension](http://web.archive.org/web/20260418075842/https://marketplace.visualstudio.com/items?itemName=cheshirekow.cmake-format)
 -   Add the following to your vscode `settings.json`
 
 ```json
