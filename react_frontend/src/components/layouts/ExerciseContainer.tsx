@@ -35,6 +35,7 @@ const ExerciseContainer = ({
   tools,
   url,
   children,
+  additionalEntrypoints
 }: {
   project: string;
   name: string;
@@ -42,6 +43,7 @@ const ExerciseContainer = ({
   url?: string;
   multiLanguage: boolean;
   children: JSX.Element;
+  additionalEntrypoints?: string[];
 }) => {
   const { warning } = useError();
   const hasTriedToConnect = useRef(false);
@@ -175,6 +177,7 @@ const ExerciseContainer = ({
           commsManager={manager}
           connectManager={connectWithRetry}
           userRef={userRef}
+          additionalEntrypoints={additionalEntrypoints}
         />
         <IdeInterface
           commsManager={manager}
