@@ -47,10 +47,14 @@ const Exercise = () => {
     };
   }, []);
 
+  // TODO: only tmp
+  const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["drone_1/academy.py"] : undefined
+
   return (
     <>
       <ExerciseContainer
         multiLanguage={data.tags.includes("MULTILANGUAGE")}
+        additionalEntrypoints={additionalEntrypoints}
         project={data.exercise_id}
         name={data.name}
         tools={data.tools}

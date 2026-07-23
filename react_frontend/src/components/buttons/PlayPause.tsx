@@ -23,11 +23,13 @@ const PlayPauseButton = ({
   supportedLanguages,
   userRef,
   entrypointRef,
+  additionalEntrypoints
 }: {
   project: string;
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
+  additionalEntrypoints?: string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -236,25 +238,18 @@ const PlayPauseButton = ({
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         if (base64data && runningEntrypointRef.current) {
-          // Pre-programmed agents ship as a helper folder holding their own copy
-          // of the entrypoint file, named after the robot they drive (e.g.
-          // drone_1/academy.py, the mouse in drone cat-mouse). They run
-          // alongside the student's code, so send them as extra entrypoints:
-          // the manager starts one process per entrypoint.
-          const entrypointName = runningEntrypointRef.current.name;
-          const entrypoints = [
-            `/workspace/code/${runningEntrypointRef.current.path}`,
-          ];
-          for (const entry of helper_files) {
-            if (entry.is_dir && entry.files?.some((f) => f.name === entrypointName)) {
-              entrypoints.push(`/workspace/code/${entry.name}/${entrypointName}`);
-            }
+          const entrypoints = [`/workspace/code/${runningEntrypointRef.current.path}`] 
+          if (additionalEntrypoints) {
+            additionalEntrypoints.forEach(entrypoint => {
+              entrypoints.push(`/workspace/code/${entrypoint}`)
+            });
           }
 
+          const lint_files = additionalEntrypoints ? additionalEntrypoints : []
           try {
             await manager.run(
               entrypoints,
-              [runningEntrypointRef.current.path],
+              [runningEntrypointRef.current.path].concat(lint_files),
               base64data as string,
             );
           } catch {

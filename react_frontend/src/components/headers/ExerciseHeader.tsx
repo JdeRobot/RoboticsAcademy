@@ -36,6 +36,7 @@ const ExerciseHeader = ({
   connectManager,
   commsManager,
   userRef,
+  additionalEntrypoints,
 }: {
   project: string;
   name: string;
@@ -48,6 +49,7 @@ const ExerciseHeader = ({
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
+  additionalEntrypoints?: string[];
 }) => {
   const theme = useAcademyTheme();
   return (
@@ -82,6 +84,7 @@ const ExerciseHeader = ({
             commsManager={commsManager}
             connectManager={connectManager}
             userRef={userRef}
+            additionalEntrypoints={additionalEntrypoints}
           />
           <TheoryButton url={url} />
           <InfoButton />
@@ -98,6 +101,7 @@ const ExecutionControl = ({
   commsManager,
   connectManager,
   userRef,
+  additionalEntrypoints
 }: {
   project: string;
   supportedLanguages: string[];
@@ -107,6 +111,7 @@ const ExecutionControl = ({
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
+  additionalEntrypoints?: string[];
 }) => {
   const [state, setState] = useState<string | undefined>(
     commsManager?.getState(),
@@ -150,6 +155,7 @@ const ExecutionControl = ({
             supportedLanguages={supportedLanguages}
             userRef={userRef}
             entrypointRef={entrypointRef}
+            additionalEntrypoints={additionalEntrypoints}
           />
           <ResetButton />
           <TerminateUniverseButton />
