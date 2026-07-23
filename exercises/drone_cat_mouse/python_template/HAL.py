@@ -4,14 +4,20 @@ import threading
 import time
 import sys
 
+from geometry_msgs.msg import PoseStamped
+from rclpy.qos import qos_profile_sensor_data
+
 from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
+# todo need to add levels logic and refinement of chasing algorithms need to be done.
 
+# The cat is "drone", the mouse is "drone_1".
 DRONE_NAMESPACE = "drone"
+MOUSE_NAMESPACE = "drone_1"
 
 
 # Mutes exceptions
@@ -24,15 +30,15 @@ def custom_thread_excepthook(args):
 threading.excepthook = custom_thread_excepthook
 
 ### HAL INIT ###
-
-print("HAL initializing drone (cat)", flush=True)
+print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
 
-CAM_FRONTAL_TOPIC = f"/{DRONE_NAMESPACE}/frontal_cam/image_raw"
-CAM_VENTRAL_TOPIC = f"/{DRONE_NAMESPACE}/ventral_cam/image_raw"
 
-drone = DroneWrapper(drone_id=DRONE_NAMESPACE)
+CAM_FRONTAL_TOPIC = "/" + DRONE_NAMESPACE + "/frontal_cam/image_raw"
+CAM_VENTRAL_TOPIC = "/" + DRONE_NAMESPACE + "/ventral_cam/image_raw"
+
+drone = DroneWrapper(DRONE_NAMESPACE)
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
 ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
@@ -40,6 +46,26 @@ ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
+
+# Track where the mouse is, so the cat has something to chase. The pose is
+# published BEST_EFFORT, so subscribe with the sensor data profile to match it.
+_mouse_position = [0.0, 0.0, 0.0]
+
+
+def _mouse_pose_callback(msg):
+    _mouse_position[0] = msg.pose.position.x
+    _mouse_position[1] = msg.pose.position.y
+    _mouse_position[2] = msg.pose.position.z
+
+
+mouse_pose_node = rclpy.create_node("mouse_pose_tracker")
+mouse_pose_node.create_subscription(
+    PoseStamped,
+    "/" + MOUSE_NAMESPACE + "/self_localization/pose",
+    _mouse_pose_callback,
+    qos_profile_sensor_data,
+)
+executor.add_node(mouse_pose_node)
 
 
 def __auto_spin() -> None:
@@ -53,41 +79,6 @@ def __auto_spin() -> None:
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
-
-### mouse position tracking ###
-# the cat needs to know where the mouse is to chase it.
-# one thing to watch out for: don't give this its own
-# MultiThreadedExecutor.spin(). i did that first and the cat just sat there.
-# the reason is spin() never pauses, so it takes all the cpu time and the
-# drone's own background thread barely gets to run. that thread is what reads
-# the controller status, and set_cmd_vel waits for the controller to report
-# it's in SPEED mode before it sends anything. if that thread can't run, the
-# status never updates, set_cmd_vel waits 5s and then gives up - so the cat
-# never moves. so instead we just add this to the camera loop below, which
-# does a little work then sleeps, leaving room for everything else.
-
-_mouse_position = [20.0, 5.0, 0.0]
-
-
-def _mouse_pose_callback(msg):
-    _mouse_position[0] = msg.pose.position.x
-    _mouse_position[1] = msg.pose.position.y
-    _mouse_position[2] = msg.pose.position.z
-
-
-_mouse_pose_node = rclpy.create_node("cat_mouse_pose_tracker")
-# this topic is published as BEST_EFFORT. if you subscribe with the default
-# settings (which are RELIABLE) the two don't match and you receive nothing,
-# so get_mouse_position would just keep returning the default below. using
-# the sensor-data profile makes both sides BEST_EFFORT, so the messages flow.
-_mouse_pose_sub = _mouse_pose_node.create_subscription(
-    PoseStamped,
-    "/drone1/self_localization/pose",
-    _mouse_pose_callback,
-    qos_profile_sensor_data,
-)
-
-executor.add_node(_mouse_pose_node)
 
 ### GETTERS ###
 

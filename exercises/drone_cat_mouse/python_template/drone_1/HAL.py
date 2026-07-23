@@ -4,6 +4,9 @@ import threading
 import time
 import sys
 
+from geometry_msgs.msg import PoseStamped
+from rclpy.qos import qos_profile_sensor_data
+
 from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
 
@@ -11,7 +14,9 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+# This is the mouse, so the roles are the other way round from the cat's HAL.
 DRONE_NAMESPACE = "drone_1"
+CAT_NAMESPACE = "drone"
 
 
 # Mutes exceptions
@@ -24,15 +29,15 @@ def custom_thread_excepthook(args):
 threading.excepthook = custom_thread_excepthook
 
 ### HAL INIT ###
-
-print("HAL initializing drone_1 (mouse)", flush=True)
+print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
 
-CAM_FRONTAL_TOPIC = f"/{DRONE_NAMESPACE}/frontal_cam/image_raw"
-CAM_VENTRAL_TOPIC = f"/{DRONE_NAMESPACE}/ventral_cam/image_raw"
 
-drone = DroneWrapper(drone_id=DRONE_NAMESPACE)
+CAM_FRONTAL_TOPIC = "/" + DRONE_NAMESPACE + "/frontal_cam/image_raw"
+CAM_VENTRAL_TOPIC = "/" + DRONE_NAMESPACE + "/ventral_cam/image_raw"
+
+drone = DroneWrapper(DRONE_NAMESPACE)
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
 ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
@@ -40,6 +45,26 @@ ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
+
+# Track where the cat is, so the mouse can run away from it. The pose is
+# published BEST_EFFORT, so subscribe with the sensor data profile to match it.
+_cat_position = [0.0, 0.0, 0.0]
+
+
+def _cat_pose_callback(msg):
+    _cat_position[0] = msg.pose.position.x
+    _cat_position[1] = msg.pose.position.y
+    _cat_position[2] = msg.pose.position.z
+
+
+cat_pose_node = rclpy.create_node("cat_pose_tracker")
+cat_pose_node.create_subscription(
+    PoseStamped,
+    "/" + CAT_NAMESPACE + "/self_localization/pose",
+    _cat_pose_callback,
+    qos_profile_sensor_data,
+)
+executor.add_node(cat_pose_node)
 
 
 def __auto_spin() -> None:
@@ -53,7 +78,6 @@ def __auto_spin() -> None:
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
-
 
 ### GETTERS ###
 
@@ -110,6 +134,10 @@ def get_yaw():
 def get_landed_state():
     state = drone.get_landed_state()
     return state
+
+
+def get_cat_position():
+    return list(_cat_position)
 
 
 ### SETTERS ###
