@@ -35,17 +35,18 @@ const Exercise = () => {
   });
 
   useEffect(() => {
-    window.addEventListener("beforeunload", () => exitProject());
+      const handleExit = () => exitProject();
+      window.addEventListener("pagehide", handleExit);
 
-    return () => {
-      window.removeEventListener("beforeunload", () => exitProject());
-      // This is to fix this: fires twice thanks to react Strict mode
-      if (hasRender.current || process.env.NODE_ENV !== "development") {
-        exitProject();
-      }
-      hasRender.current = true;
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("pagehide", handleExit);
+        // This is to fix this: fires twice thanks to react Strict mode
+        if (hasRender.current || process.env.NODE_ENV !== "development") {
+          exitProject();
+        }
+        hasRender.current = true;
+      };
+    }, []);
 
   // TODO: only tmp
   const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["drone_1/academy.py"] : undefined
