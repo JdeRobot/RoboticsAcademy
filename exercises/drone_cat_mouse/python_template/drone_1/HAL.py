@@ -1,11 +1,13 @@
-import numpy as np
 import rclpy
 import threading
 import time
 import sys
 
+sys.path.insert(0, "/workspace/code")
+
 from geometry_msgs.msg import PoseStamped
-from rclpy.qos import qos_profile_sensor_data
+from std_msgs.msg import String
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, qos_profile_sensor_data
 
 from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
@@ -14,21 +16,15 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
-# This is the mouse, so the roles are the other way round from the cat's HAL.
-DRONE_NAMESPACE = "drone_1"
+DRONE_NAMESPACE = "drone_mouse"
 CAT_NAMESPACE = "drone"
 
+DEFAULT_COURSE = "medium"
+COURSE_TIMEOUT = 10.0
 
-# Mutes exceptions
-def custom_thread_excepthook(args):
-    if "spin" in args.thread.name:
-        return
-    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
-
-
-threading.excepthook = custom_thread_excepthook
 
 ### HAL INIT ###
+
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
@@ -36,6 +32,8 @@ if not rclpy.ok():
 
 CAM_FRONTAL_TOPIC = "/" + DRONE_NAMESPACE + "/frontal_cam/image_raw"
 CAM_VENTRAL_TOPIC = "/" + DRONE_NAMESPACE + "/ventral_cam/image_raw"
+CAT_POSE_TOPIC = "/" + CAT_NAMESPACE + "/self_localization/pose"
+COURSE_TOPIC = "/drone_cat_mouse/course"
 
 drone = DroneWrapper(DRONE_NAMESPACE)
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
@@ -46,23 +44,31 @@ executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
 
-# Track where the cat is, so the mouse can run away from it. The pose is
-# published BEST_EFFORT, so subscribe with the sensor data profile to match it.
-_cat_position = [0.0, 0.0, 0.0]
+cat_position = [0.0, 0.0, 0.0]
+course = None
 
 
-def _cat_pose_callback(msg):
-    _cat_position[0] = msg.pose.position.x
-    _cat_position[1] = msg.pose.position.y
-    _cat_position[2] = msg.pose.position.z
+def cat_pose_callback(msg):
+    cat_position[0] = msg.pose.position.x
+    cat_position[1] = msg.pose.position.y
+    cat_position[2] = msg.pose.position.z
 
 
-cat_pose_node = rclpy.create_node("cat_pose_tracker")
+def course_callback(msg):
+    global course
+    course = msg.data
+
+
+cat_pose_node = rclpy.create_node("cat_pose_node")
 cat_pose_node.create_subscription(
-    PoseStamped,
-    "/" + CAT_NAMESPACE + "/self_localization/pose",
-    _cat_pose_callback,
-    qos_profile_sensor_data,
+    PoseStamped, CAT_POSE_TOPIC, cat_pose_callback, qos_profile_sensor_data
+)
+# Latched by the world launcher, so it arrives however late this starts
+cat_pose_node.create_subscription(
+    String,
+    COURSE_TOPIC,
+    course_callback,
+    QoSProfile(depth=1, durability=QoSDurabilityPolicy.TRANSIENT_LOCAL),
 )
 executor.add_node(cat_pose_node)
 
@@ -137,7 +143,14 @@ def get_landed_state():
 
 
 def get_cat_position():
-    return list(_cat_position)
+    return list(cat_position)
+
+
+def get_course():
+    give_up_at = time.time() + COURSE_TIMEOUT
+    while course is None and time.time() < give_up_at:
+        time.sleep(0.05)
+    return course or DEFAULT_COURSE
 
 
 ### SETTERS ###

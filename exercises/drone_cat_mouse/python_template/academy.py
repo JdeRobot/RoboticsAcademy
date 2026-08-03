@@ -1,35 +1,23 @@
 import HAL
 import WebGUI
+import cv2
+import numpy as np
 import time
 
-# You are the cat. Chase the mouse drone.
+# You are the cat. Chase the magenta mouse drone using your camera.
 #
-# Sensing:  HAL.get_position()        -> your position       [x, y, z]
-#           HAL.get_mouse_position()  -> the mouse position  [x, y, z]
-#           HAL.get_frontal_image()   -> your frontal camera
-#           HAL.get_ventral_image()   -> your ventral camera
-# Moving:   HAL.takeoff(h), HAL.land()
-#           HAL.set_cmd_vel(vx, vy, vz, yaw_rate)
-# Showing:  WebGUI.showImage(img)      -> right panel
-#           WebGUI.showLeftImage(img)  -> left panel
+#   HAL.get_frontal_image()            the picture
+#   HAL.set_cmd_vel(vx, vy, vz, az)    speeds in the drone's own frame
+#   HAL.takeoff(h), HAL.land()
+#   HAL.get_mouse_position()           the truth, for checking your tracker
+#   WebGUI.showImage(img), WebGUI.showLeftImage(img)
 
-SPEED = 3.0
-
-HAL.takeoff(3)
+HAL.takeoff(3.0)
 
 while True:
-    cat = HAL.get_position()
-    mouse = HAL.get_mouse_position()
+    image = HAL.get_frontal_image()
 
-    # Show both of the cat's cameras: frontal on the right, ventral on the left.
-    WebGUI.showImage(HAL.get_frontal_image())
-    WebGUI.showLeftImage(HAL.get_ventral_image())
+    HAL.set_cmd_vel(0.0, 0.0, 0.0, 0.0)
 
-    # Drive straight at the mouse. Improve it: lead the target, control speed.
-    dx = mouse[0] - cat[0]
-    dy = mouse[1] - cat[1]
-    dz = mouse[2] - cat[2]
-    dist = (dx * dx + dy * dy + dz * dz) ** 0.5 + 1e-6
-
-    HAL.set_cmd_vel(SPEED * dx / dist, SPEED * dy / dist, SPEED * dz / dist, 0.0)
+    WebGUI.showImage(image)
     time.sleep(0.05)

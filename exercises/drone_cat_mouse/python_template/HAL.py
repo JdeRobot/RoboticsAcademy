@@ -1,8 +1,7 @@
-import numpy as np
 import rclpy
 import threading
 import time
-import sys
+import math
 
 from geometry_msgs.msg import PoseStamped
 from rclpy.qos import qos_profile_sensor_data
@@ -13,23 +12,17 @@ from jderobot_drones.drone_wrapper import DroneWrapper
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
-# todo need to add levels logic and refinement of chasing algorithms need to be done.
 
-# The cat is "drone", the mouse is "drone_1".
 DRONE_NAMESPACE = "drone"
-MOUSE_NAMESPACE = "drone_1"
+MOUSE_NAMESPACE = "drone_mouse"
 
-
-# Mutes exceptions
-def custom_thread_excepthook(args):
-    if "spin" in args.thread.name:
-        return
-    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
-
-
-threading.excepthook = custom_thread_excepthook
+# The mouse drops out of the sky when it is caught. The cat is flown by student
+# code that knows nothing about that, so the same check runs here and the
+# commands stop going through.
+CATCH_RADIUS = 1.8
 
 ### HAL INIT ###
+
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
@@ -37,6 +30,7 @@ if not rclpy.ok():
 
 CAM_FRONTAL_TOPIC = "/" + DRONE_NAMESPACE + "/frontal_cam/image_raw"
 CAM_VENTRAL_TOPIC = "/" + DRONE_NAMESPACE + "/ventral_cam/image_raw"
+MOUSE_POSE_TOPIC = "/" + MOUSE_NAMESPACE + "/self_localization/pose"
 
 drone = DroneWrapper(DRONE_NAMESPACE)
 frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
@@ -47,23 +41,18 @@ executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
 
-# Track where the mouse is, so the cat has something to chase. The pose is
-# published BEST_EFFORT, so subscribe with the sensor data profile to match it.
-_mouse_position = [0.0, 0.0, 0.0]
+mouse_position = [0.0, 0.0, 0.0]
 
 
-def _mouse_pose_callback(msg):
-    _mouse_position[0] = msg.pose.position.x
-    _mouse_position[1] = msg.pose.position.y
-    _mouse_position[2] = msg.pose.position.z
+def mouse_pose_callback(msg):
+    mouse_position[0] = msg.pose.position.x
+    mouse_position[1] = msg.pose.position.y
+    mouse_position[2] = msg.pose.position.z
 
 
-mouse_pose_node = rclpy.create_node("mouse_pose_tracker")
+mouse_pose_node = rclpy.create_node("mouse_pose_node")
 mouse_pose_node.create_subscription(
-    PoseStamped,
-    "/" + MOUSE_NAMESPACE + "/self_localization/pose",
-    _mouse_pose_callback,
-    qos_profile_sensor_data,
+    PoseStamped, MOUSE_POSE_TOPIC, mouse_pose_callback, qos_profile_sensor_data
 )
 executor.add_node(mouse_pose_node)
 
@@ -138,21 +127,62 @@ def get_landed_state():
 
 
 def get_mouse_position():
-    return list(_mouse_position)
+    return list(mouse_position)
+
+
+_stopped = False
+_mouse_flew = False
+
+
+def is_caught():
+    if not any(abs(p) > 1e-6 for p in mouse_position):
+        return False
+    here = drone.get_position()
+    if here is None or here[2] < 1.0:
+        return False
+    gap = math.sqrt(sum((here[i] - mouse_position[i]) ** 2 for i in range(3)))
+    return gap < CATCH_RADIUS
 
 
 ### SETTERS ###
 
 
+def _run_over():
+   
+    global _mouse_flew
+    if not any(abs(p) > 1e-6 for p in mouse_position):
+        return False
+    if mouse_position[2] > 1.0:
+        _mouse_flew = True
+    return is_caught() or (_mouse_flew and mouse_position[2] < 0.5)
+
+
+def _stop():
+    global _stopped
+    if not _run_over():
+        return False
+    if not _stopped:
+        _stopped = True
+        drone.set_cmd_vel(0.0, 0.0, 0.0, 0.0)
+        drone.land()
+    return True
+
+
 def set_cmd_pos(x, y, z, az):
+    if _stop():
+        return
     drone.set_cmd_pos(x, y, z, az)
 
 
 def set_cmd_vel(vx, vy, vz, az):
+    if _stop():
+        return
     drone.set_cmd_vel(vx, vy, vz, az)
 
 
 def set_cmd_mix(vx, vy, z, az):
+    if _stop():
+        return
     drone.set_cmd_mix(vx, vy, z, az)
 
 
