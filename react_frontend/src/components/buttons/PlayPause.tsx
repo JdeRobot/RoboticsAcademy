@@ -241,7 +241,7 @@ const PlayPauseButton = ({
           const entrypoints = [`/workspace/code/${runningEntrypointRef.current.path}`] 
           if (additionalEntrypoints) {
             additionalEntrypoints.forEach(entrypoint => {
-              entrypoints.push(`/workspace/code/${entrypoint}`)
+              entrypoints.push(entrypoint)
             });
           }
 
