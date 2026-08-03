@@ -1,4 +1,4 @@
-setuptools==57.5.0
+setuptools==83.0.0
 
 django==4.2.30
 channels==1.1.5

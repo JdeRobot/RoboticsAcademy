@@ -140,6 +140,8 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
 28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones","MULTI-AGENT","MULTI-ENTRYPOINT"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
 29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
+30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
+31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
 \.
 
 --
@@ -199,6 +201,12 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 73	29	57	True
 80	28	79	False
 81	28	80	False
+74	30	73	True
+75	30	74	False
+76	30	75	False
+77	30	76	False
+78	30	77	False
+79	31	78	True
 \.
 
 --
@@ -298,6 +306,12 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 89	29	console
 90	29	simulator
 91	29	web_gui
+92	30	console
+93	30	simulator
+94	30	web_gui
+95	31	console
+96	31	simulator
+97	31	web_gui
 \.
 
 --
