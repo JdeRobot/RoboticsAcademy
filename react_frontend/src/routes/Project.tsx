@@ -48,7 +48,7 @@ const Exercise = () => {
   }, []);
 
   // TODO: only tmp
-  const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["drone_1/academy.py"] : undefined
+  const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["/resources/exercises/drone_cat_mouse/mouse.py"] : undefined
 
   return (
     <>

@@ -148,7 +148,7 @@ def is_caught():
 
 
 def _run_over():
-   
+
     global _mouse_flew
     if not any(abs(p) > 1e-6 for p in mouse_position):
         return False
