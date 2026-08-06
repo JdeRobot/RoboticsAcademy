@@ -97,7 +97,7 @@ def enter_exercise(fal, request):
     }
 
     global active_project
-    if active_project is None or active_project == project_id:
+    if active_project is None:
         active_project = project_id
     else:
         raise ActiveSessionExists()

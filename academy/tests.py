@@ -287,11 +287,11 @@ class EnterExerciseViewTests(TestCase):
             res1 = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex1"})
             self.assertEqual(res1.status_code, 200)
 
-            # 2. Re-enter ex1 (same exercise refresh)
-            res1_re = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex1"})
-            self.assertEqual(res1_re.status_code, 200)
+            # 2. Try entering ex1 again in a 2nd tab while ex1 is active -> should fail with 409 Conflict
+            res1_conflict = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex1"})
+            self.assertEqual(res1_conflict.status_code, 409)
 
-            # 3. Enter ex2 while ex1 is active -> should fail with 409 Conflict
+            # 3. Try entering ex2 while ex1 is active -> should fail with 409 Conflict
             res2_conflict = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex2"})
             self.assertEqual(res2_conflict.status_code, 409)
 
