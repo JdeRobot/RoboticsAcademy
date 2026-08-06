@@ -6,6 +6,7 @@ branch="humble-devel"
 radi_version="humble"
 gpu_mode="false"
 nvidia="false"
+engine="docker"
 compose_file="dev_humble_cpu"
 
 # Function to display help message
@@ -16,20 +17,24 @@ show_help() {
   echo "  -i  Specify the ROS2 version (default: humble)"
   echo "  -g  Enable GPU mode (default: false)"
   echo "  -n  Enable Nvidia support (default: false)"
+  echo "  -p  Use rootless Podman instead of Docker (requires -n for GPU)"
   echo "  -h  Display this help message"
 }
 
 # Function to clean up the containers
 cleanup() {
   echo "Cleaning up..."
-  if [ "$nvidia" = "true" ]; then
-    docker compose --compatibility down
+  if [ "$engine" = "podman" ]; then
+    # Silence the errors for containers podman-compose already removed
+    $compose_cmd down 2>/dev/null
+  elif [ "$nvidia" = "true" ]; then
+    $compose_cmd --compatibility down
   else
-    docker compose down
+    $compose_cmd down
   fi
   rm docker-compose.yaml
   rm react_frontend/checksum.txt
-  
+
   exit 0
 }
 
@@ -55,6 +60,10 @@ while [[ $# -gt 0 ]]; do
             nvidia="true"
             shift 1
             ;;
+        -p)
+            engine="podman"
+            shift 1
+            ;;
         -h | --help) # display Help
             show_help
             exit 0
@@ -67,17 +76,63 @@ while [[ $# -gt 0 ]]; do
    esac
 done
 
+# Set the compose command based on the engine
+if [ "$engine" = "podman" ]; then
+  compose_cmd="podman-compose -p roboticsacademy"
+else
+  compose_cmd="docker compose"
+fi
+
+# Preflight checks
+preflight_checks() {
+  # Podman checks: rootless, binaries and CDI spec
+  if [ "$engine" = "podman" ]; then
+    if [ "$(id -u)" -eq 0 ]; then
+      echo "Error: Rootless Podman must be run without sudo. Execute the script as a standard user."
+      exit 1
+    fi
+
+    for binary in podman podman-compose; do
+      if ! command -v "$binary" &> /dev/null; then
+        echo "Error: $binary is not installed or not in PATH."
+        exit 1
+      fi
+    done
+
+    if [ "$gpu_mode" = "true" ]; then
+      echo "Error: Podman GPU acceleration requires NVIDIA CDI. Use -p -n instead of -p -g."
+      exit 1
+    fi
+
+    # A CDI spec is needed to resolve the nvidia.com/gpu device
+    if [ "$nvidia" = "true" ]; then
+      if ! compgen -G "/var/run/cdi/*.yaml" > /dev/null && \
+         ! compgen -G "/var/run/cdi/*.json" > /dev/null && \
+         ! compgen -G "/etc/cdi/*.yaml"     > /dev/null && \
+         ! compgen -G "/etc/cdi/*.json"     > /dev/null; then
+        echo "Error: No CDI spec found in /var/run/cdi or /etc/cdi."
+        echo "Generate one with: sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml"
+        exit 1
+      fi
+    fi
+
+    # Podman has no daemon, skip the docker checks
+    return
+  fi
+
+  if ! docker compose version &> /dev/null; then
+    echo "Docker Compose V2 is not installed. Please install it."
+  fi
+}
+
+preflight_checks
+
 # Set up trap to catch interrupt signal (Ctrl+C) and execute cleanup function
 trap 'cleanup' INT
 
 echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
 echo "RoboticsBackend version: $radi_version"
-
-# Check docker compose installation
-if ! docker compose version &> /dev/null; then
-  echo "Docker Compose V2 is not installed. Please install it."
-fi
 
 # Clone the desired RAM fork and branch
 if ! [ -d src ]; then
@@ -184,15 +239,21 @@ if [ "$gpu_mode" = "true" ]; then
   compose_file="dev_humble_gpu"
 fi
 if [ "$nvidia" = "true" ]; then
-  compose_file="dev_humble_nvidia"
+  if [ "$engine" = "podman" ]; then
+    compose_file="dev_humble_podman_nvidia"
+  else
+    compose_file="dev_humble_nvidia"
+  fi
 fi
 cp compose_cfg/$compose_file.yaml docker-compose.yaml
 
-# Proceed with docker-compose commands
-if [ "$nvidia" = "true" ]; then
-  docker compose --compatibility up
+# Proceed with compose commands (--compatibility only applies to docker nvidia)
+if [ "$engine" = "podman" ]; then
+  $compose_cmd up
+elif [ "$nvidia" = "true" ]; then
+  $compose_cmd --compatibility up
 else
-  docker compose up
-fi 
+  $compose_cmd up
+fi
 
 cleanup
