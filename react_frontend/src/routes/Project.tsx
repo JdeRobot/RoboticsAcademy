@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Params, useLoaderData } from "react-router";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
@@ -22,7 +22,6 @@ export const loader = async ({
 };
 
 const Exercise = () => {
-  const hasRender = useRef(false);
   const data = useLoaderData<Omit<ExerciseData, "worlds">>();
 
   const WebGui = lazy(async () => {
@@ -35,17 +34,21 @@ const Exercise = () => {
   });
 
   useEffect(() => {
-    window.addEventListener("beforeunload", () => exitProject());
+    const handleBeforeUnload = () => {
+      exitProject();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", () => exitProject());
-      // This is to fix this: fires twice thanks to react Strict mode
-      if (hasRender.current || process.env.NODE_ENV !== "development") {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (
+        !window.location.pathname.includes(`/academy/studio/${data.exercise_id}`)
+      ) {
         exitProject();
       }
-      hasRender.current = true;
     };
-  }, []);
+  }, [data.exercise_id]);
 
   // TODO: only tmp
   const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["drone_1/academy.py"] : undefined

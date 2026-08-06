@@ -68,3 +68,16 @@ class BinaryNotSupported(Exception):
 
     def __str__(self):
         return f"{self.message}"
+
+
+class ActiveSessionExists(Exception):
+    """Exception raised when an exercise session is already active in another tab/window."""
+
+    def __init__(self, msg="You have open a Robotics Academy exercise in another tab or window"):
+        self.message = msg
+        super().__init__(self.message)
+        self.error_code = 409
+
+    def __str__(self):
+        return f"{self.message}"
+

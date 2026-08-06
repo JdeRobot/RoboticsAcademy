@@ -44,7 +44,14 @@ const exitProject = async () => {
     const csfr = getCookie("csrftoken");
     if (csfr !== undefined) {
       data.append("csrfmiddlewaretoken", csfr);
+    }
+    const beaconSent =
+      typeof navigator !== "undefined" &&
+      typeof navigator.sendBeacon === "function" &&
       navigator.sendBeacon(apiUrl, data);
+
+    if (!beaconSent) {
+      axios.post(apiUrl, data, axiosExtra()).catch(() => {});
     }
   } catch (e: unknown) {
     const error = e as ApiError;

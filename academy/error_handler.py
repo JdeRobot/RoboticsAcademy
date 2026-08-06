@@ -9,6 +9,7 @@ from functools import wraps
 import json
 import logging
 from .exceptions import (
+    ActiveSessionExists,
     BinaryNotSupported,
     ResourceAlreadyExistsHelpers,
     ResourceNotExists,
@@ -22,6 +23,7 @@ from django.conf import settings
 from copy import copy
 
 CUSTOM_EXCEPTIONS = (
+    ActiveSessionExists,
     ResourceNotExists,
     ResourceAlreadyExists,
     ParameterInvalid,

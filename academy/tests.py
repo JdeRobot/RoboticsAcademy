@@ -264,8 +264,49 @@ class EnterExerciseViewTests(TestCase):
             self.assertIn("info", data)
             self.assertEqual(data["info"]["name"], "Test Enter")
         finally:
+            self.client.post("/academy/exit_exercise/")
             error_handler.local_fal = orig
             shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_active_session_tracking_and_exit(self):
+        import tempfile, shutil
+        from academy import error_handler
+        from academy.file_access import FAL_RA
+
+        tmp = tempfile.mkdtemp()
+        orig = error_handler.local_fal
+        error_handler.local_fal = FAL_RA(tmp, os.path.join(tmp, "exercises"))
+        try:
+            _make_exercise("test_ex1", "Test Exercise 1")
+            _make_exercise("test_ex2", "Test Exercise 2")
+
+            # Reset active project state before starting test
+            self.client.post("/academy/exit_exercise/")
+
+            # 1. Enter ex1
+            res1 = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex1"})
+            self.assertEqual(res1.status_code, 200)
+
+            # 2. Re-enter ex1 (same exercise refresh)
+            res1_re = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex1"})
+            self.assertEqual(res1_re.status_code, 200)
+
+            # 3. Enter ex2 while ex1 is active -> should fail with 409 Conflict
+            res2_conflict = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex2"})
+            self.assertEqual(res2_conflict.status_code, 409)
+
+            # 4. Exit ex1
+            exit_res = self.client.post("/academy/exit_exercise/")
+            self.assertEqual(exit_res.status_code, 200)
+
+            # 5. Enter ex2 after exit -> should succeed
+            res2_success = self.client.get("/academy/enter_exercise/", {"project_id": "test_ex2"})
+            self.assertEqual(res2_success.status_code, 200)
+        finally:
+            self.client.post("/academy/exit_exercise/")
+            error_handler.local_fal = orig
+            shutil.rmtree(tmp, ignore_errors=True)
+
 
 
 class FileManagementViewTests(TestCase):

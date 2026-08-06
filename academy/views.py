@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
 from academy.exceptions import (
+    ActiveSessionExists,
     ResourceAlreadyExistsHelpers,
 )
 from academy.project_view import EntryEncoder, exists_in_helpers
@@ -95,12 +96,11 @@ def enter_exercise(fal, request):
         "url": project.url,
     }
 
-    # FIX:https://github.com/JdeRobot/RoboticsAcademy/issues/3510
-    # global active_project
-    # if active_project is None:
-    #     active_project = project_id
-    # else:
-    #     raise Exception("Alredy open session")
+    global active_project
+    if active_project is None or active_project == project_id:
+        active_project = project_id
+    else:
+        raise ActiveSessionExists()
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
@@ -117,6 +117,7 @@ def enter_exercise(fal, request):
     return JsonResponse({"success": True, "info": info})
 
 
+@csrf_exempt
 @error_wrapper("POST")
 def exit_exercise(fal, request):
     """
