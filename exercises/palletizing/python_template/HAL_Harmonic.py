@@ -1,6 +1,6 @@
 print("HAL Harmonic initializing", flush=True)
 
-import sys, os, time, math
+import sys, os, time, math, json, copy
 import rclpy
 import numpy as np
 from sensor_msgs.msg import JointState
@@ -39,9 +39,7 @@ HAL.graspable_pub = HAL.create_publisher(
     10,
 )
 
-# Objects the suction gripper is allowed to pick. The gz_link_attacher matches
-# these as substrings of the colliding model name, so "box" covers every box
-# the feeder spawns (box_<run_id>_<counter>).
+# The attacher uses substring matching, so "box" covers feeder-generated names.
 GRASPABLE_OBJECTS = "box"
 
 graspable_msg = String()
@@ -61,20 +59,14 @@ def publish_graspable_objects():
 # Periodic republish so late-joining subscribers receive the list
 HAL.create_timer(1.0, publish_graspable_objects)
 
-# ==============================================================
-# CONVEYOR HANDSHAKE (feeder coordination)
-# ==============================================================
-# The conveyor feeder (box_spawner) and the robot coordinate with a two-message
-# handshake so boxes are picked one at a time and never pile up:
-#   - the feeder publishes a box name on /box_ready when a box is stopped at the
-#     pickup point, then waits;
-#   - the robot calls BoxDone(name) once the box is palletized, which publishes
-#     on /box_done and releases the next box.
-# Keeping this on the HAL node means the student's solution only ever calls
-# WaitForBox()/BoxDone() and never touches ROS topics directly.
+# /box_ready announces a stopped box. /box_done acknowledges that it has been
+# lifted clear so the feeder can advance. ROS topics remain hidden by the HAL.
 
 HAL._ready_box = None
 HAL._processed_boxes = set()
+HAL._box_infos = {}
+HAL._pickup_poses = {}
+HAL._pallet_info = None
 
 
 def _on_box_ready(msg):
@@ -87,24 +79,80 @@ HAL.create_subscription(String, "/box_ready", _on_box_ready, 10)
 HAL.box_done_pub = HAL.create_publisher(String, "/box_done", 10)
 
 
-def WaitForBox():
-    """Block until the feeder announces a box at the pickup point.
+def _on_box_info(msg):
+    try:
+        info = json.loads(msg.data)
+        name = info["name"]
+        pickup_pose = info["pickup_pose"]
+        if pickup_pose.get("frame") != "base_link":
+            raise ValueError("pickup_pose must use the base_link frame")
+        if len(pickup_pose["center"]) != 3:
+            raise ValueError("pickup_pose center must contain x, y, z")
 
-    Returns the box name (str). Use it as the handle to pass to BoxDone() once
-    the box has been stacked on the pallet.
-    """
-    HAL._ready_box = None
+        HAL._box_infos[name] = {
+            "name": name,
+            "sku": info["sku"],
+            "size": info["size"],
+            "mass": info["mass"],
+        }
+        HAL._pickup_poses[name] = pickup_pose
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+        print(f"[HAL] Ignoring invalid /box_info message: {exc}")
+
+
+def _on_pallet_info(msg):
+    try:
+        HAL._pallet_info = json.loads(msg.data)
+    except json.JSONDecodeError as exc:
+        print(f"[HAL] Ignoring invalid /pallet_info JSON: {exc}")
+
+
+HAL.create_subscription(String, "/box_info", _on_box_info, 10)
+HAL.create_subscription(String, "/pallet_info", _on_pallet_info, 10)
+
+
+def WaitForBox():
+    """Wait for a box at the pickup point and return its feeder name."""
     while rclpy.ok() and HAL._ready_box is None:
         rclpy.spin_once(HAL, timeout_sec=0.1)
-    HAL._processed_boxes.add(HAL._ready_box)
-    return HAL._ready_box
+    name = HAL._ready_box
+    HAL._ready_box = None
+    HAL._processed_boxes.add(name)
+    return name
+
+
+def GetBoxInfo(name, timeout=5.0):
+    """Return semantic task metadata for a box announced by WaitForBox()."""
+    deadline = time.time() + timeout
+    while rclpy.ok() and name not in HAL._box_infos and time.time() < deadline:
+        rclpy.spin_once(HAL, timeout_sec=0.1)
+    if name not in HAL._box_infos:
+        raise RuntimeError(f"No semantic /box_info received for {name}")
+    return copy.deepcopy(HAL._box_infos[name])
+
+
+def GetPickupPose(name, timeout=5.0):
+    """Return the observed box top-center pose in the base_link frame."""
+    deadline = time.time() + timeout
+    while rclpy.ok() and name not in HAL._pickup_poses and time.time() < deadline:
+        rclpy.spin_once(HAL, timeout_sec=0.1)
+    if name not in HAL._pickup_poses:
+        raise RuntimeError(f"No pickup pose received for {name}")
+    return copy.deepcopy(HAL._pickup_poses[name])
+
+
+def GetPalletInfo(timeout=5.0):
+    """Return pallet metadata in the robot base_link frame."""
+    deadline = time.time() + timeout
+    while rclpy.ok() and HAL._pallet_info is None and time.time() < deadline:
+        rclpy.spin_once(HAL, timeout_sec=0.1)
+    if HAL._pallet_info is None:
+        raise RuntimeError("No /pallet_info received")
+    return copy.deepcopy(HAL._pallet_info)
 
 
 def BoxDone(name):
-    """Tell the feeder the box has been palletized; releases the next box.
-
-    Pass the name returned by WaitForBox().
-    """
+    """Acknowledge that the box is clear so the feeder can advance."""
     HAL.box_done_pub.publish(String(data=name))
     print(f"[HAL] BoxDone({name}) -> released next box")
 
