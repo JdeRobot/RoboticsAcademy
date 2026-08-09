@@ -18,7 +18,7 @@ public:
         , gui_iterations_(0)
         , rtf_monitor_("/stats", std::chrono::milliseconds(500))
     {
-        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        odom_node_ = std::make_shared<OdometryNode>("/f1/odom", "webgui_odom");
         laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan", "webgui_laser");
         map_ = std::make_shared<Map>(laser_node_, odom_node_);
         aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");

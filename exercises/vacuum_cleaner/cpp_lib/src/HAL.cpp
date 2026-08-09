@@ -9,13 +9,13 @@ std::shared_ptr<BumperNode> HAL::bumper_node_ = nullptr;
 HAL::HAL() : Node("hal_node")
 {
   std::vector<std::string> bumper_topics = {
-      "/roombaROS/events/right_bumper",
-      "/roombaROS/events/center_bumper",
-      "/roombaROS/events/left_bumper"
+      "/vacuum_cleaner/events/right_bumper",
+      "/vacuum_cleaner/events/center_bumper",
+      "/vacuum_cleaner/events/left_bumper"
   };
 
-  motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 1.0, 1.0, "hal_motors");
-  laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan", "hal_laser");
+  motors_node_ = std::make_shared<MotorsNode>("/vacuum_cleaner/cmd_vel", 1.0, 1.0, "hal_motors");
+  laser_node_ = std::make_shared<LaserNode>("/vacuum_cleaner/laser/scan", "hal_laser");
   bumper_node_ = std::make_shared<BumperNode>(bumper_topics, "hal_bumper");
 
   spin_thread_ = std::thread([]() {

@@ -1,10 +1,4 @@
-import React, {
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
 import {
@@ -29,11 +23,13 @@ const PlayPauseButton = ({
   supportedLanguages,
   userRef,
   entrypointRef,
+  additionalEntrypoints
 }: {
   project: string;
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
+  additionalEntrypoints?: string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -242,10 +238,18 @@ const PlayPauseButton = ({
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         if (base64data && runningEntrypointRef.current) {
+          const entrypoints = [`/workspace/code/${runningEntrypointRef.current.path}`] 
+          if (additionalEntrypoints) {
+            additionalEntrypoints.forEach(entrypoint => {
+              entrypoints.push(entrypoint)
+            });
+          }
+
+          const lint_files = additionalEntrypoints ? additionalEntrypoints : []
           try {
             await manager.run(
-              `/workspace/code/${runningEntrypointRef.current.path}`,
-              [runningEntrypointRef.current.path],
+              entrypoints,
+              [runningEntrypointRef.current.path].concat(lint_files),
               base64data as string,
             );
           } catch {

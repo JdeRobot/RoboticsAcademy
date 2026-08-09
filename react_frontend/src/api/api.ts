@@ -201,7 +201,7 @@ const saveFile = async (
   project: string,
   fileName: string,
   content: string,
-  user?: string
+  user?: string,
 ) => {
   if (!project) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("Current File name is not set");
@@ -230,7 +230,7 @@ const createFile = async (
   location: string,
   template?: string,
   warning?: (msg: string) => void,
-  user?: string
+  user?: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -267,7 +267,7 @@ const renameFile = async (
   projectId: string,
   path: string,
   new_path: string,
-  user?: string
+  user?: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -317,7 +317,7 @@ const uploadFile = async (
   fileName: string,
   location: string,
   content: string,
-  user?: string
+  user?: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -346,7 +346,7 @@ const createFolder = async (
   projectId: string,
   location: string,
   folderName: string,
-  user?: string
+  user?: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!folderName) throw new Error("Folder name is not set");
@@ -374,7 +374,7 @@ const renameFolder = async (
   projectId: string,
   path: string,
   new_path: string,
-  user?: string
+  user?: string,
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");

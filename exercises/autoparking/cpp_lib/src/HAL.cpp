@@ -20,12 +20,12 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        motors_node_ = std::make_shared<MotorsNode>("/prius_autoparking/cmd_vel", 4.0, 0.3, "hal_motors");
-        odometry_node_ = std::make_shared<OdometryNode>("/prius_autoparking/odom", "hal_odom");
-        laser_front_node_ = std::make_shared<LaserNode>("/prius_autoparking/scan_front", "hal_laser_front");
-        laser_right_node_ = std::make_shared<LaserNode>("/prius_autoparking/scan_side", "hal_laser_right");
-        laser_back_node_ = std::make_shared<LaserNode>("/prius_autoparking/scan_back", "hal_laser_back");
-        lidar_node_ = std::make_shared<LidarNode>("/prius_autoparking/pc2", "hal_lidar");
+        motors_node_ = std::make_shared<MotorsNode>("/autonomous_car/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/autonomous_car/odom", "hal_odom");
+        laser_front_node_ = std::make_shared<LaserNode>("/autonomous_car/laser_front/scan", "hal_laser_front");
+        laser_right_node_ = std::make_shared<LaserNode>("/autonomous_car/laser_side/scan", "hal_laser_right");
+        laser_back_node_ = std::make_shared<LaserNode>("/autonomous_car/laser_back/scan", "hal_laser_back");
+        lidar_node_ = std::make_shared<LidarNode>("/autonomous_car/lidar/pc2/points", "hal_lidar");
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
         executor_->add_node(motors_node_);

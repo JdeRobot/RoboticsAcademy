@@ -36,8 +36,8 @@ if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
 # ROS2 Topics
-motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-camera_node = CameraNode("/cam_f1_left/image_raw")
+motor_node = MotorsNode("/f1/cmd_vel", 4, 0.3)
+camera_node = CameraNode("/f1/camera/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()

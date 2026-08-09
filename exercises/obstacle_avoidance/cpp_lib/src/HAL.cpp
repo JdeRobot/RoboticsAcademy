@@ -16,8 +16,8 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odom");
-        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/f1/odom", "hal_odom");
+        motors_node_ = std::make_shared<MotorsNode>("/f1/cmd_vel", 4.0, 0.3, "hal_motors");
         laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan", "hal_laser");
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();

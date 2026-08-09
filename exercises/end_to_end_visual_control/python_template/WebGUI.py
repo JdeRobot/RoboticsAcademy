@@ -48,7 +48,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "lap": "", "map": ""}
 
         self.ros_node = WebGUINode(self)
-        self.odom_node = OdometryNode("/odom", "webgui_odometry")
+        self.odom_node = OdometryNode("/f1/odom", "webgui_odometry")
 
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.ros_node)

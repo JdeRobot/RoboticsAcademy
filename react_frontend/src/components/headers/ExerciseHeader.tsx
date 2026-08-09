@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router";
@@ -36,6 +36,7 @@ const ExerciseHeader = ({
   connectManager,
   commsManager,
   userRef,
+  additionalEntrypoints,
 }: {
   project: string;
   name: string;
@@ -43,11 +44,12 @@ const ExerciseHeader = ({
   url?: string;
   setLayout: (layout: Layout) => void;
   commsManager: CommsManager | null;
-  userRef: MutableRefObject<string | undefined>;
+  userRef: RefObject<string | undefined>;
   connectManager: (
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
+  additionalEntrypoints?: string[];
 }) => {
   const theme = useAcademyTheme();
   return (
@@ -82,6 +84,7 @@ const ExerciseHeader = ({
             commsManager={commsManager}
             connectManager={connectManager}
             userRef={userRef}
+            additionalEntrypoints={additionalEntrypoints}
           />
           <TheoryButton url={url} />
           <InfoButton />
@@ -98,15 +101,17 @@ const ExecutionControl = ({
   commsManager,
   connectManager,
   userRef,
+  additionalEntrypoints
 }: {
   project: string;
   supportedLanguages: string[];
   commsManager: CommsManager | null;
-  userRef: MutableRefObject<string | undefined>;
+  userRef: RefObject<string | undefined>;
   connectManager: (
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
+  additionalEntrypoints?: string[];
 }) => {
   const [state, setState] = useState<string | undefined>(
     commsManager?.getState(),
@@ -150,6 +155,7 @@ const ExecutionControl = ({
             supportedLanguages={supportedLanguages}
             userRef={userRef}
             entrypointRef={entrypointRef}
+            additionalEntrypoints={additionalEntrypoints}
           />
           <ResetButton />
           <TerminateUniverseButton />
