@@ -19,6 +19,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guidelines.
 ## Development resources
 
 - [Instructions for developers.][]
+- [Using Podman.][]
 - [Coding Style Guide][]
 - [Client side.][] (Robotics Academy architecture) **Obsolete**
 - [Repository Architecture.][]
@@ -30,6 +31,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guidelines.
 - [Exercises Status][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
+[Using Podman.]: ./docs/InstructionsForDevelopers_podman.md
 [Coding Style Guide]: ./docs/coding_style_guide.md
 [Client side.]: ./docs/clientside.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md

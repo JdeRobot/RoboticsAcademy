@@ -9,6 +9,7 @@
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
   - [Developer environment set up via script _(recommended set up)_](#automatic-script)
   - [Developer environment set up via docker-compose _(recommended set up for **Windows Users**)_](#docker-compose)
+  - [Developer environment set up via Podman _(rootless, **Linux only**)_](./InstructionsForDevelopers_podman.md)
 - [How to use nvidia](#How-to-use-nvidia)
 - [How to execute the tests](#How-to-execute-the-tests)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
