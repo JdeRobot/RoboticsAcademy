@@ -96,14 +96,20 @@ const PlayPauseButton = ({
   };
 
   const compareZips = async (zip1: JSZip, zip2: JSZip) => {
-    for (const key in zip1.files) {
-      if (!Object.hasOwn(zip1.files, key)) continue;
+    const keys1 = Object.keys(zip1.files);
+    const keys2 = Object.keys(zip2.files);
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
       if (!Object.hasOwn(zip2.files, key)) {
         return false;
       }
 
-      const value = await zip1.files[key]._data;
-      const old = await zip2.files[key]._data;
+      if (zip1.files[key].dir && zip2.files[key].dir) continue;
+      if (zip1.files[key].dir !== zip2.files[key].dir) return false;
+
+      const value = await zip1.files[key].async("base64");
+      const old = await zip2.files[key].async("base64");
       if (value !== old) {
         return false;
       }
@@ -280,7 +286,7 @@ const PlayPauseButton = ({
 
       await zipCodeFiles(zip, files, project, user);
 
-      zip.files[entrypoint.path]._data.then(
+      zip.files[entrypoint.path].async("string").then(
         (value: string) => (runningContentRef.current = value),
       );
       return zip;
