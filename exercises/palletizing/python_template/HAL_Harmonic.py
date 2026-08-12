@@ -301,9 +301,7 @@ def _wait_motion_complete(timeout=15.0, vel_threshold=0.01, stable_count=8):
     latest = [None]
 
     sub = HAL.create_subscription(
-        JointState, '/joint_states',
-        lambda msg: latest.__setitem__(0, msg),
-        10
+        JointState, "/joint_states", lambda msg: latest.__setitem__(0, msg), 10
     )
     stable = 0
     deadline = time.time() + timeout
@@ -342,7 +340,7 @@ def MoveRelLinear(relative_xyz, speed, wait_time):
         print(
             f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
         )
-        _wait_motion_complete()   # block until joint velocities settle
+        _wait_motion_complete()  # block until joint velocities settle
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 

@@ -360,13 +360,16 @@ def GripperSet(relative_closure, wait_time):
     print(f"Waiting {wait_time} s")
     print("")
 
+
 from std_msgs.msg import Bool, String
+
+
 class SuctionNode(Node):
     def __init__(self):
         super().__init__("suction_client")
         self.pub_attach = self.create_publisher(Bool, "/gripper_auto_attach", 10)
         self.pub_obj = self.create_publisher(String, "/graspable_objects", 10)
-        
+
     def set_suction(self, state):
         msg_obj = String()
         msg_obj.data = "box"
@@ -375,7 +378,9 @@ class SuctionNode(Node):
         msg.data = state
         self.pub_attach.publish(msg)
 
+
 suction_node = SuctionNode()
+
 
 def SuctionSet(state, wait_time):
     suction_node.set_suction(state)
