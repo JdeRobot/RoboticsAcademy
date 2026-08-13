@@ -10,7 +10,7 @@ This setup works on Linux only. Windows and macOS users should use Docker.
 
 Run these commands from the repository root.
 
-**Requirements:** Ubuntu 24.04, and an NVIDIA GPU if you want GPU acceleration. Other Linux distributions should work, but the package versions below are Ubuntu 24.04's.
+**Requirements:** Ubuntu 24.04 or greater, and an NVIDIA GPU if you want GPU acceleration. Other Linux distributions should work, but the package versions below are for Ubuntu 24.04.
 
 **Important:** never run `podman` or `podman-compose` under `sudo`. Rootless operation is the point of this setup, and `sudo` switches to a separate root-owned container store. Both launcher scripts refuse to run as root.
 
@@ -130,7 +130,11 @@ podman-compose -p roboticsacademy down
 
 ## Migrating from an existing Docker setup
 
-Podman keeps its own image store. Images built or pulled under Docker are not visible to Podman. Re-pull them.
+Podman keeps its own image store. Images built or pulled under Docker are not visible to Podman. Re-pull them or move them from your local docker images using the following command replacing `DOCKER_IMAGE_NAME` with the image name like `robotics-database:latest` or `robotics-academy:latest`:
+
+```bash
+docker images --format docker-daemon:{{.Repository}}:{{.Tag}} | grep DOCKER_IMAGE_NAME | xargs podman pull
+```
 
 Exercise workspace files left behind by earlier runs can block autosave. The symptom is an "Error saving file" popup with no message: the file content writes successfully, but the permission reset afterwards fails with `EPERM`. The fix depends on which engine created the files.
 
