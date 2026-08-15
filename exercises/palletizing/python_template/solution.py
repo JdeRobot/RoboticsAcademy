@@ -1,6 +1,6 @@
 """Pick incoming boxes and place them using HAL-provided task data."""
 
-import HAL_Harmonic as HAL
+import HAL
 
 
 def main():
