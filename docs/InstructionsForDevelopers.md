@@ -85,8 +85,8 @@ cd /RoboticsAcademy
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
@@ -147,8 +147,8 @@ mv common/common.zip react_frontend/src/common.zip
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
@@ -197,8 +197,8 @@ cd RoboticsAcademy/
 3. Install and use Node 20
 
 ```
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 ```
 
 4. Reinstall yarn and rebuild the REACT frontend
@@ -242,8 +242,8 @@ You **must** compile the frontend each time using:
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 20
-nvm use 20
+nvm install 24
+nvm use 24
 npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
