@@ -142,6 +142,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
 30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
 31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
+32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
 \.
 
 --
@@ -207,6 +208,7 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 79	31	78	True
 80	28	79	False
 81	28	80	False
+82	32	81	True
 \.
 
 --
@@ -312,6 +314,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 95	31	console
 96	31	simulator
 97	31	web_gui
+98	32	console
+99	32	simulator
+100	32	rviz
 \.
 
 --
