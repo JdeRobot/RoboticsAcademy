@@ -23,13 +23,13 @@ const PlayPauseButton = ({
   supportedLanguages,
   userRef,
   entrypointRef,
-  additionalEntrypoints
+  additionalEntrypoints,
 }: {
   project: string;
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
-  additionalEntrypoints?: string[];
+  additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -244,14 +244,14 @@ const PlayPauseButton = ({
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         if (base64data && runningEntrypointRef.current) {
-          const entrypoints = [`/workspace/code/${runningEntrypointRef.current.path}`] 
-          if (additionalEntrypoints) {
-            additionalEntrypoints.forEach(entrypoint => {
-              entrypoints.push(entrypoint)
-            });
-          }
+          const entrypoints = [
+            `/workspace/code/${runningEntrypointRef.current.path}`,
+          ];
+          additionalEntrypoints.forEach((entrypoint) => {
+            entrypoints.push(entrypoint);
+          });
 
-          const lint_files = additionalEntrypoints ? additionalEntrypoints : []
+          const lint_files = additionalEntrypoints;
           try {
             await manager.run(
               entrypoints,
@@ -286,9 +286,9 @@ const PlayPauseButton = ({
 
       await zipCodeFiles(zip, files, project, user);
 
-      zip.files[entrypoint.path].async("string").then(
-        (value: string) => (runningContentRef.current = value),
-      );
+      zip.files[entrypoint.path]
+        .async("string")
+        .then((value: string) => (runningContentRef.current = value));
       return zip;
     }
   };

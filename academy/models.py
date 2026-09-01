@@ -129,6 +129,7 @@ class Exercise(models.Model):
         name: Human-readable name of the exercise.
         description: Short description of the exercise goals.
         tags: JSON-encoded list of tags (e.g. MULTILANGUAGE).
+        entrypoints: JSON-encoded list of additional entrypoints.
         status: Lifecycle status (ACTIVE, INACTIVE, PROTOTYPE).
         worlds: Associated Universe instances via ExerciseWorlds.
         tools: Associated Tool instances.
@@ -139,6 +140,7 @@ class Exercise(models.Model):
     name = models.CharField(max_length=40, blank=False, unique=True)
     description = models.CharField(max_length=400, blank=False)
     tags = models.CharField(max_length=2000, default=[])
+    entrypoints = models.CharField(max_length=2000, default=[])
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     worlds = models.ManyToManyField(World, default=None, through="ExerciseWorlds")
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')

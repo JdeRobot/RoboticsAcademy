@@ -88,9 +88,17 @@ def enter_exercise(fal, request):
     except (ValueError, SyntaxError):
         parsed_tags = []
 
+    try:
+        parsed_entrypoints = (
+            ast.literal_eval(project.entrypoints) if project.entrypoints else []
+        )
+    except (ValueError, SyntaxError):
+        parsed_entrypoints = []
+
     info = {
         "name": project.name,
         "tags": parsed_tags,
+        "entrypoints": parsed_entrypoints,
         "tools": tools,
         "url": project.url,
     }

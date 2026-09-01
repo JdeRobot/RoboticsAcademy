@@ -49,7 +49,7 @@ const ExerciseHeader = ({
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
-  additionalEntrypoints?: string[];
+  additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
   return (
@@ -101,7 +101,7 @@ const ExecutionControl = ({
   commsManager,
   connectManager,
   userRef,
-  additionalEntrypoints
+  additionalEntrypoints,
 }: {
   project: string;
   supportedLanguages: string[];
@@ -111,7 +111,7 @@ const ExecutionControl = ({
     desiredState?: string,
     callback?: () => void,
   ) => Promise<void>;
-  additionalEntrypoints?: string[];
+  additionalEntrypoints: string[];
 }) => {
   const [state, setState] = useState<string | undefined>(
     commsManager?.getState(),
