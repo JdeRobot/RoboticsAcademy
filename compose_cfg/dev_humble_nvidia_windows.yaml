@@ -36,8 +36,7 @@ services:
                 - gpu
     environment:
       - LD_LIBRARY_PATH=/usr/lib/wsl/lib
-    devices:
-      - /dev/dri
+      - PYTHONPATH=/RoboticsApplicationManager
     ports:
       - "7164:7164"
       - "7163:7163"
