@@ -39,17 +39,29 @@ const getProjectData = async (
 const exitProject = async () => {
   const apiUrl = `/academy/exit_exercise/`;
 
-  try {
-    const data = new FormData();
-    const csfr = getCookie("csrftoken");
-    if (csfr !== undefined) {
-      data.append("csrfmiddlewaretoken", csfr);
-      navigator.sendBeacon(apiUrl, data);
-    }
-  } catch (e: unknown) {
-    const error = e as ApiError;
-    throw Error(error.response?.data.message, { cause: e });
-  }
+  // Define headers for source validation
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("X-CSRFToken", getCookie("csrftoken")!);
+
+  // Send with keepalive to persist across page unload
+  fetch(apiUrl, {
+    method: "POST",
+    headers: headers,
+    keepalive: true, // Critical for reliability during unload
+  }).catch((error) => console.error("Beacon failed:", error));
+
+  // try {
+  //   const data = new FormData();
+  //   const csfr = getCookie("csrftoken");
+  //   if (csfr !== undefined) {
+  //     data.append("csrfmiddlewaretoken", csfr);
+  //     navigator.sendBeacon(apiUrl, data);
+  //   }
+  // } catch (e: unknown) {
+  //   const error = e as ApiError;
+  //   throw Error(error.response?.data.message, { cause: e });
+  // }
 };
 
 const getExerciseList = async (): Promise<Exercise[]> => {
