@@ -700,6 +700,7 @@ An exercise entry in the database must include the following data:
 - `name`: name to display on the exercise list
 - `description`: description to display on the exercise list
 - `tags`: an exercise must include at least one ROS tag ("ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
+- `entrypoints`: list of additional entrypoints for use in the exercise. This is only for **Multiple agents/entrypoints** that have robots that the user does not control.
 - `status`: changes the state indicator (ACTIVE = green; PROTOTYPE = yellow; INACTIVE = red)
 - `url`: url of the exercise documentation
 
