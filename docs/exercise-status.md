@@ -46,7 +46,7 @@
 | Drone Package delivery   |   reset failure  |             |               |          | -     |                   |                    | WIP    |
 | Drone hangar             |        ok        |             |               |          | -     |                   |                    | broken |
 | Drone Visual Lander      |                  |             |               |          | -     |                   |                    | broken |
-| Drone Cat and Mouse      |                  |             |               |          | -     |                   |                    | WIP |
+| Drone Cat and Mouse      |        ok        |             |               |          | -     |                   |                    | WIP |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
