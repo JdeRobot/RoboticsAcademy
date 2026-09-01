@@ -24,6 +24,11 @@ academy_urls = [
     path("exit_exercise/", views.exit_exercise, name="exit_exercise"),
     path("get_exercise_list/", views.get_exercise_list, name="get_exercise_list"),
     path(
+        "get_exercise_additional_entrypoints/",
+        views.get_exercise_additional_entrypoints,
+        name="get_exercise_additional_entrypoints",
+    ),
+    path(
         "get_helper_file_list/", views.get_helper_file_list, name="get_helper_file_list"
     ),
     path("get_helper_file/", views.get_helper_file, name="get_helper_file"),

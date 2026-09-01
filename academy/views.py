@@ -151,6 +151,24 @@ def get_exercise_list(fal, request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
+@error_wrapper("GET", ["project_id"])
+def get_exercise_additional_entrypoints(fal, request):
+    """
+    Return a list of all additional entrypoints for an exercise.
+    """
+    project = request.GET.get("project_id")
+    path = fal.helpers_path(project)
+    config_path = fal.path_join(path, "config.json")
+    if fal.exists(config_path) <= 0:
+        return JsonResponse({"success": False, "entrypoints": []})
+
+    with open(config_path, "r") as f:
+        config = json.load(f)
+    return JsonResponse(
+        {"success": True, "entrypoints": config["additionalEntrypoints"]}
+    )
+
+
 @error_wrapper("GET", ["project", "language"])
 def get_helper_file_list(fal, request):
     """
