@@ -35,10 +35,14 @@ const Exercise = () => {
   });
 
   useEffect(() => {
-    window.addEventListener("beforeunload", () => exitProject());
+    const handleUnload = () => {
+      exitProject();
+    };
+
+    window.addEventListener("pagehide", handleUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", () => exitProject());
+      window.removeEventListener("pagehide", handleUnload);
       // This is to fix this: fires twice thanks to react Strict mode
       if (hasRender.current || process.env.NODE_ENV !== "development") {
         exitProject();

@@ -104,11 +104,11 @@ def enter_exercise(fal, request):
     }
 
     # FIX:https://github.com/JdeRobot/RoboticsAcademy/issues/3510
-    # global active_project
-    # if active_project is None:
-    #     active_project = project_id
-    # else:
-    #     raise Exception("Alredy open session")
+    global active_project
+    if active_project is None:
+        active_project = project_id
+    else:
+        raise Exception("Alredy open session")
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
@@ -130,6 +130,8 @@ def exit_exercise(fal, request):
     """
     Exit exercise
     """
+
+    print("Exit exercise")
 
     global active_project
     active_project = None
