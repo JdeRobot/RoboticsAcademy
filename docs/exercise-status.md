@@ -41,12 +41,12 @@
 | Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟨 Gazebo Classic | 🟧 Gazebo Harmonic | Notes  |
 | ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :---------------: | :----------------: | ------ |
 | Digital Image Processing |        ok        |             |               |          | -     |       none        |        none        | broken |
-| Drone Position control   |                  |             |               |          | -     |                   |                    | WIP    |
+| Drone Position control   |        ok        |             |               |          | -     |                   |                    | WIP    |
 | Drone Follow TurtleBot   |                  |             |               |          | -     |                   |                    | broken |
-| Drone Package delivery   |                  |             |               |          | -     |                   |                    | WIP    |
-| Drone hangar             |                  |             |               |          | -     |                   |                    | broken |
+| Drone Package delivery   |   reset failure  |             |               |          | -     |                   |                    | WIP    |
+| Drone hangar             |        ok        |             |               |          | -     |                   |                    | broken |
 | Drone Visual Lander      |                  |             |               |          | -     |                   |                    | broken |
-| Drone Cat and Mouse      |                  |             |               |          | -     |                   |                    | WIP |
+| Drone Cat and Mouse      |        ok        |             |               |          | -     |                   |                    | WIP |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
