@@ -129,7 +129,7 @@ class Exercise(models.Model):
         name: Human-readable name of the exercise.
         description: Short description of the exercise goals.
         tags: JSON-encoded list of tags (e.g. MULTILANGUAGE).
-        entrypoints: JSON-encoded list of additional entrypoints for MULTI-ENTRYPOINT.
+        entrypoints: JSON-encoded list of additional entrypoints.
         status: Lifecycle status (ACTIVE, INACTIVE, PROTOTYPE).
         worlds: Associated Universe instances via ExerciseWorlds.
         tools: Associated Tool instances.
