@@ -35,7 +35,7 @@ const ExerciseContainer = ({
   tools,
   url,
   children,
-  additionalEntrypoints
+  additionalEntrypoints,
 }: {
   project: string;
   name: string;
@@ -43,7 +43,7 @@ const ExerciseContainer = ({
   url?: string;
   multiLanguage: boolean;
   children: JSX.Element;
-  additionalEntrypoints?: string[];
+  additionalEntrypoints: string[];
 }) => {
   const { warning } = useError();
   const hasTriedToConnect = useRef(false);

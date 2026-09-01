@@ -3,11 +3,7 @@ import { Params, useLoaderData } from "react-router";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
-import {
-  exitProject,
-  getProjectAdditionalEntrypoints,
-  getProjectData,
-} from "Api";
+import { exitProject, getProjectData } from "Api";
 import WebGUILoading from "Components/visualizers/WebGUILoading";
 import { ExerciseData } from "Types/exercises";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -22,11 +18,7 @@ export const loader = async ({
 }: {
   params: Params<string>;
 }): Promise<Omit<ExerciseData, "worlds">> => {
-  const data = await getProjectData(params.proj_id);
-  if (data.tags.includes("MULTI-ENTRYPOINT")) {
-    data.entrypoints = await getProjectAdditionalEntrypoints(params.proj_id);
-  }
-  return data;
+  return await getProjectData(params.proj_id);
 };
 
 const Exercise = () => {
@@ -54,11 +46,6 @@ const Exercise = () => {
       hasRender.current = true;
     };
   }, []);
-
-  // // TODO: only tmp
-  // const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT")
-  //   ? ["/resources/exercises/drone_cat_mouse/mouse.py"]
-  //   : undefined;
 
   return (
     <>

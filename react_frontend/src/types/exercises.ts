@@ -13,7 +13,7 @@ export interface ExerciseData {
   tools: string[];
   tags: string[];
   worlds: object[];
-  entrypoints?: string[];
+  entrypoints: string[];
 }
 
 export type ExerciseStatus = "ACTIVE" | "INACTIVE" | "PROTOTYPE";
