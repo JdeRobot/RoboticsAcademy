@@ -3,7 +3,11 @@ import { Params, useLoaderData } from "react-router";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
-import { exitProject, getProjectData } from "Api";
+import {
+  exitProject,
+  getProjectAdditionalEntrypoints,
+  getProjectData,
+} from "Api";
 import WebGUILoading from "Components/visualizers/WebGUILoading";
 import { ExerciseData } from "Types/exercises";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -18,7 +22,11 @@ export const loader = async ({
 }: {
   params: Params<string>;
 }): Promise<Omit<ExerciseData, "worlds">> => {
-  return await getProjectData(params.proj_id);
+  const data = await getProjectData(params.proj_id);
+  if (data.tags.includes("MULTI-ENTRYPOINT")) {
+    data.entrypoints = await getProjectAdditionalEntrypoints(params.proj_id);
+  }
+  return data;
 };
 
 const Exercise = () => {
@@ -47,14 +55,16 @@ const Exercise = () => {
     };
   }, []);
 
-  // TODO: only tmp
-  const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT") ? ["/resources/exercises/drone_cat_mouse/mouse.py"] : undefined
+  // // TODO: only tmp
+  // const additionalEntrypoints = data.tags.includes("MULTI-ENTRYPOINT")
+  //   ? ["/resources/exercises/drone_cat_mouse/mouse.py"]
+  //   : undefined;
 
   return (
     <>
       <ExerciseContainer
         multiLanguage={data.tags.includes("MULTILANGUAGE")}
-        additionalEntrypoints={additionalEntrypoints}
+        additionalEntrypoints={data.entrypoints}
         project={data.exercise_id}
         name={data.name}
         tools={data.tools}

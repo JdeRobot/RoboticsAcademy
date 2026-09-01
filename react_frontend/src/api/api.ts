@@ -36,6 +36,22 @@ const getProjectData = async (
   }
 };
 
+const getProjectAdditionalEntrypoints = async (
+  projectId?: string,
+): Promise<string[]> => {
+  if (!projectId) throw new Error("Current Project ID is not set");
+
+  const apiUrl = `/academy/get_exercise_additional_entrypoints/?project_id=${projectId}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data.entrypoints;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message, { cause: e });
+  }
+};
+
 const exitProject = async () => {
   const apiUrl = `/academy/exit_exercise/`;
 
@@ -437,4 +453,5 @@ export {
   renameFolder,
   deleteFolder,
   exitProject,
+  getProjectAdditionalEntrypoints,
 };
