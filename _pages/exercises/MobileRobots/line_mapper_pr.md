@@ -1,19 +1,19 @@
 ---
 permalink: /exercises/MobileRobots/line_mapper_pr
-title: "Laser Line Mapping"
+title: "Line-based Mapping"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Laser Line Mapping"
+toc_label: "TOC Line-based Mapping"
 toc_icon: "cog"
 
 gallery:
   - url: /assets/images/exercises/line_mapper/line_mapper_teaser.png
     image_path: /assets/images/exercises/line_mapper/line_mapper_teaser.png
-    alt: "Laser Line Mapping"
-    title: "Laser Line Mapping"
+    alt: "Line-based Mapping"
+    title: "Line-based Mapping"
 
 
 
@@ -36,7 +36,7 @@ The robot must be able to:
 * Maintain a consistent global map by merging new detections with existing segments
 * Visualize the resulting segment map in real time on the WebGUI
 
-{% include gallery caption="Laser Line Mapping in a warehouse." %}
+{% include gallery caption="Line-based Mapping in a warehouse." %}
 
 ## Frequency API
 
