@@ -31,7 +31,7 @@
 | Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | -     |                   |         ok         |        |
 |                                      |                  |             |               |          |                                   |                              |                   |                    |             |
 | Dynamic Window Approach              |        ok        |      ok     |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
-| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |  [Link][vid_visual_odometry] |                   |                    |             |
 | Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 | Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 | Line Mapping                         |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
@@ -65,6 +65,7 @@
 [vid_montecarlo_laser]: https://www.youtube.com/watch?v=mkEZ-ffX6cA
 [vid_3d_reconstr]: https://www.youtube.com/watch?v=nJeppI5i5H0
 [vid_dynamic_window]: https://www.youtube.com/watch?v=0fsE49EijDc
+[vid_visual_odometry]: https://www.youtube.com/watch?v=B95ZKyl_bIk
 [doc_basic_vacuum_cleaner]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner
 [doc_follow_line]: https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line
 [doc_obstacle_avoidance]: https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance
