@@ -111,8 +111,8 @@ feature_row:
 
 
   - image_path: /assets/images/exercises/line_mapper/line_mapper_teaser.png
-    alt: "Laser Line Mapping"
-    title: "Laser Line Mapping"
+    alt: "Line-based Mapping"
+    title: "Line-based Mapping"
     excerpt: "Geometric map building using laser line segment extraction"
     url: "/exercises/MobileRobots/line_mapper_pr"
     status: "prototype"
