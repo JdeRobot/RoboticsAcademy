@@ -144,6 +144,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
 31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
 32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
+33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
 \.
 
 --
@@ -210,6 +211,8 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 80	28	79	False
 81	28	80	False
 82	32	81	True
+83	33	82	True
+84	33	83	False
 \.
 
 --
@@ -318,6 +321,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 98	32	console
 99	32	simulator
 100	32	rviz
+101	33	console
+102	33	simulator
+103	33	web_gui
 \.
 
 --
