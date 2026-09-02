@@ -9,11 +9,16 @@ from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import Image as RosImage
 from cv_bridge import CvBridge
+from std_msgs.msg import String
+from rclpy.qos import QoSProfile, DurabilityPolicy
 
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
 from console_interfaces.general.console import start_console
+
+# Models this exercise allows the gripper to grab.
+GRASPABLE_MODELS = "package_box_01"
 
 
 class ROS2BridgeNode(Node):
@@ -28,6 +33,23 @@ class ROS2BridgeNode(Node):
         self.create_subscription(
             RosImage, "/webgui/image_debug_left", self.image_left_callback, 10
         )
+
+        # Tell the gripper plugin which models are grabbable for this exercise.
+        # Published from WebGUI (not HAL) so it works in ROS2-direct mode too,
+        # where WebGUI is imported but HAL is not. Latched for late subscribers,
+        # and re-published on a timer so a plugin instance re-created by a reset
+        # also receives the list (otherwise it would grab nothing after a reset).
+        latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
+        self.graspable_pub = self.create_publisher(
+            String, "/drone/gripper/graspable", latched
+        )
+        self.__publish_graspable()
+        self.create_timer(1.0, self.__publish_graspable)
+
+    def __publish_graspable(self):
+        graspable = String()
+        graspable.data = GRASPABLE_MODELS
+        self.graspable_pub.publish(graspable)
 
     def image_right_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
