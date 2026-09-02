@@ -34,7 +34,7 @@
 | Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |  [Link][vid_visual_odometry] |                   |                    |             |
 | Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 | Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
-| Line Mapping                         |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Line-based Mapping                   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
 
 ## 🚧 Exercises under repair / workshop state
 
