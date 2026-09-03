@@ -145,6 +145,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
 32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
 33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
+34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones","MULTI-AGENT","MULTI-ENTRYPOINT"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
 \.
 
 --
@@ -213,6 +214,7 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 82	32	81	True
 83	33	82	True
 84	33	83	False
+85	34	84	True
 \.
 
 --
@@ -324,6 +326,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 101	33	console
 102	33	simulator
 103	33	web_gui
+104	34	console
+105	34	simulator
+106	34	web_gui
 \.
 
 --
