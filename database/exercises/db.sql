@@ -135,17 +135,17 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
-24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
+24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
 28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones"]	["/resources/exercises/drone_cat_mouse/mouse.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
-29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
+29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
 30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
 31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
 32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
-33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
-34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones","MULTI-AGENT","MULTI-ENTRYPOINT"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
+33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
+34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
 \.
 
 --
