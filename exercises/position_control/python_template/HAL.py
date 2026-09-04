@@ -12,32 +12,6 @@ IMG_HEIGHT = 240
 freq = 30.0
 
 
-class Beacon:
-    def __init__(self, id, pose, active=False, reached=False):
-        self.id = id
-        self.pose = pose
-        self.active = active
-        self.reached = reached
-
-    def get_pose(self):
-        return self.pose
-
-    def get_id(self):
-        return self.id
-
-    def is_reached(self):
-        return self.reached
-
-    def set_reached(self, value):
-        self.reached = value
-
-    def is_active(self):
-        return self.active
-
-    def set_active(self, value):
-        self.active = value
-
-
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
@@ -136,32 +110,13 @@ def get_landed_state():
     return state
 
 
-### BEACONS ###
-
-# Ground truth poses (world/earth frame), matching the visual markers placed
-# in the world file: a flat introductory beacon, then 4 more sitting on top
-# of progressively taller posts, ending in a distant tall one deep in the
-# forest.
-_beacons = []
-
-
-def init_beacons():
-    global _beacons
-    _beacons = [
-        Beacon("initial", np.array([0.0, 0.0, 0.3]), False, False),
-        Beacon("beacon1", np.array([0.0, 18.0, 0.5]), False, False),
-        Beacon("beacon2", np.array([18.0, 0.0, 2.0]), False, False),
-        Beacon("beacon3", np.array([0.0, -18.0, 3.5]), False, False),
-        Beacon("beacon4", np.array([-18.0, 0.0, 5.0]), False, False),
-        Beacon("beacon5", np.array([23.0, 23.0, 6.5]), False, False),
-    ]
-
-
-def get_next_beacon():
-    for beacon in _beacons:
-        if not beacon.is_reached():
-            return beacon
-    return None
+# Beacon ground truth positions (world frame), from the world file.
+#   initial (0.0, 0.0, 0.3)
+#   beacon1 (0.0, 18.0, 0.5)
+#   beacon2 (18.0, 0.0, 2.0)
+#   beacon3 (0.0, -18.0, 3.5)
+#   beacon4 (-18.0, 0.0, 5.0)
+#   beacon5 (23.0, 23.0, 6.5)
 
 
 ### SETTERS ###
