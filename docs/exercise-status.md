@@ -2,51 +2,51 @@
 
 ## 🟢 Operational Exercises
 
-| Exercise ID                          | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | URL Docs                          | Video                        | 🟨 Gazebo Classic | 🟧 Gazebo Harmonic | Notes       |
-| ------------------------------------ | :--------------: | :---------: | :-----------: | :------: | --------------------------------- | ---------------------------- | :---------------: | :----------------: | ----------- |
-| Basic Vacuum Cleaner                 |        ok        |     ok      |      ok       |    ok    | [Docs][doc_basic_vacuum_cleaner]  | [Link][vid_basic_vacuum]     |        ok         |         ok         | FSM         |
-| Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_line]           | [Link][vid_follow_line]      |        ok         |         ok         | PID control |
-| Obstacle Avoidance                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_obstacle_avoidance]    | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
-| Global navigation                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_global_navigation]     | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
-| Laser Gridmap mapping                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_laser_grid_map]        | [Link][vid_laser_mapping]    |                   |         ok         |             |
-| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_laser_loc]      | [Link][vid_montecarlo_laser] |        ok         |         ok         | AMCL        |
-| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_visual_loc]     | -                            |        ok         |         ok         | AMCL        |
-| Marker-based visual Loc              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_marker_visual_loc]     | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
-| Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_localized_vacuum]      | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
-| Autoparking                          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_autoparking]           | [Link][vid_autoparking]      |        ok         |         ok         |             |
-| Amazon Warehouse                     |        ok        |     ok      |      ok       |    ok    | [Docs][doc_amazon_warehouse]      | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
-| Follow Person                        |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_person]         | [Link][vid_follow_person]    |        ok         |         ok         |             |
-| Drone Follow Road                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_follow_road]     | -                            |                   |         ok         |             |
-| Drone Rescue people                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_rescue_people]   | -                            |                   |         ok         |             |
-| Drone Gymkhana                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_gymkhana]        | [Link][vid_drone_gymkhana]   |                   |         ok         |             |
-| Drone Power tower Inspection         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_inspection]      | -                            |                   |         ok         |             |
-| Visual 3D reconstruction             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_3d_reconstruction]     | [Link][vid_3d_reconstr]      |        ok         |         ok         |             |
-| DL e2e Visual control                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_e2e_visual_control] | -                            |        ok         |         ok         |             |
-| Basic Computer Vision                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_basic_comp_vision]     | [Link][vid_basic_cv]         |       none        |        none        |             |
-| DL image classification              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_classification]     | -                            |       none        |        none        |             |
-| DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                            |       none        |        none        |             |
-| Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |        ok         |         ok         |   reset failure        |
-| Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |   reset failure        |
-| Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |                   |         ok         |             |
-| Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | - | -     |                   |        ok        |  |
-| Drone Position control   |        ok        |    ok      |      ok       |   ok   | - | -     |                   |         ok        |     |
-| Drone Follow TurtleBot   |        ok        |  ok        |      ok       |  ok     | - | -     |                   |         ok         |  |
-| Drone Package delivery   |   ok  |       ok   |      ok      |   ok   | - | -     |                   |              ok     |  reset failure   |
-| Drone hangar             |        ok        |    ok       |   ok      |   ok    | - | -     |                   |        ok         |  |
-| Drone Visual Lander      |        ok        |             |               |          | - | -     |                   |     ok             | missing actor collision |
-| Drone Cat and Mouse      |        ok        |             |               |          | - | -     |                   |      ok         |  |
-|                                      |                  |             |               |          |                                   |                              |                   |                  |             |
-| Dynamic Window Approach              |        ok        |      ok     |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
-| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |  [Link][vid_visual_odometry] |                   |         ok         |             |
-| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |     -                         |                   |          ok       |             |
-| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |      -                        |                   |         ok         |             |
-| Line-based Mapping                   |        ok        |      ok     |      ok       |    ok    | -                                 |       -                       |                   |         ok         |             |
+| Exercise ID                          | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | URL Docs                          | Video                        | 🟧 Gazebo Harmonic |          Notes          |
+| ------------------------------------ | :--------------: | :---------: | :-----------: | :------: | --------------------------------- | ---------------------------- | :----------------: | :---------------------: |
+| Basic Vacuum Cleaner                 |        ok        |     ok      |      ok       |    ok    | [Docs][doc_basic_vacuum_cleaner]  | [Link][vid_basic_vacuum]     |         ok         |           FSM           |
+| Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_line]           | [Link][vid_follow_line]      |         ok         |       PID control       |
+| Obstacle Avoidance                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_obstacle_avoidance]    | [Link][vid_obstacle]         |         ok         |           VFF           |
+| Global navigation                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_global_navigation]     | [Link][vid_global_nav]       |         ok         |           GPP           |
+| Laser Gridmap mapping                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_laser_grid_map]        | [Link][vid_laser_mapping]    |         ok         |                         |
+| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_laser_loc]      | [Link][vid_montecarlo_laser] |         ok         |          AMCL           |
+| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_visual_loc]     | -                            |         ok         |          AMCL           |
+| Marker-based visual Loc              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_marker_visual_loc]     | [Link][vid_marker_loc]       |         ok         |           PnP           |
+| Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_localized_vacuum]      | [Link][vid_localized_vacuum] |         ok         |           BSA           |
+| Autoparking                          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_autoparking]           | [Link][vid_autoparking]      |         ok         |                         |
+| Amazon Warehouse                     |        ok        |     ok      |      ok       |    ok    | [Docs][doc_amazon_warehouse]      | [Link][vid_amazon_warehouse] |         ok         |                         |
+| Follow Person                        |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_person]         | [Link][vid_follow_person]    |         ok         |                         |
+| Drone Follow Road                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_follow_road]     | -                            |         ok         |                         |
+| Drone Rescue people                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_rescue_people]   | -                            |         ok         |                         |
+| Drone Gymkhana                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_gymkhana]        | [Link][vid_drone_gymkhana]   |         ok         |                         |
+| Drone Power tower Inspection         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_inspection]      | -                            |         ok         |                         |
+| Visual 3D reconstruction             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_3d_reconstruction]     | [Link][vid_3d_reconstr]      |         ok         |                         |
+| DL e2e Visual control                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_e2e_visual_control] | -                            |         ok         |                         |
+| Basic Computer Vision                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_basic_comp_vision]     | [Link][vid_basic_cv]         |        none        |                         |
+| DL image classification              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dl_classification]     | -                            |        none        |                         |
+| DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                            |        none        |                         |
+| Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |         ok         |      reset failure      |
+| Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |         ok         |      reset failure      |
+| Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |         ok         |                         |
+| Drone Labyrinth escape               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Drone Position control               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Drone Follow TurtleBot               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Drone Package delivery               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |      reset failure      |
+| Drone hangar                         |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Drone Visual Lander                  |        ok        |             |               |          | -                                 | -                            |         ok         | missing actor collision |
+| Drone Cat and Mouse                  |        ok        |             |               |          | -                                 | -                            |         ok         |                         |
+|                                      |                  |             |               |          |                                   |                              |                    |                         |
+| Dynamic Window Approach              |        ok        |     ok      |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |         ok         |                         |
+| Visual Odometry                      |        ok        |     ok      |      ok       |    ok    | -                                 | [Link][vid_visual_odometry]  |         ok         |                         |
+| Visibility Graph Navigation          |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Rapidly Exploring Random Trees nav   |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
+| Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
 
-| Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟨 Gazebo Classic | 🟧 Gazebo Harmonic | Notes  |
-| ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :---------------: | :----------------: | ------ |
-| Digital Image Processing |        ok        |             |               |          | -     |       none        |        none        | broken |
+| Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
+| ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
+| Digital Image Processing |        ok        |             |               |          | -     |        none        | broken |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
