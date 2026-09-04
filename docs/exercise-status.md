@@ -28,25 +28,25 @@
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |        ok         |         ok         |             |
 | Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |        ok         |         ok         |             |
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |                   |         ok         |             |
-| Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | -     |                   |         ok         |        |
-|                                      |                  |             |               |          |                                   |                              |                   |                    |             |
+| Drone Labyrinth escape   |        ok        |     ok      |      ok      |    ok    | - | -     |                   |        ok        |  |
+| Drone Position control   |        ok        |    ok      |      ok       |   ok   | - | -     |                   |         ok        |     |
+| Drone Follow TurtleBot   |        ok        |  ok        |      ok       |  ok     | - | -     |                   |         ok         |  |
+| Drone Package delivery   |   ok  |       ok   |      ok      |   ok   | - | -     |                   |              ok     |  reset failure   |
+| Drone hangar             |        ok        |    ok       |   ok      |   ok    | - | -     |                   |        ok         |  |
+| Drone Visual Lander      |        ok        |             |               |          | - | -     |                   |     ok             | missing actor collision |
+| Drone Cat and Mouse      |        ok        |             |               |          | - | -     |                   |      ok         |  |
+|                                      |                  |             |               |          |                                   |                              |                   |                  |             |
 | Dynamic Window Approach              |        ok        |      ok     |      ok       |    ok    | -                                 | [Link][vid_dynamic_window]   |                   |         ok         |             |
-| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |  [Link][vid_visual_odometry] |                   |                    |             |
-| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
-| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
-| Line-based Mapping                   |        ok        |      ok     |      ok       |    ok    | -                                 |                              |                   |                    |             |
+| Visual Odometry                      |        ok        |      ok     |      ok       |    ok    | -                                 |  [Link][vid_visual_odometry] |                   |         ok         |             |
+| Visibility Graph Navigation          |        ok        |      ok     |      ok       |    ok    | -                                 |     -                         |                   |          ok       |             |
+| Rapidly Exploring Random Trees nav   |        ok        |      ok     |      ok       |    ok    | -                                 |      -                        |                   |         ok         |             |
+| Line-based Mapping                   |        ok        |      ok     |      ok       |    ok    | -                                 |       -                       |                   |         ok         |             |
 
 ## 🚧 Exercises under repair / workshop state
 
 | Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟨 Gazebo Classic | 🟧 Gazebo Harmonic | Notes  |
 | ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :---------------: | :----------------: | ------ |
 | Digital Image Processing |        ok        |             |               |          | -     |       none        |        none        | broken |
-| Drone Position control   |        ok        |             |               |          | -     |                   |                    | WIP    |
-| Drone Follow TurtleBot   |        ok        |             |               |          | -     |                   |                    | broken |
-| Drone Package delivery   |   reset failure  |             |               |          | -     |                   |                    | WIP    |
-| Drone hangar             |        ok        |             |               |          | -     |                   |                    | broken |
-| Drone Visual Lander      |        ok        |             |               |          | -     |                   |                    | broken |
-| Drone Cat and Mouse      |        ok        |             |               |          | -     |                   |                    | WIP |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
