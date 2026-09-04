@@ -27,6 +27,7 @@
 | DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                            |        none        |                         |
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]       |         ok         |      reset failure      |
 | Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]   |         ok         |      reset failure      |
+| Palletizing with industrial robot    |        ok        |             |               |          | -                                 | -                            |         ok         |      reset failure      |
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                            |         ok         |                         |
 | Drone Labyrinth escape               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
 | Drone Position control               |        ok        |     ok      |      ok       |    ok    | -                                 | -                            |         ok         |                         |
@@ -47,6 +48,12 @@
 | Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
 | ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
 | Digital Image Processing |        ok        |             |               |          | -     |        none        | broken |
+| 2d visual odometry       |                  |             |               |          | -     |         -          | broken |
+| Follow face              |                  |             |               |          | -     |         -          | broken |
+| Laser loc                |                  |             |               |          | -     |         -          | broken |
+| Mobile Manipulation      |                  |             |               |          | -     |         -          | broken |
+| Follow line Turtlebot    |                  |             |               |          | -     |         -          | broken |
+| Opticalflow teleop       |                  |             |               |          | -     |         -          | broken |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
