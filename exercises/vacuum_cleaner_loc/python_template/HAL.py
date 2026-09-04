@@ -7,6 +7,7 @@ from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.bumper import BumperNode
+from hal_interfaces.general.fake_bumper import LaserBumperNode
 
 freq = 30.0
 
@@ -28,6 +29,14 @@ if not rclpy.ok():
 motor_node = MotorsNode("/vacuum_cleaner/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/vacuum_cleaner/odom")
 laser_node = LaserNode("/vacuum_cleaner/laser/scan")
+laser_bumper_node = LaserBumperNode(
+    "/vacuum_cleaner/laser/scan",
+    [
+        "/vacuum_cleaner/events/right_bumper",
+        "/vacuum_cleaner/events/center_bumper",
+        "/vacuum_cleaner/events/left_bumper",
+    ],
+)
 bumper_node = BumperNode(
     [
         "/vacuum_cleaner/events/right_bumper",
@@ -40,6 +49,7 @@ bumper_node = BumperNode(
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
 executor.add_node(laser_node)
+executor.add_node(laser_bumper_node)
 executor.add_node(bumper_node)
 
 
