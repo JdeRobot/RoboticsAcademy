@@ -42,10 +42,10 @@
 | ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :---------------: | :----------------: | ------ |
 | Digital Image Processing |        ok        |             |               |          | -     |       none        |        none        | broken |
 | Drone Position control   |        ok        |             |               |          | -     |                   |                    | WIP    |
-| Drone Follow TurtleBot   |                  |             |               |          | -     |                   |                    | broken |
+| Drone Follow TurtleBot   |        ok        |             |               |          | -     |                   |                    | broken |
 | Drone Package delivery   |   reset failure  |             |               |          | -     |                   |                    | WIP    |
 | Drone hangar             |        ok        |             |               |          | -     |                   |                    | broken |
-| Drone Visual Lander      |                  |             |               |          | -     |                   |                    | broken |
+| Drone Visual Lander      |        ok        |             |               |          | -     |                   |                    | broken |
 | Drone Cat and Mouse      |        ok        |             |               |          | -     |                   |                    | WIP |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
