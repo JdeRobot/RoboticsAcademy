@@ -25,6 +25,8 @@ class LaserBumperNode(Node):
         for i in range(len(self.topics)):
             self.publishers_.append(self.create_publisher(Contacts, topics[i], 10))
 
+        self.contact_states_ = [Contacts() for _ in range(3)]
+
     def listener_callback(self, scan):
 
         values = scan.ranges
@@ -35,5 +37,9 @@ class LaserBumperNode(Node):
         msg.contacts = [contact]
 
         for i in range(len(bumper_vals)):
-            if bumper_vals[i] < 0.5:
+            if bumper_vals[i] < 0.25:
                 self.publishers_[i].publish(msg)
+                self.contact_states_[i] = True
+            elif self.contact_states_[i]:
+                self.publishers_[i].publish(Contacts())
+                self.contact_states_[i] = False
