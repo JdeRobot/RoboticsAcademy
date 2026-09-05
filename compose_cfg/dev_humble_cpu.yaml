@@ -26,6 +26,8 @@ services:
     networks:
       - db_network
     command: "-s"
+    environment:
+      PYTHONPATH: /RoboticsApplicationManager:/opt/ros/humble/lib/python3.10/site-packages
     ports:
       - "7164:7164"
       - "7163:7163"
