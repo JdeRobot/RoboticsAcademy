@@ -80,6 +80,7 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
 - `HAL.getBackLaserData()` - to obtain the back laser sensor data.
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
+- `HAL.getLidarData()` - to obtain the 3D LiDAR point cloud data.
 - `HAL.setV()` - to set the linear speed.
 - `HAL.setW()` - to set the angular velocity.
 
@@ -120,17 +121,17 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/prius_autoparking/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/autonomous_car/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/prius_autoparking/odom` - Subscribe to this topic to receive the car odometry. Message type: `nav_msgs/msg/Odometry`
+- `/autonomous_car/odom` - Subscribe to this topic to receive the car odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/prius_autoparking/scan_front` - Subscribe to this topic to receive the front laser scan. Message type: `sensor_msgs/msg/LaserScan`
+- `/autonomous_car/laser_front/scan` - Subscribe to this topic to receive the front laser scan. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/prius_autoparking/scan_side` - Subscribe to this topic to receive the right-side laser scan. Message type: `sensor_msgs/msg/LaserScan`
+- `/autonomous_car/laser_side/scan` - Subscribe to this topic to receive the right-side laser scan. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/prius_autoparking/scan_back` - Subscribe to this topic to receive the rear laser scan. Message type: `sensor_msgs/msg/LaserScan`
+- `/autonomous_car/laser_back/scan` - Subscribe to this topic to receive the rear laser scan. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/prius_autoparking/pc2` - Subscribe to this topic to receive 3D LiDAR data. Message type: `sensor_msgs/msg/PointCloud2`
+- `/autonomous_car/lidar/pc2/points` - Subscribe to this topic to receive 3D LiDAR data. Message type: `sensor_msgs/msg/PointCloud2`
 
 #### Python
 
@@ -191,6 +192,18 @@ To have frequency control you may use a timer and a control function as follows:
 - `minRange` - minimum range value [m]
 - `maxRange` - maximum range value [m]
 - `values` - A list of 180 measurements [m] (Note: values < minRange or > maxRange should be discarded)
+
+## 3D LiDAR attributes
+
+`HAL.getLidarData()` returns an object with the following attributes:
+
+- `points` - A list of `(x, y, z)` points in meters.
+- `intensities` - A list of intensity values, or an empty list when the point cloud does not provide them.
+- `timeStamp` - Timestamp of the point cloud in seconds.
+- `min_range` - Minimum sensor range in meters.
+- `max_range` - Maximum sensor range in meters.
+- `field_of_view` - Horizontal and vertical fields of view in radians.
+- `is_dense` - Whether all points contain finite coordinates.
 
 ## Illustrations
 
