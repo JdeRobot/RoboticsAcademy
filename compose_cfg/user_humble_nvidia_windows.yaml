@@ -28,10 +28,6 @@ services:
     environment:
       - LD_LIBRARY_PATH=/usr/lib/wsl/lib
     runtime: nvidia
-    devices:
-      - /dev/dri
-    environment:
-      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
     ports:
       - "7164:7164"
       - "7163:7163"
