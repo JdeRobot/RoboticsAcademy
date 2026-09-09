@@ -5127,10 +5127,10 @@ jderobot-commsmanager@1.1.0:
   dependencies:
     uuid "^14.0.1"
 
-jderobot-ide-interface@0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.3.3.tgz#7003d9ce1b66cf6e8daa38ef4458d60f1b1159f0"
-  integrity sha512-zpcb4+xJxNHIPaVACFIpFhsZcRiRzys23nlZP6o/VBJGGjR75h0K7A3rnCi0G9WokLrEx2oxthQaFzFSpRpYkg==
+jderobot-ide-interface@0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.3.8.tgz#7c644d44725a3b67e143b37ed19acf9dffc74281"
+  integrity sha512-lL9hg58iV4hUSklnOv8uvbeCA6YkvivwN+WqFlFDGjDfZkLhNgJLzjMworvpdoKw9EIWhg9xGyl/0CSoEEMuWA==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
@@ -5142,6 +5142,7 @@ jderobot-ide-interface@0.3.3:
     lodash "^4.18.1"
     monaco-editor "^0.55.1"
     re-resizable "^6.11.2"
+    react-resizable-panels "^4.12.4"
     react-spinners "^0.17.0"
     react-youtube "^10.1.0"
     typescript "^6.0.3"
@@ -6105,6 +6106,11 @@ react-is@^19.2.6:
   version "19.2.7"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.2.7.tgz#57668ee86a78574a542b0a539455212b2c086df2"
   integrity sha512-kZFnouyVv7eP/Phmrlo9FK+zcAdriZJvzxXHF1Sl1P377WSGe2G/JxVolhTrB/jeV47lKImhNUsijjHAAbcl/A==
+
+react-resizable-panels@^4.12.4:
+  version "4.12.4"
+  resolved "https://registry.yarnpkg.com/react-resizable-panels/-/react-resizable-panels-4.12.4.tgz#a428a1915504fba93b07859c1ffe8c85a57208ba"
+  integrity sha512-SOsSj4e9U7vxL15MbgTfl35IO4vxSW4Xb0b1gtJVbRPWv7FOezcgOA00Mi0jP8XqC3y7jOQxpsGs/9zLKHPitA==
 
 react-router@^8.3.0:
   version "8.3.0"
