@@ -53,8 +53,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-- `HAL.setV()` - to set the linear speed.
-- `HAL.setW()` - to set the angular velocity.
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
 
 - `HAL.getPose3d().x` - to get the X coordinate of the robot.
 - `HAL.getPose3d().y` - to get the Y coordinate of the robot.

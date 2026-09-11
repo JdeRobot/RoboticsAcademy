@@ -73,8 +73,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image.
-* `HAL.setV()` - to set the linear speed.
-* `HAL.setW()` - to set the angular velocity.
+* `HAL.setV(velocity)` - to set the linear speed.
+* `HAL.setW(velocity)` - to set the angular velocity.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate).
 * `HAL.getPose3d().yaw` - to get the orientation of the robot.
@@ -82,7 +82,7 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 * `HAL.getOdom().y` - to get the approximated XY coordinate of the robot (with noise).
 * `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise).
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
-* `WebGUI.showImage()` - allows you to view a debug image or with relevant information.
+* `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 * `WebGUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians, weight]. The values must be in gazebo world coordinate system.
 * `WebGUI.showPosition(x, y, yaw)` - shows the estimated user position in the map view in blue. Accepts a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system. The map view will also show the real position of the robot in red, so you can compare how good your algorithm is.
 * `WebGUI.mapToPose(x, y, yaw)`- converts a map pixel to gazebo world coordinate system position.
@@ -99,7 +99,7 @@ array = WebGUI.getMap('/resources/exercises/montecarlo_visual_loc/images/mapgran
 The instruction to get the image with the roof textures is:
 
 ```python
-array = WebGUI.getColorMap('/resources/exercises/montecarlo_visual_loc/images/color_mapgrannyannie.png')
+array = WebGUI.getMap('/resources/exercises/montecarlo_visual_loc/images/color_mapgrannyannie.png')
 ```
 
 #### C++

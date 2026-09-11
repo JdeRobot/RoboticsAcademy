@@ -70,10 +70,11 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image.
-* `WebGUI.showImage()` - allows you to view an image with relevant information that can be used for debugging.
+* `WebGUI.showImage(image)` - allows you to view an image with relevant information that can be used for debugging.
 * `WebGUI.showEstimatedPose((x, y, yaw))` - allows you to view your estimated position in the map.
-* `HAL.setV()` - to set the linear speed.
-* `HAL.setW()` - to set the angular velocity.
+* `HAL.setV(velocity)` - to set the linear speed.
+* `HAL.setW(velocity)` - to set the angular velocity.
+* `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` - to get the current ground-truth position and orientation of the robot.
 * `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
 * `HAL.getOdom().y` - to get the approximated XY coordinate of the robot (with noise).
 * `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise).

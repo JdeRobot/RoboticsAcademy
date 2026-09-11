@@ -148,8 +148,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.setV()` - to set the linear speed.
-* `HAL.setW()` - to set the angular velocity.
+* `HAL.setV(velocity)` - to set the linear speed.
+* `HAL.setW(velocity)` - to set the angular velocity.
 * `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates.
 * `WebGUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400.
 * `WebGUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path.
@@ -159,6 +159,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 array = WebGUI.getMap('/resources/exercises/global_navigation/images/cityLargenBin.png')
 ```
 * `WebGUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
+* `WebGUI.worldToGrid(pose)` - converts world coordinates to map grid coordinates.
+* `WebGUI.gridToWorld(cell)` - converts map grid coordinates to world coordinates.
     
 The map image has a resolution of 400x400 pixels and indicates whether there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
@@ -393,7 +395,7 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 **Important Points to Remember**
 
-- You may use `WebGUI.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
+- You may use `WebGUI.getMap(url)` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
 
 - In order to assign those extra weights, we may take the obstacle points we saved earlier, and add extra values to the neighbors of the obstacle cell afterwards.
 

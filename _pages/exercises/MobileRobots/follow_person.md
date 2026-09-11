@@ -96,7 +96,7 @@ If it doesn't react, click on the area where the image is shown and try again.
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -111,10 +111,10 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
 - `HAL.getLaserData()` - it allows to obtain the data of the laser sensor. It returns a list of 180 laser measurements (0 - 180 degrees)
-- `HAL.setV()` - to set the linear speed
-- `HAL.setW()` - to set the angular velocity
-- `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
-- `WebGUI.showImage()` - to show an opencv image in the web template
+- `HAL.setV(velocity)` - to set the linear speed
+- `HAL.setW(velocity)` - to set the angular velocity
+- `HAL.getBoundingBoxes(image)` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
+- `WebGUI.showImage(image)` - to show an opencv image in the web template
 
 #### C++
 
@@ -161,7 +161,7 @@ void exercise() {
 
 ### Bounding Box attributes
 
-`HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
+`HAL.getBoundingBoxes(image)` returns an instance a list of Bounding Box Classes with the following attributes:
 
 - `id` - identifier of the type of object (1, 2, 3)
 - `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)

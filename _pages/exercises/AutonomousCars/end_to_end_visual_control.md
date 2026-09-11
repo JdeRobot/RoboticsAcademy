@@ -307,7 +307,7 @@ For image debugging:
 
 - `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
   Message type: `sensor_msgs/msg/Image`  
-  QoS: `TRANSIENT_LOCAL`, depth `10`
+  QoS: default profile (`RELIABLE`, `VOLATILE`), depth `10`
 
 #### Python
 
