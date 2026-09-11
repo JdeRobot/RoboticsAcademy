@@ -203,7 +203,7 @@ void exercise() {
 }
 ```
 
-### C++ API examples
+##### C++ API Examples
 
 1. Example to load the map:
 

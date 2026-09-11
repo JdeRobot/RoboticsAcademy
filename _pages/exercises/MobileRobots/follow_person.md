@@ -149,48 +149,6 @@ void exercise() {
 }
 ```
 
-## Laser attributes
-
-`HAL.getLaserData()` returns an instance of a Class with the following attributes:
-
-- `minAngle` - Start angle of the scan [rad]
-- `maxAngle` - End angle of the scan [rad]
-- `minRange` - minimum range value [m]
-- `maxRange` - maximum range value [m]
-- `values` - A list of 180 measurements [m] (Note: values < minRange or > maxRange should be discarded)
-
-### Bounding Box attributes
-
-`HAL.getBoundingBoxes(image)` returns an instance a list of Bounding Box Classes with the following attributes:
-
-- `id` - identifier of the type of object (1, 2, 3)
-- `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)
-- `xmin` - x value of the top left point of the bounding box
-- `ymin` - y value of the top left point of the bounding box
-- `xmax` - x value of the bottom right point of the bounding box
-- `ymax` - y value of the bottom right point of the boudning box
-
-### Example of use
-
-```python
-# Move forward
-HAL.setV(0.3)
-HAL.setW(0.0)
-
-while True:
-    # -- Read from sensors
-    img = HAL.getImage()
-    bounding_boxes = HAL.getBoundingBoxes(img)
-    laser_data = HAL.getLaserData()
-
-    # -- Process sensors data (bounding boxes, laser ...).
-
-    # -- Send commands to actuators.
-
-    # -- Show some results
-    WebGUI.showImage(img)
-```
-
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -260,6 +218,48 @@ To have frequency control you may use a timer and a control function as follows:
   void control_cycle(){
     // Your function
   };
+```
+
+## Laser attributes
+
+`HAL.getLaserData()` returns an instance of a Class with the following attributes:
+
+- `minAngle` - Start angle of the scan [rad]
+- `maxAngle` - End angle of the scan [rad]
+- `minRange` - minimum range value [m]
+- `maxRange` - maximum range value [m]
+- `values` - A list of 180 measurements [m] (Note: values < minRange or > maxRange should be discarded)
+
+### Bounding Box attributes
+
+`HAL.getBoundingBoxes(image)` returns an instance a list of Bounding Box Classes with the following attributes:
+
+- `id` - identifier of the type of object (1, 2, 3)
+- `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)
+- `xmin` - x value of the top left point of the bounding box
+- `ymin` - y value of the top left point of the bounding box
+- `xmax` - x value of the bottom right point of the bounding box
+- `ymax` - y value of the bottom right point of the boudning box
+
+### Example of use
+
+```python
+# Move forward
+HAL.setV(0.3)
+HAL.setW(0.0)
+
+while True:
+    # -- Read from sensors
+    img = HAL.getImage()
+    bounding_boxes = HAL.getBoundingBoxes(img)
+    laser_data = HAL.getLaserData()
+
+    # -- Process sensors data (bounding boxes, laser ...).
+
+    # -- Send commands to actuators.
+
+    # -- Show some results
+    WebGUI.showImage(img)
 ```
 
 ## Theory

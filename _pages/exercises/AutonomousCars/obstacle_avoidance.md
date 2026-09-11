@@ -112,7 +112,7 @@ To access the target 'x' and 'y' coordinates use (target is the object obtained 
 - `target.getPose().x` - to obtain the x position of the target
 - `target.getPose().y` - to obtain the y position of the target
 
-**Own API**
+##### Own API
 
 To simplify the exercise, the implementation of control points is offered.
 To use it, only two actions must be carried out:
@@ -125,7 +125,7 @@ To use it, only two actions must be carried out:
 
    `currentTarget.setReached(True)`
 
-**Debugging**
+##### Debugging
 
 The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
 
@@ -217,7 +217,7 @@ void exercise() {
     }
 }
 ```
-### C++ API examples
+##### C++ API Examples
 
 1. Get the current target:
 

@@ -324,7 +324,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
-#### Model loading from local file
+##### Model Loading from Local File
 
 ```python
 
