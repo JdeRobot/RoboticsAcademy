@@ -1,0 +1,94 @@
+# RoboticsAcademy
+FROM jderobot/robotics-applications:dependencies-humble AS academy-src
+COPY --from=local-academy . /RoboticsAcademy
+
+FROM academy-src AS academy-src-trimmed
+RUN rm -rf /RoboticsAcademy/.git \
+    /RoboticsAcademy/compose_cfg \
+    /RoboticsAcademy/docs \
+    /RoboticsAcademy/scripts \
+    /RoboticsAcademy/tests \
+    /RoboticsAcademy/react_frontend \
+    /RoboticsAcademy/common
+
+# RoboticsInfrasctructure Repository
+FROM jderobot/robotics-applications:dependencies-humble AS infra-src
+COPY --from=local-infra . /opt/jderobot
+
+FROM infra-src AS infra-src-trimmed
+# Launchers/, Scenes/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
+RUN mkdir -p /home/ws/src && \
+    mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /opt/jderobot/jderobot_drones_cpp /opt/jderobot/Industrial /opt/jderobot/common_interfaces_cpp /home/ws/src/ && \
+    mv /opt/jderobot/resources /resources && \
+    mkdir -p /opt/root-files && \
+    mv -t /opt/root-files /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
+    chmod +x /opt/root-files/entrypoint.sh /opt/root-files/set_dri_name.sh && \
+    mkdir -p /opt/openbox-rc/etc/xdg/openbox/LXDE && \
+    mv -f /opt/jderobot/scripts/rc.xml /opt/openbox-rc/etc/xdg/openbox/LXDE/rc.xml && \
+    rm -rf /opt/jderobot/.git \
+    /opt/jderobot/.github \
+    /opt/jderobot/database \
+    /opt/jderobot/deprecated_assets \
+    /opt/jderobot/Docs \
+    /opt/jderobot/scripts \
+    /opt/jderobot/test \
+    /opt/jderobot/Universes \
+    /opt/jderobot/utils \
+    && rm -f /opt/jderobot/Scenes/*.glb
+
+
+FROM node:24 AS ra-base
+
+RUN apt-get update && apt-get install -y zip
+RUN mkdir -p /tmp/dev
+COPY --from=academy-src /RoboticsAcademy /tmp/app
+WORKDIR /tmp/app
+RUN cd common && cd console_interfaces && zip -r ../common.zip console_interfaces/ && cd .. && cd gui_interfaces && zip -r -u ../common.zip gui_interfaces/ && cd .. && cd hal_interfaces && zip -r -u ../common.zip hal_interfaces/ && cd ../.. && mv common/common.zip react_frontend/src/common.zip
+WORKDIR /tmp/app/react_frontend
+RUN yarn install && yarn run build
+
+
+FROM jderobot/robotics-applications:dependencies-humble
+
+WORKDIR /
+
+# RoboticsInfrasctructure Repository
+COPY --from=infra-src-trimmed /opt/jderobot /opt/jderobot
+COPY --from=infra-src-trimmed /home/ws/src /home/ws/src
+COPY --from=infra-src-trimmed /resources /resources
+COPY --from=infra-src-trimmed /opt/root-files/ /
+COPY --from=infra-src-trimmed /opt/openbox-rc/ /
+
+ARG IMAGE_TAG
+ENV IMAGE_TAG=${IMAGE_TAG}
+
+# Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
+RUN python3 -m pip install --no-cache-dir robotics_application_manager
+
+# Build react_fronted and create commons
+COPY --from=academy-src-trimmed /RoboticsAcademy /RoboticsAcademy
+
+COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static
+COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/react_frontend/webpack-stats.json
+
+# Compiling and sourcing the workspace
+WORKDIR /home/ws
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
+
+# Django server
+EXPOSE 7164
+
+# Manager websocket
+EXPOSE 7163
+
+# Tools ports
+EXPOSE 6080-6090
+
+#PostgreSQL Database
+EXPOSE 5432
+
+WORKDIR /
+
+# Setting environment in both interactive or non-interactive shells
+ENV BASH_ENV=/.env
+ENTRYPOINT ["./entrypoint.sh"]
