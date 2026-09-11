@@ -100,19 +100,19 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
   regarding the map
 - `HAL.getLaserData()` - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in meters)
-- `HAL.setV()` - to set the linear speed
-- `HAL.setW()` - to set the angular velocity
+- `HAL.setV(velocity)` - to set the linear speed
+- `HAL.setW(velocity)` - to set the angular velocity
 - `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
-- `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
-- `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
-- `WebGUI.showForces` - shows the forces being appliend on the car in real time.
+- `WebGUI.setTargetx(x)` - sets the x coordinate of the target on the WebGUI.
+- `WebGUI.setTargety(y)` - sets the y coordinate of the target on the WebGUI.
+- `WebGUI.showForces(vec1, vec2, vec3)` - shows the forces being applied on the car in real time.
 
 To access the target 'x' and 'y' coordinates use (target is the object obtained from WebGUI.getNextTarget):
 
 - `target.getPose().x` - to obtain the x position of the target
 - `target.getPose().y` - to obtain the y position of the target
 
-**Own API**
+##### Own API
 
 To simplify the exercise, the implementation of control points is offered.
 To use it, only two actions must be carried out:
@@ -125,7 +125,7 @@ To use it, only two actions must be carried out:
 
    `currentTarget.setReached(True)`
 
-**Debugging**
+##### Debugging
 
 The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
 
@@ -171,28 +171,6 @@ WebGUI.map.targetx = 0.0
 WebGUI.map.targety = 0.0
 ```
 
-<!---
-**API**
-
-* `pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
-* `pose3d.getPose3d().y` - to obtain the position of the robot (y coordinate)
-* `pose3d.getPose3d().yaw` - to get the orientation of the robot with
-  regarding the map
-* `laser.getLaserData()` - to obtain laser sensor data
-  It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `setV()` - to set and send the linear speed
-* `setW()` - to set and send the angular velocity
-
-**Own API**
-
-To simplify, the implementation of control points is offered.
-To use it, only two actions must be carried out:
-1. Obtain the following point:
-   `self.currentTarget = self.getNextTarget()`
-2. Mark it as visited when necessary:
-   `self.currentTarget.setReached(True)` --->
-### HAL-based Implementation
-
 #### C++
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -220,9 +198,6 @@ To access the target `x` and `y` coordinates, use the array returned by `WebGUI:
   - `target[0]` - x coordinate of the current target.
   - `target[1]` - y coordinate of the current target.
 
-- `WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3)` - displays the forces involved in the navigation
-- `WebGUI::showLocalTarget(const std::vector<double>& v)` - displays the current local target
-
 In order to use the HAL-based controls you must include the following lines:
 
 ```cpp
@@ -242,7 +217,7 @@ void exercise() {
     }
 }
 ```
-### C++ API examples
+##### C++ API Examples
 
 1. Get the current target:
 
