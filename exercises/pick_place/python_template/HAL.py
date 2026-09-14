@@ -1,12 +1,15 @@
 print("HAL Harmonic initializing", flush=True)
 
 import sys, os, time, math
+import xml.etree.ElementTree as ET
 import rclpy
 import numpy as np
 
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
 from ros2srrc_data.msg import Robpose
 from linkattacher_msgs.srv import AttachLink, DetachLink
+from rcl_interfaces.srv import GetParameters
 from ament_index_python.packages import get_package_share_directory
 
 # Gripper (NO modificar según tu requisito)
@@ -56,9 +59,76 @@ print("[HAL] Gripper ready")
 
 print("[HAL] LinkAttacher ready")
 
+
+def get_gripper_joint_name():
+    """Read the gripper_controller joint list so this HAL works with any
+    arm's gripper, not just the Robotiq one."""
+
+    client = HAL.create_client(GetParameters, "/gripper_controller/get_parameters")
+
+    if not client.wait_for_service(timeout_sec=5.0):
+        return "robotiq_85_left_knuckle_joint"
+
+    request = GetParameters.Request()
+    request.names = ["joints"]
+
+    future = client.call_async(request)
+    rclpy.spin_until_future_complete(HAL, future)
+    result = future.result()
+
+    if result and result.values and result.values[0].string_array_value:
+        return result.values[0].string_array_value[0]
+
+    return "robotiq_85_left_knuckle_joint"
+
+
+def get_gripper_joint_limits(joint_name):
+    """Read the joint's <limit> from robot_description instead of assuming
+    the Robotiq range. Every gripper has its own travel."""
+
+    qos = QoSProfile(depth=1)
+    qos.durability = QoSDurabilityPolicy.TRANSIENT_LOCAL
+    qos.reliability = QoSReliabilityPolicy.RELIABLE
+
+    received = {}
+
+    def on_robot_description(msg):
+        received["urdf"] = msg.data
+
+    subscription = HAL.create_subscription(
+        String, "/robot_description", on_robot_description, qos
+    )
+
+    deadline = time.time() + 5.0
+    while "urdf" not in received and time.time() < deadline:
+        rclpy.spin_once(HAL, timeout_sec=0.2)
+
+    HAL.destroy_subscription(subscription)
+
+    if "urdf" not in received:
+        return 0.0, 0.80285
+
+    root = ET.fromstring(received["urdf"])
+
+    for joint in root.findall("joint"):
+        if joint.get("name") == joint_name:
+            limit = joint.find("limit")
+            if limit is not None:
+                return float(limit.get("lower", 0.0)), float(limit.get("upper", 1.0))
+
+    return 0.0, 0.80285
+
+
+GRIPPER_JOINT_NAME = get_gripper_joint_name()
+GRIPPER_MIN, GRIPPER_MAX = get_gripper_joint_limits(GRIPPER_JOINT_NAME)
+
+print(f"[HAL] Gripper joint: {GRIPPER_JOINT_NAME} range [{GRIPPER_MIN}, {GRIPPER_MAX}]")
+
+# blue_ball, green_cylinder, yellow_box, red_box are the UR5 world's
+# objects, red_cube, green_cube, blue_cube are the Dobot world's
 graspable_msg = String()
 
-graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box"
+graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box,red_cube,green_cube,blue_cube"
 
 HAL.graspable_pub.publish(graspable_msg)
 
@@ -69,7 +139,9 @@ def publish_graspable_objects():
 
     graspable_msg = String()
 
-    graspable_msg.data = "blue_ball," "green_cylinder," "yellow_box"
+    graspable_msg.data = (
+        "blue_ball,green_cylinder,yellow_box,red_cube,green_cube,blue_cube"
+    )
 
     HAL.graspable_pub.publish(graspable_msg)
 
@@ -87,13 +159,20 @@ def MoveAbsJ(absolute_joints, speed, wait_time):
     ACTION.action = "MoveJ"
     ACTION.speed = float(speed)
 
+    # Only as many joints as this arm actually has get sent, movej.cpp
+    # reads just the first N fields for an N-DOF group and ignores the rest.
     INPUT = Joints()
-    INPUT.joint1 = float(absolute_joints[0])
-    INPUT.joint2 = float(absolute_joints[1])
-    INPUT.joint3 = float(absolute_joints[2])
-    INPUT.joint4 = float(absolute_joints[3])
-    INPUT.joint5 = float(absolute_joints[4])
-    INPUT.joint6 = float(absolute_joints[5])
+    joint_fields = [
+        "joint1",
+        "joint2",
+        "joint3",
+        "joint4",
+        "joint5",
+        "joint6",
+        "joint7",
+    ]
+    for field, value in zip(joint_fields, absolute_joints):
+        setattr(INPUT, field, float(value))
     ACTION.movej = INPUT
 
     EXECUTION = UR5.Move_EXECUTE(ACTION)
@@ -324,7 +403,7 @@ def GripperSet(relative_closure, wait_time):
 
     auto_msg = Bool()
 
-    # If closing -> enable contact detection
+    # If closing, enable contact detection
     if relative_closure > 5:
 
         auto_msg.data = True
@@ -345,16 +424,13 @@ def GripperSet(relative_closure, wait_time):
     # GRIPPER MOTION
     # ==========================================================
 
-    max_open = 1.0
-    min_close = 0.0
-
-    position = min_close + ((max_open - min_close) * (relative_closure / 100.0))
+    position = GRIPPER_MIN + ((GRIPPER_MAX - GRIPPER_MIN) * (relative_closure / 100.0))
 
     print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
 
-    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
+    goal_msg.trajectory.joint_names = [GRIPPER_JOINT_NAME]
 
     point = JointTrajectoryPoint()
 
