@@ -3,7 +3,7 @@ permalink: "/exercises/MobileRobots/montecarlo_laser_loc/"
 title: "MonteCarlo laser-based robot localization"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Montecarlo Laser Loc"
@@ -14,28 +14,28 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
-    image_path: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
-    alt: "Montecarlo Laser Loc"
-    title: "Montecarlo Laser Loc"
+    - url: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
+      image_path: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
+      alt: "Montecarlo Laser Loc"
+      title: "Montecarlo Laser Loc"
 
 model:
-  - url: /assets/images/exercises/laser_loc/probab_model.png
-    image_path: /assets/images/exercises/laser_loc/probab_model.png
-    alt: "Probabilistic location model"
-    title: "Probabilistic location model"
+    - url: /assets/images/exercises/laser_loc/probab_model.png
+      image_path: /assets/images/exercises/laser_loc/probab_model.png
+      alt: "Probabilistic location model"
+      title: "Probabilistic location model"
 
 diagram:
-  - url: /assets/images/exercises/laser_loc/paticle_filter_diagram.png
-    image_path: /assets/images/exercises/laser_loc/paticle_filter_diagram.png
-    alt: "Diagram of the particle filter algorithm"
-    title: "Diagram of the particle filter algorithm"
+    - url: /assets/images/exercises/laser_loc/paticle_filter_diagram.png
+      image_path: /assets/images/exercises/laser_loc/paticle_filter_diagram.png
+      alt: "Diagram of the particle filter algorithm"
+      title: "Diagram of the particle filter algorithm"
 
 evolution:
-  - url: /assets/images/exercises/laser_loc/particle_filter_evolution.png
-    image_path: /assets/images/exercises/laser_loc/particle_filter_evolution.png
-    alt: "Evolution of particles"
-    title: "Evolution of particles"
+    - url: /assets/images/exercises/laser_loc/particle_filter_evolution.png
+      image_path: /assets/images/exercises/laser_loc/particle_filter_evolution.png
+      alt: "Evolution of particles"
+      title: "Evolution of particles"
 
 youtubeId1: y7rBPpV2NdI
 youtubeId2: A65yY5il09U
@@ -149,19 +149,19 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/vacuum_cleaner/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
+- `/vacuum_cleaner/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
+- `/vacuum_cleaner/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/roombaROS/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/vacuum_cleaner/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to receive right bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/right_bumper` - Subscribe to this topic to receive right bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to receive center bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/center_bumper` - Subscribe to this topic to receive center bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise. **DISABLED**: use laser data in the center (90) to get the same result.
 
 For WebGUI debugging:
 
@@ -171,28 +171,28 @@ For WebGUI debugging:
 - `/webgui/particles` - Publish to this topic to display the particle set in the WebGUI. Message type: `geometry_msgs/msg/PoseArray`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
 
-  ```python
-  from geometry_msgs.msg import PoseArray, Pose
-  import math
+    ```python
+    from geometry_msgs.msg import PoseArray, Pose
+    import math
 
-  def publish_particles(self, particles):
-      msg = PoseArray()
-      msg.header.stamp = self.get_clock().now().to_msg()
-      msg.header.frame_id = "map"
+    def publish_particles(self, particles):
+        msg = PoseArray()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "map"
 
-      for x, y, yaw in particles:
-          pose = Pose()
-          pose.position.x = float(x)
-          pose.position.y = float(y)
+        for x, y, yaw in particles:
+            pose = Pose()
+            pose.position.x = float(x)
+            pose.position.y = float(y)
 
-          # Convert yaw → quaternion (2D)
-          pose.orientation.z = math.sin(yaw / 2.0)
-          pose.orientation.w = math.cos(yaw / 2.0)
+            # Convert yaw → quaternion (2D)
+            pose.orientation.z = math.sin(yaw / 2.0)
+            pose.orientation.w = math.cos(yaw / 2.0)
 
-          msg.poses.append(pose)
+            msg.poses.append(pose)
 
-      self.particles_pub.publish(msg)
-  ```
+        self.particles_pub.publish(msg)
+    ```
 
 #### Python
 
@@ -306,10 +306,10 @@ The following figure shows an example of probabilistic localisation. In the firs
 - Monte Carlo localisation is based on a collection of particles or samples. Particle filters allow the localisation problem to be solved by representing the a posteriori probability function, which estimates the most likely positions of the robot. The a posteriori probability distribution is sampled, in a way where each sample is called a particle [4].
 - Each particle represents a state (position) at time t and has an associated weight. At each movement of the robot, they perform a correction and decrease the accumulated error. After a number of iterations, the particles are grouped in the zones with the highest probability, until they converge to a single zone, which corresponds to the robot's position.
 - When the program starts, the robot does not know where it is. However, the actual samples are evenly distributed and the importance weights are all equal. After a long time, the samples near the current position have a higher probability, and those further away have a lower probability. The basic algorithm is as follows:
-  1. Initialise the set of samples. Their locations are evenly distributed and have the same weights.
-  2. Repeat for each sample until: a) Move the robot a fixed distance and read the sensor. b) For each particle, update the location. c) Assign the importance weights of each particle to the probability of that sensor, and read that new location.
-  3. Create a collection of samples, by sampling with replacements from the current set of samples, based on their importance weights.
-  4. Let the group become the current round of samples.
+    1. Initialise the set of samples. Their locations are evenly distributed and have the same weights.
+    2. Repeat for each sample until: a) Move the robot a fixed distance and read the sensor. b) For each particle, update the location. c) Assign the importance weights of each particle to the probability of that sensor, and read that new location.
+    3. Create a collection of samples, by sampling with replacements from the current set of samples, based on their importance weights.
+    4. Let the group become the current round of samples.
 
 {% include gallery id="diagram" caption="Diagram of the particle filter algorithm" %}
 

@@ -3,22 +3,21 @@ permalink: /exercises/MobileRobots/visibility_graph
 title: "Visibility Graph Navigation"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Visibility Graph Navigation"
 toc_icon: "cog"
 
-
 gallery:
-  - url: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
-    image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
-    alt: "Visibility Graph Navigation"
+    - url: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
+      image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
+      alt: "Visibility Graph Navigation"
 
 visibility_graph_warehouse:
-  - url: /assets/images/exercises/visibility_graph/visibility_graph_warehouse.png
-    image_path: /assets/images/exercises/visibility_graph/visibility_graph_warehouse.png
-    alt: "Visibility Graph Warehouse"
+    - url: /assets/images/exercises/visibility_graph/visibility_graph_warehouse.png
+      image_path: /assets/images/exercises/visibility_graph/visibility_graph_warehouse.png
+      alt: "Visibility Graph Warehouse"
 
 youtubeId1: ozeVvHxN5ys
 ---
@@ -28,10 +27,11 @@ youtubeId1: ozeVvHxN5ys
 The goal of this exercise is to implement a Visibility Graph path planning algorithm that allows a robot to navigate autonomously through a warehouse environment from its current position to a target destination.
 
 The robot must be able to:
-* Load and process a 2D occupancy map of the environment
-* Build a visibility graph connecting obstacle vertices that have line-of-sight to each other
-* Find the shortest collision-free path from start to goal using Dijkstra's algorithm
-* Follow the computed path by navigating through each waypoint in sequence
+
+- Load and process a 2D occupancy map of the environment
+- Build a visibility graph connecting obstacle vertices that have line-of-sight to each other
+- Find the shortest collision-free path from start to goal using Dijkstra's algorithm
+- Follow the computed path by navigating through each waypoint in sequence
 
 {% include gallery caption="Visibility Graph Navigation." %}
 

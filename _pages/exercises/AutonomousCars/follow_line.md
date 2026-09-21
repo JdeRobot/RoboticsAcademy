@@ -3,7 +3,7 @@ permalink: /exercises/AutonomousCars/follow_line/
 title: "Visual Follow Line"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Visual Follow Line"
@@ -14,44 +14,44 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/follow_line/formula1_circuit.png
-    image_path: /assets/images/exercises/follow_line/formula1_circuit.png
-    alt: "Racing circuit."
-    title: "Racing circuit."
-  - url: /assets/images/exercises/follow_line/formula1.png
-    image_path: /assets/images/exercises/follow_line/formula1.png
-    alt: "First Person."
-    title: "First Person."
-  - url: /assets/images/exercises/follow_line/formula1_2.png
-    image_path: /assets/images/exercises/follow_line/formula1_2.png
-    alt: "Model."
-    title: "Model."
+    - url: /assets/images/exercises/follow_line/formula1_circuit.png
+      image_path: /assets/images/exercises/follow_line/formula1_circuit.png
+      alt: "Racing circuit."
+      title: "Racing circuit."
+    - url: /assets/images/exercises/follow_line/formula1.png
+      image_path: /assets/images/exercises/follow_line/formula1.png
+      alt: "First Person."
+      title: "First Person."
+    - url: /assets/images/exercises/follow_line/formula1_2.png
+      image_path: /assets/images/exercises/follow_line/formula1_2.png
+      alt: "Model."
+      title: "Model."
 
 gifs:
-  - url: /assets/images/exercises/follow_line/oscillations.gif
-    image_path: /assets/images/exercises/follow_line/oscillations.gif
-    alt: "examples"
-    title: "examples"
-  - url: /assets/images/exercises/follow_line/slowresponse.gif
-    image_path: /assets/images/exercises/follow_line/slowresponse.gif
-    alt: "examples"
-    title: "examples"
+    - url: /assets/images/exercises/follow_line/oscillations.gif
+      image_path: /assets/images/exercises/follow_line/oscillations.gif
+      alt: "examples"
+      title: "examples"
+    - url: /assets/images/exercises/follow_line/slowresponse.gif
+      image_path: /assets/images/exercises/follow_line/slowresponse.gif
+      alt: "examples"
+      title: "examples"
 
 pid:
-  - url: /assets/images/exercises/follow_line/ControlSystems.jpg
-    image_path: assets/images/exercises/follow_line/ControlSystems.jpg
-    alt: "Control Systems"
-    title: "Control Systems"
+    - url: /assets/images/exercises/follow_line/ControlSystems.jpg
+      image_path: assets/images/exercises/follow_line/ControlSystems.jpg
+      alt: "Control Systems"
+      title: "Control Systems"
 
-  - url: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
-    image_path: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
-    alt: "Types of Control Systems"
-    title: "Types of Control Systems"
+    - url: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
+      image_path: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
+      alt: "Types of Control Systems"
+      title: "Types of Control Systems"
 
-  - url: /assets/images/exercises/follow_line/PID.png
-    image_path: /assets/images/exercises/follow_line/PID.png
-    alt: "PID"
-    title: "PID"
+    - url: /assets/images/exercises/follow_line/PID.png
+      image_path: /assets/images/exercises/follow_line/PID.png
+      alt: "PID"
+      title: "PID"
 
 youtubeId1: eNuSQN9egpA
 youtubeId2: gHZVESBcgKE
@@ -129,8 +129,8 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cam_f1_left/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/f1/camera/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+- `/f1/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
 For image debugging:
 
@@ -249,7 +249,7 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 
 1. ROS 2 Publisher & Subscriber – [https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
 2. ROS 2 Spin & Spin Once – [https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html](https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html)
-<!-- 3. ROS 2 Rate - add content for rate -->
+ <!-- 3. ROS 2 Rate - add content for rate -->
 
 ### Detecting the Line to Follow
 

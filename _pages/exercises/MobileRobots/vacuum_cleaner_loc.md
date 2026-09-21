@@ -3,7 +3,7 @@ permalink: /exercises/MobileRobots/vacuum_cleaner_loc
 title: "Localized Vacuum Cleaner"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Localized Vacuum Cleaner"
@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png
-  alt: "Vacuum"
+    image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png
+    alt: "Vacuum"
 
 youtubeId1: I967nzeSSZg
 youtubeId2: mT5PkgtDLDg
@@ -120,27 +120,27 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation. Load the map in: /resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png
 
-- `/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
-- `/odom` - Subscribe to this topic to get the robot pose and orientation. Message type: `nav_msgs/msg/Odometry`
-- `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
+- `/vacuum_cleaner/odom` - Subscribe to this topic to get the robot pose and orientation. Message type: `nav_msgs/msg/Odometry`
+- `/vacuum_cleaner/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
+- `/vacuum_cleaner/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
 
 For image debugging:
 
 - `/webgui_user_map` - Publish to this topic to display the image in the Web GUI. This is the equivalent of `WebGUI.showNumpy(matrix)`, but using a topic-based interface. Message type: `sensor_msgs/msg/Image` **Important:** This topic must be published using a **TRANSIENT_LOCAL** QoS profile or the Web GUI will not receive the image.
 
-  ```python
-  from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
+    ```python
+    from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 
-  map_qos = QoSProfile(
-      reliability=ReliabilityPolicy.RELIABLE,
-      durability=DurabilityPolicy.TRANSIENT_LOCAL,
-      history=HistoryPolicy.KEEP_LAST,
-      depth=1
-  )
-  ```
+    map_qos = QoSProfile(
+        reliability=ReliabilityPolicy.RELIABLE,
+        durability=DurabilityPolicy.TRANSIENT_LOCAL,
+        history=HistoryPolicy.KEEP_LAST,
+        depth=1
+    )
+    ```
 
 #### Python
 

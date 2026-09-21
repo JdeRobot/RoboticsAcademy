@@ -3,7 +3,7 @@ permalink: /exercises/AutonomousCars/obstacle_avoidance
 title: "Local navigation with VFF"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Visual Follow Line"
@@ -14,31 +14,31 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
-    alt: "Obstacle Avoidance"
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
-    alt: "F1 laser"
-  - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
-    image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
-    alt: "Interface"
+    - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
+      image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png
+      alt: "Obstacle Avoidance"
+    - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
+      image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
+      alt: "F1 laser"
+    - url: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
+      image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
+      alt: "Interface"
 
 gifs:
-  - url: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
-    image_path: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
-    alt: "examples"
-    title: "On applying the rotation matrix"
-  - url: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
-    image_path: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
-    alt: "examples"
-    title: "Without applying the rotation matrix"
+    - url: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
+      image_path: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
+      alt: "examples"
+      title: "On applying the rotation matrix"
+    - url: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
+      image_path: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
+      alt: "examples"
+      title: "Without applying the rotation matrix"
 
 gifs2:
-  - url: /assets/images/exercises/obstacle_avoidance/oscillations.gif
-    image_path: /assets/images/exercises/obstacle_avoidance/oscillations.gif
-    alt: "examples"
-    title: "Oscillation Problem in Narrow Corridors"
+    - url: /assets/images/exercises/obstacle_avoidance/oscillations.gif
+      image_path: /assets/images/exercises/obstacle_avoidance/oscillations.gif
+      alt: "examples"
+      title: "Oscillation Problem in Narrow Corridors"
 
 youtubeId1: 5SVkvfKPi_s
 youtubeId2: wVJJ9ndY2aY
@@ -83,7 +83,6 @@ The solution can integrate one or more of the following difficulty increasing go
 - `Frequency freq = Frequency();` - to instanciate the Frequency class.
 - `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
-
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
@@ -119,11 +118,11 @@ To use it, only two actions must be carried out:
 
 1. Obtain the following point:
 
-   `currentTarget = WebGUI.getNextTarget()`
+    `currentTarget = WebGUI.getNextTarget()`
 
 2. Mark it as visited when necessary:
 
-   `currentTarget.setReached(True)`
+    `currentTarget.setReached(True)`
 
 ##### Debugging
 
@@ -172,6 +171,7 @@ WebGUI.map.targety = 0.0
 ```
 
 #### C++
+
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
@@ -195,8 +195,9 @@ WebGUI.map.targety = 0.0
 - `WebGUI::mark_target_reached();` - notifies the WebGUI that the current target has been reached. Returns `void`.
 
 To access the target `x` and `y` coordinates, use the array returned by `WebGUI::get_next_target()`:
-  - `target[0]` - x coordinate of the current target.
-  - `target[1]` - y coordinate of the current target.
+
+- `target[0]` - x coordinate of the current target.
+- `target[1]` - y coordinate of the current target.
 
 In order to use the HAL-based controls you must include the following lines:
 
@@ -217,6 +218,7 @@ void exercise() {
     }
 }
 ```
+
 ##### C++ API Examples
 
 1. Get the current target:
@@ -240,17 +242,16 @@ void exercise() {
     WebGUI::mark_target_reached();
     ```
 
-
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
+- `/f1/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
   Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic to get the robot pose.  
+- `/f1/odom` - Subscribe to this topic to get the robot pose.  
   Message type: `nav_msgs/msg/Odometry`
 
 - `/f1/laser/scan` - Subscribe to this topic to get laser scan data.  
@@ -265,7 +266,7 @@ Use standard ROS 2 topics for direct communication with the simulation.
   When `data=True`, the GUI updates to the next target.
 
 - `/webgui/local_target` - Publish to visualize the current local target.  
-  Message type: `geometry_msgs/msg/Point` 
+  Message type: `geometry_msgs/msg/Point`
 
 For WebGUI debugging:
 
@@ -279,6 +280,7 @@ For WebGUI debugging:
   Message type: `geometry_msgs/msg/Point`
 
 #### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -293,6 +295,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### C++
+
 In order to use direct ros controls you must include the following lines:
 
 ```cpp

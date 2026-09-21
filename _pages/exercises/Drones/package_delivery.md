@@ -3,21 +3,22 @@ permalink: /exercises/Drones/package_delivery
 title: "Package Delivery"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Package Delivery"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/package_delivery/package_delivery_teaser.png
-    image_path: /assets/images/exercises/package_delivery/package_delivery.png
-    alt: "Package Delivery."
-    title: "Package Delivery."
+    - url: /assets/images/exercises/package_delivery/package_delivery_teaser.png
+      image_path: /assets/images/exercises/package_delivery/package_delivery.png
+      alt: "Package Delivery."
+      title: "Package Delivery."
 
 # youtubeId1: ID1
 youtubeId2: aWkTDp2UobM
 ---
+
 ## Goal
 
 The goal of this exercise is to implement the logic that allows a quadrotor to deliver a package box from the warehouse to a target house. The task of the drone is to:
@@ -32,8 +33,8 @@ The goal of this exercise is to implement the logic that allows a quadrotor to d
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
@@ -49,34 +50,34 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-* `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
-* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.
-* `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
-* `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad.
-* `HAL.get_roll()` - Returns the roll angle of the drone, in rad
-* `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
-* `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad.
-* `HAL.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.
-* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame).
-* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame.
-* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s).
-* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m).
-* `HAL.land()` - Land at the current location.
-* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image.
-* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image.
-* `WebGUI.showImage(cv2_image)` - Shows an image of the camera in the right panel of the WebGUI.
-* `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the left panel of the WebGUI.
+- `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
+- `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.
+- `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
+- `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad.
+- `HAL.get_roll()` - Returns the roll angle of the drone, in rad
+- `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
+- `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad.
+- `HAL.get_landed_state()` - Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.
+- `HAL.set_cmd_pos(x, y, z, az)` - Commands the _position_ (x,y,z) of the drone, in m and the _yaw angle (az)_ (in rad) taking as reference the first takeoff point (map frame).
+- `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the _linear velocity_ of the drone in the x, y and z directions (in m/s) and the _yaw rate (az)_ (rad/s) in its body fixed frame.
+- `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the _linear velocity_ of the drone in the x, y directions (in m/s), the _height_ (z) related to the takeoff point and the _yaw rate (az)_ (in rad/s).
+- `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m).
+- `HAL.land()` - Land at the current location.
+- `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image.
+- `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image.
+- `WebGUI.showImage(cv2_image)` - Shows an image of the camera in the right panel of the WebGUI.
+- `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the left panel of the WebGUI.
 
 **Package box control**
 
 The gripper is a magnet that grasps and releases the package box automatically through a contact-based attachment system, so no manual attach/detach calls are required.
 
-* `HAL.enable_magnet()` - Energizes the magnet. Any graspable box touching it gets attached automatically.
-* `HAL.disable_magnet()` - De-energizes the magnet, releasing any attached box.
-* `HAL.is_carrying()` - Returns `True` if a package box is currently attached to the magnet, `False` otherwise.
+- `HAL.enable_magnet()` - Energizes the magnet. Any graspable box touching it gets attached automatically.
+- `HAL.disable_magnet()` - De-energizes the magnet, releasing any attached box.
+- `HAL.is_carrying()` - Returns `True` if a package box is currently attached to the magnet, `False` otherwise.
 
 #### C++
 
@@ -85,9 +86,9 @@ The gripper is a magnet that grasps and releases the package box automatically t
 - `HAL::get_pose3d();` - Returns the current pose of the drone as a `HAL::Pose3d` struct with fields `x`, `y`, `z` (position in m), `yaw`, `pitch`, `roll` (orientation in rad) and `timeStamp`.
 - `HAL::get_velocity();` - Returns the current velocity of the drone as a `HAL::Velocity3d` struct with fields `vx`, `vy`, `vz` (in m/s) and `yaw_rate` (in rad/s).
 - `HAL::get_landed_state();` - Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.
-- `HAL::set_cmd_pos(x, y, z, az);` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame).
-- `HAL::set_cmd_vel(vx, vy, vz, az);` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame.
-- `HAL::set_cmd_mix(vx, vy, z, az);` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s).
+- `HAL::set_cmd_pos(x, y, z, az);` - Commands the _position_ (x,y,z) of the drone, in m and the _yaw angle (az)_ (in rad) taking as reference the first takeoff point (map frame).
+- `HAL::set_cmd_vel(vx, vy, vz, az);` - Commands the _linear velocity_ of the drone in the x, y and z directions (in m/s) and the _yaw rate (az)_ (rad/s) in its body fixed frame.
+- `HAL::set_cmd_mix(vx, vy, z, az);` - Commands the _linear velocity_ of the drone in the x, y directions (in m/s), the _height_ (z) related to the takeoff point and the _yaw rate (az)_ (in rad/s).
 - `HAL::takeoff(height);` - Takeoff at the current location, to the given height (in m).
 - `HAL::land();` - Land at the current location.
 - `HAL::get_frontal_image();` - Returns the latest image from the frontal camera as a cv::Mat.
@@ -128,21 +129,21 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 This exercise uses Aerostack2, so the ROS 2-direct version is more advanced than in ground robots. For more information about [Aerostack 2](https://aerostack2.github.io/)
 
-The drone namespace is `/drone0`.
+The drone namespace is `/drone`.
 
-- `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
+- `/drone/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
+- `/drone/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
+- `/drone/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
 
-- `/drone0/motion_reference/pose` - Publish to this topic to send position references with orientation. Message type: `geometry_msgs/msg/PoseStamped`
+- `/drone/motion_reference/pose` - Publish to this topic to send position references with orientation. Message type: `geometry_msgs/msg/PoseStamped`
 
-- `/drone0/motion_reference/twist` - Publish to this topic to send velocity references. Message type: `geometry_msgs/msg/TwistStamped`
+- `/drone/motion_reference/twist` - Publish to this topic to send velocity references. Message type: `geometry_msgs/msg/TwistStamped`
 
-- `/drone0/platform/info` - Subscribe to this topic to receive the platform state information. Message type: `as2_msgs/msg/PlatformInfo`
+- `/drone/platform/info` - Subscribe to this topic to receive the platform state information. Message type: `as2_msgs/msg/PlatformInfo`
 
-- `/drone0/platform/state_machine_event` - Service used for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
+- `/drone/platform/state_machine_event` - Service used for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
 
 For the package box:
 
@@ -206,7 +207,6 @@ To have frequency control you may use a timer and a control function as follows:
   };
 ```
 
-
 ## Hints
 
 Simple hints provided to help you solve the package_delivery exercise. Please note that the **full solution has not been provided.**
@@ -219,14 +219,13 @@ Notice that the target house has a visual signal near it. You can filter this si
 
 1. **Green Pad:** Located at (x, y) = (-1, -4) m
 2. **Red Pad:** Located at (x, y) = (-1, -1) m
-2. **Target House:** Located at (x, y) = (20, 20) m
+3. **Target House:** Located at (x, y) = (20, 20) m
 
-
-### Directional control. How should drone yaw be handled? 
+### Directional control. How should drone yaw be handled?
 
 If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
 
-Another possibility is to use **Nose Forward Mode**, where the drone follows the path similar to a fixed-wing aircraft. Then, to accomplish it, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
+Another possibility is to use **Nose Forward Mode**, where the drone follows the path similar to a fixed-wing aircraft. Then, to accomplish it, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate.
 
 In this exercise, you should use the Nose Forward Mode.
 
@@ -242,8 +241,9 @@ No, you can solve this exercise without taking care of the **land state** of the
 
 {% include youtubePlayer.html id=page.youtubeId1 %} -->
 
--------
+---
 
 ## Contributors
+
 - Contributors: [Arkajyoti Basak](https://github.com/iamarkaj), [JoseMaria Cañas](https://github.com/jmplaza), [Pedro Arias](https://github.com/pariaspe).
 - Maintained by [Pedro Arias](https://github.com/pariaspe) and [Arkajyoti Basak](https://github.com/iamarkaj).
