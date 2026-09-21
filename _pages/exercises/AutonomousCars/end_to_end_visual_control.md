@@ -76,8 +76,8 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 
 <p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
--   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset) **OUTDATED**
--   [JdeRobot/e2e-visual-control-combined-dataset](https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset)
+- [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset) **OUTDATED**
+- [JdeRobot/e2e-visual-control-combined-dataset](https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset)
 
 #### Method 01: Use the git lfs command [Recommended: Low]
 
@@ -231,8 +231,8 @@ While monitoring <strong>validation loss</strong> and checking <strong>evaluatio
 
 ### Python
 
--   `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
--   `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
@@ -248,12 +248,12 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
--   `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
--   `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
--   `HAL.getImage()` - to get the image (BGR8).
--   `HAL.setV(velocity)` - to set the linear speed.
--   `HAL.setW(velocity)` - to set the angular velocity.
--   `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.getImage()` - to get the image (BGR8).
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
+- `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
 #### C++
 
@@ -294,14 +294,11 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cam_f1_left/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
+- `/f1/camera/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/f1/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic if you want lap and map feedback, as used internally by the WebGUI.  
-  Message type: `nav_msgs/msg/Odometry`
-
-The user node must load the trained model locally and run inference on the images received from `/cam_f1_left/image_raw`.
+The user node must load the trained model locally and run inference on the images received from `/f1/camera/image_raw`.
 
 For image debugging:
 
@@ -459,8 +456,8 @@ except Exception as e:
 
 ## Exercise Instructions
 
--   The uploaded ONNX format model should adhere to the input/output specifications, please keep that in mind while building your model.
--   The user can train their model in any framework of their choice and export it to the ONNX format. Refer to this [**article**](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html) to know more about exporting your model to the ONNX format.
+- The uploaded ONNX format model should adhere to the input/output specifications, please keep that in mind while building your model.
+- The user can train their model in any framework of their choice and export it to the ONNX format. Refer to this [**article**](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html) to know more about exporting your model to the ONNX format.
 
 <!-- ## Hints
 
@@ -490,8 +487,8 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 
 ## Contributors
 
--   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](https://github.com/lr-morales)
--   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](https://github.com/lr-morales).
+- Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](https://github.com/lr-morales)
+- Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](https://github.com/lr-morales).
 
 ## References
 

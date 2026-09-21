@@ -3,57 +3,57 @@ permalink: /exercises/MobileRobots/follow_person
 title: "Follow Person RR"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Follow Person"
 toc_icon: "cog"
 
 follow_person_demo:
-  - url: /assets/images/exercises/follow_person/follow_person_teaser.png
-    image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
-    alt: "Follow Person cover"
-    title: "Follow Person Cover"
+    - url: /assets/images/exercises/follow_person/follow_person_teaser.png
+      image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
+      alt: "Follow Person cover"
+      title: "Follow Person Cover"
 
 simulated_turtlebot2:
-  - url: /assets/images/exercises/follow_person/turtlebot2-sim.png
-    image_path: /assets/images/exercises/follow_person/turtlebot2-sim.png
-    alt: "Simulated Turtlebot2 (ROS Humble)"
-    title: "Simulated Turtlebot2 (ROS Humble)"
+    - url: /assets/images/exercises/follow_person/turtlebot2-sim.png
+      image_path: /assets/images/exercises/follow_person/turtlebot2-sim.png
+      alt: "Simulated Turtlebot2 (ROS Humble)"
+      title: "Simulated Turtlebot2 (ROS Humble)"
 
 r-cnn:
-  - url: /assets/images/exercises/follow_person/r-cnn.png
-    image_path: /assets/images/exercises/follow_person/r-cnn.png
-    alt: "Region-based Convolutional Neural Network (R-CNN)"
-    title: "Region-based Convolutional Neural Network (R-CNN)"
+    - url: /assets/images/exercises/follow_person/r-cnn.png
+      image_path: /assets/images/exercises/follow_person/r-cnn.png
+      alt: "Region-based Convolutional Neural Network (R-CNN)"
+      title: "Region-based Convolutional Neural Network (R-CNN)"
 
 how_to_follow_person:
-  - url: /assets/images/exercises/follow_person/how_to_follow_person.png
-    image_path: /assets/images/exercises/follow_person/how_to_follow_person.png
-    alt: "How to follow a person"
-    title: "How to follow a person"
+    - url: /assets/images/exercises/follow_person/how_to_follow_person.png
+      image_path: /assets/images/exercises/follow_person/how_to_follow_person.png
+      alt: "How to follow a person"
+      title: "How to follow a person"
 
 pid:
-  - url: /assets/images/exercises/follow_person/ControlSystems.jpg
-    image_path: assets/images/exercises/follow_person/ControlSystems.jpg
-    alt: "Control Systems"
-    title: "Control Systems"
+    - url: /assets/images/exercises/follow_person/ControlSystems.jpg
+      image_path: assets/images/exercises/follow_person/ControlSystems.jpg
+      alt: "Control Systems"
+      title: "Control Systems"
 
-  - url: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
-    image_path: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
-    alt: "Types of Control Systems"
-    title: "Types of Control Systems"
+    - url: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
+      image_path: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
+      alt: "Types of Control Systems"
+      title: "Types of Control Systems"
 
-  - url: /assets/images/exercises/follow_person/PID.png
-    image_path: /assets/images/exercises/follow_person/PID.png
-    alt: "PID"
-    title: "PID"
+    - url: /assets/images/exercises/follow_person/PID.png
+      image_path: /assets/images/exercises/follow_person/PID.png
+      alt: "PID"
+      title: "PID"
 
 vff:
-  - url: /assets/images/exercises/follow_person/vff.png
-    image_path: /assets/images/exercises/follow_person/vff.png
-    alt: "Virtual Force Field (VFF)"
-    title: "Virtual Force Field (VFF)"
+    - url: /assets/images/exercises/follow_person/vff.png
+      image_path: /assets/images/exercises/follow_person/vff.png
+      alt: "Virtual Force Field (VFF)"
+      title: "Virtual Force Field (VFF)"
 
 youtubeId1: "_5i4MkE5HxI"
 ---
@@ -153,13 +153,13 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities of the robot. Message type: `geometry_msgs/msg/Twist`
+- `/turtlebot2/cmd_vel` - Publish to this topic to set both linear and angular velocities of the robot. Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic to receive the robot odometry. Message type: `nav_msgs/msg/Odometry`
+- `/turtlebot2/odom` - Subscribe to this topic to receive the robot odometry. Message type: `nav_msgs/msg/Odometry`
 
-- `/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/turtlebot2/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
-- `/depth_camera/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
+- `/turtlebot2/depth_camera/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
 - `/person/cmd_vel` - This topic is used by the WebGUI to move the person with the keyboard. Message type: `geometry_msgs/msg/Twist`
 

@@ -3,374 +3,370 @@ permalink: /exercises/
 title: "Robotics-Academy exercises"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 classes: wide
 
-
 feature_row:
-  - image_path: /assets/images/exercises/follow_line/follow_line_teaser.png
-    alt: "Follow Line Formula1"
-    title: "Follow Line"
-    excerpt: "Complete a lap following the line painted on the racing circuit."
-    url: "/exercises/AutonomousCars/follow_line/"
-    status: "running"
-    order: 0;
-    
-  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
-    alt: "Obstacle avoidance"
-    title: "Obstacle avoidance"
-    excerpt: "Local navigation. Virtual Force Field navigation algorithm using a F1."
-    url: "/exercises/AutonomousCars/obstacle_avoidance"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/follow_line/follow_line_teaser.png
+      alt: "Follow Line Formula1"
+      title: "Follow Line"
+      excerpt: "Complete a lap following the line painted on the racing circuit."
+      url: "/exercises/AutonomousCars/follow_line/"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
-    alt: "Drone Cat and Mouse"
-    title: "Drone Cat and Mouse"
-    excerpt: "Game of cat and mouse with two quadrotors."
-    url: "/exercises/Drones/drone_cat_mouse"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
+      alt: "Obstacle avoidance"
+      title: "Obstacle avoidance"
+      excerpt: "Local navigation. Virtual Force Field navigation algorithm using a F1."
+      url: "/exercises/AutonomousCars/obstacle_avoidance"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
-    alt: "Basic Vacuum Cleaner"
-    title: "Basic Vacuum Cleaner"
-    excerpt: "Navigation algorithm for an autonomous vacuum."
-    url: "/exercises/MobileRobots/vacuum_cleaner"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+      alt: "Drone Cat and Mouse"
+      title: "Drone Cat and Mouse"
+      excerpt: "Game of cat and mouse with two quadrotors."
+      url: "/exercises/Drones/drone_cat_mouse"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner_loc_teaser.png
-    alt: "Localized Vacuum Cleaner"
-    title: "Localized Vacuum Cleaner"
-    excerpt: "Foraging algorithm for an autonomous vacuum with good localization."
-    url: "/exercises/MobileRobots/vacuum_cleaner_loc"
-    status: "running"
-    order: 0;
-    
-   
-  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
-    alt: "Follow Turtlebot"
-    title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground using a camera."
-    url: "/exercises/Drones/follow_turtlebot"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
+      alt: "Basic Vacuum Cleaner"
+      title: "Basic Vacuum Cleaner"
+      excerpt: "Navigation algorithm for an autonomous vacuum."
+      url: "/exercises/MobileRobots/vacuum_cleaner"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
-    alt: "3D Reconstruction"
-    title: "3D Reconstruction"
-    excerpt: "Reconstruct a 3D scene from a stereo pair"
-    url: "/exercises/ComputerVision/3d_reconstruction"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner_loc_teaser.png
+      alt: "Localized Vacuum Cleaner"
+      title: "Localized Vacuum Cleaner"
+      excerpt: "Foraging algorithm for an autonomous vacuum with good localization."
+      url: "/exercises/MobileRobots/vacuum_cleaner_loc"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.png
-    alt: "Follow Road"
-    title: "Follow Road"
-    excerpt: "Follow a road through color filter segmentation."
-    url: "/exercises/Drones/follow_road"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+      alt: "Follow Turtlebot"
+      title: "Follow Turtlebot"
+      excerpt: "Follow a turtlebot on the ground using a camera."
+      url: "/exercises/Drones/follow_turtlebot"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
-    alt: "Global Navigation"
-    title: "Global Navigation"
-    excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
-    url: "/exercises/AutonomousCars/global_navigation"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
+      alt: "3D Reconstruction"
+      title: "3D Reconstruction"
+      excerpt: "Reconstruct a 3D scene from a stereo pair"
+      url: "/exercises/ComputerVision/3d_reconstruction"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
-    alt: "Labyrinth Escape"
-    title: "Labyrinth Escape"
-    excerpt: "Escape from a labyrinth through visual signals."
-    url: "/exercises/Drones/labyrinth_escape"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/follow_road/follow_road_teaser.png
+      alt: "Follow Road"
+      title: "Follow Road"
+      excerpt: "Follow a road through color filter segmentation."
+      url: "/exercises/Drones/follow_road"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/marker_based_visual_loc/marker_visual_loc_teaser.png
-    alt: "Marker Based Visual Loc"
-    title: "Marker Based Visual Loc"
-    excerpt: "Visual localization using April-tags."
-    url: "/exercises/ComputerVision/marker_visual_loc"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
+      alt: "Global Navigation"
+      title: "Global Navigation"
+      excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
+      url: "/exercises/AutonomousCars/global_navigation"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/position_control/position_control_teaser.png
-    alt: "Position Control"
-    title: "Position Control"
-    excerpt: "Local navigation algorithm through the use of a PID controller."
-    url: "/exercises/Drones/position_control"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
+      alt: "Labyrinth Escape"
+      title: "Labyrinth Escape"
+      excerpt: "Escape from a labyrinth through visual signals."
+      url: "/exercises/Drones/labyrinth_escape"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
-    alt: "Rescue People"
-    title: "Rescue People"
-    excerpt: "Recognition of faces of lost people and save their locations."
-    url: "/exercises/Drones/rescue_people"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/marker_based_visual_loc/marker_visual_loc_teaser.png
+      alt: "Marker Based Visual Loc"
+      title: "Marker Based Visual Loc"
+      excerpt: "Visual localization using April-tags."
+      url: "/exercises/ComputerVision/marker_visual_loc"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
-    alt: "Road Junction"
-    title: "Road Junction"
-    excerpt: "Car Junction. Automated vehicle must stop and pass once the road is clear."
-    url: "/exercises/AutonomousCars/car_junction"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/position_control/position_control_teaser.png
+      alt: "Position Control"
+      title: "Position Control"
+      excerpt: "Local navigation algorithm through the use of a PID controller."
+      url: "/exercises/Drones/position_control"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
-    alt: "Drone Gymkhana"
-    title: "Drone Gymkhana"
-    excerpt: "Learn about different drone controls and drone infrastructure."
-    url: "/exercises/Drones/drone_gymkhana"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
+      alt: "Rescue People"
+      title: "Rescue People"
+      excerpt: "Recognition of faces of lost people and save their locations."
+      url: "/exercises/Drones/rescue_people"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
-    alt: "Drone Hangar"
-    title: "Drone Hangar"
-    excerpt: "Escape from a hangar filled with moving obstacles."
-    url: "/exercises/Drones/drone_hangar"
-    status: "prototype"
-    order: 2;
-    
-  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
-    alt: "Visual Lander"
-    title: "Visual Lander"
-    excerpt: "Visualization of a beacon and land on it."
-    url: "/exercises/Drones/visual_lander"
-    status: "prototype"
-    order: 2;
-      
-  - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
-    alt: "OpticalFlow Teleop"
-    title: "OpticalFlow Teleop"
-    excerpt: "Teleoperate to the robot using optical flow."
-    url: "/exercises/ComputerVision/opticalflow_teleop"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
+      alt: "Road Junction"
+      title: "Road Junction"
+      excerpt: "Car Junction. Automated vehicle must stop and pass once the road is clear."
+      url: "/exercises/AutonomousCars/car_junction"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
-    alt: "Montecarlo Visual Loc"
-    title: "Montecarlo Visual Loc"
-    excerpt: "Visual localisation based on the particle filter."
-    url: "/exercises/ComputerVision/montecarlo_visual_loc"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+      alt: "Drone Gymkhana"
+      title: "Drone Gymkhana"
+      excerpt: "Learn about different drone controls and drone infrastructure."
+      url: "/exercises/Drones/drone_gymkhana"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
-    alt: "Package Delivery"
-    title: "Package Delivery"
-    excerpt: "Deliver a package from the warehouse using a drone."
-    url: "/exercises/Drones/package_delivery"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
+      alt: "Drone Hangar"
+      title: "Drone Hangar"
+      excerpt: "Escape from a hangar filled with moving obstacles."
+      url: "/exercises/Drones/drone_hangar"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
-    alt: "Power Tower Inspection"
-    title: "Power Tower Inspection"
-    excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
-    url: "/exercises/Drones/power_tower_inspection"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
+      alt: "Visual Lander"
+      title: "Visual Lander"
+      excerpt: "Visualization of a beacon and land on it."
+      url: "/exercises/Drones/visual_lander"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
-    alt: "Amazon Warehouse"
-    title: "Amazon Warehouse"
-    excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
-    url: "/exercises/MobileRobots/amazon_warehouse/"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
+      alt: "OpticalFlow Teleop"
+      title: "OpticalFlow Teleop"
+      excerpt: "Teleoperate to the robot using optical flow."
+      url: "/exercises/ComputerVision/opticalflow_teleop"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
-    alt: "Simulated Follow Person"
-    title: "Follow Person"
-    excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
-    url: "/exercises/MobileRobots/follow_person"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
+      alt: "Montecarlo Visual Loc"
+      title: "Montecarlo Visual Loc"
+      excerpt: "Visual localisation based on the particle filter."
+      url: "/exercises/ComputerVision/montecarlo_visual_loc"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
-    alt: "Single Robot Amazon Warehouse"
-    title: "Single Robot Amazon Warehouse"
-    excerpt: "Autonomous navigation and pick-and-place logic"
-    url: "/exercises/MobileRobots/single_robot_amazon_warehouse"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
+      alt: "Package Delivery"
+      title: "Package Delivery"
+      excerpt: "Deliver a package from the warehouse using a drone."
+      url: "/exercises/Drones/package_delivery"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png
-    alt: "Multi Robot Amazon Warehouse"
-    title: "Multi Robot Amazon Warehouse"
-    excerpt: "Multi robot warehouse planning"
-    url: "/exercises/MobileRobots/multi_robot_amazon_warehouse"
-    status: "prototype"
-    order: 2;
-    
-  - image_path: /assets/images/exercises/visual_odometry/vo.png
-    alt: "Visual Odometry"
-    title: "Visual Odometry"
-    excerpt: "Solving the Visual Odometry problem in a given dataset"
-    url: "/exercises/ComputerVision/visual_odometry"
-    status: "prototype"
-    order: 2;
-    
-  - image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
-    alt: "Pick and Place"
-    title: "Pick and Place"
-    excerpt: "Pick and place with industrial robot arm and mechanical gripper"
-    url: "/exercises/IndustrialRobots/pick_place"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
+      alt: "Power Tower Inspection"
+      title: "Power Tower Inspection"
+      excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
+      url: "/exercises/Drones/power_tower_inspection"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
-    alt: "Machine Vision"
-    title: "Machine Vision"
-    excerpt: "Detect object and obstacle with kinect camera"
-    url: "/exercises/IndustrialRobots/machine_vision"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
+      alt: "Amazon Warehouse"
+      title: "Amazon Warehouse"
+      excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
+      url: "/exercises/MobileRobots/amazon_warehouse/"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
-    alt: "Mobile Manipulation"
-    title: "Mobile Manipulation"
-    excerpt: "Pick and place with mobile manipulator"
-    url: "/exercises/IndustrialRobots/mobile_manipulation"
-    status: "prototype"
-    order: 2;
-    
-  - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
-    alt: "Qualifying Formula1"
-    title: "Qualifying Formula1"
-    excerpt: "Complete a lap to the Nürburgring circuit as fast as it can"
-    url: "/exercises/AutonomousCars/qualifying_formula1"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
+      alt: "Simulated Follow Person"
+      title: "Follow Person"
+      excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
+      url: "/exercises/MobileRobots/follow_person"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/bump_and_go/bump_and_go_teaser.png
-    alt: "Bump and Go"
-    title: "Bump and Go"
-    excerpt: "Basic behaviour of bump-spin using a finite state machine"
-    url: "/exercises/MobileRobots/bump_and_go"
-    status: "prototype"
-    order: 2;
-  
-  - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
-    alt: "Follow Face"
-    title: "Follow Face"
-    excerpt: "Detect people faces and follow them through a camera"
-    url: "/exercises/ComputerVision/follow_face"
-    status: "prototype"
-    order: 2;
+    # - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
+    #   alt: "Single Robot Amazon Warehouse"
+    #   title: "Single Robot Amazon Warehouse"
+    #   excerpt: "Autonomous navigation and pick-and-place logic"
+    #   url: "/exercises/MobileRobots/single_robot_amazon_warehouse"
+    #   status: "prototype"
+    #   order: 2;
 
-  - image_path: /assets/images/exercises/autoparking/autoparking_teaser.png
-    alt: "Autoparking"
-    title: "Autoparking"
-    excerpt: "Logic of a navigation algorithm for an automated vehicle"
-    url: "/exercises/AutonomousCars/autoparking"
-    status: "running"
-    order: 0;
+    # - image_path: /assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png
+    #   alt: "Multi Robot Amazon Warehouse"
+    #   title: "Multi Robot Amazon Warehouse"
+    #   excerpt: "Multi robot warehouse planning"
+    #   url: "/exercises/MobileRobots/multi_robot_amazon_warehouse"
+    #   status: "prototype"
+    #   order: 2;
 
-  - image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
-    alt: "Laser Mapping"
-    title: "Laser Mapping"
-    excerpt: "Navigation algorithm for an autonomous vacuum."
-    url: "/exercises/MobileRobots/laser_mapping"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/visual_odometry/vo.png
+      alt: "Visual Odometry"
+      title: "Visual Odometry"
+      excerpt: "Solving the Visual Odometry problem in a given dataset"
+      url: "/exercises/ComputerVision/visual_odometry"
+      status: "running"
+      order: 2;
 
-  - image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
-    alt: "Visibility Graph Navigation"
-    title: "Visibility Graph Navigation"
-    excerpt: "Path planning using visibility graph algorithm"
-    url: "/exercises/MobileRobots/visibility_graph"
-    status: "prototype"
-    order: 3;
+    - image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
+      alt: "Pick and Place"
+      title: "Pick and Place"
+      excerpt: "Pick and place with industrial robot arm and mechanical gripper"
+      url: "/exercises/IndustrialRobots/pick_place"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/rrt/rrt_teaser.png
-    alt: "RRT Navigation"
-    title: "RRT Navigation"
-    excerpt: "Path planning using Rapidly-exploring Random Tree algorithm"
-    url: "/exercises/MobileRobots/rrt"
-    status: "prototype"
-    order: 4;
+    - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
+      alt: "Machine Vision"
+      title: "Machine Vision"
+      excerpt: "Detect object and obstacle with kinect camera"
+      url: "/exercises/IndustrialRobots/machine_vision"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/line_mapper/line_mapper_teaser.png
-    alt: "Line-based Mapping"
-    title: "Line-based Mapping"
-    excerpt: "Geometric map building using laser line segment extraction"
-    url: "/exercises/MobileRobots/line_mapper_pr"
-    status: "prototype"
-    order: 5;
+    - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
+      alt: "Mobile Manipulation"
+      title: "Mobile Manipulation"
+      excerpt: "Pick and place with mobile manipulator"
+      url: "/exercises/IndustrialRobots/mobile_manipulation"
+      status: "prototype"
+      order: 2;
 
+    # - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
+    #   alt: "Qualifying Formula1"
+    #   title: "Qualifying Formula1"
+    #   excerpt: "Complete a lap to the Nürburgring circuit as fast as it can"
+    #   url: "/exercises/AutonomousCars/qualifying_formula1"
+    #   status: "prototype"
+    #   order: 2;
 
-  - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
-    alt: "MonteCarlo Laser Loc (old version)"
-    title: "MonteCarlo Laser Loc (old version)"
-    excerpt: "Robot self-localization using particle filter and laser sensor"
-    url: "/exercises/MobileRobots/laser_loc"
-    status: "prototype"
-    order: 2;
+    - image_path: /assets/images/exercises/bump_and_go/bump_and_go_teaser.png
+      alt: "Bump and Go"
+      title: "Bump and Go"
+      excerpt: "Basic behaviour of bump-spin using a finite state machine"
+      url: "/exercises/MobileRobots/bump_and_go"
+      status: "prototype"
+      order: 2;
 
-  - image_path: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
-    alt: "Montecarlo Laser Loc"
-    title: "Montecarlo Laser Loc"
-    excerpt: "Robot self-localization using particle filter and laser sensor"
-    url: "/exercises/MobileRobots/montecarlo_laser_loc"
-    status: "running"
-    order: 0;
-    
-  - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
-    alt: "Basic Computer Vision"
-    title: "Basic Computer Vision"
-    excerpt: "Develop some basic exercises about computer vision"
-    url: "/exercises/ComputerVision/basic_computer_vision"
-    status: "running"
-    order: 0;
-  
-  - image_path: /assets/images/exercises/image_classification/image_classification.png
-    alt: "Image Classifier"
-    title: "Image Classifier"
-    excerpt: "Classify images in real time using your own deep learning model."
-    url: "/exercises/ComputerVision/image_classification"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
+      alt: "Follow Face"
+      title: "Follow Face"
+      excerpt: "Detect people faces and follow them through a camera"
+      url: "/exercises/ComputerVision/follow_face"
+      status: "prototype"
+      order: 2;
 
-  - image_path: /assets/images/exercises/object_detection/object_detection_teaser.jpeg
-    alt: "Visual Object Detection"
-    title: "Visual Object Detection"
-    excerpt: "Deep learning-based Visual Object Detection Exercise."
-    url: "/exercises/ComputerVision/object_detection"
-    status: "running"
-    order: 0;
+    - image_path: /assets/images/exercises/autoparking/autoparking_teaser.png
+      alt: "Autoparking"
+      title: "Autoparking"
+      excerpt: "Logic of a navigation algorithm for an automated vehicle"
+      url: "/exercises/AutonomousCars/autoparking"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/end_to_end_visual_control/end_to_end_visual_control_teaser.png
-    alt: "End to End Visual Control"
-    title: "End to End Visual Control"
-    excerpt: "End to end visual control using deep learning."
-    url: "/exercises/AutonomousCars/end_to_end_visual_control/"
-    status: "prototype"
-    order: 0;
+    - image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
+      alt: "Laser Mapping"
+      title: "Laser Mapping"
+      excerpt: "Navigation algorithm for an autonomous vacuum."
+      url: "/exercises/MobileRobots/laser_mapping"
+      status: "running"
+      order: 0;
 
-  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
-    alt: "Dynamic Window Approach"
-    title: "Dynamic Window Approach"
-    excerpt: "Complete a lap using DWA method."
-    url: "/exercises/AutonomousCars/dynamic_window_approach/"
-    status: "prototype"
-    order: 0;
+    - image_path: /assets/images/exercises/visibility_graph/visibility_graph_teaser.png
+      alt: "Visibility Graph Navigation"
+      title: "Visibility Graph Navigation"
+      excerpt: "Path planning using visibility graph algorithm"
+      url: "/exercises/MobileRobots/visibility_graph"
+      status: "running"
+      order: 3;
 
-  - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
-    alt: "Visual 3D Odom"
-    title: "Visual 3D Odom"
-    excerpt: "Locate the camera using inputs like rosbags or videos"
-    url: "/exercises/ComputerVision/visual_odom"
-    status: "prototype"
-    order: 0;
+    - image_path: /assets/images/exercises/rrt/rrt_teaser.png
+      alt: "RRT Navigation"
+      title: "RRT Navigation"
+      excerpt: "Path planning using Rapidly-exploring Random Tree algorithm"
+      url: "/exercises/MobileRobots/rrt"
+      status: "running"
+      order: 4;
+
+    - image_path: /assets/images/exercises/line_mapper/line_mapper_teaser.png
+      alt: "Line-based Mapping"
+      title: "Line-based Mapping"
+      excerpt: "Geometric map building using laser line segment extraction"
+      url: "/exercises/MobileRobots/line_mapper_pr"
+      status: "running"
+      order: 5;
+
+    - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
+      alt: "MonteCarlo Laser Loc (old version)"
+      title: "MonteCarlo Laser Loc (old version)"
+      excerpt: "Robot self-localization using particle filter and laser sensor"
+      url: "/exercises/MobileRobots/laser_loc"
+      status: "prototype"
+      order: 2;
+
+    - image_path: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
+      alt: "Montecarlo Laser Loc"
+      title: "Montecarlo Laser Loc"
+      excerpt: "Robot self-localization using particle filter and laser sensor"
+      url: "/exercises/MobileRobots/montecarlo_laser_loc"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
+      alt: "Basic Computer Vision"
+      title: "Basic Computer Vision"
+      excerpt: "Develop some basic exercises about computer vision"
+      url: "/exercises/ComputerVision/basic_computer_vision"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/image_classification/image_classification.png
+      alt: "Image Classifier"
+      title: "Image Classifier"
+      excerpt: "Classify images in real time using your own deep learning model."
+      url: "/exercises/ComputerVision/image_classification"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/object_detection/object_detection_teaser.jpeg
+      alt: "Visual Object Detection"
+      title: "Visual Object Detection"
+      excerpt: "Deep learning-based Visual Object Detection Exercise."
+      url: "/exercises/ComputerVision/object_detection"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/end_to_end_visual_control/end_to_end_visual_control_teaser.png
+      alt: "End to End Visual Control"
+      title: "End to End Visual Control"
+      excerpt: "End to end visual control using deep learning."
+      url: "/exercises/AutonomousCars/end_to_end_visual_control/"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
+      alt: "Dynamic Window Approach"
+      title: "Dynamic Window Approach"
+      excerpt: "Complete a lap using DWA method."
+      url: "/exercises/AutonomousCars/dynamic_window_approach/"
+      status: "running"
+      order: 0;
+
+    - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
+      alt: "Visual 3D Odom"
+      title: "Visual 3D Odom"
+      excerpt: "Locate the camera using inputs like rosbags or videos"
+      url: "/exercises/ComputerVision/visual_odom"
+      status: "running"
+      order: 0;
 ---
-
 
 {% include feature_row %}

@@ -3,7 +3,7 @@ permalink: /exercises/MobileRobots/amazon_warehouse/
 title: "Amazon Warehouse"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Amazon Warehouse"
@@ -14,98 +14,98 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
-    alt: "Shelves to move"
-    title: "Shelves to move"
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
-    alt: "Robot"
-    title: "Robot"
+    - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+      image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+      alt: "Shelves to move"
+      title: "Shelves to move"
+    - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+      image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+      alt: "Robot"
+      title: "Robot"
 
 holonomicrobot:
-  - url: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
-    image_path: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
-    alt: "Holonomic robot"
-    title: "Holonomic robot"
+    - url: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
+      image_path: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
+      alt: "Holonomic robot"
+      title: "Holonomic robot"
 
 ackermannrobot:
-  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
-    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
-    alt: "Ackermann robot"
-    title: "Ackermann robot"
+    - url: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+      image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+      alt: "Ackermann robot"
+      title: "Ackermann robot"
 
 ackermannrobotmesh:
-  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
-    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
-    alt: "Ackermann robot mesh"
-    title: "Ackermann robot mesh"
-  - url: /assets/images/exercises/amazon_warehouse/ackemann_robot_shelf_dae.png
-    image_path: /assets/images/exercises/amazon_warehouse/ackemann_robot_shelf_dae.png
-    alt: "Ackermann robot shelf mesh"
-    title: "Ackermann robot shelf mesh"
+    - url: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
+      image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
+      alt: "Ackermann robot mesh"
+      title: "Ackermann robot mesh"
+    - url: /assets/images/exercises/amazon_warehouse/ackemann_robot_shelf_dae.png
+      image_path: /assets/images/exercises/amazon_warehouse/ackemann_robot_shelf_dae.png
+      alt: "Ackermann robot shelf mesh"
+      title: "Ackermann robot shelf mesh"
 
 warehouse1:
-  - url: /assets/images/exercises/amazon_warehouse/warehouse1.png
-    image_path: /assets/images/exercises/amazon_warehouse/warehouse1.png
-    alt: "Ackermann logistics robot"
-    title: "Ackermann logistics robot"
+    - url: /assets/images/exercises/amazon_warehouse/warehouse1.png
+      image_path: /assets/images/exercises/amazon_warehouse/warehouse1.png
+      alt: "Ackermann logistics robot"
+      title: "Ackermann logistics robot"
 
 warehouse1mesh:
-  - url: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
-    image_path: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
-    alt: "Warehouse 1 mesh"
-    title: "Warehouse 1 mesh"
-  - url: /assets/images/exercises/amazon_warehouse/shelf_dae.png
-    image_path: /assets/images/exercises/amazon_warehouse/shelf_dae.png
-    alt: "Shelf mesh"
-    title: "Shelf mesh"
+    - url: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
+      image_path: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
+      alt: "Warehouse 1 mesh"
+      title: "Warehouse 1 mesh"
+    - url: /assets/images/exercises/amazon_warehouse/shelf_dae.png
+      image_path: /assets/images/exercises/amazon_warehouse/shelf_dae.png
+      alt: "Shelf mesh"
+      title: "Shelf mesh"
 
 warehouse2:
-  - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
-    image_path: /assets/images/exercises/amazon_warehouse/warehouse2.png
-    alt: "Warehouse 2"
-    title: "Warehouse 2"
+    - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
+      image_path: /assets/images/exercises/amazon_warehouse/warehouse2.png
+      alt: "Warehouse 2"
+      title: "Warehouse 2"
 
 ompl:
-  - url: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
-    image_path: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
-    alt: "OMPL structure"
-    title: "OMPL structure"
+    - url: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
+      image_path: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
+      alt: "OMPL structure"
+      title: "OMPL structure"
 
 example:
-  - url: /assets/images/exercises/amazon_warehouse/example_plot.png
-    image_path: /assets/images/exercises/amazon_warehouse/example_plot.png
-    alt: "Example"
-    title: "Example"
+    - url: /assets/images/exercises/amazon_warehouse/example_plot.png
+      image_path: /assets/images/exercises/amazon_warehouse/example_plot.png
+      alt: "Example"
+      title: "Example"
 
 original_axis:
-  - url: /assets/images/exercises/amazon_warehouse/original_axis.png
-    alt: "Warehouse 1"
-    image_path: /assets/images/exercises/amazon_warehouse/original_axis.JPG
-    title: "Warehouse 1"
+    - url: /assets/images/exercises/amazon_warehouse/original_axis.png
+      alt: "Warehouse 1"
+      image_path: /assets/images/exercises/amazon_warehouse/original_axis.JPG
+      title: "Warehouse 1"
 
 eucliean_eg:
-  - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
-    alt: "Validity checker"
-    image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
-    title: "Validity checker"
-  - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
-    alt: "Found path"
-    image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
-    title: "Found path"
+    - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
+      alt: "Validity checker"
+      image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
+      title: "Validity checker"
+    - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
+      alt: "Found path"
+      image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
+      title: "Found path"
 
 geometry_eg:
-  - url: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
-    alt: "Path planning"
-    image_path: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
-    title: "Path planning"
+    - url: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
+      alt: "Path planning"
+      image_path: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
+      title: "Path planning"
 
 gazebo_move:
-  - url: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
-    image_path: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
-    alt: "Moving the robot in Gazebo Harmonic"
-    title: "Moving the robot in Gazebo Harmonic"
+    - url: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
+      image_path: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
+      alt: "Moving the robot in Gazebo Harmonic"
+      title: "Moving the robot in Gazebo Harmonic"
 
 youtubeId1: EVt9vYqEoDg
 youtubeId2: -2D90I-wZKs
@@ -242,10 +242,10 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation and the WebGUI.
 
-- `/amazon_robot/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
-- `/amazon_robot/odom` - Subscribe to this topic to receive the current pose of the robot. Message type: `nav_msgs/msg/Odometry`
-- `/amazon_robot/scan` - Subscribe to this topic to receive the 2D laser data. Message type: `sensor_msgs/msg/LaserScan`
-- `/platform/cmd_vel` - Publish to this topic to control the lifting platform. Positive values lift the platform (`5.0`) and negative values (`-5.0`) lower it. Message type: `std_msgs/msg/Float64`
+- `/logistic_robot/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/logistic_robot/odom` - Subscribe to this topic to receive the current pose of the robot. Message type: `nav_msgs/msg/Odometry`
+- `/logistic_robot/scan` - Subscribe to this topic to receive the 2D laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/logistic_robot/platform/cmd_vel` - Publish to this topic to control the lifting platform. Positive values lift the platform (`5.0`) and negative values (`-5.0`) lower it. Message type: `std_msgs/msg/Float64`
 
 For WebGUI debugging:
 
@@ -313,8 +313,8 @@ To enable this feature:
 1. Open the **three-dot menu** in Gazebo Harmonic.
 2. Open the **plugin selector**.
 3. Enable:
-   - **Entity Tree**
-   - **Transform Control**
+    - **Entity Tree**
+    - **Transform Control**
 
 Once enabled, select the robot in the **Entity Tree**. The **Transform tool** will display the manipulation axes directly on the robot model. Using these axes, the robot can be translated in the world to inspect positions and coordinates.
 {% include gallery id="gazebo_move" caption="Moving the robot in Gazebo Harmonic" %}
@@ -336,8 +336,8 @@ There are two robots to choose from:
 {% include gallery id="ackermannrobot" caption="Ackemann robot" %}
 
 - You can get the robot's mesh files from there:
-  - Only robot: /resources/exercises/amazon_warehouse/meshes/robot/ackermann_robot.dae
-  - Robot lifting a shelf: /resources/exercises/amazon_warehouse/meshes/robot/ackermann_robot_lifting_shelf.dae
+    - Only robot: /resources/exercises/amazon_warehouse/meshes/robot/ackermann_robot.dae
+    - Robot lifting a shelf: /resources/exercises/amazon_warehouse/meshes/robot/ackermann_robot_lifting_shelf.dae
 
 {% include gallery id="ackermannrobotmesh" caption="Ackemann robot meshes" %}
 
@@ -352,13 +352,13 @@ There are two warehouses to choose from:
 {% include gallery id="warehouse1" caption="Warehouse 1" %}
 
 - You can get the warehouse's mesh file from there:
-  - Warehouse without shelves: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/warehouse1.dae
-  - Shelf 1: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf1.dae
-  - Shelf 2: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf2.dae
-  - Shelf 3: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf3.dae
-  - Shelf 4: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf4.dae
-  - Shelf 5: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf5.dae
-  - Shelf 6: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf6.dae
+    - Warehouse without shelves: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/warehouse1.dae
+    - Shelf 1: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf1.dae
+    - Shelf 2: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf2.dae
+    - Shelf 3: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf3.dae
+    - Shelf 4: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf4.dae
+    - Shelf 5: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf5.dae
+    - Shelf 6: /resources/exercises/amazon_warehouse/meshes/world/warehouse1/shelf6.dae
 
 {% include gallery id="warehouse1mesh" caption="Warehouse 1 meshes" %}
 
@@ -366,7 +366,7 @@ There are two warehouses to choose from:
 
 - The warehouse size is 34 meters long and 22 meters wide.
 - The shelves coordinates from 1 to 9 are: (-8.5, -6.0), (-1.5, -6.0), (5.5, -6.0), (-8.5, 4.0), (-1.5, 4.0), (5.5, 4.0), (-1.0, -15.5), (-2, 11.5), (1.0, -15.0).
-  - The separation distance between two neighboring shelves is 2 m on the x axis and 1.5 m on the y axis.
+    - The separation distance between two neighboring shelves is 2 m on the x axis and 1.5 m on the y axis.
 - You can get the warehouse's map from there: /resources/exercises/amazon_warehouse/images/map_2.png
 
 {% include gallery id="warehouse2" caption="Warehouse 2" %}
@@ -384,10 +384,10 @@ OMPL is a library for sampling-based motion planning, offering many state-of-the
 As you can see in the diagram above, some key components of OMPL are:
 
 - **State Space** defines the possible configurations that a robot can have. For example:
-  - RealVectorStateSpace: represents an Euclidean space.
-  - SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D.
-  - SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D.
-  - ...
+    - RealVectorStateSpace: represents an Euclidean space.
+    - SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D.
+    - SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D.
+    - ...
 - **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collide with an enviroment obstacle and respects the constraints of the robot.
 - **Control Space** defines the movements that a robot can perform.
 - **State Propagator** indicates the evolution of the system after applying a control.
@@ -582,39 +582,39 @@ There are different ways to solve the exercise:
 
 - #### Euclidean planning
 
-  Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
+    Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
 
-  {% include gallery id="eucliean_eg" caption="Euclidean planning" %}
+    {% include gallery id="eucliean_eg" caption="Euclidean planning" %}
 
 - #### Planning with robot's geometry constraints
 
-  Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry.
+    Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry.
 
-  You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into consideration the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as [SE2StateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1SE2StateSpace.html). And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states.
+    You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into consideration the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as [SE2StateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1SE2StateSpace.html). And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states.
 
-  You can make use of the [DubinsStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1DubinsStateSpace.html) or [ReedsSheppStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1ReedsSheppStateSpace.html) to solve the exersice. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
+    You can make use of the [DubinsStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1DubinsStateSpace.html) or [ReedsSheppStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1ReedsSheppStateSpace.html) to solve the exersice. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
 
-  {% include gallery id="geometry_eg" caption="Geometry constraints planning" %}
+    {% include gallery id="geometry_eg" caption="Geometry constraints planning" %}
 
 - #### Control-based planning
 
-  In control-based planning, we need to define a control space and specify control propagation to set the robot movement constraints.
+    In control-based planning, we need to define a control space and specify control propagation to set the robot movement constraints.
 
-  However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files. Check this [demo](https://ompl.kavrakilab.org/demos_2SE2RigidBodyPlanning_2SE2RigidBodyPlanning_8cpp_source.html)!
-  - For now, only the meshes of the Ackermann robot and Warehouse 1 are available (listed in the **Supporting information** section).
+    However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files. Check this [demo](https://ompl.kavrakilab.org/demos_2SE2RigidBodyPlanning_2SE2RigidBodyPlanning_8cpp_source.html)!
+    - For now, only the meshes of the Ackermann robot and Warehouse 1 are available (listed in the **Supporting information** section).
 
-  In this case, the solution path is composed of a sequence of controls (v, w, duration), instead of coordinates:
+    In this case, the solution path is composed of a sequence of controls (v, w, duration), instead of coordinates:
 
-  ```python
-  At state Compound state [
-  RealVectorState [0 0]
-  SO2State [0]
-  ]
-  apply control RealVectorControl [3.76703 0.00946806]
-  for 1 steps
-  ```
+    ```python
+    At state Compound state [
+    RealVectorState [0 0]
+    SO2State [0]
+    ]
+    apply control RealVectorControl [3.76703 0.00946806]
+    for 1 steps
+    ```
 
-  Besides, the Gazebo RTF factor can impact the accurary of plan execution, so using simulated time can lead to better results.
+    Besides, the Gazebo RTF factor can impact the accurary of plan execution, so using simulated time can lead to better results.
 
 #### How to find the shortest path?
 
@@ -623,8 +623,8 @@ The library offers the possibility to set an optimization objective, which could
 #### Points to consider
 
 - The loaded shelf is no longer a obstacle but part of the robot, then:
-  - the robot's geometry changes.
-  - remember to exclude the shelf itself when defining invalid states.
+    - the robot's geometry changes.
+    - remember to exclude the shelf itself when defining invalid states.
 
 ### Important points to remember
 
@@ -638,14 +638,14 @@ The library offers the possibility to set an optimization objective, which could
 
 - #### Euclidean planning
 
-  {% include youtubePlayer.html id=page.youtubeId1 %}
+    {% include youtubePlayer.html id=page.youtubeId1 %}
 
 - #### Planning with robot's geometry constraints
 
-  {% include youtubePlayer.html id=page.youtubeId2 %}
+    {% include youtubePlayer.html id=page.youtubeId2 %}
 
 - #### Control-based planning
-  {% include youtubePlayer.html id=page.youtubeId3 %}
+    {% include youtubePlayer.html id=page.youtubeId3 %}
 
 * Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 * Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164), [Javier Izquierdo](https://github.com/javizqh).

@@ -3,15 +3,15 @@ permalink: /exercises/MobileRobots/vacuum_cleaner
 title: " Basic Vacuum Cleaner"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Vacuum Cleaner"
 toc_icon: "cog"
 
 gallery:
-  image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
-  alt: "Vacuum"
+    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
+    alt: "Vacuum"
 
 youtubeId1: c90hmfkZRNY
 youtubeId2: Xcy84DhVjrY
@@ -134,11 +134,11 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
-- `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`.**DISABLED**: use laser data in the center (90) to get the same result.
-- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
-- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/vacuum_cleaner/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
+- `/vacuum_cleaner/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`.**DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
+- `/vacuum_cleaner/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`. **DISABLED**: use laser data in the center (90) to get the same result.
 
 #### Python
 

@@ -3,7 +3,7 @@ permalink: /exercises/AutonomousCars/dynamic_window_approach
 title: "Local navigation with DWA"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC Dynamic Window Approach"
@@ -21,12 +21,13 @@ youtubeId1: 0fsE49EijDc
 The objective of this exercise is to implement the Dynamic Window Approach (DWA) for local navigation.
 
 The robot must:
+
 - Generate a set of admissible linear and angular velocities
 - Simulate trajectories for each velocity pair
 - Evaluate them based on:
-  - Distance to obstacles
-  - Alignment with the target
-  - Forward velocity
+    - Distance to obstacles
+    - Alignment with the target
+    - Forward velocity
 - Select the optimal velocity command
 
 This allows the robot to reach the target while avoiding obstacles in a smooth and dynamically feasible way.
@@ -83,11 +84,11 @@ To use it, only two actions must be carried out:
 
 1. Obtain the following point:
 
-   `currentTarget = WebGUI.getNextTarget()`
+    `currentTarget = WebGUI.getNextTarget()`
 
 2. Mark it as visited when necessary:
 
-   `currentTarget.setReached(True)`
+    `currentTarget.setReached(True)`
 
 As well as the destination that we have assigned:
 
@@ -148,9 +149,9 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/f1/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic to receive the robot odometry. Both the pose (`x`, `y`, `yaw`) and the real velocity (`v`, `w`, from the twist fields) are available here. Message type: `nav_msgs/msg/Odometry`
+- `/f1/odom` - Subscribe to this topic to receive the robot odometry. Both the pose (`x`, `y`, `yaw`) and the real velocity (`v`, `w`, from the twist fields) are available here. Message type: `nav_msgs/msg/Odometry`
 
 - `/f1/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
@@ -330,21 +331,21 @@ At each control cycle:
 
 1. **Obtain Dynamic Window.** The valid velocity ranges are provided by the system:
 
-   ```python
-   v_min, v_max, w_min, w_max = HAL.getDynamicWindowLimits()
-   ```
+    ```python
+    v_min, v_max, w_min, w_max = HAL.getDynamicWindowLimits()
+    ```
 
-   These limits already take into account the current robot velocity, the maximum acceleration and the velocity constraints. **Note:** you are not required to implement this step.
+    These limits already take into account the current robot velocity, the maximum acceleration and the velocity constraints. **Note:** you are not required to implement this step.
 
 2. **Sample Velocities.** Generate candidate velocity pairs `(v, w)` within the dynamic window.
 
 3. **Simulate Trajectories.** For each candidate velocity, predict the robot motion over a short time horizon using the motion model:
 
-   ```python
-   x = x + v * cos(theta) * dt
-   y = y + v * sin(theta) * dt
-   theta = theta + w * dt
-   ```
+    ```python
+    x = x + v * cos(theta) * dt
+    y = y + v * sin(theta) * dt
+    theta = theta + w * dt
+    ```
 
 4. **Evaluate Trajectories.** Each trajectory is scored based on its heading, meaning the alignment with the goal, its clearance, meaning the distance to obstacles, and its velocity, meaning the forward speed.
 
@@ -389,6 +390,7 @@ DWA takes the robot dynamics into account, so it produces smooth and realistic m
 ## Hints
 
 Visualizing the dynamic window can help detect issues such as:
+
 - Poor sampling resolution
 - Incorrect cost weighting
 - Unsafe trajectory selection

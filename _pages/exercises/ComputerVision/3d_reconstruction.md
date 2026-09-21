@@ -3,51 +3,51 @@ permalink: /exercises/ComputerVision/3d_reconstruction
 title: "3D Reconstruction"
 
 sidebar:
-  nav: "docs"
+    nav: "docs"
 
 toc: true
 toc_label: "TOC 3D Reconstruction"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/3d_reconstruction/3d_reconstruction.png
-    image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction.png
-    alt: "3D Reconstruction"
-    title: "3D Reconstruction"
+    - url: /assets/images/exercises/3d_reconstruction/3d_reconstruction.png
+      image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction.png
+      alt: "3D Reconstruction"
+      title: "3D Reconstruction"
 
 hardware:
-  - url: /assets/images/exercises/3d_reconstruction/kinect.png
-    image_path: /assets/images/exercises/3d_reconstruction/kinect.png
-    alt: "Microsoft Kinect"
-    title: "Microsoft Kinect"
+    - url: /assets/images/exercises/3d_reconstruction/kinect.png
+      image_path: /assets/images/exercises/3d_reconstruction/kinect.png
+      alt: "Microsoft Kinect"
+      title: "Microsoft Kinect"
 
-  - url: /assets/images/exercises/3d_reconstruction/3d_imaging.jpg
-    image_path: /assets/images/exercises/3d_reconstruction/3d_imaging.jpg
-    alt: "3D Imaging"
-    title: "3D Imaging"
+    - url: /assets/images/exercises/3d_reconstruction/3d_imaging.jpg
+      image_path: /assets/images/exercises/3d_reconstruction/3d_imaging.jpg
+      alt: "3D Imaging"
+      title: "3D Imaging"
 
 epipolar:
-  - url: /assets/images/exercises/3d_reconstruction/epipolar.png
-    image_path: /assets/images/exercises/3d_reconstruction/epipolar.png
-    alt: "Epipolar Geometry"
-    title: "Epipolar Geometry"
+    - url: /assets/images/exercises/3d_reconstruction/epipolar.png
+      image_path: /assets/images/exercises/3d_reconstruction/epipolar.png
+      alt: "Epipolar Geometry"
+      title: "Epipolar Geometry"
 
 stereo:
-  - url: /assets/images/exercises/3d_reconstruction/stereo.png
-    image_path: /assets/images/exercises/3d_reconstruction/stereo.png
-    alt: "Stereo reconstruction"
-    title: "Stereo reconstruction"
+    - url: /assets/images/exercises/3d_reconstruction/stereo.png
+      image_path: /assets/images/exercises/3d_reconstruction/stereo.png
+      alt: "Stereo reconstruction"
+      title: "Stereo reconstruction"
 
 illustrations:
-  - url: /assets/images/exercises/3d_reconstruction/without_bilateral.png
-    image_path: /assets/images/exercises/3d_reconstruction/without_bilateral.png
-    alt: "Without Bilateral Filtering"
-    title: "Without Bilateral Filtering"
+    - url: /assets/images/exercises/3d_reconstruction/without_bilateral.png
+      image_path: /assets/images/exercises/3d_reconstruction/without_bilateral.png
+      alt: "Without Bilateral Filtering"
+      title: "Without Bilateral Filtering"
 
-  - url: /assets/images/exercises/3d_reconstruction/with_bilateral.png
-    image_path: /assets/images/exercises/3d_reconstruction/with_bilateral.png
-    alt: "With Bilateral Filtering"
-    title: "With Bilateral Filtering"
+    - url: /assets/images/exercises/3d_reconstruction/with_bilateral.png
+      image_path: /assets/images/exercises/3d_reconstruction/with_bilateral.png
+      alt: "With Bilateral Filtering"
+      title: "With Bilateral Filtering"
 
 youtubeId1: 11pxsE__DPw
 youtubeId2: cAqfb6qJvwI
@@ -66,8 +66,8 @@ In this exercise, the intention is to program the necessary logic to allow kobuk
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
@@ -83,23 +83,23 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-* `HAL.getImage('left')` - to get the left image
-* `HAL.getImage('right')` - to get the right image
-* `HAL.getCameraPosition('left')` - to get the left camera position from ROS Driver Camera
-* `HAL.getCameraPosition('right')` - to get the right camera position from ROS Driver Camera
-* `HAL.graficToOptical('left', point2d)` - to transform the Image Coordinate System to the Camera System
-* `HAL.backproject('left', point2d)` - to backprojects the 2D Image Point into 3D Point Space
-* `HAL.project('left', point3d)` - to backprojects a 3D Point Space into the 2D Image Point
-* `HAL.opticalToGrafic('left', point2d)` - to transform the Camera System to the Image Coordinate System
-* `HAL.project3DScene(point3d)` - to transform 3D Point Space after triangulation to the 3D Point Viewer
-* `WebGUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
-* `WebGUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
-* `WebGUI.ShowNewPoints(points)` - See 3D visor below
-* `WebGUI.ShowAllPoints(points)` - See 3D visor below
-* `WebGUI.ClearAllPoints()` - See 3D visor below
+- `HAL.getImage('left')` - to get the left image
+- `HAL.getImage('right')` - to get the right image
+- `HAL.getCameraPosition('left')` - to get the left camera position from ROS Driver Camera
+- `HAL.getCameraPosition('right')` - to get the right camera position from ROS Driver Camera
+- `HAL.graficToOptical('left', point2d)` - to transform the Image Coordinate System to the Camera System
+- `HAL.backproject('left', point2d)` - to backprojects the 2D Image Point into 3D Point Space
+- `HAL.project('left', point3d)` - to backprojects a 3D Point Space into the 2D Image Point
+- `HAL.opticalToGrafic('left', point2d)` - to transform the Camera System to the Image Coordinate System
+- `HAL.project3DScene(point3d)` - to transform 3D Point Space after triangulation to the 3D Point Viewer
+- `WebGUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
+- `WebGUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
+- `WebGUI.ShowNewPoints(points)` - See 3D visor below
+- `WebGUI.ShowAllPoints(points)` - See 3D visor below
+- `WebGUI.ClearAllPoints()` - See 3D visor below
 
 ```python
 def algorithm(self):
@@ -156,9 +156,9 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/cam_turtlebot_left/image_raw` - Subscribe to this topic to receive the left camera image. Message type: `sensor_msgs/msg/Image`
+- `/turtlebot2/camera_left/image_raw` - Subscribe to this topic to receive the left camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/cam_turtlebot_right/image_raw` - Subscribe to this topic to receive the right camera image. Message type: `sensor_msgs/msg/Image`
+- `/turtlebot2/camera_right/image_raw` - Subscribe to this topic to receive the right camera image. Message type: `sensor_msgs/msg/Image`
 
 For WebGUI debugging:
 
@@ -189,6 +189,7 @@ For WebGUI debugging:
   Message type: `std_msgs/msg/Empty`
 
 #### Note
+
 In this exercise, the 3D reconstruction is not performed through ROS 2 topics.
 Functions such as: `backproject()`, `project()`, `graficToOptical()`, `opticalToGrafic()` and `getCameraPosition()` are local geometric utilities based on the stereo calibration file in (`"/workspace/code/3d_reconstruction_conf.yml`).
 
@@ -208,6 +209,7 @@ msg.data = json.dumps(points)
 
 points_pub.publish(msg)
 ```
+
 #### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
@@ -264,9 +266,9 @@ To have frequency control you may use a timer and a control function as follows:
 
 All the points follow this structure: `[x,y,z,R,G,B]`.
 
-* `WebGUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
-* `WebGUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
-* `WebGUI.ClearAllPoints()` - to clear the 3D visor
+- `WebGUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
+- `WebGUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
+- `WebGUI.ClearAllPoints()` - to clear the 3D visor
 
 #### Example
 
@@ -296,15 +298,15 @@ while True:
 
 **Mouse**
 
-* **Mouse wheel**: if it is rotated forward, the zoom will increase. If it is rotated backwards, it will zoom out.
-* **Right mouse button**: if it is held down and the mouse is dragged, the content of the window will move in the same direction.
-* **Left mouse button**: if it is held down and the mouse is dragged, the content of the window will rotate in the same direction.
+- **Mouse wheel**: if it is rotated forward, the zoom will increase. If it is rotated backwards, it will zoom out.
+- **Right mouse button**: if it is held down and the mouse is dragged, the content of the window will move in the same direction.
+- **Left mouse button**: if it is held down and the mouse is dragged, the content of the window will rotate in the same direction.
 
 **Keyboard**
 
-* **Direction keys and Numerical keypad**: the content of the window will move in the same direction of the key.
-* **Minus keys**: if it is held down, it will zoom out.
-* **Plus keys**: if it is held down, the zoom will increase.
+- **Direction keys and Numerical keypad**: the content of the window will move in the same direction of the key.
+- **Minus keys**: if it is held down, it will zoom out.
+- **Plus keys**: if it is held down, the zoom will increase.
 
 ## Videos
 
@@ -312,9 +314,9 @@ while True:
 
 **Application Programming Interface**
 
-* `self.getImage('left')` - to get the left image
-* `self.getImage('right')` - to get the right image
-* `self.point.PlotPoint(position, color)` - to plot the point in the 3d tool
+- `self.getImage('left')` - to get the left image
+- `self.getImage('right')` - to get the right image
+- `self.point.PlotPoint(position, color)` - to plot the point in the 3d tool
 
 **Navigating the WebGUI Interface**
 
@@ -326,11 +328,11 @@ while True:
 
 In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:
 
-* **Hardware Based**: Hardware based approach requires us to utilize the hardware specific to the reconstruction task. Use of structured light, laser range finder, depth gauge and radiometric methods are some examples.
+- **Hardware Based**: Hardware based approach requires us to utilize the hardware specific to the reconstruction task. Use of structured light, laser range finder, depth gauge and radiometric methods are some examples.
 
 {% include gallery id="hardware" caption="Hardware based 3D Reconstruction" %}
 
-* **Software Based**: Software based approach relies on the computation abilities of the computer to determine the 3D properties of the object. Shape from shading, texture, stereo vision and homography are some good methods.
+- **Software Based**: Software based approach relies on the computation abilities of the computer to determine the 3D properties of the object. Shape from shading, texture, stereo vision and homography are some good methods.
 
 In this exercise our main goal is to carry out 3d reconstruction using a Software based approach, particularly stereo vision 3d reconstruction.
 
@@ -344,11 +346,11 @@ Suppose a point `X` in 3d space is imaged in two views, at `x` in the first and 
 
 Supposing now that we know only `x`, we may ask how the corresponding point `x'` is constrained. The plane π is determined by the baseline (line connecting the camera centers) and the ray defined by `x`. From above, we know that the ray corresponding to the _unknown_ point `x'` lies in π, hence the point `x'` lies on the line of intersection `l'` of π with second image plane. This line is called the epipolar line corresponding to `x`. This relation helps us to reduce the search space of the point in right image, from a plane to a line. Some important definitions to note are:
 
-* The **epipole** is the point of intersection of the line joining the camera centers (the baseline) with the image plane.
+- The **epipole** is the point of intersection of the line joining the camera centers (the baseline) with the image plane.
 
-* An **epipolar plane** is a plane containing the baseline.
+- An **epipolar plane** is a plane containing the baseline.
 
-* An **epipolar line** is the intersection of the epipolar plane with the image plane.
+- An **epipolar line** is the intersection of the epipolar plane with the image plane.
 
 ### Stereo Reconstruction
 
@@ -418,8 +420,8 @@ Due to varied implementations of users, the user may have to **adjust the scale 
 
 ## Contributors
 
-* Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
-* Maintained by [Jessica Fernández](https://github.com/jessiffmm), [Vanessa Fernández](https://github.com/vmartinezf) and [David Valladares](https://github.com/dvalladaresv).
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Maintained by [Jessica Fernández](https://github.com/jessiffmm), [Vanessa Fernández](https://github.com/vmartinezf) and [David Valladares](https://github.com/dvalladaresv).
 
 ## References
 
