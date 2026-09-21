@@ -30,7 +30,7 @@ youtubeId2: 68GSXnOTUNs
 ---
 ## Goal
 
-The goal of this exercise is to learn how to control a drone to complete a gymkhana course, composed of several waypoints that you'll have to navigate through. 
+The goal of this exercise is to learn how to control a drone to complete a gymkhana course, composed of several waypoints that you'll have to navigate through.
 
 {% include gallery caption="Gymkhana course. 3DR Iris drone it its launch pad" %}
 
@@ -56,17 +56,26 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import WebGUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 * `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
-* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s
+* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.
 * `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
-* `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
+* `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad.
 * `HAL.get_roll()` - Returns the roll angle of the drone, in rad
 * `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
-* `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad. 
-* `HAL.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown. 
+* `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad.
+* `HAL.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.
+* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame).
+* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame.
+* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s).
+* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m).
+* `HAL.land()` - Land at the current location.
+* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image.
+* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image.
+* `WebGUI.showImage(cv2_image)` - Shows an image of the camera in the right panel of the WebGUI.
+* `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the left panel of the WebGUI.
 
 #### C++
 
@@ -106,39 +115,6 @@ void exercise() {
 }
 ```
 
-### Actuators and drone control
-
-The three following drone control functions are *non-blocking*, i.e. each time you send a new command to the aircraft it immediately discards the previous control command. 
-
-#### 1. Position control
-
-* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame)
-
-#### 2. Velocity control
-
-* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame
-
-#### 3. Mixed control
-
-* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s) 
-
-### Drone takeoff and land
-
-Besides using the buttons at the drone teleoperator GUI, taking off and landing can also be controlled from the following commands in your code:
-
-* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m)
-* `HAL.land()` - Land at the current location. 
-
-### Drone cameras
-
-* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image
-* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image
-
-### GUI
-
-* `GUI.showImage(cv2_image)` - Shows a image of the camera  in the GUI
-* `GUI.showLeftImage(cv2_image)` - Shows another image of the camera in the GUI
-
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -149,15 +125,15 @@ The drone namespace is `/drone0`.
 
 - `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`  
+- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`  
+- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
 
-- `/drone0/motion_reference/pose` - Publish to this topic to send position references with orientation. Message type: `geometry_msgs/msg/PoseStamped`  
+- `/drone0/motion_reference/pose` - Publish to this topic to send position references with orientation. Message type: `geometry_msgs/msg/PoseStamped`
 
-- `/drone0/motion_reference/twist` - Publish to this topic to send velocity references. Message type: `geometry_msgs/msg/TwistStamped`  
+- `/drone0/motion_reference/twist` - Publish to this topic to send velocity references. Message type: `geometry_msgs/msg/TwistStamped`
 
-- `/drone0/platform/info` - Subscribe to this topic to receive the platform state information. Message type: `as2_msgs/msg/PlatformInfo`  
+- `/drone0/platform/info` - Subscribe to this topic to receive the platform state information. Message type: `as2_msgs/msg/PlatformInfo`
 
 - `/drone0/platform/state_machine_event` - Service used for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
 
@@ -179,7 +155,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
 
-**Note**  
+**Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### C++
@@ -237,13 +213,13 @@ To give you some initial references, each leg in the squared course is 16 m long
 
 The takeoff pad is located at (x, y) = (0, 0) m. The dimensions of all cubes are 1 x 1 x 1 m.
 
-### Directional control. How should drone yaw be handled? 
+### Directional control. How should drone yaw be handled?
 
 If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
 
-In this exercise, we want you to try programming your drone to travel towards each waypoint similarly to how a fixed-wing aircraft would do, namely **nose forward**.  Then, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
+In this exercise, we want you to try programming your drone to travel towards each waypoint similarly to how a fixed-wing aircraft would do, namely **nose forward**.  Then, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate.
 
-If you know your current position and your target one, you can easily compute the direction (yaw angle) the drone must be turned to by applying some elementary geometry. Probably both `math.sqrt()` and `math.atan2()` Python functions will be very useful for you here. 
+If you know your current position and your target one, you can easily compute the direction (yaw angle) the drone must be turned to by applying some elementary geometry. Probably both `math.sqrt()` and `math.atan2()` Python functions will be very useful for you here.
 
 ### Do I need to know when the drone is in the air?
 

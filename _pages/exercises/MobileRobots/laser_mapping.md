@@ -87,7 +87,7 @@ The robot provides two sources of position information:
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -101,8 +101,8 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise). The noise level depends on the selected world.
 - `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise). The noise level depends on the selected world.
 - `HAL.getOdom().yaw` - to get the approximated orientation of the robot (with noise). The noise level depends on the selected world.
-- `HAL.setW()` - to set the angular velocity.
-- `HAL.setV()` - to set the linear velocity.
+- `HAL.setW(velocity)` - to set the angular velocity.
+- `HAL.setV(velocity)` - to set the linear velocity.
 - `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
 - `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
 - `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
@@ -151,7 +151,7 @@ void exercise() {
 }
 ```
 
-### C++ API examples
+##### C++ API Examples
 
 1. Example to get the robot pose:
 
