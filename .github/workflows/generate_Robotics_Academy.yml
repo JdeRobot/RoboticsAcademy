@@ -112,12 +112,6 @@ jobs:
                     --build-arg ACADEMY_OWNER=JdeRobot \
                     --build-arg INFRA_OWNER=JdeRobot \
                     -t jderobot/robotics-academy:${TAG} .
-            - name: Build and push
-              uses: docker/build-push-action@v3
-              with:
-                  push: true
-                  tags: unibotics/robotics-academy:${TAG}
-                  context: .
             - name: Upload as Latest
               if: ${{ inputs.latest }}
               run: |
