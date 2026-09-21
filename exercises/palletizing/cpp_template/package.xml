@@ -3,7 +3,7 @@
 <package format="3">
   <name>academy</name>
   <version>0.0.0</version>
-  <description>Pick and Place C++ exercise</description>
+  <description>Palletizing C++ exercise</description>
   <maintainer email="j.izquierdoh.2021@alumnos.urjc.es">javier</maintainer>
   <license>TODO: License declaration</license>
 
