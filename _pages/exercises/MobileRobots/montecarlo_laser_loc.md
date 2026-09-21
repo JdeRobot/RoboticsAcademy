@@ -70,8 +70,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that receive information from the webcam.
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-- `HAL.setW()` - to set the angular velocity.
-- `HAL.setV()` - to set the linear velocity.
+- `HAL.setW(velocity)` - to set the angular velocity.
+- `HAL.setV(velocity)` - to set the linear velocity.
 
 - `HAL.getPose3d().x` - to get the X coordinate of the robot.
 - `HAL.getPose3d().y` - to get the Y coordinate of the robot.

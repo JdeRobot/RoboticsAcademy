@@ -52,8 +52,9 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 - `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed. **DISABLED**: use laser data in the center (90) to get the same result.
 - `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left. **DISABLED**: use laser data in the center (90) to get the same result.
-- `HAL.setV()` - to set the linear speed.
-- `HAL.setW()` - to set the angular velocity.
+- `HAL.getPose3d().x`, `HAL.getPose3d().y`, `HAL.getPose3d().yaw` - to get the current ground-truth position and orientation of the robot.
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
 - `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 
 Here is an example of how to parse the laser data:
@@ -103,7 +104,7 @@ if len(laser_data.values) > 0:
 
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-- `HAL::get_laser_data();` - It allows to obtain the data of the laser sensor (LaserData), which consists of 180 pairs of values ​​(0-180º, distance in meters).
+- `HAL::get_laser_data();` - Returns a `const LaserData*` pointer to the laser sensor data, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 - `HAL::set_v(velocity);` - to set the linear speed.
 - `HAL::set_w(velocity);` - to set the angular velocity.
 - `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left. **DISABLED**: use laser data in the center (90) to get the same result.

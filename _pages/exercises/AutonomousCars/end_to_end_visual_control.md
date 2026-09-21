@@ -307,7 +307,7 @@ For image debugging:
 
 - `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
   Message type: `sensor_msgs/msg/Image`  
-  QoS: `TRANSIENT_LOCAL`, depth `10`
+  QoS: default profile (`RELIABLE`, `VOLATILE`), depth `10`
 
 #### Python
 
@@ -324,7 +324,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
-#### Model loading from local file
+##### Model Loading from Local File
 
 ```python
 

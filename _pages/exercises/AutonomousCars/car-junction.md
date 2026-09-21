@@ -132,13 +132,13 @@ void exercise() {
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-- `/prius_autoparking/image_raw` - Subscribe to this topic to receive the camera image.  
+- `/autonomous_car/camera/image_raw` - Subscribe to this topic to receive the camera image.  
   Message type: `sensor_msgs/msg/Image`
 
-- `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
+- `/autonomous_car/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
   Message type: `geometry_msgs/msg/Twist`
 
-- `/odom` - Subscribe to this topic to receive the car odometry.  
+- `/autonomous_car/odom` - Subscribe to this topic to receive the car odometry.  
   Message type: `nav_msgs/msg/Odometry`
 
 For image debugging:

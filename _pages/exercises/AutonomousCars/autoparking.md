@@ -80,8 +80,9 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
 - `HAL.getBackLaserData()` - to obtain the back laser sensor data.
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
-- `HAL.setV()` - to set the linear speed.
-- `HAL.setW()` - to set the angular velocity.
+- `HAL.getLidarData()` - to obtain the 3D LiDAR point cloud data.
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
 
 #### C++
 
@@ -91,7 +92,7 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `HAL::get_front_laser_data();` - Returns the front laser sensor data as a `HAL::LaserData` struct (values in m, 0-180º).
 - `HAL::get_right_laser_data();` - Returns the right laser sensor data as a `HAL::LaserData` struct (values in m, 0-180º).
 - `HAL::get_back_laser_data();` - Returns the back laser sensor data as a `HAL::LaserData` struct (values in m, 0-180º).
-- `HAL::get_lidar_data();` - Returns the 3D LiDAR point cloud data.
+- `HAL::get_lidar_data();` - Returns the 3D LiDAR point cloud data as a `HAL::LidarData` struct with fields `points` (`std::vector<std::array<float, 3>>`), `intensities` (`std::vector<float>`), `min_range`, `max_range`, `field_of_view` (`std::pair<double, double>`), `is_dense` (`bool`) and `timeStamp`.
 - `HAL::set_v(velocity);` - to set the linear speed.
 - `HAL::set_w(velocity);` - to set the angular velocity.
 
