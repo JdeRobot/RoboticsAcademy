@@ -70,7 +70,7 @@ on:
 jobs:
     push_to_registry:
         name: Run Test and Update Docker Image
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         env:
             TAG: ${{ github.event.inputs.tag }}
         steps:
@@ -99,7 +99,7 @@ jobs:
               with:
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
-            - name: Build and push RADI
+            - name: Build RADI
               run: |
                   cd scripts/RADI
                   docker build --build-arg TARGETARCH=amd64 -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
@@ -112,6 +112,9 @@ jobs:
                     --build-arg ACADEMY_OWNER=JdeRobot \
                     --build-arg INFRA_OWNER=JdeRobot \
                     -t jderobot/robotics-academy:${TAG} .
+            - name: Push RADI
+              run: |
+                  docker push jderobot/robotics-academy:${TAG}
             - name: Upload as Latest
               if: ${{ inputs.latest }}
               run: |
