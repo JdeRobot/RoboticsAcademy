@@ -3,7 +3,7 @@
 <package format="3">
   <name>academy</name>
   <version>0.0.0</version>
-  <description>Palletizing C++ exercise</description>
+  <description>Drone Cat Mouse C++ exercise</description>
   <maintainer email="j.izquierdoh.2021@alumnos.urjc.es">javier</maintainer>
   <license>TODO: License declaration</license>
 
@@ -11,14 +11,20 @@
 
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
+  <depend>as2_core</depend>
+  <depend>as2_msgs</depend>
+  <depend>as2_motion_reference_handlers</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2</depend>
+  <depend>cv_bridge</depend>
+  <depend>geometry_msgs</depend>
+  <depend>libopencv-dev</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
-  <depend>geometry_msgs</depend>
-  <depend>trajectory_msgs</depend>
-  <depend>control_msgs</depend>
-  <depend>builtin_interfaces</depend>
-  <depend>moveit_msgs</depend>
-  <depend>linkattacher_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
   <depend>nlohmann-json-dev</depend>
   <depend>common_interfaces_cpp</depend>
   <test_depend>ament_lint_auto</test_depend>
