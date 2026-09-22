@@ -51,7 +51,6 @@
 | 2d visual odometry       |                  |             |               |          | -     |         -          | broken |
 | Follow face              |                  |             |               |          | -     |         -          | broken |
 | Laser loc                |                  |             |               |          | -     |         -          | broken |
-| Mobile Manipulation      |                  |             |               |          | -     |         -          | broken |
 | Follow line Turtlebot    |                  |             |               |          | -     |         -          | broken |
 | Opticalflow teleop       |                  |             |               |          | -     |         -          | broken |
 
