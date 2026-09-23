@@ -23,26 +23,18 @@ from hal_interfaces.general.sim_time import SimTimeNode
 from hal_interfaces.general.camera import CameraNode
 from hal_interfaces.general.depth_camera import DepthCameraNode
 
-# RBT client of ros2srrc_execution, same import as pick_place
+# RBT client of ros2srrc_execution as in pick_place
 sys.path.append(
     os.path.join(get_package_share_directory("ros2srrc_execution"), "python", "robot")
 )
 from robot import RBT  # noqa: E402
 from ros2srrc_data.msg import Robpose  # noqa: E402
 
-# Hardware Abstraction Layer for XLeRobot in the house exercise
-#
-# Arm control levels
-#   moveLeftArm and moveRightArm plan a Cartesian goal with MoveIt2
-#   Targets are relative to base_footprint so they stay valid while the robot moves
-#   setLeftArmJoints and setRightArmJoints send raw joint angles with no planning
-#   setLeftGripper and setRightGripper open and close the gripper
-#
-# Finding an object
-#   getImage, then pixelToCameraPoint with the depth channel, then cameraToBase
-#   cameraToBase uses a live TF lookup because the head pan and tilt change the camera pose
-#
-# readyPose and the tray poses are joint space poses
+# HAL for XLeRobot in the house exercise
+# Cartesian arm goals are planned with MoveIt2 and are relative to base_footprint
+# so they stay valid while the robot drives
+# The joint functions move the arms directly without planning
+# Objects are located with getImage then pixelToCameraPoint then cameraToBase
 
 LEFT_ARM_JOINTS = ["Rotation_L", "Pitch_L", "Elbow_L", "Wrist_Pitch_L", "Wrist_Roll_L"]
 RIGHT_ARM_JOINTS = ["Rotation_R", "Pitch_R", "Elbow_R", "Wrist_Pitch_R", "Wrist_Roll_R"]
@@ -50,19 +42,19 @@ RIGHT_ARM_JOINTS = ["Rotation_R", "Pitch_R", "Elbow_R", "Wrist_Pitch_R", "Wrist_
 # Jaw joint limits are the mechanical stops
 GRIPPER_OPEN = 1.7453292
 GRIPPER_CLOSED = -0.374533
-# Closing fully would push the cube out, so the jaw stops on the cube
+# Jaw angle that holds the cube without pushing it out
 GRASP_JAW = 0.55
-# Opening used during the approach
+# Jaw angle used while approaching
 GRASP_OPEN = 1.0
 
 # Fully extended zero pose
 ARM_HOME_JOINTS = [0.0, 0.0, 0.0, 0.0, 0.0]
 
-# Joint poses that put the TCP over each arm spot in the tray, fingers pointing down
+# Joint poses that place each gripper over its tray spot pointing down
 LEFT_TRAY_JOINTS = [-1.9181, 1.1113, 2.0946, 0.7083, -1.5708]
 RIGHT_TRAY_JOINTS = [2.116, 1.1136, 2.099, 0.7062, -1.5708]
 
-# Ready stance, both arms forward with the gripper down
+# Both arms forward with the grippers pointing down
 READY_LEFT_JOINTS = [-1.600, 1.527, 2.123, 0.063, 1.664]
 READY_RIGHT_JOINTS = [1.630, 1.525, 2.110, 0.074, 1.459]
 
@@ -79,19 +71,19 @@ print("HAL (XLeRobot Home) initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
-### HAL INIT: base ###
+### HAL INIT ###
 motor_node = MotorsNode("/logistic_robot/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/logistic_robot/odom")
 sim_time_node = SimTimeNode()
 
-### HAL INIT: cameras ###
+# Cameras
 head_camera_node = CameraNode("/logistic_robot/head_camera/image")
 left_arm_camera_node = CameraNode("/logistic_robot/left_arm_camera/image_raw")
 right_arm_camera_node = CameraNode("/logistic_robot/right_arm_camera/image_raw")
 
 
 class JointStateNode(Node):
-    """Latest position and velocity of every joint, by name."""
+    """Latest position and velocity of every joint by name."""
 
     def __init__(self, topic):
         super().__init__("hal_joint_state_node")
@@ -112,14 +104,14 @@ head_depth_node = DepthCameraNode(
     "/logistic_robot/head_camera/depth_image", "/logistic_robot/head_camera/camera_info"
 )
 
-### HAL INIT: grippers, joint level arm control, grasping ###
+# Grippers and joint level arm control
 arm_node = Node("hal_arm_node")
 
 # Read by the gz_link_attacher plugins of the world
 grasp_pub = arm_node.create_publisher(Bool, "/gripper_auto_attach", 10)
 graspable_pub = arm_node.create_publisher(String, "/graspable_objects", 10)
 
-# Own node for the TF buffer, sharing arm_node left it with stale transforms
+# The TF buffer has its own node because sharing arm_node left it with stale transforms
 tf_node = Node("hal_tf_node")
 tf_buffer = Buffer()
 tf_listener = TransformListener(tf_buffer, tf_node)
@@ -160,10 +152,9 @@ def __send_trajectory(client, joint_names, positions, duration):
     client.send_goal_async(goal_msg)
 
 
-### HAL INIT: arm poses, one subscriber per side ###
+# Gripper pose of each arm
 class ArmPose:
-    """Gripper pose, position in meters, orientation as both quaternion and
-    roll/pitch/yaw in radians, same shape as odometry's Pose3d."""
+    """Gripper pose in meters and radians shaped like the odometry Pose3d."""
 
     def __init__(self, msg):
         self.x = msg.x
@@ -234,7 +225,7 @@ def __publish_graspable_objects():
 arm_node.create_timer(1.0, __publish_graspable_objects)
 
 
-### HAL INIT: Robmove clients, one per arm ###
+# One Robmove client per arm
 print("[HAL] connecting to left arm Robmove action...", flush=True)
 LEFT_ARM = RBT(
     suffix="_left",
@@ -250,7 +241,7 @@ RIGHT_ARM = RBT(
 
 
 def __quaternion_from_rpy(roll, pitch, yaw):
-    """roll, pitch, yaw in radians, returns (qx, qy, qz, qw)."""
+    """Quaternion from roll pitch and yaw in radians."""
     cr, sr = math.cos(roll / 2), math.sin(roll / 2)
     cp, sp = math.cos(pitch / 2), math.sin(pitch / 2)
     cy, sy = math.cos(yaw / 2), math.sin(yaw / 2)
@@ -291,13 +282,12 @@ def __move_cartesian(arm, x, y, z, roll, pitch, yaw, speed, motion, side):
 
 
 def getPose3d():
-    """Base pose (x, y, z, yaw...), from odometry."""
+    """Base pose from odometry."""
     return odometry_node.getPose3d()
 
 
 def getJointPositions():
-    """{joint name: position in rad} for every arm, gripper, head and wheel
-    joint, as last reported on /joint_states."""
+    """Last reported position in radians of every joint by name."""
     return dict(joint_state_node.positions)
 
 
@@ -311,7 +301,7 @@ def __sim_now():
 
 
 def sleepSim(seconds):
-    """Wait `seconds` of simulation time, the sim runs well below real time."""
+    """Wait in simulation time because the simulation runs slower than real time."""
     start = __sim_now()
     deadline = time.time() + seconds * 20 + 5
     while __sim_now() - start < seconds and time.time() < deadline:
@@ -319,7 +309,7 @@ def sleepSim(seconds):
 
 
 def getImage():
-    """Head camera image, BGR numpy array."""
+    """Head camera image in BGR."""
     image = head_camera_node.getImage()
     while image is None:
         image = head_camera_node.getImage()
@@ -327,7 +317,7 @@ def getImage():
 
 
 def getLeftArmImage():
-    """Left wrist camera image, BGR numpy array."""
+    """Left wrist camera image in BGR."""
     image = left_arm_camera_node.getImage()
     while image is None:
         image = left_arm_camera_node.getImage()
@@ -335,26 +325,25 @@ def getLeftArmImage():
 
 
 def getRightArmImage():
-    """Right wrist camera image, BGR numpy array."""
+    """Right wrist camera image in BGR."""
     image = right_arm_camera_node.getImage()
     while image is None:
         image = right_arm_camera_node.getImage()
     return image.data
 
 
-# Cameras cannot be disabled in Gazebo, so off means a very low render rate
+# Gazebo cameras cannot be disabled so off means a very low render rate
 CAMERA_SET_RATE_SERVICES = {
     "head": "/logistic_robot/head_camera/set_rate",
     "left_arm": "/logistic_robot/left_arm_camera/image_raw/set_rate",
     "right_arm": "/logistic_robot/right_arm_camera/image_raw/set_rate",
 }
-CAMERA_ON_HZ = 15.0  # matches update_rate in xlerobot_gz.urdf.xacro
+CAMERA_ON_HZ = 15.0  # same as update_rate in xlerobot_gz.urdf.xacro
 CAMERA_IDLE_HZ = 0.2
 
 
 def setCameraRate(camera, hz):
-    """Set a camera's render rate in Hz. camera is "head", "left_arm" or
-    "right_arm". Returns True if Gazebo accepted it."""
+    """Set the render rate in Hz of one camera and return True if Gazebo accepted it."""
     service = CAMERA_SET_RATE_SERVICES[camera]
     try:
         # gz service returns 0 even when the service does not exist
@@ -376,26 +365,24 @@ def setCameraRate(camera, hz):
 
 
 def cameraOff(*cameras):
-    """Slow the given cameras, all three when none are named."""
+    """Slow down the given cameras or all of them when none is given."""
     return all(setCameraRate(c, CAMERA_IDLE_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES))
 
 
 def cameraOn(*cameras):
-    """Restore the render rate, the first fresh frame can take a few seconds."""
+    """Restore the render rate. The first new frame can take a few seconds."""
     return all(setCameraRate(c, CAMERA_ON_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES))
 
 
 def getDepthImage():
-    """Head camera depth, float32 meters, same pixel grid as getImage()."""
+    """Head camera depth in meters on the same pixel grid as getImage."""
     while head_depth_node.depth is None:
         pass
     return head_depth_node.depth
 
 
 def pixelToCameraPoint(u, v):
-    """Back-project a pixel to a 3D point (x, y, z) in the head camera optical frame.
-    Returns None if the pixel has no valid depth.
-    """
+    """3D point in the head camera optical frame for a pixel or None without valid depth."""
     depth = head_depth_node.depth
     k = head_depth_node.k
     if depth is None or k is None:
@@ -420,9 +407,7 @@ def __quat_to_matrix(qx, qy, qz, qw):
 
 
 def cameraToBase(x, y, z):
-    """Transform a point from the head camera optical frame to base_footprint.
-    Returns None if TF or the depth frame is not available yet.
-    """
+    """Point in base_footprint from the head camera optical frame or None if TF is not ready."""
     if head_depth_node.depth is None:
         return None
     try:
@@ -458,57 +443,54 @@ def setW(velocity):
 
 
 def moveLeftArm(x, y, z, roll=0.0, pitch=0.0, yaw=0.0, speed=0.3, motion="PTP"):
-    """Move the left gripper to a Cartesian pose relative to base_footprint.
-
-    motion is "PTP" for a coarse reposition or "LIN" for a straight line.
+    """Move the left gripper to a pose relative to base_footprint.
+    motion is PTP for a free move or LIN for a straight line.
     Blocks until the move ends and returns True on success.
     """
     return __move_cartesian(LEFT_ARM, x, y, z, roll, pitch, yaw, speed, motion, "left")
 
 
 def moveRightArm(x, y, z, roll=0.0, pitch=0.0, yaw=0.0, speed=0.3, motion="PTP"):
-    """Move the right gripper to a Cartesian pose, same convention as moveLeftArm."""
+    """Move the right gripper like moveLeftArm."""
     return __move_cartesian(
         RIGHT_ARM, x, y, z, roll, pitch, yaw, speed, motion, "right"
     )
 
 
 def getLeftArmPose():
-    """Current left gripper pose, or None if no Robpose message has arrived yet."""
+    """Current left gripper pose or None until the first Robpose message."""
     return left_pose_node.pose
 
 
 def getRightArmPose():
-    """Current right gripper pose, or None if no Robpose message has arrived yet."""
+    """Current right gripper pose or None until the first Robpose message."""
     return right_pose_node.pose
 
 
 def setLeftArmJoints(positions, duration=2.0):
-    """Raw joint move, no planning, no collision checking.
-
-    positions is 5 joint values in radians, in this order
-    Rotation_L, Pitch_L, Elbow_L, Wrist_Pitch_L, Wrist_Roll_L
+    """Move the left arm joints directly without planning or collision checks.
+    positions follows the order of LEFT_ARM_JOINTS in radians.
     """
     __send_trajectory(left_arm_joint_client, LEFT_ARM_JOINTS, positions, duration)
 
 
 def setRightArmJoints(positions, duration=2.0):
-    """Raw joint move, same joint order as setLeftArmJoints."""
+    """Move the right arm joints directly in the order of RIGHT_ARM_JOINTS."""
     __send_trajectory(right_arm_joint_client, RIGHT_ARM_JOINTS, positions, duration)
 
 
 def setHeadJoints(pan, tilt, duration=1.0):
-    """Raw head move, both joints together. Tilt goes from -0.76 up to 1.45 down."""
+    """Move the head joints directly. Tilt goes from 0.76 up to 1.45 down."""
     __send_trajectory(head_joint_client, ["head_pan_joint", "head_tilt_joint"], [pan, tilt], duration)
 
 
 def homeLeftArm(duration=2.0):
-    """Send the left arm to its safe, fully extended zero pose."""
+    """Send the left arm to its fully extended zero pose."""
     setLeftArmJoints(ARM_HOME_JOINTS, duration)
 
 
 def homeRightArm(duration=2.0):
-    """Send the right arm to its safe, fully extended zero pose."""
+    """Send the right arm to its fully extended zero pose."""
     setRightArmJoints(ARM_HOME_JOINTS, duration)
 
 
@@ -529,10 +511,9 @@ def readyPose(duration=2.0):
 
 
 def setLeftGripper(closed, duration=1.0, target=None):
-    """Left gripper, True closes and arms auto attach, False opens and releases.
+    """True closes the left gripper and arms auto attach and False opens it.
     target overrides the jaw angle.
-
-    The auto attach switch is shared by both grippers, so grasp one arm at a time.
+    Both grippers share the auto attach switch so grasp with one arm at a time.
     """
     grasp_pub.publish(Bool(data=bool(closed)))
     if target is None:
@@ -541,14 +522,14 @@ def setLeftGripper(closed, duration=1.0, target=None):
 
 
 def setRightGripper(closed, duration=1.0, target=None):
-    """Right gripper, same as setLeftGripper."""
+    """Right gripper like setLeftGripper."""
     grasp_pub.publish(Bool(data=bool(closed)))
     if target is None:
         target = GRIPPER_CLOSED if closed else GRIPPER_OPEN
     __send_trajectory(right_gripper_client, ["Jaw_R"], [target], duration)
 
 
-# Tray drop and pick, the cube stays at a fixed spot so a later close meets it again
+# The cube stays at a fixed tray spot so a later pick finds it again
 def dropInLeftTray(speed=0.3):
     """Stow the held cube in the left arm's tray spot."""
     return __tray_visit("left", moveLeftArm, setLeftGripper, setLeftArmJoints, True, speed)
@@ -560,22 +541,21 @@ def dropInRightTray(speed=0.3):
 
 
 def pickFromLeftTray(speed=0.3):
-    """Take a cube from the left arm's tray spot (put there by dropInLeftTray)."""
+    """Take the cube left by dropInLeftTray."""
     return __tray_visit("left", moveLeftArm, setLeftGripper, setLeftArmJoints, False, speed)
 
 
 def pickFromRightTray(speed=0.3):
-    """Take a cube from the right arm's tray spot."""
+    """Take the cube left by dropInRightTray."""
     return __tray_visit("right", moveRightArm, setRightGripper, setRightArmJoints, False, speed)
 
 
-# Grasp geometry
 # The arms have 5 joints so MoveIt only accepts exactly reachable poses
-# The orientation is solved numerically and the forward kinematics pose is sent to Robmove
+# The grasp orientation is solved numerically and its forward kinematics pose is sent to Robmove
 GRASP_PITCH = 0.4
 GRASP_APPROACH_DISTANCE = 0.10
 
-# Arm kinematic chain from the xacro, per joint origin xyz, origin rpy and axis
+# Arm kinematic chain from the xacro with origin xyz and rpy and axis of each joint
 _ARM_CHAIN = [
     ((0, -0.0452, 0.0165), (1.5708, 0, 0), (0, -1, 0)),
     ((0, 0.1025, 0.0306), (1.5708, 0, 0), (-1, 0, 0)),
@@ -586,7 +566,7 @@ _ARM_CHAIN = [
 _TCP_OFFSET = (-0.0171, -0.0800, 0.0)
 _ARM_LOWER = np.array([-2.16, -0.22, -0.22, -1.6580628, -2.7438473])
 _ARM_UPPER = np.array([2.16, 3.37, 3.14, 1.6580627, 2.8412063])
-# Arm mounts in base_footprint, position and yaw
+# Arm mount position and yaw in base_footprint
 _ARM_MOUNT = {
     "left": (np.array([-0.09, -0.11, 0.765]), 0.0),
     "right": (np.array([-0.09, 0.11, 0.765]), math.pi),
@@ -623,7 +603,7 @@ def __rpy_matrix(roll, pitch, yaw):
 
 
 def __arm_fk(arm, joints):
-    """TCP position and rotation matrix in base_footprint for 5 joint angles."""
+    """TCP position and rotation in base_footprint for the given joint angles."""
     base, mount_yaw = _ARM_MOUNT[arm]
     R = np.eye(3)
     p = np.zeros(3)
@@ -636,8 +616,7 @@ def __arm_fk(arm, joints):
 
 
 def __solve_grasp_orientation(arm, target, pitch=None, roll_sign=None):
-    """Rotation matrix and fingertip direction for a grasp at `target`, or
-    None if the arm cannot get there."""
+    """Rotation and finger direction for a grasp at target or None if unreachable."""
     from scipy.optimize import least_squares
 
     target = np.array(target, dtype=float)
@@ -645,7 +624,7 @@ def __solve_grasp_orientation(arm, target, pitch=None, roll_sign=None):
 
     def residual(q):
         p, R = __arm_fk(arm, q)
-        f = -R[:, 1]  # fingers point along the TCP -y axis
+        f = -R[:, 1]  # fingers point along negative TCP y
         horizontal = np.array([f[0], f[1], 0.0])
         horizontal /= np.linalg.norm(horizontal)
         sideways = np.array([-horizontal[1], horizontal[0], 0.0])
@@ -653,7 +632,7 @@ def __solve_grasp_orientation(arm, target, pitch=None, roll_sign=None):
             [(p - target) * 10.0, [math.asin(-f[2]) - pitch, R[:, 2] @ sideways]]
         )
 
-    # Two exact solutions exist with wrist roll of plus or minus pi/2, roll_sign picks one
+    # roll_sign picks one of the two exact solutions that differ in wrist roll
     solutions = []
     for seed in _ARM_SEEDS[arm]:
         r = least_squares(
@@ -673,7 +652,7 @@ def __solve_grasp_orientation(arm, target, pitch=None, roll_sign=None):
 
 
 def __solve_pose(arm, position, R, seed):
-    """Joint angles reaching `position` with rotation R exactly, or None."""
+    """Joint angles that reach position with rotation R exactly or None."""
     from scipy.optimize import least_squares
 
     def residual(q):
@@ -707,7 +686,7 @@ def __grasp(move, set_gripper, arm, x, y, z, speed):
     set_gripper(True, 1.0, GRASP_JAW)
     sleepSim(1.0)
 
-    # Retreat with fallbacks because a LIN move failed once for one arm
+    # The retreat falls back to other motions because a LIN retreat can fail
     for motion in ("LIN", "LIN", "PTP"):
         if move(pre[0], pre[1], pre[2], roll, pitch, yaw, speed, motion):
             return True
@@ -726,7 +705,7 @@ def __rpy_from_matrix(R):
     return math.atan2(R[2, 1], R[2, 2]), pitch, math.atan2(R[1, 0], R[0, 0])
 
 
-# Tray drop and pick, the hand goes via a carry pose and a waypoint above the spot
+# The hand reaches the tray through a carry pose and a waypoint above the spot
 # so the cube clears the front rim of the tray
 # TRAY_PITCH keeps the fingers nearly straight down
 # TRAY_APPROACH_Z is the highest waypoint the wrist can reach
@@ -740,7 +719,7 @@ TRAY_CARRY_JOINTS = {
 
 
 def __tray_visit(arm, move, set_gripper, set_joints, release, speed):
-    """Carry, hover over the tray spot, lower, release or close, and come back up."""
+    """Go over the tray spot and lower the hand to release or take the cube."""
     x, y, z = TRAY_DROP_XYZ[arm]
     solved = __solve_grasp_orientation(arm, (x, y, z), TRAY_PITCH, roll_sign=-1.0)
     if solved is None:
@@ -777,12 +756,12 @@ def __tray_visit(arm, move, set_gripper, set_joints, release, speed):
 
 
 def graspLeft(x, y, z, speed=0.3):
-    """Pick up what is at (x, y, z) in base_footprint with the left arm.
+    """Grasp with the left arm at a point in base_footprint.
     Returns True only if every step succeeded.
     """
     return __grasp(moveLeftArm, setLeftGripper, "left", x, y, z, speed)
 
 
 def graspRight(x, y, z, speed=0.3):
-    """Same as graspLeft, right arm."""
+    """Grasp with the right arm like graspLeft."""
     return __grasp(moveRightArm, setRightGripper, "right", x, y, z, speed)

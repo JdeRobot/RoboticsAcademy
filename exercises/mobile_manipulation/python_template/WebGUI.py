@@ -14,14 +14,14 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.camera import CameraNode
 
-# showImage feeds the color panel and showDepthImage feeds the grayscale depth panel
+# showImage feeds the color panel and showDepthImage the depth panel
 # The /webgui_image fallback only feeds the color panel
 
 MAX_DEPTH_METERS = 4.0
 
 
 class WebGUIImagePublisher(Node):
-    """Internal publisher, lets a separate-process solution reach this GUI too."""
+    """Lets a solution running in another process reach this GUI."""
 
     def __init__(self):
         super().__init__("webgui_image_publisher_internal")
@@ -61,7 +61,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.start()
 
     def _setup_auto_mode(self):
-        """If a separate process is already publishing /webgui_image, follow it."""
+        """Follow /webgui_image when another process already publishes it."""
         try:
             temp_node = rclpy.create_node("topic_checker_temp")
             topic_names_and_types = temp_node.get_topic_names_and_types()
@@ -84,7 +84,7 @@ class WebGUI(MeasuringThreadingGUI):
                     if image is not None:
                         self.setRightImage(image.data)
 
-                threading.Event().wait(0.033)  # ~30 FPS
+                threading.Event().wait(0.033)  # about 30 FPS
             except Exception:
                 threading.Event().wait(1.0)
 
@@ -124,17 +124,14 @@ start_console()
 
 
 def showImage(image):
-    """Display a BGR numpy image in the right-hand panel, call this from
-    the solution with HAL.getImage()."""
+    """Show a BGR image in the right panel."""
     gui.setRightImage(image)
 
 
 def showDepthImage(depth):
-    """Display a raw HAL.getDepthImage() array (float32 meters, may contain
-    inf/nan for out-of-range pixels) in the left-hand panel as a viewable
-    grayscale image: closer is brighter, invalid/out-of-range is black.
-    Values beyond MAX_DEPTH_METERS are clipped, not stretched to it, so a
-    stray far reading does not wash out the whole scale.
+    """Show a HAL.getDepthImage array in the left panel as grayscale.
+    Closer is brighter and invalid pixels are black.
+    Depth is clipped at MAX_DEPTH_METERS so a far reading does not wash out the scale.
     """
     finite = np.where(np.isfinite(depth), depth, MAX_DEPTH_METERS)
     clipped = np.clip(finite, 0.0, MAX_DEPTH_METERS)
