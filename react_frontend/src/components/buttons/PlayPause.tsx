@@ -18,18 +18,34 @@ import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 import { getFileList, getHelperFileList } from "Api";
 
+// extraer cookies
+const getCookie = (name: string) => {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+};
+
+
+
 const PlayPauseButton = ({
   project,
   supportedLanguages,
   userRef,
   entrypointRef,
-  additionalEntrypoints,
 }: {
   project: string;
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
-  additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -95,21 +111,33 @@ const PlayPauseButton = ({
     return undefined;
   };
 
-  const compareZips = async (zip1: JSZip, zip2: JSZip) => {
-    const keys1 = Object.keys(zip1.files);
-    const keys2 = Object.keys(zip2.files);
-    if (keys1.length !== keys2.length) return false;
+// funcion asincrona para enviar la sonda
+const sendExecutionProbe = (eventType: string) => {
+  const csrfToken = getCookie("csrftoken") || ""; // Extraemos el token
 
-    for (const key of keys1) {
+  fetch("/academy/register_execution_probe/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken, // <-- Añadimos el token a la cabecera
+    },
+    body: JSON.stringify({
+      project_id: project,
+      event: eventType,
+    }),
+  }).catch((err) => console.error("Sonda de métricas silenciada:", err));
+};
+
+
+  const compareZips = async (zip1: JSZip, zip2: JSZip) => {
+    for (const key in zip1.files) {
+      if (!Object.hasOwn(zip1.files, key)) continue;
       if (!Object.hasOwn(zip2.files, key)) {
         return false;
       }
 
-      if (zip1.files[key].dir && zip2.files[key].dir) continue;
-      if (zip1.files[key].dir !== zip2.files[key].dir) return false;
-
-      const value = await zip1.files[key].async("base64");
-      const old = await zip2.files[key].async("base64");
+      const value = await zip1.files[key]._data;
+      const old = await zip2.files[key]._data;
       if (value !== old) {
         return false;
       }
@@ -145,10 +173,15 @@ const PlayPauseButton = ({
       return;
     }
 
+    // 1. EVENTO DE PAUSA
     if (state === states.RUNNING) {
       try {
         await manager.pause();
         console.log("App paused correctly!");
+        
+        // [NUEVO] Sonda de parada
+        sendExecutionProbe("stop_execution");
+        
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
@@ -195,12 +228,17 @@ const PlayPauseButton = ({
       userRef.current,
     );
 
+    // 2. EVENTO DE REANUDAR (RESUME)
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
         try {
           await manager.resume();
           console.log("App resumed correctly!");
+          
+          // [NUEVO] Sonda de reanudación
+          sendExecutionProbe("start_execution");
+          
         } catch (e: unknown) {
           console.error("Error resuming app: " + (e as Error).message);
           error(
@@ -244,27 +282,25 @@ const PlayPauseButton = ({
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         if (base64data && runningEntrypointRef.current) {
-          const entrypoints = [
-            `/workspace/code/${runningEntrypointRef.current.path}`,
-          ];
-          additionalEntrypoints.forEach((entrypoint) => {
-            entrypoints.push(entrypoint);
-          });
-
-          const lint_files = additionalEntrypoints;
           try {
             await manager.run(
-              entrypoints,
-              [runningEntrypointRef.current.path].concat(lint_files),
+              `/workspace/code/${runningEntrypointRef.current.path}`,
+              [runningEntrypointRef.current.path],
               base64data as string,
             );
+            
+            console.log("Dockerized app started successfully");
+            
+            // 3. EVENTO DE INICIO NUEVO (RUN)
+            // [NUEVO] Sonda de inicio
+            sendExecutionProbe("start_execution");
+            
           } catch {
             error(
               "Failed to run the application. See the traces in the terminal.",
             );
             setLoading(false);
           }
-          console.log("Dockerized app started successfully");
         }
       };
 
@@ -286,9 +322,9 @@ const PlayPauseButton = ({
 
       await zipCodeFiles(zip, files, project, user);
 
-      zip.files[entrypoint.path]
-        .async("string")
-        .then((value: string) => (runningContentRef.current = value));
+      zip.files[entrypoint.path]._data.then(
+        (value: string) => (runningContentRef.current = value),
+      );
       return zip;
     }
   };
