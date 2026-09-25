@@ -15,7 +15,12 @@ from sensor_msgs.msg import JointState
 from ament_index_python.packages import get_package_share_directory
 
 from hal_interfaces.general.motors import MotorsNode
-from hal_interfaces.general.odometry import OdometryNode, quat2Yaw, quat2Pitch, quat2Roll
+from hal_interfaces.general.odometry import (
+    OdometryNode,
+    quat2Yaw,
+    quat2Pitch,
+    quat2Roll,
+)
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.sim_time import SimTimeNode
 

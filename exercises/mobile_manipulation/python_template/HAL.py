@@ -18,7 +18,12 @@ from sensor_msgs.msg import JointState
 from ament_index_python.packages import get_package_share_directory
 
 from hal_interfaces.general.motors import MotorsNode
-from hal_interfaces.general.odometry import OdometryNode, quat2Yaw, quat2Pitch, quat2Roll
+from hal_interfaces.general.odometry import (
+    OdometryNode,
+    quat2Yaw,
+    quat2Pitch,
+    quat2Roll,
+)
 from hal_interfaces.general.sim_time import SimTimeNode
 from hal_interfaces.general.camera import CameraNode
 from hal_interfaces.general.depth_camera import DepthCameraNode
@@ -185,7 +190,9 @@ class ArmPoseNode(Node):
         self.pose = ArmPose(msg)
 
 
-left_pose_node = ArmPoseNode("hal_left_pose_node", "/logistic_robot/left_robpose/Robpose")
+left_pose_node = ArmPoseNode(
+    "hal_left_pose_node", "/logistic_robot/left_robpose/Robpose"
+)
 right_pose_node = ArmPoseNode(
     "hal_right_pose_node", "/logistic_robot/right_robpose/Robpose"
 )
@@ -348,15 +355,33 @@ def setCameraRate(camera, hz):
     try:
         # gz service returns 0 even when the service does not exist
         info = subprocess.run(
-            ["gz", "service", "-i", "-s", service], capture_output=True, text=True, timeout=10
+            ["gz", "service", "-i", "-s", service],
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if "Service providers" not in info.stdout:
             print(f"[HAL] setCameraRate: no Gazebo service {service}", flush=True)
             return False
         subprocess.run(
-            ["gz", "service", "-s", service, "--reqtype", "gz.msgs.Double",
-             "--reptype", "gz.msgs.Empty", "--timeout", "3000", "--req", f"data: {float(hz)}"],
-            capture_output=True, text=True, timeout=10, check=True,
+            [
+                "gz",
+                "service",
+                "-s",
+                service,
+                "--reqtype",
+                "gz.msgs.Double",
+                "--reptype",
+                "gz.msgs.Empty",
+                "--timeout",
+                "3000",
+                "--req",
+                f"data: {float(hz)}",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=True,
         )
     except (OSError, subprocess.SubprocessError) as e:
         print(f"[HAL] setCameraRate({camera}, {hz}) failed: {e}", flush=True)
@@ -366,12 +391,16 @@ def setCameraRate(camera, hz):
 
 def cameraOff(*cameras):
     """Slow down the given cameras or all of them when none is given."""
-    return all(setCameraRate(c, CAMERA_IDLE_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES))
+    return all(
+        setCameraRate(c, CAMERA_IDLE_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES)
+    )
 
 
 def cameraOn(*cameras):
     """Restore the render rate. The first new frame can take a few seconds."""
-    return all(setCameraRate(c, CAMERA_ON_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES))
+    return all(
+        setCameraRate(c, CAMERA_ON_HZ) for c in (cameras or CAMERA_SET_RATE_SERVICES)
+    )
 
 
 def getDepthImage():
@@ -481,7 +510,9 @@ def setRightArmJoints(positions, duration=2.0):
 
 def setHeadJoints(pan, tilt, duration=1.0):
     """Move the head joints directly. Tilt goes from 0.76 up to 1.45 down."""
-    __send_trajectory(head_joint_client, ["head_pan_joint", "head_tilt_joint"], [pan, tilt], duration)
+    __send_trajectory(
+        head_joint_client, ["head_pan_joint", "head_tilt_joint"], [pan, tilt], duration
+    )
 
 
 def homeLeftArm(duration=2.0):
@@ -532,22 +563,30 @@ def setRightGripper(closed, duration=1.0, target=None):
 # The cube stays at a fixed tray spot so a later pick finds it again
 def dropInLeftTray(speed=0.3):
     """Stow the held cube in the left arm's tray spot."""
-    return __tray_visit("left", moveLeftArm, setLeftGripper, setLeftArmJoints, True, speed)
+    return __tray_visit(
+        "left", moveLeftArm, setLeftGripper, setLeftArmJoints, True, speed
+    )
 
 
 def dropInRightTray(speed=0.3):
     """Stow the held cube in the right arm's tray spot."""
-    return __tray_visit("right", moveRightArm, setRightGripper, setRightArmJoints, True, speed)
+    return __tray_visit(
+        "right", moveRightArm, setRightGripper, setRightArmJoints, True, speed
+    )
 
 
 def pickFromLeftTray(speed=0.3):
     """Take the cube left by dropInLeftTray."""
-    return __tray_visit("left", moveLeftArm, setLeftGripper, setLeftArmJoints, False, speed)
+    return __tray_visit(
+        "left", moveLeftArm, setLeftGripper, setLeftArmJoints, False, speed
+    )
 
 
 def pickFromRightTray(speed=0.3):
     """Take the cube left by dropInRightTray."""
-    return __tray_visit("right", moveRightArm, setRightGripper, setRightArmJoints, False, speed)
+    return __tray_visit(
+        "right", moveRightArm, setRightGripper, setRightArmJoints, False, speed
+    )
 
 
 # The arms have 5 joints so MoveIt only accepts exactly reachable poses
@@ -573,12 +612,18 @@ _ARM_MOUNT = {
 }
 _ARM_SEEDS = {
     "left": [
-        [-1.6, 1.5, 2.1, 0.06, 1.571], [-1.6, 1.5, 2.1, 0.06, -1.571],
-        [-1.0, 1.2, 1.8, 0.5, 1.0], [-1.0, 1.2, 1.8, 0.5, -1.0], [0.0, 1.0, 1.5, 0.3, 0.0],
+        [-1.6, 1.5, 2.1, 0.06, 1.571],
+        [-1.6, 1.5, 2.1, 0.06, -1.571],
+        [-1.0, 1.2, 1.8, 0.5, 1.0],
+        [-1.0, 1.2, 1.8, 0.5, -1.0],
+        [0.0, 1.0, 1.5, 0.3, 0.0],
     ],
     "right": [
-        [1.63, 1.52, 2.11, 0.07, 1.571], [1.63, 1.52, 2.11, 0.07, -1.571],
-        [1.0, 1.2, 1.8, 0.5, 1.0], [1.0, 1.2, 1.8, 0.5, -1.0], [0.0, 1.0, 1.5, 0.3, 0.0],
+        [1.63, 1.52, 2.11, 0.07, 1.571],
+        [1.63, 1.52, 2.11, 0.07, -1.571],
+        [1.0, 1.2, 1.8, 0.5, 1.0],
+        [1.0, 1.2, 1.8, 0.5, -1.0],
+        [0.0, 1.0, 1.5, 0.3, 0.0],
     ],
 }
 
@@ -636,7 +681,12 @@ def __solve_grasp_orientation(arm, target, pitch=None, roll_sign=None):
     solutions = []
     for seed in _ARM_SEEDS[arm]:
         r = least_squares(
-            residual, seed, bounds=(_ARM_LOWER, _ARM_UPPER), xtol=1e-12, ftol=1e-12, gtol=1e-12
+            residual,
+            seed,
+            bounds=(_ARM_LOWER, _ARM_UPPER),
+            xtol=1e-12,
+            ftol=1e-12,
+            gtol=1e-12,
         )
         cost = float(np.linalg.norm(r.fun))
         if cost < 1e-6:
@@ -660,15 +710,25 @@ def __solve_pose(arm, position, R, seed):
         return np.concatenate([(p - position) * 10.0, (Rq - R).ravel()])
 
     r = least_squares(
-        residual, seed, bounds=(_ARM_LOWER, _ARM_UPPER), xtol=1e-12, ftol=1e-12, gtol=1e-12
+        residual,
+        seed,
+        bounds=(_ARM_LOWER, _ARM_UPPER),
+        xtol=1e-12,
+        ftol=1e-12,
+        gtol=1e-12,
     )
     return r.x if np.linalg.norm(r.fun) < 1e-6 else None
 
 
 def __grasp(move, set_gripper, arm, x, y, z, speed):
-    solved = __solve_grasp_orientation(arm, (x, y, z), roll_sign=1.0 if arm == "left" else -1.0)
+    solved = __solve_grasp_orientation(
+        arm, (x, y, z), roll_sign=1.0 if arm == "left" else -1.0
+    )
     if solved is None:
-        print(f"[HAL] {arm} arm cannot reach a grasp at ({x:.3f}, {y:.3f}, {z:.3f})", flush=True)
+        print(
+            f"[HAL] {arm} arm cannot reach a grasp at ({x:.3f}, {y:.3f}, {z:.3f})",
+            flush=True,
+        )
         return False
     R, f, q_grasp = solved
     roll, pitch, yaw = __rpy_from_matrix(R)
@@ -736,7 +796,10 @@ def __tray_visit(arm, move, set_gripper, set_joints, release, speed):
     def go(label, q, target, orientation, motion):
         if move(target[0], target[1], target[2], *orientation, speed, motion):
             return
-        print(f"[HAL] {arm} {label}: planning failed, sending joints straight to the controller", flush=True)
+        print(
+            f"[HAL] {arm} {label}: planning failed, sending joints straight to the controller",
+            flush=True,
+        )
         set_joints(q, 3.0)
         sleepSim(3.0)
 

@@ -12,7 +12,9 @@ class DepthCameraNode(Node):
         self.depth = None
         self.frame_id = None
         self.k = None
-        self.create_subscription(sensor_msgs.msg.Image, image_topic, self.__depth_cb, 10)
+        self.create_subscription(
+            sensor_msgs.msg.Image, image_topic, self.__depth_cb, 10
+        )
         self.create_subscription(
             sensor_msgs.msg.CameraInfo, info_topic, self.__info_cb, 10
         )
