@@ -51,7 +51,13 @@ const ExerciseContainer = ({
   const connectTimeoutRef = useRef<number | null>(null);
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [worlds, setWorlds] = useState<string[] | undefined>(undefined);
-  const toolsList = getTools(manager, tools, children);
+  const [physicalWorld, setPhysicalWorld] = useState<boolean>(false);
+  // Physical worlds have no simulator to show
+  const toolsList = getTools(
+    manager,
+    physicalWorld ? tools.filter((tool) => tool !== "simulator") : tools,
+    children,
+  );
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both",
   );
@@ -149,7 +155,9 @@ const ExerciseContainer = ({
         return listWorlds(project);
       },
       get_config: async (project: string, world: string) => {
-        return getRoboticsBackendWorld(project, world);
+        const config = await getRoboticsBackendWorld(project, world);
+        setPhysicalWorld(config.scene.type === "physical");
+        return config;
       },
     },
   };
