@@ -3,13 +3,13 @@ import json
 import subprocess
 import threading
 import time
-import websocket
+from websocket import WebSocketApp
 from threading import Timer
 import re
 import sys
 
-from gz.transport13 import Node
-from gz.msgs10.world_stats_pb2 import WorldStatistics
+from gz.transport import Node
+from gz.msgs.world_stats_pb2 import WorldStatistics
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
@@ -76,7 +76,7 @@ class MeasuringThreadingGUI:
     # Init websocket client
     def run_websocket(self):
         while self.running:
-            self.client = websocket.WebSocketApp(
+            self.client = WebSocketApp(
                 self.host, on_message=self.gui_in_thread
             )
             self.client.run_forever(ping_timeout=None, ping_interval=0)

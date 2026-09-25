@@ -4,7 +4,7 @@
 ROBOTICS_ACADEMY="humble-devel"
 ROBOTICS_INFRASTRUCTURE="humble-devel"
 RAM="humble-devel"
-ROS_DISTRO="jazzy"
+ROS_DISTRO="lyrical"
 IMAGE_TAG="test"
 FORCE_BUILD=false
 FORCE_BUILD_NO_CACHE=false
@@ -23,7 +23,7 @@ Help()
    echo "  -a, --academy       <value>  Branch of RoboticsAcademy.               Default: humble-devel"
    echo "  -i, --infra         <value>  Branch of RoboticsInfrastructure.        Default: humble-devel"
    echo "  -m, --ram           <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
-   echo "  -r, --ros           <value>  ROS Distro (jazzy).                     Default: jazzy"
+   echo "  -r, --ros           <value>  ROS Distro (lyrical).                    Default: lyrical"
    echo "  -t, --tag           <value>  Tag name of the image.                   Default: test"
    echo "  --academy-owner     <value>  GitHub owner for RoboticsAcademy.        Default: JdeRobot"
    echo "  --infra-owner       <value>  GitHub owner for RoboticsInfrastructure. Default: JdeRobot"
@@ -93,11 +93,11 @@ echo "ROS_DISTRO:-------------------:$ROS_DISTRO"
 echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
-if [[ $ROS_DISTRO == "jazzy" ]]; then
-    DOCKERFILE_BASE="Dockerfile.dependencies_jazzy"
-    DOCKERFILE="Dockerfile.humble"
+if [[ $ROS_DISTRO == "lyrical" ]]; then
+    DOCKERFILE_BASE="Dockerfile.dependencies_lyrical"
+    DOCKERFILE="Dockerfile.lyrical"
 else
-    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'humble'."
+    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'lyrical'."
     exit 1
 fi
 

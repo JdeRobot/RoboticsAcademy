@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "academy",
     # Third-party applications
     "webpack_loader",  # Integrates React webpack bundles with Django
