@@ -8,10 +8,10 @@ from hal_interfaces.general.bumper import (
 )
 
 
-# Simulate the structure of gazebo_msgs.msg.ContactsState
-class ContactsState:
-    def __init__(self, states=None):
-        self.states = states if states is not None else []
+# Simulate the structure of ros_gz_interfaces.msg.Contacts
+class MockContacts:
+    def __init__(self, contacts=None):
+        self.contacts = contacts if contacts is not None else []
 
 
 class TestBumperLogic(unittest.TestCase):
@@ -25,28 +25,28 @@ class TestBumperLogic(unittest.TestCase):
 
     def test_contacts_to_bumperdata_none(self):
         # No contacts on any bumper
-        contacts = [ContactsState([]), ContactsState([]), ContactsState([])]
+        contacts = [MockContacts([]), MockContacts([]), MockContacts([])]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 0)
         self.assertEqual(bd.bumper, CENTER_BUMPER)
 
     def test_contacts_to_bumperdata_right(self):
         # Contact only on right bumper
-        contacts = [ContactsState([object()]), ContactsState([]), ContactsState([])]
+        contacts = [MockContacts([object()]), MockContacts([]), MockContacts([])]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 1)
         self.assertEqual(bd.bumper, RIGHT_BUMPER)
 
     def test_contacts_to_bumperdata_center(self):
         # Contact only on center bumper
-        contacts = [ContactsState([]), ContactsState([object()]), ContactsState([])]
+        contacts = [MockContacts([]), MockContacts([object()]), MockContacts([])]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 1)
         self.assertEqual(bd.bumper, CENTER_BUMPER)
 
     def test_contacts_to_bumperdata_left(self):
         # Contact only on left bumper
-        contacts = [ContactsState([]), ContactsState([]), ContactsState([object()])]
+        contacts = [MockContacts([]), MockContacts([]), MockContacts([object()])]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 1)
         self.assertEqual(bd.bumper, LEFT_BUMPER)
@@ -54,9 +54,9 @@ class TestBumperLogic(unittest.TestCase):
     def test_contacts_to_bumperdata_multiple(self):
         # Contacts on multiple bumpers, should pick the first (right)
         contacts = [
-            ContactsState([object()]),
-            ContactsState([object()]),
-            ContactsState([object()]),
+            MockContacts([object()]),
+            MockContacts([object()]),
+            MockContacts([object()]),
         ]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 1)
