@@ -104,6 +104,42 @@ class TestQuaternionConversions(unittest.TestCase):
         yaw = quat2Yaw(w, 0.0, 0.0, z)
         self.assertAlmostEqual(yaw, -math.pi / 2, places=5)
 
+    def test_quat2yaw_180_degrees(self):
+        """Test quaternion to yaw conversion with 180° yaw rotation"""
+        # Quaternion for 180° rotation around Z-axis (yaw): w=0, z=1
+        yaw = quat2Yaw(0.0, 0.0, 0.0, 1.0)
+        self.assertAlmostEqual(yaw, math.pi, places=5)
+
+    def test_quat2yaw_exact_90_degrees(self):
+        """Test quaternion to yaw conversion with exact components (rotateZa1 == 0)"""
+        s = math.sqrt(0.5)
+        yaw = quat2Yaw(s, 0.0, 0.0, s)
+        self.assertAlmostEqual(yaw, math.pi / 2, places=5)
+
+    def test_quat2yaw_exact_minus_90_degrees(self):
+        """Test quaternion to yaw conversion with exact components for -90°"""
+        s = math.sqrt(0.5)
+        yaw = quat2Yaw(s, 0.0, 0.0, -s)
+        self.assertAlmostEqual(yaw, -math.pi / 2, places=5)
+
+    def test_quat2roll_180_degrees(self):
+        """Test quaternion to roll conversion with 180° roll rotation"""
+        # Quaternion for 180° rotation around X-axis (roll): w=0, x=1
+        roll = quat2Roll(0.0, 1.0, 0.0, 0.0)
+        self.assertAlmostEqual(roll, math.pi, places=5)
+
+    def test_quat2roll_exact_90_degrees(self):
+        """Test quaternion to roll conversion with exact components (rotateXa1 == 0)"""
+        s = math.sqrt(0.5)
+        roll = quat2Roll(s, s, 0.0, 0.0)
+        self.assertAlmostEqual(roll, math.pi / 2, places=5)
+
+    def test_quat2roll_exact_minus_90_degrees(self):
+        """Test quaternion to roll conversion with exact components for -90°"""
+        s = math.sqrt(0.5)
+        roll = quat2Roll(s, -s, 0.0, 0.0)
+        self.assertAlmostEqual(roll, -math.pi / 2, places=5)
+
     def test_combined_rotation(self):
         """Test with a quaternion representing combined rotation"""
         # Create a quaternion with combined roll-pitch-yaw rotation
