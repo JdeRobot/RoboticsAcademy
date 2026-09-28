@@ -2,9 +2,9 @@
 
 # Contributing to RoboticsAcademy
 
-First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
+First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to sending Pull Requests. 
 
-If you want to contribute to other projects that are linked to RoboticsAcademy such as [RoboticsApplicationManager](https://github.com/JdeRobot/RoboticsApplicationManager), [RoboticsInfrastructure](https://github.com/JdeRobot/RoboticsInfrastructure), [jderobot-ide-interface](https://github.com/JdeRobot/jderobot-ide-interface) or [jderobot-commsmanager](https://github.com/JdeRobot/jderobot-commsmanager) you must follow the same guidelines and recording the video from RoboticsAcademy.
+If you want to contribute to other projects that are linked to RoboticsAcademy such as [RoboticsApplicationManager](https://github.com/JdeRobot/RoboticsApplicationManager), [RoboticsInfrastructure](https://github.com/JdeRobot/RoboticsInfrastructure), [jderobot-ide-interface](https://github.com/JdeRobot/jderobot-ide-interface) or [jderobot-commsmanager](https://github.com/JdeRobot/jderobot-commsmanager) you must follow the same guidelines and record the videos from RoboticsAcademy in order to show that the complete stack works.
 
 ## How to contribute?
 
@@ -22,7 +22,7 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 
 - Fixes the issue related to the pull request
 - Does not contain any additional code than the one related to the fix
-- Has been tested and compiled with a corresponding video. **Not a link to another webpage, you must add the video with Github's add file feature.**
+- Has been tested and compiled with corresponding videos of the before and after. **Not a link to another webpage, you must add the video with Github's add file feature.**
 - If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
 - The changes submitted must be up to date with the latest version of the branch they are being submitted to
 
