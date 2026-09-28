@@ -1,3 +1,4 @@
+import React from "react";
 import { Snippet } from "jderobot-ide-interface";
 
 export interface SnippetGroup {
