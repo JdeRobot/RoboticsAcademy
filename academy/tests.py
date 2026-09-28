@@ -20,7 +20,7 @@ from academy.exceptions import (
     ResourceNotExists,
 )
 from academy.file_access import FAL_RA
-from academy.models import Exercise, Universe, World, Robot, Tool
+from academy.models import Exercise, World, Robot, Tool
 from academy.templates import select_template
 
 # ---------------------------------------------------------------------------
