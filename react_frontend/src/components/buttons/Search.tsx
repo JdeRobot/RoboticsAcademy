@@ -1,7 +1,5 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Checkbox,
@@ -10,9 +8,10 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useHomepage } from "Contexts/HomepageContext";
-import { useState, useEffect } from "react";
+import { alpha, styled } from "@mui/material/styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { useHomepage } from "Contexts/HomepageContext";
+import React, { useEffect, useState } from "react";
 import { Filters } from "Types/exercises";
 
 // SessionStorage keys
