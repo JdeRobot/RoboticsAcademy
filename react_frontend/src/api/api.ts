@@ -39,17 +39,29 @@ const getProjectData = async (
 const exitProject = async () => {
   const apiUrl = `/academy/exit_exercise/`;
 
-  try {
-    const data = new FormData();
-    const csfr = getCookie("csrftoken");
-    if (csfr !== undefined) {
-      data.append("csrfmiddlewaretoken", csfr);
-      navigator.sendBeacon(apiUrl, data);
-    }
-  } catch (e: unknown) {
-    const error = e as ApiError;
-    throw Error(error.response?.data.message, { cause: e });
-  }
+  // Define headers for source validation
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("X-CSRFToken", getCookie("csrftoken")!);
+
+  // Send with keepalive to persist across page unload
+  fetch(apiUrl, {
+    method: "POST",
+    headers: headers,
+    keepalive: true, // Critical for reliability during unload
+  }).catch((error) => console.error("Beacon failed:", error));
+
+  // try {
+  //   const data = new FormData();
+  //   const csfr = getCookie("csrftoken");
+  //   if (csfr !== undefined) {
+  //     data.append("csrfmiddlewaretoken", csfr);
+  //     navigator.sendBeacon(apiUrl, data);
+  //   }
+  // } catch (e: unknown) {
+  //   const error = e as ApiError;
+  //   throw Error(error.response?.data.message, { cause: e });
+  // }
 };
 
 const getExerciseList = async (): Promise<Exercise[]> => {
@@ -370,6 +382,20 @@ const createFolder = async (
   }
 };
 
+const sendExecutionProbe = async (project: string, eventType: string) => {
+  const apiUrl = "/academy/register_execution_probe/";
+  const params = {
+    project_id: project,
+    event: eventType,
+  };
+
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    console.error(e);
+  }
+};
+
 const renameFolder = async (
   projectId: string,
   path: string,
@@ -398,20 +424,6 @@ const renameFolder = async (
   }
 };
 
-const sendExecutionProbe = async (project: string, eventType: string) => {
-  const apiUrl = "/academy/register_execution_probe/";
-  const params = {
-    project_id: project,
-    event: eventType,
-  };
-
-  try {
-    await axios.post(apiUrl, params, axiosExtra());
-  } catch (e: unknown) {
-    console.error(e);
-  }
-};
-
 const deleteFolder = async (projectId: string, path: string, user?: string) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!path) throw new Error("Path is not set");
@@ -432,6 +444,8 @@ const deleteFolder = async (projectId: string, path: string, user?: string) => {
     throw Error(error.response?.data.message, { cause: e });
   }
 };
+
+
 
 export {
   getProjectData,
