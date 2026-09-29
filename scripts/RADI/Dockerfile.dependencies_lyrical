@@ -173,7 +173,7 @@ RUN apt-get update && \
   # ros-${ROS_DISTRO}-rosidl-default-runtime \
   # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport \
   # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-dbgsym \
-  ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-fastrtps \
+  # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-fastrtps \
   # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-fastrtps-dbgsym \
   # ros-${ROS_DISTRO}-rosidl-generator-c \
   # ros-${ROS_DISTRO}-rosidl-generator-cpp \
@@ -191,8 +191,8 @@ RUN apt-get update && \
   # ros-${ROS_DISTRO}-rosidl-typesupport-c-dbgsym \
   # ros-${ROS_DISTRO}-rosidl-typesupport-cpp \
   # ros-${ROS_DISTRO}-rosidl-typesupport-cpp-dbgsym \
-  ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-c \
-  ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-cpp \
+  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-c \
+  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-cpp \
   # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-c-dbgsym \
   # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-cpp-dbgsym \
   # ros-${ROS_DISTRO}-rosidl-typesupport-interface \
@@ -217,9 +217,9 @@ RUN apt-get update && \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-c-dbgsym \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-cpp \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-cpp-dbgsym \
-  ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-c \
+  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-c \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-c-dbgsym \
-  ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-cpp \
+  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-cpp \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-cpp-dbgsym \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-c \
   # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-c-dbgsym \

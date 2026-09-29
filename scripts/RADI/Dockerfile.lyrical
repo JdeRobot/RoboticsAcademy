@@ -67,12 +67,18 @@ RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git 
     /RoboticsAcademy/common
 
 COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static
+COPY --from=ra-base /tmp/app/react_frontend/templates /RoboticsAcademy/react_frontend/templates
+COPY --from=ra-base /tmp/app/react_frontend/__init__.py /RoboticsAcademy/react_frontend/__init__.py
+COPY --from=ra-base /tmp/app/react_frontend/apps.py /RoboticsAcademy/react_frontend/apps.py
+COPY --from=ra-base /tmp/app/react_frontend/urls.py /RoboticsAcademy/react_frontend/urls.py
+COPY --from=ra-base /tmp/app/react_frontend/views.py /RoboticsAcademy/react_frontend/views.py
 COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/react_frontend/webpack-stats.json
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --symlink-install --continue-on-error; exit 0"
 RUN mv /usr/share/xsessions/LXDE.desktop /usr/share/xsessions/startlxde.desktop
+RUN python3.14 -m pip install --no-cache-dir websockets
 
 # Django server
 EXPOSE 7164
