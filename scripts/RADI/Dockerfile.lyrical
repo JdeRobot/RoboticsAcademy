@@ -19,6 +19,7 @@ WORKDIR /
 
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+ARG RAM=$RAM
 ARG INFRA_OWNER=JdeRobot
 # Launchers/, Scenes/, Universes/ are intentionally retained in /opt/jderobot (hardcoded in all launch files).
 # Only .git history is stripped to recover extra space.
@@ -51,6 +52,8 @@ ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
 # RUN python3 -m pip install --no-cache-dir robotics_application_manager
+RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager \
+    && rm -rf /RoboticsApplicationManager/.git
 
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
