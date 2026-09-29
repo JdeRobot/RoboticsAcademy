@@ -29,7 +29,7 @@ const PlayPauseButton = ({
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
-  additionalEntrypoints:string[];
+  additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
