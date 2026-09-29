@@ -23,11 +23,13 @@ const PlayPauseButton = ({
   supportedLanguages,
   userRef,
   entrypointRef,
+  additionalEntrypoints,
 }: {
   project: string;
   supportedLanguages: string[];
   userRef: RefObject<string | undefined>;
   entrypointRef: RefObject<Entry | undefined>;
+  additionalEntrypoints:string[];
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -94,14 +96,20 @@ const PlayPauseButton = ({
   };
 
   const compareZips = async (zip1: JSZip, zip2: JSZip) => {
-    for (const key in zip1.files) {
-      if (!Object.hasOwn(zip1.files, key)) continue;
+    const keys1 = Object.keys(zip1.files);
+    const keys2 = Object.keys(zip2.files);
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
       if (!Object.hasOwn(zip2.files, key)) {
         return false;
       }
 
-      const value = await zip1.files[key]._data;
-      const old = await zip2.files[key]._data;
+      if (zip1.files[key].dir && zip2.files[key].dir) continue;
+      if (zip1.files[key].dir !== zip2.files[key].dir) return false;
+
+      const value = await zip1.files[key].async("base64");
+      const old = await zip2.files[key].async("base64");
       if (value !== old) {
         return false;
       }
@@ -236,21 +244,28 @@ const PlayPauseButton = ({
         entrypointRef.current,
       );
 
-      const finalZip = await mergeZips(helperZip, userZip);
+        const finalZip = await mergeZips(helperZip, userZip);
 
-      // Convert the blob to base64 using FileReader
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64data = reader.result; // Get the zip in base64
-        // Send the base64 encoded blob
-        if (base64data && runningEntrypointRef.current) {
-          try {
-            await manager.run(
+        // Convert the blob to base64 using FileReader
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const base64data = reader.result; // Get the zip in base64
+          // Send the base64 encoded blob
+          if (base64data && runningEntrypointRef.current) {
+            const entrypoints = [
               `/workspace/code/${runningEntrypointRef.current.path}`,
-              [runningEntrypointRef.current.path],
-              base64data as string,
-            );
-            console.log("Dockerized app started successfully");
+            ];
+            additionalEntrypoints.forEach((entrypoint) => {
+              entrypoints.push(entrypoint);
+            });
+
+            const lint_files = additionalEntrypoints;
+            try {
+              await manager.run(
+                entrypoints,
+                [runningEntrypointRef.current.path].concat(lint_files),
+                base64data as string,
+              );
 
             // New start event probe (Run)
             sendExecutionProbe(project,"start_execution");
@@ -261,6 +276,7 @@ const PlayPauseButton = ({
             );
             setLoading(false);
           }
+          console.log("Dockerized app started successfully");
         }
       };
 
@@ -282,12 +298,13 @@ const PlayPauseButton = ({
 
       await zipCodeFiles(zip, files, project, user);
 
-      zip.files[entrypoint.path]._data.then(
-        (value: string) => (runningContentRef.current = value),
-      );
+      zip.files[entrypoint.path]
+        .async("string")
+        .then((value: string) => (runningContentRef.current = value));
       return zip;
     }
   };
+
 
   return (
     <>
