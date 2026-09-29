@@ -16,25 +16,7 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFileList, getHelperFileList } from "Api";
-
-// extraer cookies
-const getCookie = (name: string) => {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-};
-
-
+import { getFileList, getHelperFileList, sendExecutionProbe } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -111,24 +93,6 @@ const PlayPauseButton = ({
     return undefined;
   };
 
-// funcion asincrona para enviar la sonda
-const sendExecutionProbe = (eventType: string) => {
-  const csrfToken = getCookie("csrftoken") || ""; // Extraemos el token
-
-  fetch("/academy/register_execution_probe/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken, // <-- Añadimos el token a la cabecera
-    },
-    body: JSON.stringify({
-      project_id: project,
-      event: eventType,
-    }),
-  }).catch((err) => console.error("Sonda de métricas silenciada:", err));
-};
-
-
   const compareZips = async (zip1: JSZip, zip2: JSZip) => {
     for (const key in zip1.files) {
       if (!Object.hasOwn(zip1.files, key)) continue;
@@ -173,15 +137,14 @@ const sendExecutionProbe = (eventType: string) => {
       return;
     }
 
-    // 1. EVENTO DE PAUSA
     if (state === states.RUNNING) {
       try {
         await manager.pause();
         console.log("App paused correctly!");
         
-        // [NUEVO] Sonda de parada
-        sendExecutionProbe("stop_execution");
-        
+        // Pause event probe
+        sendExecutionProbe(project, "stop_execution");
+
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
@@ -228,7 +191,6 @@ const sendExecutionProbe = (eventType: string) => {
       userRef.current,
     );
 
-    // 2. EVENTO DE REANUDAR (RESUME)
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
@@ -236,9 +198,9 @@ const sendExecutionProbe = (eventType: string) => {
           await manager.resume();
           console.log("App resumed correctly!");
           
-          // [NUEVO] Sonda de reanudación
-          sendExecutionProbe("start_execution");
-          
+          // Resume event probe
+          sendExecutionProbe(project,"start_execution");
+
         } catch (e: unknown) {
           console.error("Error resuming app: " + (e as Error).message);
           error(
@@ -288,13 +250,11 @@ const sendExecutionProbe = (eventType: string) => {
               [runningEntrypointRef.current.path],
               base64data as string,
             );
-            
             console.log("Dockerized app started successfully");
-            
-            // 3. EVENTO DE INICIO NUEVO (RUN)
-            // [NUEVO] Sonda de inicio
-            sendExecutionProbe("start_execution");
-            
+
+            // New start event probe (Run)
+            sendExecutionProbe(project,"start_execution");
+
           } catch {
             error(
               "Failed to run the application. See the traces in the terminal.",
