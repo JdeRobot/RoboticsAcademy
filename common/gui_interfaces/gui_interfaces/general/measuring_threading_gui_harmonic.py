@@ -4,6 +4,9 @@ import subprocess
 import threading
 import time
 from websocket import WebSocketApp
+from websockets.asyncio.server import serve
+from websockets.exceptions import ConnectionClosedOK
+import asyncio
 from threading import Timer
 import re
 import sys
@@ -45,8 +48,6 @@ class MeasuringThreadingGUI:
         self.fps = -1
         self.lat = -1
 
-        self.running = True
-
         self.host = host
 
         self.world_name = world_name
@@ -75,7 +76,7 @@ class MeasuringThreadingGUI:
 
     # Init websocket client
     def run_websocket(self):
-        while self.running:
+        while True:
             self.client = WebSocketApp(
                 self.host, on_message=self.gui_in_thread
             )
@@ -89,13 +90,13 @@ class MeasuringThreadingGUI:
             WorldStatistics, f"/world/{self.world_name}/stats", self.rtf_callback
         )
 
-        while self.running:
+        while True:
             time.sleep(0.001)
 
     def measure_and_send_frequency(self):
         """Measures and sends the frequency of GUI updates and brain cycles."""
         previous_time = datetime.now()
-        while self.running:
+        while True:
             time.sleep(2)
             current_time = datetime.now()
             dt = current_time - previous_time
@@ -141,7 +142,7 @@ class MeasuringThreadingGUI:
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
-        while self.running:
+        while True:
             start_time = time.time()
             self.iteration_counter += 1
 
