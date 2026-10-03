@@ -50,6 +50,35 @@ class TestImageMsg2Image(unittest.TestCase):
         result = imageMsg2Image(mock_img, mock_bridge)
         self.assertIsNone(result)
 
+    @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")
+    def test_image_conversion_single_channel_c1_8uc1(self, MockBridge):
+        mock_img = MockROSImage(encoding="8UC1")
+        mock_bridge = MockBridge.return_value
+        mock_bridge.imgmsg_to_cv2.return_value = np.full(
+            (480, 640), 128, dtype=np.uint8
+        )
+        result = imageMsg2Image(mock_img, mock_bridge)
+        self.assertIsInstance(result, Image)
+        self.assertEqual(result.width, 640)
+        self.assertEqual(result.height, 480)
+        self.assertEqual(result.format, "BGR8")
+        self.assertEqual(result.data.shape, (480, 640, 3))
+        self.assertTrue(np.all(result.data == 128))
+
+    @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")
+    def test_image_conversion_single_channel_c1_32fc1(self, MockBridge):
+        mock_img = MockROSImage(encoding="32FC1")
+        mock_bridge = MockBridge.return_value
+        mock_bridge.imgmsg_to_cv2.return_value = np.full(
+            (480, 640), 4.0, dtype=np.float32
+        )
+        result = imageMsg2Image(mock_img, mock_bridge)
+        self.assertIsInstance(result, Image)
+        self.assertEqual(result.width, 640)
+        self.assertEqual(result.height, 480)
+        self.assertEqual(result.format, "BGR8")
+        self.assertEqual(result.data.shape, (480, 640, 3))
+
 
 class TestCameraNode(unittest.TestCase):
     @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")

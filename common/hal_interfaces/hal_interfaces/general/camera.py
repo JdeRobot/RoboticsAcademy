@@ -41,6 +41,29 @@ class Image:
         return s
 
 
+def depthToRGB8(float_img_buff, encoding):
+    """
+    Translates from single-channel/depth image format to BGR8.
+
+    Args:
+        float_img_buff: NumPy array from cv_bridge.
+        encoding (str): ROS image encoding.
+
+    Returns:
+        3-channel BGR image as a NumPy array.
+    """
+    if encoding == "8UC1" or float_img_buff.dtype == np.uint8:
+        gray_image = float_img_buff
+    else:
+        img = np.nan_to_num(float_img_buff, nan=0.0, posinf=0.0, neginf=0.0)
+        if encoding == "16UC1":
+            gray_image = cv2.convertScaleAbs(img, alpha=255.0 / (MAXRANGE * 1000.0))
+        else:
+            gray_image = cv2.convertScaleAbs(img, alpha=255.0 / MAXRANGE)
+
+    return cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
+
+
 def imageMsg2Image(img, bridge):
     """
     Convert a ROS Image message to a JdeRobot Image object.
