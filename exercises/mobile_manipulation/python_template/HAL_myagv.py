@@ -7,10 +7,11 @@ import math
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
+from rclpy.qos import QoSProfile, DurabilityPolicy
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
-from std_msgs.msg import Bool, String
+from std_msgs.msg import Bool, Empty, Int32, String
 from sensor_msgs.msg import JointState
 from ament_index_python.packages import get_package_share_directory
 
@@ -63,7 +64,7 @@ ARM_READY_JOINTS = [0.0, 0.236, 0.255, 0.0, 0.739, 0.0]
 GRASP_ROLL = -math.pi + math.radians(20)
 GRASP_YAW = -math.pi / 2
 
-GRASPABLE_OBJECTS = "blue_box,yellow_ball,green_cylinder"
+GRASPABLE_OBJECTS = "red_ball,blue_ball"
 
 
 def custom_thread_excepthook(args):
@@ -100,6 +101,29 @@ class JointStateNode(Node):
 
 
 joint_state_node = JointStateNode("/myagv_mecharm/joint_states")
+
+
+class DeliveryNode(Node):
+    """Ball requests and target stations of the warehouse delivery world."""
+
+    def __init__(self):
+        super().__init__("hal_delivery_node")
+        self.targets = {"red": 0, "blue": 0}
+        self.spawn_pub = {
+            c: self.create_publisher(Empty, f"/warehouse_delivery/spawn_{c}_ball", 10)
+            for c in ("red", "blue")
+        }
+        latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
+        for c in ("red", "blue"):
+            self.create_subscription(
+                Int32,
+                f"/warehouse_delivery/{c}_target",
+                lambda msg, c=c: self.targets.__setitem__(c, msg.data),
+                latched,
+            )
+
+
+delivery_node = DeliveryNode()
 
 # Gripper and joint level arm control
 arm_node = Node("hal_arm_node")
@@ -184,6 +208,7 @@ executor.add_node(sim_time_node)
 executor.add_node(joint_state_node)
 executor.add_node(arm_node)
 executor.add_node(arm_pose_node)
+executor.add_node(delivery_node)
 
 
 def __auto_spin() -> None:
@@ -242,6 +267,26 @@ def getImage():
 def getJointPositions():
     """Last reported position in radians of every joint by name."""
     return dict(joint_state_node.positions)
+
+
+def spawnRedBall():
+    """Drop a red ball in the red dispenser and light its target station."""
+    delivery_node.spawn_pub["red"].publish(Empty())
+
+
+def spawnBlueBall():
+    """Drop a blue ball in the blue dispenser and light its target station."""
+    delivery_node.spawn_pub["blue"].publish(Empty())
+
+
+def getRedTarget():
+    """Station number where the red ball goes or 0 when there is none."""
+    return delivery_node.targets["red"]
+
+
+def getBlueTarget():
+    """Station number where the blue ball goes or 0 when there is none."""
+    return delivery_node.targets["blue"]
 
 
 def getSimTime():

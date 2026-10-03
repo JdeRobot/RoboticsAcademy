@@ -218,8 +218,8 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 85	34	84	True
 86	10	85	True
 87	35	86	False
-88	35	87	True
-89	35	88	False
+88	35	87	False
+89	35	88	True
 \.
 
 --
