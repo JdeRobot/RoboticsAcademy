@@ -5,7 +5,6 @@ import rclpy
 import numpy as np
 from sensor_msgs_py import point_cloud2
 from threading import Lock
-from builtin_interfaces.msg import Time
 
 
 class LidarData:
@@ -47,10 +46,7 @@ def pointCloud2LidarData(cloud):
         lidar.intensities = [i[0] for i in intensities]
 
     # Timestamp (ROS 2 Time -> seconds)
-    lidar.timeStamp = (
-        Time(sec=cloud.header.stamp.sec, nanosec=cloud.header.stamp.nanosec).nanoseconds
-        / 1e9
-    )
+    lidar.timeStamp = cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
 
     # Validate point cloud
     lidar.is_dense = all(
