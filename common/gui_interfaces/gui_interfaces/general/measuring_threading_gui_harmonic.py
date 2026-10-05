@@ -3,13 +3,13 @@ import json
 import subprocess
 import threading
 import time
-from websocket import WebSocketApp
-from websockets.asyncio.server import serve
+from websockets.asyncio.client import connect
 from websockets.exceptions import ConnectionClosedOK
 import asyncio
 from threading import Timer
 import re
 import sys
+
 
 from gz.transport import Node
 from gz.msgs.world_stats_pb2 import WorldStatistics
@@ -51,10 +51,13 @@ class MeasuringThreadingGUI:
         self.host = host
 
         self.world_name = world_name
+        self.client = None
 
     def start(self):
         # Initialize and start the WebSocket client thread
-        threading.Thread(target=self.run_websocket, daemon=True).start()
+        threading.Thread(
+            target=self.launch_websocket, name="websocket_thread", daemon=True
+        ).start()
 
         # Initialize and start the RTF thread
         threading.Thread(
@@ -63,24 +66,37 @@ class MeasuringThreadingGUI:
 
         # Initialize and start the Frequency thread
         threading.Thread(
-            target=self.measure_and_send_frequency, name="frequency_thread", daemon=True
+            target=self.launch_measure_and_send_frequency, name="frequency_thread", daemon=True
         ).start()
 
         # Initialize and start the image sending thread (GUI out thread)
         threading.Thread(
-            target=self.gui_out_thread, name="gui_out_thread", daemon=True
+            target=self.launch_gui_out_thread, name="gui_out_thread", daemon=True
         ).start()
 
     def rtf_callback(self, msg: WorldStatistics):
         self.real_time_factor = round(msg.real_time_factor, 2)
 
-    # Init websocket client
-    def run_websocket(self):
-        while True:
-            self.client = WebSocketApp(
-                self.host, on_message=self.gui_in_thread
-            )
-            self.client.run_forever(ping_timeout=None, ping_interval=0)
+    def launch_gui_out_thread(self):
+        asyncio.run(self.gui_out_thread())
+
+    def launch_measure_and_send_frequency(self):
+        asyncio.run(self.measure_and_send_frequency())
+
+    def launch_websocket(self):
+        asyncio.run(self.run_websocket())
+
+    async def run_websocket(self):
+        try:
+          async with connect(self.host) as websocket:
+            self.client = websocket
+
+            async for raw_msg in websocket:
+              self.gui_in_thread(websocket, raw_msg)
+        except ConnectionClosedOK as e:
+            pass
+        finally:
+            self.client = None
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
@@ -93,7 +109,7 @@ class MeasuringThreadingGUI:
         while True:
             time.sleep(0.001)
 
-    def measure_and_send_frequency(self):
+    async def measure_and_send_frequency(self):
         """Measures and sends the frequency of GUI updates and brain cycles."""
         previous_time = datetime.now()
         while True:
@@ -119,7 +135,7 @@ class MeasuringThreadingGUI:
             }
             message = json.dumps(self.frequency_message)
 
-            self.send_to_client(message)
+            await self.send_to_client(message)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
@@ -134,14 +150,14 @@ class MeasuringThreadingGUI:
         else:
             LogManager.logger.error("Unsupported msg")
 
-    def update_gui(self):
+    async def update_gui(self):
         """Prepares the data and calls the following method at the end to send it:\n
         · send_to_client(data)
         """
         pass
 
     # Process outcoming messages from the GUI
-    def gui_out_thread(self):
+    async def gui_out_thread(self):
         while True:
             start_time = time.time()
             self.iteration_counter += 1
@@ -149,7 +165,7 @@ class MeasuringThreadingGUI:
             # Check if a new map should be sent
             with self.ack_lock:
                 if self.ack_frontend and self.ack:
-                    self.update_gui()
+                    await self.update_gui()
                     self.ack = False
 
             # Maintain desired frequency
@@ -157,9 +173,9 @@ class MeasuringThreadingGUI:
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
-    def send_to_client(self, msg):
+    async def send_to_client(self, msg):
         if self.client:
             try:
-                self.client.send(msg)
+                await self.client.send(msg)
             except Exception as e:
                 LogManager.logger.info(f"Error sending message: {e}")

@@ -92,7 +92,7 @@ class WebGUI(MeasuringThreadingGUI):
             except Exception:
                 threading.Event().wait(1.0)
 
-    def update_gui(self):
+    async def update_gui(self):
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
 
@@ -106,7 +106,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["map"] = pos_message
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_show_lock:
