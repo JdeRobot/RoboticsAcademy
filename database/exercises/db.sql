@@ -147,6 +147,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
 34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones", "MULTILANGUAGE"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
 35	mobile_manipulation	Mobile Manipulation	Combine navigation and manipulation with a mobile manipulator, XLeRobot in a house or the MMO-500 in a warehouse	["ROS2", "SERVICE ROBOTS"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
+36	f1_pursuit	Formula 1 Pursuit	Two Formula 1 cars on a racing circuit: program your car to chase down the pre programmed rival driving its own line	["ROS2","AUTONOMOUS DRIVING", "MULTILANGUAGE"]	["/resources/exercises/f1_pursuit/rival.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/f1_pursuit
 \.
 
 --
@@ -219,6 +220,7 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 86	10	85	True
 87	35	86	False
 88	35	87	True
+89	36	88	True
 \.
 
 --
@@ -336,6 +338,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 107	35	console
 108	35	simulator
 109	35	web_gui
+110	36	console
+111	36	simulator
+112	36	web_gui
 \.
 
 --
