@@ -10,6 +10,7 @@ from threading import Timer
 import re
 import sys
 
+
 from gz.transport import Node
 from gz.msgs.world_stats_pb2 import WorldStatistics
 
@@ -76,13 +77,26 @@ class MeasuringThreadingGUI:
     def rtf_callback(self, msg: WorldStatistics):
         self.real_time_factor = round(msg.real_time_factor, 2)
 
-    # Init websocket client
-    def run_websocket(self):
-        while self.running:
-            self.client = WebSocketApp(
-                self.host, on_message=self.gui_in_thread
-            )
-            self.client.run_forever(ping_timeout=None, ping_interval=0)
+    def launch_gui_out_thread(self):
+        asyncio.run(self.gui_out_thread())
+
+    def launch_measure_and_send_frequency(self):
+        asyncio.run(self.measure_and_send_frequency())
+
+    def launch_websocket(self):
+        asyncio.run(self.run_websocket())
+
+    async def run_websocket(self):
+        try:
+          async with connect(self.host) as websocket:
+            self.client = websocket
+
+            async for raw_msg in websocket:
+              self.gui_in_thread(websocket, raw_msg)
+        except ConnectionClosedOK as e:
+            pass
+        finally:
+            self.client = None
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
@@ -121,7 +135,11 @@ class MeasuringThreadingGUI:
             }
             message = json.dumps(self.frequency_message)
 
+<<<<<<< HEAD
             # await self.send_to_client(message)
+=======
+            await self.send_to_client(message)
+>>>>>>> c357480 (Test new gui)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
