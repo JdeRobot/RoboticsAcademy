@@ -382,6 +382,35 @@ const createFolder = async (
   }
 };
 
+const sendExecutionProbe = async (project: string, eventType: string) => {
+  const apiUrl = "/academy/register_execution_probe/";
+  const params = {
+    project_id: project,
+    event: eventType,
+  };
+
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    console.error(e);
+  }
+};
+
+const sendTypingProbe = async (project: string, eventType: string, lastEditTimestamp?: string) => {
+  const apiUrl = "/academy/register_typing_probe/";
+  const params = {
+    project_id: project,
+    event: eventType,
+    last_edit_timestamp: lastEditTimestamp,
+  };
+
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    console.error(e);
+  }
+};
+
 const renameFolder = async (
   projectId: string,
   path: string,
@@ -431,6 +460,8 @@ const deleteFolder = async (projectId: string, path: string, user?: string) => {
   }
 };
 
+
+
 export {
   getProjectData,
   getHelperFileList,
@@ -449,4 +480,6 @@ export {
   renameFolder,
   deleteFolder,
   exitProject,
+  sendExecutionProbe,
+  sendTypingProbe,
 };
