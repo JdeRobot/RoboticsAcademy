@@ -34,7 +34,6 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     /opt/jderobot/database \
     /opt/jderobot/deprecated_assets \
     /opt/jderobot/Docs \
-    /opt/jderobot/scripts \
     /opt/jderobot/test \
     /opt/jderobot/Universes \
     /opt/jderobot/utils \
@@ -43,7 +42,12 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
 RUN rm /etc/xdg/autostart/lxpolkit.desktop
 RUN rm /usr/bin/lxpolkit
 
-COPY entrypoint.sh /
+# Install and config traefik
+RUN wget https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3.7.14_linux_amd64.tar.gz && tar -xzf traefik_*.tar.gz && mv traefik /usr/bin/
+RUN mkdir /etc/traefik
+COPY ./RoboticsInfrastructure/scripts/proxy /etc/traefik
+
+# COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 ARG IMAGE_TAG
