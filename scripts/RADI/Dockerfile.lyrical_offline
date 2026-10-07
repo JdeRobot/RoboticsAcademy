@@ -47,7 +47,7 @@ RUN wget https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3
 RUN mkdir /etc/traefik
 COPY ./RoboticsInfrastructure/scripts/proxy /etc/traefik
 
-# COPY entrypoint.sh /
+COPY ./RoboticsInfrastructure/scripts/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 ARG IMAGE_TAG
@@ -78,7 +78,9 @@ COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/
 WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --symlink-install --continue-on-error; exit 0"
 RUN mv /usr/share/xsessions/LXDE.desktop /usr/share/xsessions/startlxde.desktop
-RUN python3.14 -m pip install --no-cache-dir websockets
+RUN python3.14 -m pip install --no-cache-dir websockets "fastapi[standard]" uvicorn sh asyncssh python-lsp-server
+
+# Behavior trees cpp
 
 # Django server
 EXPOSE 7164
