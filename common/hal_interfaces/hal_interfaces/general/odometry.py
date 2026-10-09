@@ -56,11 +56,7 @@ def quat2Yaw(qw, qx, qy, qz):
 
     rotateZa0 = 2.0 * (qx * qy + qw * qz)
     rotateZa1 = qw * qw + qx * qx - qy * qy - qz * qz
-    rotateZ = 0.0
-    if rotateZa0 != 0.0 and rotateZa1 != 0.0:
-        rotateZ = atan2(rotateZa0, rotateZa1)
-
-    return rotateZ
+    return atan2(rotateZa0, rotateZa1)
 
 
 def quat2Pitch(qw, qx, qy, qz):
@@ -92,11 +88,7 @@ def quat2Roll(qw, qx, qy, qz):
     """
     rotateXa0 = 2.0 * (qy * qz + qw * qx)
     rotateXa1 = qw * qw - qx * qx - qy * qy + qz * qz
-    rotateX = 0.0
-
-    if rotateXa0 != 0.0 and rotateXa1 != 0.0:
-        rotateX = atan2(rotateXa0, rotateXa1)
-    return rotateX
+    return atan2(rotateXa0, rotateXa1)
 
 
 def odometry2Pose3D(odom):

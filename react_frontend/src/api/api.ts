@@ -396,6 +396,21 @@ const sendExecutionProbe = async (project: string, eventType: string) => {
   }
 };
 
+const sendTypingProbe = async (project: string, eventType: string, lastEditTimestamp?: string) => {
+  const apiUrl = "/academy/register_typing_probe/";
+  const params = {
+    project_id: project,
+    event: eventType,
+    last_edit_timestamp: lastEditTimestamp,
+  };
+
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    console.error(e);
+  }
+};
+
 const renameFolder = async (
   projectId: string,
   path: string,
@@ -466,4 +481,5 @@ export {
   deleteFolder,
   exitProject,
   sendExecutionProbe,
+  sendTypingProbe,
 };

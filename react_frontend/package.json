@@ -7,12 +7,11 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
-    "build": "webpack --mode production --output-path ./static/react_frontend",
+    "build": "webpack --mode development --output-path ./static/react_frontend",
     "test": "cypress open",
     "lint": "eslint src",
     "lint-exercises": "for ex in $(ls ../exercises); do bash -c \"cd ../exercises/$ex/react-components && eslint --fix\" 2>/dev/null ; done",
     "lint-all": "npm run lint && npm run lint-exercises",
-    "tailwindcss": "NODE_ENV=production tailwindcss -o src/styles/tailwind.css -m",
     "format": "prettier --write src/**/*.{tsx,ts,html,css} && prettier --write ../exercises/**/*.{tsx,ts,js,html,css}"
   },
   "keywords": [],
@@ -62,7 +61,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.34",
     "@types/three": "^0.185.1",
-    "axios": "1.18.1",
+    "axios": "1.20.0",
     "glob": "^13.0.6",
     "jderobot-commsmanager": "1.1.0",
     "jderobot-ide-interface": "0.3.8",
