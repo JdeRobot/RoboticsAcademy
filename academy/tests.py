@@ -381,6 +381,74 @@ class FileManagementViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_absolute_path_read_rejected(self):
+        # An absolute path points outside the exercise directory.
+        secret = os.path.join(self.tmp, "secret.txt")
+        with open(secret, "w") as f:
+            f.write("top secret")
+        response = self.client.get(
+            "/academy/get_file/",
+            {"project": "file_test_ex", "filename": secret},
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_save_file_traversal_rejected(self):
+        # Saved content must never land outside the exercise directory.
+        secret = os.path.join(self.tmp, "secret.txt")
+        with open(secret, "w") as f:
+            f.write("top secret")
+        response = self.client.post(
+            "/academy/save_file/",
+            {
+                "project": "file_test_ex",
+                "filename": "../../secret.txt",
+                "content": "overwritten",
+            },
+        )
+        self.assertEqual(response.status_code, 403)
+        with open(secret) as f:
+            self.assertEqual(f.read(), "top secret")
+
+    def test_rename_file_traversal_source_rejected(self):
+        # Both ends of a rename must stay inside the exercise directory.
+        secret = os.path.join(self.tmp, "secret.txt")
+        with open(secret, "w") as f:
+            f.write("top secret")
+        response = self.client.post(
+            "/academy/rename_file/",
+            {
+                "project_id": "file_test_ex",
+                "path": "../../secret.txt",
+                "rename_to": "stolen.txt",
+            },
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(os.path.exists(secret))
+
+    def test_delete_folder_absolute_path_rejected(self):
+        victim = os.path.join(self.tmp, "victim_dir")
+        os.makedirs(victim)
+        response = self.client.post(
+            "/academy/delete_folder/",
+            {"project_id": "file_test_ex", "path": victim},
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(os.path.isdir(victim))
+
+    def test_upload_absolute_path_rejected(self):
+        target = os.path.join(self.tmp, "planted.bin")
+        response = self.client.post(
+            "/academy/upload/",
+            {
+                "project_id": "file_test_ex",
+                "file_name": target,
+                "location": "",
+                "content": base64.b64encode(b"\x00\x01").decode("utf-8"),
+            },
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(os.path.exists(target))
+
 
 class GetHelperFileViewTests(TestCase):
     """Tests for get_helper_file and get_helper_file_list endpoints."""

@@ -87,14 +87,20 @@ class FAL(ABC):
 
     @abstractmethod
     def write(self, path: str, content):
-        """Overwrite an existing text file at path. Raises ResourceNotExists if missing."""
+        """Overwrite an existing text file at path. Raises InvalidPath or ResourceNotExists if missing."""
+        if ".." in path:
+            raise InvalidPath(path)
+
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
 
     @abstractmethod
     def write_binary(self, path: str, content):
-        """Overwrite an existing binary file at path. Raises ResourceNotExists if missing."""
+        """Overwrite an existing binary file at path. Raises InvalidPath or ResourceNotExists if missing."""
+        if ".." in path:
+            raise InvalidPath(path)
+
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
@@ -247,6 +253,15 @@ class FAL_RA(FAL):
     def path_join(self, a: str, b: str) -> str:
         return os.path.join(a, b)
 
+    def _assert_within_root(self, path: str):
+        """Reject a path that resolves outside the exercise or helper roots."""
+        real = os.path.realpath(path)
+        roots = [os.path.realpath(self.academy_path())]
+        if self.helper:
+            roots.append(os.path.realpath(self.helper))
+        if not any(real == root or real.startswith(root + os.sep) for root in roots):
+            raise InvalidPath(path)
+
     def exists(self, path: str) -> bool:
         if not os.path.exists(path):
             return -1
@@ -263,6 +278,7 @@ class FAL_RA(FAL):
         return os.path.isfile(path)
 
     def create(self, path: str, content):
+        self._assert_within_root(path)
         super().create(path, content)
 
         with open(path, "w") as f:
@@ -270,6 +286,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def create_binary(self, path: str, content):
+        self._assert_within_root(path)
         super().create_binary(path, content)
 
         with open(path, "wb") as f:
@@ -277,6 +294,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def write(self, path: str, content):
+        self._assert_within_root(path)
         super().write(path, content)
 
         with open(path, "w") as f:
@@ -284,6 +302,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def write_binary(self, path: str, content):
+        self._assert_within_root(path)
         super().write_binary(path, content)
 
         with open(path, "wb") as f:
@@ -291,6 +310,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def read(self, path: str) -> str:
+        self._assert_within_root(path)
         super().read(path)
 
         try:
@@ -300,53 +320,65 @@ class FAL_RA(FAL):
             raise BinaryNotSupported(path)
 
     def read_binary(self, path: str) -> bytes:
+        self._assert_within_root(path)
         super().read_binary(path)
 
         with open(path, "rb") as f:
             return f.read()
 
     def listdirs(self, path: str):
+        self._assert_within_root(path)
         super().listdirs(path)
 
         return [d for d in os.listdir(path) if self.isdir(self.path_join(path, d))]
 
     def listfiles(self, path: str):
+        self._assert_within_root(path)
         super().listfiles(path)
 
         return [d for d in os.listdir(path) if self.isfile(self.path_join(path, d))]
 
     def list_formatted(self, path: str, base_group: str):
+        self._assert_within_root(path)
         super().list_formatted(path, base_group)
 
         return list_dir(path, path, base_group=base_group)
 
     def mkdir(self, path: str):
+        self._assert_within_root(path)
         super().mkdir(path)
 
         os.makedirs(path)
         os.chmod(path, mode=0o777)
 
     def renamefile(self, old_path: str, new_path: str):
+        self._assert_within_root(old_path)
+        self._assert_within_root(new_path)
         super().renamefile(old_path, new_path)
 
         os.rename(old_path, new_path)
 
     def renamedir(self, old_path: str, new_path: str):
+        self._assert_within_root(old_path)
+        self._assert_within_root(new_path)
         super().renamedir(old_path, new_path)
 
         os.rename(old_path, new_path)
 
     def removefile(self, path: str):
+        self._assert_within_root(path)
         super().removefile(path)
 
         os.remove(path)
 
     def removedir(self, path: str):
+        self._assert_within_root(path)
         super().removedir(path)
 
         shutil.rmtree(path)
 
     def dir_size(self, path):
+        self._assert_within_root(path)
         super().dir_size(path)
 
         total_size = 0
