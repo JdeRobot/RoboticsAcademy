@@ -51,7 +51,7 @@ const getTools = (
     toolsList.push({
       component: <Video visible={showVideo} />,
       icon: <OndemandVideoRoundedIcon />,
-      name: "Local video",
+      name: "Video",
       group: "video-input",
       active: showVideo,
       activate: setVideoVisible,

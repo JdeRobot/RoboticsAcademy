@@ -9,6 +9,7 @@ import {
   Button,
   Stack,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import {
   PlayArrow,
@@ -45,6 +46,8 @@ const Video = ({ visible }: { visible: boolean }) => {
   const [volume, setVolume] = useState<number>(1);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(false);
 
@@ -66,6 +69,7 @@ const Video = ({ visible }: { visible: boolean }) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("video/")) {
       const url = URL.createObjectURL(file);
+      setError(null);
       setVideoFile(url);
       setIsPlaying(false);
       setCurrentTime(0);
@@ -81,6 +85,7 @@ const Video = ({ visible }: { visible: boolean }) => {
     console.log(file);
     if (file && file.type.startsWith("video/")) {
       const url = URL.createObjectURL(file);
+      setError(null);
       setVideoFile(url);
       setIsPlaying(false);
       setCurrentTime(0);
@@ -90,6 +95,30 @@ const Video = ({ visible }: { visible: boolean }) => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+  };
+  const handleUrlSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    let url: URL;
+    try {
+      url = new URL(videoUrl.trim());
+    } catch {
+      setError("Invalid URL");
+      return;
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      setError("Only http(s) URLs are supported");
+      return;
+    }
+    if (/(^|\.)(youtube\.com|youtu\.be)$/.test(url.hostname)) {
+      setError(
+        "YouTube page links can't be read frame by frame. Use a direct video file URL (.mp4/.webm).",
+      );
+      return;
+    }
+    setError(null);
+    setVideoFile(url.href);
+    setIsPlaying(false);
+    setCurrentTime(0);
   };
 
   // Play/Pause toggle
@@ -166,7 +195,7 @@ const Video = ({ visible }: { visible: boolean }) => {
   // Clean up object URL
   useEffect(() => {
     return () => {
-      if (videoFile) {
+      if (videoFile?.startsWith("blob:")) {
         URL.revokeObjectURL(videoFile);
       }
     };
@@ -190,7 +219,19 @@ const Video = ({ visible }: { visible: boolean }) => {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageDataUrl = canvas.toDataURL("image/jpeg");
+        let imageDataUrl: string;
+        try {
+          imageDataUrl = canvas.toDataURL("image/jpeg");
+        } catch {
+          // Tainted canvas: server didn't send CORS headers
+          video.pause();
+          setIsPlaying(false);
+          setError(
+            "This video's server does not allow frame access (CORS). Try another URL.",
+          );
+          setVideoFile(null);
+          return;
+        }
         // setCapturedFrame(imageDataUrl);
 
         // Here you can send the imageDataUrl via WebSocket or any other method
@@ -310,6 +351,42 @@ const Video = ({ visible }: { visible: boolean }) => {
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
+          <Box
+            component="form"
+            onSubmit={handleUrlSubmit}
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+              position: "relative",
+              zIndex: 1,
+              mt: 3,
+              display: "flex",
+              gap: 1,
+              width: "100%",
+              maxWidth: 480,
+            }}
+          >
+            <TextField
+              size="small"
+              fullWidth
+              placeholder="...or paste a direct video URL (https://.../video.mp4)"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              sx={{ input: { color: textColor } }}
+            />
+            <Button type="submit" variant="contained">
+              Load
+            </Button>
+          </Box>
+          {error && (
+            <Typography
+              variant="body2"
+              color="error"
+              sx={{ position: "relative", zIndex: 1, mt: 1 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {error}
+            </Typography>
+          )}
         </StyledVideoInputContainer>
       ) : (
         <StyledVideoContainer
@@ -322,9 +399,17 @@ const Video = ({ visible }: { visible: boolean }) => {
           <StyledVideo
             ref={videoRef}
             src={videoFile}
+            crossOrigin="anonymous"
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
             onEnded={() => setIsPlaying(false)}
+            onError={() => {
+              setError(
+                "Could not load the video (bad URL, unsupported format, or CORS blocked).",
+              );
+              setVideoFile(null);
+              setIsPlaying(false);
+            }}
           />
 
           <Box
