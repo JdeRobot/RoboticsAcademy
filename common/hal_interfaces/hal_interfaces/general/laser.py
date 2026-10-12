@@ -9,6 +9,7 @@ if not rclpy.ok():
 
 ### AUXILIARY FUNCTIONS
 class LaserData:
+    """Laser scan with distances, angular limits and range limits."""
     def __init__(self):
 
         self.values = []  # meters
@@ -71,6 +72,7 @@ def laserScan2LaserData(scan):
 
 ### HAL INTERFACE ###
 class LaserNode(Node):
+    """ROS2 node that subscribes to a LaserScan topic and stores the latest scan."""
     def __init__(self, topic):
         super().__init__("laser_node")
         self.sub = self.create_subscription(
@@ -79,7 +81,15 @@ class LaserNode(Node):
         self.last_scan_ = sensor_msgs.msg.LaserScan()
 
     def listener_callback(self, scan):
+        """Store the latest LaserScan message received from the topic."""
         self.last_scan_ = scan
 
     def getLaserData(self):
+        """
+        Return the latest laser scan.
+
+        Returns:
+            LaserData with angles in the JdeRobot convention (0 to the right,
+            PI/2 in front).
+        """
         return laserScan2LaserData(self.last_scan_)

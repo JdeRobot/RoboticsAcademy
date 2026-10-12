@@ -9,6 +9,12 @@ if not rclpy.ok():
 
 ### HAL INTERFACE ###
 class LaserBumperNode(Node):
+    """
+    ROS2 node that emulates bumpers using a laser scanner.
+
+    Reads a LaserScan and publishes Contacts messages on the bumper topics
+    so robots without bumper sensors can still use BumperNode.
+    """
     def __init__(self, laser, topics):
         super().__init__("laser_bumper_node")
 
@@ -28,6 +34,14 @@ class LaserBumperNode(Node):
         self.contact_states_ = [Contacts() for _ in range(3)]
 
     def listener_callback(self, scan):
+        """
+        Publish bumper contacts from the latest laser scan.
+
+        The ranges at indices 60, 90 and 120 act as the right, center and left
+        bumpers. A reading below 0.25 m publishes a contact on that bumper's
+        topic; once it clears, an empty Contacts message is published once to
+        release it.
+        """
 
         values = scan.ranges
         bumper_vals = [values[60], values[90], values[120]]
