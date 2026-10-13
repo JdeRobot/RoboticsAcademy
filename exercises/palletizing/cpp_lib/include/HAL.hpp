@@ -3,7 +3,9 @@
 
 #include <array>
 #include <memory>
+#include <string>
 #include <thread>
+#include <nlohmann/json.hpp>
 
 // Forward declarations to keep ROS 2 headers out of user-facing code.
 class HALNode;
@@ -27,7 +29,8 @@ public:
     // Absolute point-to-point (Cartesian) move. xyz in metres, ypr in degrees.
     static void MoveJoint(const std::array<double, 3>& xyz, const std::array<double, 3>& ypr, double speed, double wait_time);
 
-    // Relative linear Cartesian increment. xyz in metres.
+    // Relative linear Cartesian increment. xyz in metres. Blocks until the
+    // joints settle after the move, on top of wait_time.
     static void MoveRelLinear(const std::array<double, 3>& xyz, double speed, double wait_time);
 
     // Relative TCP reorientation. ypr in degrees.
@@ -36,6 +39,21 @@ public:
     // Suction gripper control. on = true grips a graspable object in contact
     // with the cup, on = false releases the held object. wait_time in seconds.
     static void SuctionSet(bool on, double wait_time);
+
+    // Blocks until a box is stopped at the pickup point, returns its feeder name.
+    static std::string WaitForBox();
+
+    // Semantic task metadata for a box announced by WaitForBox().
+    static nlohmann::json GetBoxInfo(const std::string& name, double timeout = 5.0);
+
+    // Observed box top-center pose, in the base_link frame.
+    static nlohmann::json GetPickupPose(const std::string& name, double timeout = 5.0);
+
+    // Pallet metadata in the robot base_link frame.
+    static nlohmann::json GetPalletInfo(double timeout = 5.0);
+
+    // Acknowledges that the box is clear so the feeder can advance.
+    static void BoxDone(const std::string& name);
 
 private:
     static void init();

@@ -2,7 +2,9 @@
 
 # Contributing to RoboticsAcademy
 
-First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
+First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to sending Pull Requests. 
+
+If you want to contribute to other projects that are linked to RoboticsAcademy such as [RoboticsApplicationManager](https://github.com/JdeRobot/RoboticsApplicationManager), [RoboticsInfrastructure](https://github.com/JdeRobot/RoboticsInfrastructure), [jderobot-ide-interface](https://github.com/JdeRobot/jderobot-ide-interface) or [jderobot-commsmanager](https://github.com/JdeRobot/jderobot-commsmanager) you must follow the same guidelines and record the videos from RoboticsAcademy in order to show that the complete stack works.
 
 ## How to contribute?
 
@@ -20,7 +22,7 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 
 - Fixes the issue related to the pull request
 - Does not contain any additional code than the one related to the fix
-- Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- Has been tested and compiled with corresponding videos of the before and after. **Not a link to another webpage, you must add the video with Github's add file feature.**
 - If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
 - The changes submitted must be up to date with the latest version of the branch they are being submitted to
 
@@ -61,7 +63,7 @@ All file names attached to the documentation will be **lowercase** and spaces wi
 
 In order to maintain coherence between all the exercises, it is necessary to distinguish between one image and the rest. This is the image shown in the set of exercises.
 
-The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required aspect ratio has to be multiple 9/10.
+The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required aspect ratio has to be 9/10.
 
 The rest of the images have no name restriction. When in doubt, they are named as the exercise and with a number behind them.
 
@@ -81,7 +83,7 @@ All exercises will contain the following points:
 8. **Contributors**: Two groups are described: contributors (all the original authors who developed the exercise code) and the maintainer (the person responsible for the exercise, updating it, correcting errors, resolving doubts, etc, is the contributor who knows the exercise best at present).
 9. **References**: Information on the points described in the theory section, articles, websites with information, etc.
 
-_Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics). _
+_Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics)._
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team

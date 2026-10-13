@@ -139,13 +139,14 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
-28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones"]	["/resources/exercises/drone_cat_mouse/mouse.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
+28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones", "MULTILANGUAGE"]	["/resources/exercises/drone_cat_mouse/mouse.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
 29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
 30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
 31	position_control	Position Control	Fly a drone through a forest trail of beacons using a PID position controller	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control
 32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
-33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
+33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
 34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones", "MULTILANGUAGE"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
+35	mobile_manipulation	Mobile Manipulation	Combine navigation and manipulation with a mobile manipulator, XLeRobot in a house or the MMO-500 in a warehouse	["ROS2", "SERVICE ROBOTS"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
 \.
 
 --
@@ -190,9 +191,9 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 53	1	49	False
 59	17	56	True
 60	10	58	True
-61	10	59	True
-62	10	60	True
-63	10	61	True
+61	10	59	False
+62	10	60	False
+63	10	61	False
 64	4	66	True
 65	4	67	False
 66	14	62	False
@@ -215,9 +216,18 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 83	33	82	True
 84	33	83	False
 85	34	84	True
-86	17	86	False
-87	17	87	False
+87	35	86	False
+88	35	87	True
+89	10	88	False
+90	13	89	False
+91	14	90	False
+92	11	91	False
+93	10	92	False
+94	2	93	False
+95	2	94	False
 96	17	95	False
+97	17	96	False
+98	17	97	False
 \.
 
 --
@@ -332,6 +342,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 104	34	console
 105	34	simulator
 106	34	web_gui
+107	35	console
+108	35	simulator
+109	35	web_gui
 \.
 
 --

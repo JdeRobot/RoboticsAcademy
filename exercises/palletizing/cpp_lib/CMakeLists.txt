@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(PickPlaceLibs CXX)
+project(PalletizingLibs CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,11 +11,8 @@ set(ROS2_PACKAGES
     rclcpp
     rclcpp_action
     ros2srrc_data
-    control_msgs
-    trajectory_msgs
-    builtin_interfaces
-    linkattacher_msgs
     std_msgs
+    sensor_msgs
     cv_bridge
 )
 
@@ -32,7 +29,7 @@ set(COMMON_INTERFACES_LIB "/home/ws/install/common_interfaces_cpp/lib/libcommon_
 
 set(WEBGUI_ROS_DEPS  rclcpp std_msgs cv_bridge)
 set(WEBGUI_SYS_DEPS  Frequency Boost::system nlohmann_json::nlohmann_json)
-set(HAL_ROS_DEPS     rclcpp rclcpp_action ros2srrc_data control_msgs trajectory_msgs builtin_interfaces std_msgs)
+set(HAL_ROS_DEPS     rclcpp rclcpp_action ros2srrc_data std_msgs sensor_msgs)
 
 
 # --- libFrequency.so ---
@@ -49,3 +46,4 @@ target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS} ${COMMON_INTERFACES_LIB} ${OpenC
 add_library(HAL SHARED src/HAL.cpp)
 target_include_directories(HAL PUBLIC include)
 ament_target_dependencies(HAL ${HAL_ROS_DEPS})
+target_link_libraries(HAL nlohmann_json::nlohmann_json)

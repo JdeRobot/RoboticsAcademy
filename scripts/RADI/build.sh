@@ -6,6 +6,7 @@ ROBOTICS_INFRASTRUCTURE="humble-devel"
 RAM="humble-devel"
 ROS_DISTRO="humble"
 IMAGE_TAG="test"
+OFFLINE_BUILD=false
 FORCE_BUILD=false
 FORCE_BUILD_NO_CACHE=false
 
@@ -20,6 +21,7 @@ Help()
    echo "  -h                           Print this Help."
    echo "  -f                           Force creation of the base image. If omitted, the base image is created only if it doesn't exist."
    echo "  -F                           Force creation of the base image without using docker cache."
+   echo "  -o, --offline       <value>  Use offline dockerfile."
    echo "  -a, --academy       <value>  Branch of RoboticsAcademy.               Default: humble-devel"
    echo "  -i, --infra         <value>  Branch of RoboticsInfrastructure.        Default: humble-devel"
    echo "  -m, --ram           <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
@@ -68,6 +70,10 @@ while [[ $# -gt 0 ]]; do
             FORCE_BUILD=true
             shift
             ;;
+        -o | --offline)
+            OFFLINE_BUILD=true
+            shift
+            ;;
         -F | --force-no-cache)
             FORCE_BUILD_NO_CACHE=true
             shift
@@ -95,7 +101,11 @@ echo
 
 if [[ $ROS_DISTRO == "humble" ]]; then
     DOCKERFILE_BASE="Dockerfile.dependencies_humble"
-    DOCKERFILE="Dockerfile.humble"
+    if $OFFLINE_BUILD; then
+      DOCKERFILE="scripts/RADI/Dockerfile.humble_offline"
+    else
+      DOCKERFILE="Dockerfile.humble"
+    fi
 else
     echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'humble'."
     exit 1
@@ -106,6 +116,7 @@ if $FORCE_BUILD_NO_CACHE; then
 else
   NO_CACHE=""
 fi
+
 
 if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
@@ -125,6 +136,10 @@ fi
 echo "===================== BUILDING $ROS_DISTRO RoboticsBackend ====================="
 echo "Building RoboticsBackend using $DOCKERFILE for ROS $ROS_DISTRO"
 
+if $OFFLINE_BUILD; then
+  cd ../..
+fi
+
 docker build --no-cache -f $DOCKERFILE \
   --build-arg ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY \
   --build-arg ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE \
@@ -134,3 +149,7 @@ docker build --no-cache -f $DOCKERFILE \
   --build-arg ACADEMY_OWNER=$ACADEMY_OWNER \
   --build-arg INFRA_OWNER=$INFRA_OWNER \
   -t jderobot/robotics-academy:$IMAGE_TAG .
+
+if $OFFLINE_BUILD; then
+  cd scripts/RADI
+fi
