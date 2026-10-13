@@ -21,12 +21,18 @@ const WebGUI = () => {
   const updateCallback = (updateData: unknown) => {
     const data = updateData as any;
     const update = data.update;
+
     if (update.img1) {
       draw(update);
       const point = JSON.parse(update.pts);
       if (point != "") {
         setPointsToPaint(point);
       }
+    }
+
+    if (update.reset) {
+      setReset(true);
+      reset_all();
     }
   };
 

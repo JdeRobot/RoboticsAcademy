@@ -2,13 +2,15 @@
 
 # Contributing to RoboticsAcademy
 
-First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
+First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to sending Pull Requests. 
+
+If you want to contribute to other projects that are linked to RoboticsAcademy such as [RoboticsApplicationManager](https://github.com/JdeRobot/RoboticsApplicationManager), [RoboticsInfrastructure](https://github.com/JdeRobot/RoboticsInfrastructure), [jderobot-ide-interface](https://github.com/JdeRobot/jderobot-ide-interface) or [jderobot-commsmanager](https://github.com/JdeRobot/jderobot-commsmanager) you must follow the same guidelines and record the videos from RoboticsAcademy in order to show that the complete stack works.
 
 ## How to contribute?
 
 If you are new to GitHub, visit the [first-contributions instructions](https://github.com/firstcontributions/first-contributions/blob/master/README.md) to learn how to contribute on GitHub.
 
-To find issues you can help with, go though the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
+To find issues you can help with, go through the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
@@ -20,23 +22,23 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 
 - Fixes the issue related to the pull request
 - Does not contain any additional code than the one related to the fix
-- Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- Has been tested and compiled with corresponding videos of the before and after. **Not a link to another webpage, you must add the video with Github's add file feature.**
 - If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
-- The changes submited must be up to date with the latest version of the branch they are being submitted to
+- The changes submitted must be up to date with the latest version of the branch they are being submitted to
 
 If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
 
-Also do **not** ping or request reviews from mantainers or members of JdeRobot. The corresponding mantainer will asign a proper reviewer and ping other members if needed.
+Also do **not** ping or request reviews from maintainers or members of JdeRobot. The corresponding maintainer will assign a proper reviewer and ping other members if needed.
 
 ## Questions, suggestions or new ideas
 
-Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhacements are also welcome as discussion posts.
+Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhancements are also welcome as discussion posts.
 
 ## Issue reporting
 
 Feel free to [create a new issue](https://github.com/JdeRobot/RoboticsAcademy/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
 
-Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
+Be sure to explain in details the context and the outcome that you are looking for. If reporting bugs, provide basic information like your OS version, RoboticsBackend version and the exercise launched.
 
 The responses to the issues **must** be related to the topic and they must not contain any solutions, for that use a Pull Request.
 
@@ -61,7 +63,7 @@ All file names attached to the documentation will be **lowercase** and spaces wi
 
 In order to maintain coherence between all the exercises, it is necessary to distinguish between one image and the rest. This is the image shown in the set of exercises.
 
-The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required aspect ratio has to be multiple 9/10.
+The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required aspect ratio has to be 9/10.
 
 The rest of the images have no name restriction. When in doubt, they are named as the exercise and with a number behind them.
 
@@ -81,7 +83,7 @@ All exercises will contain the following points:
 8. **Contributors**: Two groups are described: contributors (all the original authors who developed the exercise code) and the maintainer (the person responsible for the exercise, updating it, correcting errors, resolving doubts, etc, is the contributor who knows the exercise best at present).
 9. **References**: Information on the points described in the theory section, articles, websites with information, etc.
 
-_Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics). _
+_Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics)._
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team

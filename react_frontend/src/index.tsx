@@ -2,8 +2,7 @@ import React from "react";
 import "./index.css";
 import App from "./App";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { ErrorStudio, Home, projectLoader, Studio } from "Routes";
 
 // Clear stored state on app startup to ensure fresh state on every launch

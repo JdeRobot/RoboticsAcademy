@@ -9,6 +9,8 @@ if not rclpy.ok():
 
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
+    """Represents a 3D pose with position, orientation, and timestamp."""
+
     def __init__(self):
 
         self.x = 0  # X coord [meters]
@@ -54,11 +56,7 @@ def quat2Yaw(qw, qx, qy, qz):
 
     rotateZa0 = 2.0 * (qx * qy + qw * qz)
     rotateZa1 = qw * qw + qx * qx - qy * qy - qz * qz
-    rotateZ = 0.0
-    if rotateZa0 != 0.0 and rotateZa1 != 0.0:
-        rotateZ = atan2(rotateZa0, rotateZa1)
-
-    return rotateZ
+    return atan2(rotateZa0, rotateZa1)
 
 
 def quat2Pitch(qw, qx, qy, qz):
@@ -90,11 +88,7 @@ def quat2Roll(qw, qx, qy, qz):
     """
     rotateXa0 = 2.0 * (qy * qz + qw * qx)
     rotateXa1 = qw * qw - qx * qx - qy * qy + qz * qz
-    rotateX = 0.0
-
-    if rotateXa0 != 0.0 and rotateXa1 != 0.0:
-        rotateX = atan2(rotateXa0, rotateXa1)
-    return rotateX
+    return atan2(rotateXa0, rotateXa1)
 
 
 def odometry2Pose3D(odom):
@@ -123,15 +117,22 @@ def odometry2Pose3D(odom):
 
 ### HAL INTERFACE ###
 class OdometryNode(Node):
-    def __init__(self, topic):
-        super().__init__("odometry_node")
+    def __init__(self, topic, node_name="odometry_node"):
+        super().__init__(node_name)
         self.sub = self.create_subscription(
             nav_msgs.msg.Odometry, topic, self.listener_callback, 10
         )
         self.last_pose_ = nav_msgs.msg.Odometry()
 
     def listener_callback(self, msg):
+        """Store the latest odometry message received from the topic."""
         self.last_pose_ = msg
 
     def getPose3d(self):
+        """
+        Return the latest pose as a Pose3d object.
+
+        Returns:
+            Pose3d with position, orientation, and timestamp fields populated.
+        """
         return odometry2Pose3D(self.last_pose_)

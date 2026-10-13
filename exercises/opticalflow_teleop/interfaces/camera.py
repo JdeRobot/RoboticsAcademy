@@ -5,7 +5,6 @@ from math import pi as PI
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
-
 MAXRANGE = 8  # max length received from imageD
 MINRANGE = 0
 

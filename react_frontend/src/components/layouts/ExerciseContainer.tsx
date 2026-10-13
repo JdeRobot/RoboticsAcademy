@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, JSX } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
 
 import IdeInterface, {
@@ -7,15 +7,11 @@ import IdeInterface, {
   ExtraApi,
   ExtraSnippets,
   StatusBarComponents,
+  useError,
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import {
-  getFile,
-  getRoboticsBackendUniverse,
-  listUniverses,
-  saveFile,
-} from "Api";
+import { getFile, getRoboticsBackendWorld, listWorlds, saveFile } from "Api";
 import Frequencies from "Components/statusBar/Frequencies";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import { getHalGuiMethods } from "Helpers/editor";
@@ -39,6 +35,7 @@ const ExerciseContainer = ({
   tools,
   url,
   children,
+  additionalEntrypoints,
 }: {
   project: string;
   name: string;
@@ -46,37 +43,41 @@ const ExerciseContainer = ({
   url?: string;
   multiLanguage: boolean;
   children: JSX.Element;
+  additionalEntrypoints: string[];
 }) => {
+  const { warning } = useError();
   const hasTriedToConnect = useRef(false);
   const timeoutRef = useRef<number | null>(null);
   const connectTimeoutRef = useRef<number | null>(null);
   const [manager, setManager] = useState<CommsManager | null>(null);
-  const [universes, setUniverses] = useState<string[] | undefined>(undefined);
+  const [worlds, setWorlds] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
-    "both"
+    "both",
   );
+  const userRef = useRef<string | undefined>(undefined);
+  const addressRef = useRef<string>(`ws://127.0.0.1:7163`);
 
-  const getUniverseList = async (project: string) => {
-    const list = await listUniverses(project);
+  const getWorldList = async (project: string) => {
+    const list = await listWorlds(project);
     if (list.length === 0) {
       list.push("");
     }
 
-    setUniverses(list);
+    setWorlds(list);
   };
 
-  const resetUniverse = (e: unknown) => {
+  const resetWorld = (e: unknown) => {
     const T = CustomEvent<{ detail: unknown }>;
     if (e instanceof T) {
       if (e.detail.state == states.IDLE) {
-        setUniverses(undefined);
+        setWorlds(undefined);
       }
     }
   };
 
   useEffect(() => {
-    subscribe("CommsManagerStateChange", resetUniverse);
+    subscribe("CommsManagerStateChange", resetWorld);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
@@ -96,13 +97,13 @@ const ExerciseContainer = ({
 
   const connectWithRetry = async (
     desiredState?: string,
-    callback?: () => void
+    callback?: () => void,
   ) => {
     try {
-      const currManager = CommsManager.getInstance();
+      const currManager = CommsManager.getInstance(addressRef.current);
       hasTriedToConnect.current = true;
       await currManager.connect();
-      getUniverseList(project);
+      getWorldList(project);
       console.log("Connected!", currManager.getState());
       setManager(currManager);
       if (callback) {
@@ -114,13 +115,13 @@ const ExerciseContainer = ({
         connectWithRetry,
         2000,
         desiredState,
-        callback
+        callback,
       );
     }
   };
 
   const waitManagerState = async (state: string, callback: () => void) => {
-    const currManager = CommsManager.getInstance();
+    const currManager = CommsManager.getInstance(addressRef.current);
     if (currManager?.getState() === state) {
       callback();
     } else {
@@ -128,7 +129,7 @@ const ExerciseContainer = ({
         waitManagerState,
         100,
         state,
-        callback
+        callback,
       );
     }
   };
@@ -143,12 +144,12 @@ const ExerciseContainer = ({
         return saveFile(project, file.path, content);
       },
     },
-    universes: {
+    worlds: {
       list: (project: string) => {
-        return listUniverses(project);
+        return listWorlds(project);
       },
-      get_config: async (project: string, universe: string) => {
-        return getRoboticsBackendUniverse(project, universe);
+      get_config: async (project: string, world: string) => {
+        return getRoboticsBackendWorld(project, world);
       },
     },
   };
@@ -173,21 +174,23 @@ const ExerciseContainer = ({
           supportedLanguages={multiLanguage ? ["python", "cpp"] : ["python"]}
           url={url}
           setLayout={setLayout}
+          commsManager={manager}
           connectManager={connectWithRetry}
+          userRef={userRef}
+          additionalEntrypoints={additionalEntrypoints}
         />
         <IdeInterface
           commsManager={manager}
-          connectManager={connectWithRetry}
           project={project}
           api={editorApi}
           viewers={toolsList}
           options={[]}
           layout={layout}
           statusBarComponents={statusBar}
-          explorers={[fileExplorer]}
+          explorers={[fileExplorer(warning)]}
           extraEditors={[]}
           baseFile={base_file}
-          baseUniverse={universes ? universes[0] : undefined}
+          baseWorld={worlds ? worlds[0] : undefined}
           extraSnippets={extraSnippets}
         />
       </ExerciseProvider>

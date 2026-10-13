@@ -4,14 +4,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
 import FALLBACK_IMAGE from "../images/default_card.svg";
-import { Exercise } from "src/types/exercises";
+import { Exercise } from "Types/exercises";
 import {
   StyledExerciseCardArea,
   StyledExerciseCardContainer,
   StyledExerciseCardInfoContainer,
   StyledExerciseCardTagList,
 } from "Styles/ExerciseCard.styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const ExerciseCard = ({
   exercise_id,

@@ -26,8 +26,8 @@ if not rclpy.ok():
     rclpy.init(args=None)
     rclpy.create_node("HAL")
 
-pose3d = OdometryNode("/odom")
-motors = MotorsNode("/cmd_vel", 4, 0.3)
+pose3d = OdometryNode("/f1/odom")
+motors = MotorsNode("/f1/cmd_vel", 4, 0.3)
 laser = LaserNode("/f1/laser/scan")
 
 # Spin nodes so that subscription callbacks load topic data

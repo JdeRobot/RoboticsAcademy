@@ -31,28 +31,28 @@ const WebGUI = () => {
 
   useEffect(() => {
     if (manager) {
-      updateCircuit(manager.getUniverse());
+      updateCircuit(manager.getWorld());
     }
   }, []);
 
-  const updateCircuit = (universe: string) => {
-    if (universe === undefined) {
+  const updateCircuit = (world: string) => {
+    if (world === undefined) {
       return;
     }
 
-    if (universe.includes("Simple")) {
+    if (world.includes("Simple")) {
       circuitName = "default";
       setCircuitImg(defaultCircuit);
-    } else if (universe.includes("Montmelo")) {
+    } else if (world.includes("Montmelo")) {
       circuitName = "montmelo";
       setCircuitImg(montmeloCircuit);
-    } else if (universe.includes("Montreal")) {
+    } else if (world.includes("Montreal")) {
       circuitName = "montreal";
       setCircuitImg(montrealCircuit);
-    } else if (universe.includes("Nurburgring")) {
+    } else if (world.includes("Nurburgring")) {
       circuitName = "ngb";
       setCircuitImg(ngbCircuit);
-    } else if (universe.includes("Monaco")) {
+    } else if (world.includes("Monaco")) {
       circuitName = "monaco";
       setCircuitImg(monacoCircuit);
     }
@@ -77,16 +77,11 @@ const WebGUI = () => {
     if (manager === null) {
       return;
     }
-
-    if (state === states.RUNNING) {
-      manager.send("gui", "startLap");
-    } else if (state === states.PAUSED) {
-      manager.send("gui", "pause");
-    } else if (state === states.TOOLS_READY) {
+    if (state === states.TOOLS_READY) {
       setCarPose(undefined);
       setLapTime(undefined);
       setImage(undefined);
-      updateCircuit(manager.getUniverse());
+      updateCircuit(manager.getWorld());
     }
   };
 

@@ -25,9 +25,9 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
-motor_node = MotorsNode("/cmd_vel", 40, 0)
-odometry_node = OdometryNode("/odom")
-camera_node = CameraNode("/prius_autoparking/image_raw")
+motor_node = MotorsNode("/autonomous_car/cmd_vel", 40, 0)
+odometry_node = OdometryNode("/autonomous_car/odom")
+camera_node = CameraNode("/autonomous_car/camera/image_raw")
 
 
 # Spin nodes so that subscription callbacks load topic data

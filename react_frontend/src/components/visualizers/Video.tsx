@@ -58,7 +58,7 @@ const Video = ({ visible }: { visible: boolean }) => {
   const textColor = contrastSelector(
     theme.palette.text,
     theme.palette.darkText,
-    theme.palette.bgLight
+    theme.palette.bg,
   );
 
   // Handle file upload
@@ -291,12 +291,15 @@ const Video = ({ visible }: { visible: boolean }) => {
             </Typography>
             <Typography
               variant="h6"
-              color={textColor}
-              sx={{ mb: 1, fontWeight: "normal" }}
+              sx={{ mb: 1, fontWeight: "normal", color: textColor }}
             >
               Click to browse a video file
             </Typography>
-            <Typography variant="body2" color={textColor} sx={{ opacity: 0.7 }}>
+            <Typography
+              variant="body2"
+              color={textColor}
+              sx={{ opacity: 0.7, color: textColor }}
+            >
               Supports MP4 Only
             </Typography>
           </Box>

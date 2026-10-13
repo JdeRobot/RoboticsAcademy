@@ -100,11 +100,16 @@ module.exports = {
   },
   plugins: [
     new BundleTrackerPlugin({
-      filename: "./webpack-stats.json",
+      path: "./",
+      filename: "webpack-stats.json",
     }),
     new MiniCssExtractPlugin({
       filename: "css/[name].css",
     }),
   ],
+  mode: process.argv.includes("production") ? "production" : "development",
   devtool: process.argv.includes("production") ? false : "inline-source-map",
+  optimization: {
+    minimize: process.argv.includes("production"),
+  },
 };

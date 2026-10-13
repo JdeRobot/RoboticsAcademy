@@ -41,7 +41,7 @@ function WebGUI() {
       ]);
       const avgForceDist = getDist(
         dataToDraw.average[0],
-        dataToDraw.average[1]
+        dataToDraw.average[1],
       );
       setAvgForce([
         avgForceDist * meter,
@@ -49,7 +49,7 @@ function WebGUI() {
       ]);
       const obsForceDist = getDist(
         dataToDraw.obstacle[0],
-        dataToDraw.obstacle[1]
+        dataToDraw.obstacle[1],
       );
       setObsForce([
         obsForceDist * meter,
@@ -57,11 +57,11 @@ function WebGUI() {
       ]);
       const targetDist = getDist(
         dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1]
+        dataToDraw.pose[1] - dataToDraw.target[1],
       );
       const targetAng = getAng(
         dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1]
+        dataToDraw.pose[1] - dataToDraw.target[1],
       );
       setTargetPose([
         targetDist * meter,
@@ -85,7 +85,7 @@ function WebGUI() {
     }
   };
 
-  connectApplication(manager, updateCallback);
+  connectApplication(manager, updateCallback, stateCallback);
 
   return (
     <WebGUIContainer id="f1-road">

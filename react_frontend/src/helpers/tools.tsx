@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, JSX } from "react";
 import { CommsManager } from "jderobot-commsmanager";
 import { ViewersEntry, VncViewer } from "jderobot-ide-interface";
 
@@ -14,7 +14,7 @@ import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManu
 const getTools = (
   manager: CommsManager | null,
   tools: string[],
-  children: JSX.Element
+  children: JSX.Element,
 ) => {
   const [showSim, setSimVisible] = useState<boolean>(true);
   const [showWebGUI, setWebGUIVisible] = useState<boolean>(true);

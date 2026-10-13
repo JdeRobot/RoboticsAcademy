@@ -7,7 +7,6 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 
-
 # Graphical User Interface Class
 
 

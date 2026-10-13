@@ -3,7 +3,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
 import json
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 
 
 class TestMeasuringThreadingGUI(unittest.TestCase):

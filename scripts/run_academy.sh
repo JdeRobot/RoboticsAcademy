@@ -2,6 +2,7 @@
 # Default: cpu and offline
 gpu_mode="false"
 nvidia="false"
+engine="docker"
 base_path_offline="compose_cfg/"
 compose_file="user_humble_cpu"
 base_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/compose_cfg/"
@@ -13,21 +14,26 @@ show_help() {
   echo "Options:"
   echo "  -g  Enable GPU mode (uses user_humble_gpu compose file)"
   echo "  -n  Enable Nvidia support (uses user_humble_nvidia compose file)"
+  echo "  -p  Use rootless Podman instead of Docker (requires -n for GPU)"
   echo "  -h  Display this help message"
   echo ""
   echo "Examples:"
   echo "  $(basename "$0")          # Run in CPU mode (default)"
   echo "  $(basename "$0") -g       # Run in GPU mode"
   echo "  $(basename "$0") -n       # Run with Nvidia support"
+  echo "  $(basename "$0") -p -n    # Run with rootless Podman and Nvidia"
 }
 
 # Function to clean up the containers
 cleanup() {
   echo "Cleaning up..."
-  if [ "$nvidia" = "true" ]; then
-    docker compose --compatibility down
+  if [ "$engine" = "podman" ]; then
+    # Silence the errors for containers podman-compose already removed
+    $compose_cmd down 2>/dev/null
+  elif [ "$nvidia" = "true" ]; then
+    $compose_cmd --compatibility down
   else
-    docker compose down
+    $compose_cmd down
   fi
   if [ -f docker-compose.yaml ]; then
     rm docker-compose.yaml
@@ -37,6 +43,42 @@ cleanup() {
 
 # Preflight checks
 preflight_checks() {
+  # Podman checks: rootless, binaries and CDI spec
+  if [ "$engine" = "podman" ]; then
+    if [ "$(id -u)" -eq 0 ]; then
+      echo "Error: Rootless Podman must be run without sudo. Execute the script as a standard user."
+      exit 1
+    fi
+
+    for binary in podman podman-compose; do
+      if ! command -v "$binary" &> /dev/null; then
+        echo "Error: $binary is not installed or not in PATH."
+        echo "See: https://podman.io/docs/installation"
+        exit 1
+      fi
+    done
+
+    if [ "$gpu_mode" = "true" ]; then
+      echo "Error: Podman GPU acceleration requires NVIDIA CDI. Use -p -n instead of -p -g."
+      exit 1
+    fi
+
+    # A CDI spec is needed to resolve the nvidia.com/gpu device
+    if [ "$nvidia" = "true" ]; then
+      if ! compgen -G "/var/run/cdi/*.yaml" > /dev/null && \
+         ! compgen -G "/var/run/cdi/*.json" > /dev/null && \
+         ! compgen -G "/etc/cdi/*.yaml"     > /dev/null && \
+         ! compgen -G "/etc/cdi/*.json"     > /dev/null; then
+        echo "Error: No CDI spec found in /var/run/cdi or /etc/cdi."
+        echo "Generate one with: sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml"
+        exit 1
+      fi
+    fi
+
+    # Podman has no daemon, skip the docker checks
+    return
+  fi
+
   if ! command -v docker &> /dev/null; then
     echo "Error: Docker is not installed or not in PATH. Please install Docker first."
     echo "See: https://docs.docker.com/engine/install/"
@@ -56,14 +98,22 @@ preflight_checks() {
 }
 
 # Loop through the arguments
-while getopts ":gnh" opt; do
+while getopts ":gnhp" opt; do
   case $opt in
     g) gpu_mode="true" ;;
     n) nvidia="true" ;;
+    p) engine="podman" ;;
     h) show_help; exit 0 ;;
     \?) echo "Error: Invalid option: -$OPTARG" >&2; show_help; exit 1 ;;
   esac
 done
+
+# Set the compose command based on the engine
+if [ "$engine" = "podman" ]; then
+  compose_cmd="podman-compose -p roboticsacademy"
+else
+  compose_cmd="docker compose"
+fi
 
 # Run preflight checks before doing anything else
 preflight_checks
@@ -76,7 +126,11 @@ if [ "$gpu_mode" = "true" ]; then
   compose_file="user_humble_gpu"
 fi
 if [ "$nvidia" = "true" ]; then
-  compose_file="user_humble_nvidia"
+  if [ "$engine" = "podman" ]; then
+    compose_file="user_humble_podman_nvidia"
+  else
+    compose_file="user_humble_nvidia"
+  fi
 fi
 
 # Check the mode (offline if compose_cfg dir exists, online otherwise)
@@ -97,11 +151,13 @@ else
   fi
 fi
 
-# Execute docker compose
-if [ "$nvidia" = "true" ]; then
-  docker compose --compatibility up
+# Execute compose (--compatibility only applies to the docker nvidia config)
+if [ "$engine" = "podman" ]; then
+  $compose_cmd up
+elif [ "$nvidia" = "true" ]; then
+  $compose_cmd --compatibility up
 else
-  docker compose up
+  $compose_cmd up
 fi
 
 cleanup

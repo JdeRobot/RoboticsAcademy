@@ -130,13 +130,13 @@ exercises.forEach((exercise) => {
           timeout: 15000,
         });
 
-        cy.get("#universe-selector")
+        cy.get("#world-selector")
           .children()
           .then(($body) => {
-            if ($body.text().includes("No universes to select")) {
-              // No universes
+            if ($body.text().includes("No worlds to select")) {
+              // No worlds
             } else {
-              cy.get("#stop-universe").click();
+              cy.get("#stop-world").click();
               cy.get("#robotics-backend-state").contains("connected", {
                 timeout: 15000,
               });

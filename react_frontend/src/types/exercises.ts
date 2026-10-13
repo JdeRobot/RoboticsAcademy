@@ -12,7 +12,8 @@ export interface ExerciseData {
   url: string;
   tools: string[];
   tags: string[];
-  universes: object[];
+  worlds: object[];
+  entrypoints: string[];
 }
 
 export type ExerciseStatus = "ACTIVE" | "INACTIVE" | "PROTOTYPE";

@@ -6,7 +6,7 @@ import {
   ManagerMsg,
   states,
 } from "jderobot-commsmanager";
-import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
+import React, { RefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
   id = "webgui-container",
@@ -41,8 +41,8 @@ export const connectApplication = (
   manager: CommsManager | null,
   updateCallback: (data: unknown) => void,
   stateCallback?: (state: string) => void,
-  resizeRef?: MutableRefObject<HTMLImageElement | null>,
-  resizeObserver?: ResizeObserver
+  resizeRef?: RefObject<HTMLImageElement | null>,
+  resizeObserver?: ResizeObserver,
 ) => {
   const intRef = useRef<number | null>(null);
 

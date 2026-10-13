@@ -16,6 +16,8 @@ MINRANGE = 0
 
 
 class Image:
+    """Represents a camera image with metadata and pixel data."""
+
     def __init__(self):
 
         self.height = 480  # Image height [pixels]
@@ -40,6 +42,16 @@ class Image:
 
 
 def imageMsg2Image(img, bridge):
+    """
+    Convert a ROS Image message to a JdeRobot Image object.
+
+    Args:
+        img: ROS sensor_msgs/Image message.
+        bridge: cv_bridge.CvBridge instance for conversion.
+
+    Returns:
+        Image object with BGR data, or None if the message is empty.
+    """
 
     if len(img.data) == 0:
         return None
@@ -63,6 +75,8 @@ def imageMsg2Image(img, bridge):
 
 ### HAL INTERFACE ###
 class CameraNode(Node):
+    """ROS2 node that subscribes to a camera topic and stores the latest image."""
+
     def __init__(self, topic):
         super().__init__("camera_node")
         self.sub = self.create_subscription(
@@ -72,7 +86,14 @@ class CameraNode(Node):
         self.bridge_ = cv_bridge.CvBridge()
 
     def listener_callback(self, msg):
+        """Store the latest image message received from the topic."""
         self.last_img_ = msg
 
     def getImage(self):
+        """
+        Return the latest camera image.
+
+        Returns:
+            Image object with BGR data, or None if no image has been received.
+        """
         return imageMsg2Image(self.last_img_, self.bridge_)

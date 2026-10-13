@@ -3,7 +3,9 @@ import base64
 import json
 import threading
 import rclpy
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 
 from hal_interfaces.general.camera import CameraNode
@@ -41,7 +43,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "lap": "", "map": ""}
         self.bridge = CvBridge()
 
-        self.pose3d_object = OdometryNode("/odom")
+        self.pose3d_object = OdometryNode("/f1/odom")
 
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.webgui_publisher)
@@ -89,18 +91,6 @@ class WebGUI(MeasuringThreadingGUI):
                 threading.Event().wait(0.033)  # ~30 FPS
             except Exception:
                 threading.Event().wait(1.0)
-
-    def gui_in_thread(self, ws, message):
-        if "ack" in message:
-            with self.ack_lock:
-                self.ack = True
-        elif "start" in message:
-            with self.ack_lock:
-                self.ack_frontend = True
-        elif "startLap" in message:
-            self.lap.unpause()
-        elif "pause" in message:
-            self.lap.pause()
 
     def update_gui(self):
         payload = self.payloadImage()

@@ -1,7 +1,5 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Checkbox,
@@ -10,10 +8,11 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useHomepage } from "Contexts/HomepageContext";
-import { useState, useEffect } from "react";
+import { alpha, styled } from "@mui/material/styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import { Filters } from "src/types/exercises";
+import { useHomepage } from "Contexts/HomepageContext";
+import React, { useEffect, useState } from "react";
+import { Filters } from "Types/exercises";
 
 // SessionStorage keys
 const FILTER_STORAGE_KEY = "ra_home_filters_v1";
@@ -51,7 +50,7 @@ const StyledInputBase = styled(InputBase)(
       width: "20ch",
       color: textColor,
     },
-  })
+  }),
 );
 
 const StyledMenu = styled(Menu)(
@@ -87,7 +86,7 @@ const StyledMenu = styled(Menu)(
         },
       },
     },
-  })
+  }),
 );
 
 // Filter persistence structure
@@ -161,7 +160,7 @@ const FilterMenu = () => {
 
   // Toggle and persist filter values
   const handleFilterCheckboxChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const name = e.target.name as keyof FilterState;
 
@@ -174,7 +173,7 @@ const FilterMenu = () => {
       try {
         window.sessionStorage.setItem(
           FILTER_STORAGE_KEY,
-          JSON.stringify(updated)
+          JSON.stringify(updated),
         );
       } catch (err) {
         console.error("Failed to save filter state", err);

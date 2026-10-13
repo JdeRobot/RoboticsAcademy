@@ -26,6 +26,8 @@ For NVIDIA GPUs, acceleration can be achieved by [installing the nvidia-containe
 docker run --rm -it --gpus all --device /dev/dri -p 7164:7164 -p 6080-6090:6080-6090 -p 7163:7163 --link academy_db jderobot/robotics-academy:latest
 ```
 
+For rootless Podman, see [Using Podman](./InstructionsForDevelopers_podman.md).
+
 ## Windows
 For Windows machines, acceleration can be achieved for NVIDIA GPUs if a valid CUDA installation is available. Useful docs for proper installation of WSL2 + CUDA + Docker Desktop:
 - [WSL2 + CUDA](https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl)

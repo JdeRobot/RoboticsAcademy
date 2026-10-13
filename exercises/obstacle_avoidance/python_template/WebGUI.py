@@ -10,9 +10,10 @@ from rclpy.qos import QoSProfile, DurabilityPolicy
 
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
-from lap import Lap
 from map import Map
 
 
@@ -77,7 +78,7 @@ class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
-        self.payload = {"lap": "", "map": ""}
+        self.payload = {"map": ""}
 
         self.pose3d_node = None
         self.laser_node = None
@@ -92,11 +93,10 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
-        self.pose3d_node = OdometryNode("/odom")
+        self.pose3d_node = OdometryNode("/f1/odom")
         self.laser_node = LaserNode("/f1/laser/scan")
 
         self.map = Map(self.get_laser_data, self.get_pose3d)
-        self.lap = Lap(self.map)
 
         self.bridge_node = ROS2BridgeNode(self)
 
@@ -124,10 +124,6 @@ class WebGUI(MeasuringThreadingGUI):
         return self.pose3d_node.getPose3d()
 
     def update_gui(self):
-        lapped = self.lap.check_threshold()
-        if lapped is not None:
-            self.payload["lap"] = str(lapped)
-
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
 
@@ -141,10 +137,6 @@ class WebGUI(MeasuringThreadingGUI):
 
     def showLocalTarget(self, newVec):
         self.map.setTargetPos(newVec[0], newVec[1])
-
-    def reset_gui(self):
-        self.map.reset()
-        self.lap.reset()
 
     def __del__(self):
         try:

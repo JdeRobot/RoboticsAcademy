@@ -1,4 +1,4 @@
-import { ExerciseStatus } from "src/types/exercises";
+import { ExerciseStatus } from "Types/exercises";
 import styled from "styled-components";
 
 interface StyledExerciseCardContainerProps {
@@ -49,6 +49,7 @@ export const StyledExerciseCardInfoContainer = styled.div`
   display: inline-flex;
   flex-direction: column;
   flex-grow: 1;
+  color: #fff;
 
   & #exercise-info,
   .exercise-tag-list {

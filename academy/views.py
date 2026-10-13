@@ -4,25 +4,24 @@ API views for Robotics Academy.
 
 import base64
 import json
-from django.http import HttpResponse, JsonResponse
+import ast
+from django.http import JsonResponse
 import subprocess
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
 from academy.exceptions import (
-    BinaryNotSupported,
-    ResourceAlreadyExists,
     ResourceAlreadyExistsHelpers,
-    ResourceNotExists,
 )
 from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
-from .models import Exercise, Universe, ExerciseUniverses
+from .templates import select_template
+from .models import Exercise, World, ExerciseWorlds, WorldRobots
+from .project_view import is_binary_mimetype
 from rest_framework.response import Response
-from rest_framework import status
 
 
 @csrf_exempt
@@ -31,13 +30,13 @@ def save_exercise_db(request):
     """
     Trigger a PostgreSQL dump of exercise-related tables to the repository.
 
-    Dumps tables: exercises, exercises_universes, exercises_tools.
+    Dumps tables: exercises, exercises_worlds, exercises_tools.
     Output is written to RoboticsAcademy/database/exercises/db.sql.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.exercises --table public.exercises_universes --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -50,17 +49,17 @@ def save_exercise_db(request):
 
 @csrf_exempt
 @api_view(["GET"])
-def save_universe_db(request):
+def save_world_db(request):
     """
-    Trigger a PostgreSQL dump of universe-related tables to a SQL file.
+    Trigger a PostgreSQL dump of world-related tables to a SQL file.
 
-    Dumps tables: universes, worlds, robots, tools.
-    Output is written to /universes.sql inside the container.
+    Dumps tables: worlds, scenes, robots, tools.
+    Output is written to /worlds.sql inside the container.
     """
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.universes --table public.worlds --table public.robots --table public.tools > /universes.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.scenes --table public.robots --table public.tools > /worlds.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -80,25 +79,36 @@ def enter_exercise(fal, request):
     Retrieve basic information about an exercise. Only called when entering.
     """
     project_id = request.GET.get("project_id")
-    project = Exercise.objects.get(exercise_id=project_id)
+    project = Exercise.objects.prefetch_related("tools").get(exercise_id=project_id)
 
-    tools = []
-    for tool in project.tools.all():
-        tools.append(tool.name)
+    tools = list(project.tools.values_list("name", flat=True))
+
+    try:
+        parsed_tags = ast.literal_eval(project.tags) if project.tags else []
+    except (ValueError, SyntaxError):
+        parsed_tags = []
+
+    try:
+        parsed_entrypoints = (
+            ast.literal_eval(project.entrypoints) if project.entrypoints else []
+        )
+    except (ValueError, SyntaxError):
+        parsed_entrypoints = []
 
     info = {
         "name": project.name,
-        "tags": eval(project.tags),
+        "tags": parsed_tags,
+        "entrypoints": parsed_entrypoints,
         "tools": tools,
         "url": project.url,
     }
 
     # FIX:https://github.com/JdeRobot/RoboticsAcademy/issues/3510
-    # global active_project
-    # if active_project is None:
-    #     active_project = project_id
-    # else:
-    #     raise Exception("Alredy open session")
+    global active_project
+    if active_project is None:
+        active_project = project_id
+    else:
+        raise Exception("Alredy open session")
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
@@ -107,7 +117,7 @@ def enter_exercise(fal, request):
         # Create base files
         file_path = fal.path_join(path, "academy.py")
         fal.create(file_path, "")
-        for tag in eval(project.tags):
+        for tag in parsed_tags:
             if tag == "MULTILANGUAGE":
                 file_path = fal.path_join(path, "academy.cpp")
                 fal.create(file_path, "")
@@ -120,6 +130,8 @@ def exit_exercise(fal, request):
     """
     Exit exercise
     """
+
+    print("Exit exercise")
 
     global active_project
     active_project = None
@@ -175,10 +187,18 @@ def get_helper_file(fal, request):
     project = request.GET.get("project")
     language = request.GET.get("language")
     filename = request.GET.get("filename", None)
+    binary = request.GET.get("binary", None)
 
     path = fal.exercise_helper_path(project, language)
+    file_path = fal.path_join(path, filename)
 
-    content = fal.read(fal.path_join(path, filename))
+    if binary is None or binary is False:
+        content = fal.read(file_path)
+    else:
+        content = fal.read_binary(file_path)
+        b64 = base64.b64encode(content)
+        content = b64.decode("utf-8")
+
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
 
@@ -191,12 +211,16 @@ def get_file_list(fal, request):
     Query params: project (str).
     """
     project = request.GET.get("project")
+    user = request.GET.get("user", None)
 
     base_group = "Code"
 
     path = fal.exercise_path(project)
 
-    file_list = fal.list_formatted(path, base_group)
+    try:
+        file_list = fal.list_formatted(path, base_group)
+    except Exception:
+        return Response({"file_list": EntryEncoder().encode([])})
 
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
@@ -211,15 +235,22 @@ def create_file(fal, request):
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     filename = request.data.get("file_name")
+    template = request.data.get("template", None)
 
     path = fal.exercise_path(project_id)
     create_path = fal.path_join(location, filename)
     file_path = fal.path_join(path, create_path)
 
+    content = ""
+
+    if template is not None:
+        content = select_template(template)
+
+    fal.create(file_path, content)
+
     if exists_in_helpers(fal, create_path, project_id):
         raise ResourceAlreadyExistsHelpers(create_path)
 
-    fal.create(file_path, "")
     return Response({"success": True})
 
 
@@ -343,6 +374,7 @@ def get_file(fal, request):
     """
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
+    user = request.GET.get("user", None)
 
     binary = request.GET.get("binary", None)
 
@@ -381,104 +413,103 @@ def save_file(fal, request):
 
 
 @error_wrapper("GET", ["project"])
-def get_universes_list(fal, request):
+def get_worlds_list(fal, request):
     """
-    Return the list of universes associated with an exercise.
+    Return the list of worlds associated with an exercise.
     """
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    universes_list = []
+    worlds_list = []
 
-    proj_univs = project.universes.all()
-    proj_univs = sorted(
-        proj_univs,
-        key=lambda univ: not ExerciseUniverses.objects.get(
-            exercise=project, universe=univ
+    proj_worlds = project.worlds.all()
+    proj_worlds = sorted(
+        proj_worlds,
+        key=lambda world: not ExerciseWorlds.objects.get(
+            exercise=project, world=world
         ).is_default,
     )
 
-    for universe in proj_univs:
-        universes_list.append(universe.name)
+    for world in proj_worlds:
+        worlds_list.append(world.name)
 
-    return Response({"universes_list": universes_list})
+    return Response({"worlds_list": worlds_list})
 
 
 @error_wrapper("GET", ["project"])
-def get_docker_universe_data(fal, request):
+def get_docker_world_data(fal, request):
     """
-    Retrieve docker and universe configuration for an exercise.
+    Retrieve docker and world configuration for an exercise.
     """
-    name = request.GET.get("universe")
+    name = request.GET.get("world")
     project_id = request.GET.get("project")
-    project = Exercise.objects.get(exercise_id=project_id)
+    project = Exercise.objects.prefetch_related("tools", "worlds").get(
+        exercise_id=project_id
+    )
 
+    robots = []
+    robots_config = []
     tools = []
-    tools_config = {}
-    for tool in project.tools.all():
-        tools.append(tool.name)
-        if tool.base_config != "None":
-            tools_config.update({tool.name: tool.base_config})
+    tools_configuration = {}
 
-    if len(project.universes.all()) == 0:
+    for tool_name, base_config in project.tools.values_list("name", "base_config"):
+        tools.append(tool_name)
+        if base_config != "None":
+            tools_configuration[tool_name] = base_config
+
+    if not project.worlds.exists():
         config = {
             "name": None,
-            "world": {
+            "scene": {
                 "name": None,
                 "launch_file_path": None,
                 "ros_version": None,
                 "type": None,
                 "tools_config": None,
             },
-            "robot": {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-            },
-            "tools": tools,
-            "tools_config": tools_config,
-        }
-    else:
-        universe = Universe.objects.get(name=name)
-
-        tools_configuration = None
-        if universe.world.tools_config != "None":
-            tools_configuration = json.loads(universe.world.tools_config)
-
-        if universe.robot.name != "None":
-            robot_config = {
-                "name": universe.robot.name,
-                "launch_file_path": universe.robot.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "start_pose": universe.world.start_pose,
-            }
-        else:
-            robot_config = {
-                "name": None,
-                "launch_file_path": None,
-                "ros_version": None,
-                "type": None,
-                "start_pose": None,
-            }
-
-        config = {
-            "name": universe.name,
-            "world": {
-                "name": universe.world.name,
-                "launch_file_path": universe.world.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "tools_config": tools_configuration,
-            },
-            "robot": robot_config,
+            "robot": robots,
             "tools": tools,
             "tools_config": tools_configuration,
         }
+        return Response({"success": True, "world": config})
 
-    return Response({"success": True, "universe": config})
+    world = World.objects.get(name=name)
+
+    ros_version = world.scene.ros_version
+    world_type = world.scene.type
+
+    if world.scene.tools_config != "None":
+        tools_configuration = json.loads(world.scene.tools_config)
+
+    robot_models = world.robots.all()
+    for robot in robot_models:
+        for pose in WorldRobots.objects.get(world=world, robot=robot).poses:
+            robot_config = {
+                "name": robot.name,
+                "launch_file_path": robot.launch_file_path,
+                "ros_version": ros_version,
+                "type": world_type,
+                "start_pose": pose,
+                "entity": robot.entity,
+                "extra_config": robot.extra_config,
+            }
+            robots_config.append(robot_config.copy())
+
+    config = {
+        "name": world.name,
+        "scene": {
+            "name": world.scene.name,
+            "launch_file_path": world.scene.launch_file_path,
+            "ros_version": ros_version,
+            "type": world_type,
+            "tools_config": tools_configuration,
+        },
+        "robot": robots_config,
+        "tools": tools,
+        "tools_config": tools_configuration,
+    }
+
+    return Response({"success": True, "world": config})
 
 
 @error_wrapper("POST", ["project_id", "file_name", ("location", -1), "content"])

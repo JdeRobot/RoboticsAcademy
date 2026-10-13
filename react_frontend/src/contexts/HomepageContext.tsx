@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Filters } from "src/types/exercises";
+import { Filters } from "Types/exercises";
 import React from "react";
 
 export interface HomepageContextType {
@@ -37,7 +37,7 @@ export function HomepageProvider({ children }: { children?: ReactNode }) {
 
   const appendFilterItem = (item: Filters) => {
     setFilterItemsList((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
     );
   };
 

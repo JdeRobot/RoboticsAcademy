@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ExerciseCard } from "./../ExerciseCard";
 import { useHomepage } from "Contexts/HomepageContext";
-import { Exercise, Filters } from "src/types/exercises";
+import { Exercise, Filters } from "Types/exercises";
 import {
   StyledAcademyContainer,
   StyledAcademyLoadingMsg,
@@ -15,7 +15,7 @@ const AcademyContainer = () => {
   const theme = useAcademyTheme();
   const [loading, setLoading] = useState<boolean>(true);
   const [exerciseList, setExerciseList] = useState<Exercise[] | undefined>(
-    undefined
+    undefined,
   );
   const filterText: string = getSearchBarText();
 
