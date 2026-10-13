@@ -1,0 +1,146 @@
+diff --git a/Industrial/drone_gripper/src/drone_gripper.cpp b/Industrial/drone_gripper/src/drone_gripper.cpp
+index 8d3ffde..c812212 100644
+--- a/Industrial/drone_gripper/src/drone_gripper.cpp
++++ b/Industrial/drone_gripper/src/drone_gripper.cpp
+@@ -175,21 +175,28 @@ void PreUpdate(
+   if (!_ecm.HasEntity(this->modelEntity))
+   {
+     if (this->activeJoint != kNullEntity)
+-    {
+-      _ecm.RequestRemoveEntity(this->activeJoint);
+-      this->activeJoint = kNullEntity;
+-    }
++      this->Detach(_ecm);
+     this->running_ = false;
+     this->dead_ = true;
+     return;
+   }
+ 
+-  // Drop the joint if the drone is gone OR is being removed this very cycle.
+-  // Reset removes the drone first; detaching in the SAME cycle as the removal
+-  // keeps the DetachableJoint from outliving the drone links, which would wedge
+-  // the physics server and stop the drone re-spawning. Runs even while paused,
+-  // because reset happens with the world paused.
+-  //TODO: review
++  // Keep the old joint out of the attach path until the ECM has actually
++  // processed its removal; reusing a dying joint entity would attach the box to
++  // a constraint that Physics is about to delete.
++  if (this->pendingJoint != kNullEntity)
++  {
++    if (_ecm.HasEntity(this->pendingJoint))
++      return;
++    this->pendingJoint = kNullEntity;
++  }
++
++  // Fallback: if the drone vanished or is being removed this cycle, release the
++  // payload so the joint does not reference a model that no longer exists.
++  // This path detaches in the SAME cycle as the removal, which cannot fully undo
++  // the DetachableJoint reparenting before the drone's physics body is torn
++  // down; the reliable path is detaching one cycle earlier, on pause (below),
++  // which is what the reset orchestration guarantees by pausing first.
+   if (this->activeJoint != kNullEntity && this->GripperGoneOrRemoving(_ecm))
+   {
+     this->HandleResetDetach(_ecm);
+@@ -197,20 +204,19 @@ void PreUpdate(
+ 
+   if (_info.paused)
+   {
+-    // TODO: commented because it detaches when the user presses pause
+-    // A reset pauses the world before removing/resetting the drone. Detach the
+-    // box (so it is not jointed to the drone when it is removed) AND de-energize
+-    // the magnet. De-energizing is key: otherwise TryAttach would auto-re-attach
+-    // on unpause, leaving the gripper stuck "carrying" a stale/reset box so it
+-    // never grabs again. The exercise re-energizes the magnet when it wants to
+-    // grab, so a fresh run works normally. If GripperGoneOrRemoving already
+-    // handled it above this cycle, activeJoint is already null here.
+-    // if (this->activeJoint != kNullEntity)
+-    //   this->HandleResetDetach(_ecm);
+-    // {
+-    //   std::lock_guard<std::mutex> lock(this->mutex);
+-    //   this->magnetEnabled = false;
+-    // }
++    // A reset pauses the world BEFORE removing/resetting the drone. Detach here,
++    // in this very cycle, so the physics engine processes the DetachableJoint
++    // removal (undoing the body reparenting) before the drone model and/or the
++    // world are reset. gz-sim aborts in Physics::RemovePhysicsEntities when a
++    // jointed model is removed/reset while the joint is still alive, so this
++    // early detach is what keeps gzserver up across a mid-carry reset.
++    if (this->activeJoint != kNullEntity)
++      this->HandleResetDetach(_ecm);
++
++    // Do NOT de-energize: if the pause was a plain user pause, TryAttach will
++    // simply re-attach the (still in-range) payload on unpause, preserving the
++    // "holding" behaviour. A reset instead removes this plugin instance, so
++    // there is nothing left to auto-re-attach.
+     return;
+   }
+ 
+@@ -243,8 +249,7 @@ void Reset(
+ {
+   if (this->activeJoint != kNullEntity)
+   {
+-    _ecm.RequestRemoveEntity(this->activeJoint);
+-    this->activeJoint = kNullEntity;
++    this->Detach(_ecm);
+   }
+   this->carriedModel = kNullEntity;
+ 
+@@ -261,13 +266,6 @@ private:
+ // this instance is about to die, so without this HAL's cached "carrying"
+ // state stays stale (true) until the respawned drone's fresh plugin instance
+ // publishes its first heartbeat.
+-//
+-// NOTE: this used to also RequestRemoveEntity() the payload model itself, to
+-// work around a DetachableJoint that silently stops enforcing on a link that
+-// was jointed once before. That was reverted - removing a model entity
+-// during the paused/reset transition looks like the cause of gzserver dying
+-// after repeated carry-then-reset cycles. The stale-physics bug is still
+-// open; needs a safer fix.
+ void HandleResetDetach(EntityComponentManager &_ecm)
+ {
+   this->Detach(_ecm);
+@@ -367,6 +365,9 @@ void TryAttach(EntityComponentManager &_ecm)
+   if (bestChild == kNullEntity)
+     return;
+ 
++  if (this->pendingJoint != kNullEntity)
++    return;
++
+   const Entity jointEntity = _ecm.CreateEntity();
+   components::DetachableJoint joint;
+   joint.Data().parentLink = gripperLink;
+@@ -384,7 +385,25 @@ void Detach(EntityComponentManager &_ecm)
+   if (this->activeJoint == kNullEntity)
+     return;
+ 
+-  _ecm.RequestRemoveEntity(this->activeJoint);
++  // Only request the removal of the joint ENTITY. Do NOT also remove the
++  // DetachableJoint component: doing so moves the joint entity's data to the
++  // view's invalidData while the entity is still in its toRemoveEntities set,
++  // and gz-sim 8 then aborts in View::EntityComponentData (validData.at) when
++  // Physics::RemovePhysicsEntities walks EachRemoved<DetachableJoint>.
++  if (_ecm.HasEntity(this->activeJoint))
++  {
++    this->pendingJoint = this->activeJoint;
++    _ecm.RequestRemoveEntity(this->activeJoint);
++    // Apply the removal to the ECM right now instead of at the end of the
++    // cycle. Physics::Update runs after PreUpdate in the same step, so this
++    // makes the DetachableJoint removal (and the dartsim un-reparenting it
++    // triggers) happen one cycle earlier. Without this, the joint's removal
++    // is processed in the same Physics::Update that also tears down the
++    // removed drone model, and RemovePhysicsEntities destroys the drone's
++    // skeleton - which still owns the box body after reparenting - before it
++    // ever runs EachRemoved<DetachableJoint>, leaving the box corrupted.
++    _ecm.ProcessRemoveEntityRequests();
++  }
+   this->activeJoint = kNullEntity;
+   this->carriedModel = kNullEntity;
+   std::cout << "[DroneGripper] Released payload" << std::endl;
+@@ -409,6 +428,7 @@ double attachDistance{0.15};
+ std::mutex mutex;
+ bool magnetEnabled{false};
+ Entity activeJoint{kNullEntity};
++Entity pendingJoint{kNullEntity};
+ Entity carriedModel{kNullEntity};
+ int publishCounter{0};
+ 
