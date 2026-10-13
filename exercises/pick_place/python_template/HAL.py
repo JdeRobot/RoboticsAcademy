@@ -51,11 +51,7 @@ HAL.graspable_pub = HAL.create_publisher(
 HAL.gripper_client = ActionClient(
     HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
 )
-
-print("[HAL] Waiting for gripper controller...")
-while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
-    print("[HAL] Waiting for gripper controller...")
-print("[HAL] Gripper ready")
+HAL.gripper = None
 
 print("[HAL] LinkAttacher ready")
 
@@ -119,10 +115,23 @@ def get_gripper_joint_limits(joint_name):
     return 0.0, 0.80285
 
 
-GRIPPER_JOINT_NAME = get_gripper_joint_name()
-GRIPPER_MIN, GRIPPER_MAX = get_gripper_joint_limits(GRIPPER_JOINT_NAME)
+def get_gripper():
+    """Wait for the gripper controller on first use so suction cup arms never block on it."""
 
-print(f"[HAL] Gripper joint: {GRIPPER_JOINT_NAME} range [{GRIPPER_MIN}, {GRIPPER_MAX}]")
+    if HAL.gripper is None:
+        print("[HAL] Waiting for gripper controller...")
+        while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
+            print("[HAL] Waiting for gripper controller...")
+        print("[HAL] Gripper ready")
+
+        joint_name = get_gripper_joint_name()
+        lower, upper = get_gripper_joint_limits(joint_name)
+        HAL.gripper = (joint_name, lower, upper)
+
+        print(f"[HAL] Gripper joint: {joint_name} range [{lower}, {upper}]")
+
+    return HAL.gripper
+
 
 # blue_ball, green_cylinder, yellow_box, red_box are the UR5 world's
 # objects, red_cube, green_cube, blue_cube are the Dobot world's
@@ -397,6 +406,8 @@ def GripperSet(relative_closure, wait_time):
     print(f"[HAL] Requested closure: {relative_closure} %")
     print(f"[HAL] Wait time: {wait_time} s")
 
+    gripper_joint, gripper_min, gripper_max = get_gripper()
+
     # ==========================================================
     # ENABLE/DISABLE AUTO ATTACH
     # ==========================================================
@@ -424,13 +435,13 @@ def GripperSet(relative_closure, wait_time):
     # GRIPPER MOTION
     # ==========================================================
 
-    position = GRIPPER_MIN + ((GRIPPER_MAX - GRIPPER_MIN) * (relative_closure / 100.0))
+    position = gripper_min + ((gripper_max - gripper_min) * (relative_closure / 100.0))
 
     print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
 
-    goal_msg.trajectory.joint_names = [GRIPPER_JOINT_NAME]
+    goal_msg.trajectory.joint_names = [gripper_joint]
 
     point = JointTrajectoryPoint()
 
@@ -459,6 +470,41 @@ def GripperSet(relative_closure, wait_time):
     rclpy.spin_until_future_complete(HAL, result_future)
 
     print("[HAL] Gripper motion completed")
+
+    time.sleep(wait_time)
+
+    print(f"[HAL] Waiting {wait_time} s")
+    print("==================================================\n")
+
+
+# ==============================================================
+# SUCTION GRIPPER CONTROL
+# ==============================================================
+
+
+def SuctionSet(on, wait_time):
+    """
+    Turn the suction (vacuum) gripper on or off.
+
+    on = True   -> grip: any graspable object touching the cup is attached
+    on = False  -> release: the held object is detached
+
+    The suction cup has no actuated joint and no controller. Gripping is handled
+    by the gz_link_attacher plugin, which rigidly attaches an object to the cup
+    link on contact while auto-attach is enabled and releases it when disabled.
+    """
+
+    print("\n==================================================")
+    print(f"[HAL] SuctionSet({on}) called")
+
+    # Nothing spins HAL here so the graspable list is sent again on every call
+    publish_graspable_objects()
+
+    auto_msg = Bool()
+    auto_msg.data = bool(on)
+    HAL.auto_attach_pub.publish(auto_msg)
+
+    print(f"[HAL] Suction {'ENABLED' if on else 'DISABLED'}")
 
     time.sleep(wait_time)
 
