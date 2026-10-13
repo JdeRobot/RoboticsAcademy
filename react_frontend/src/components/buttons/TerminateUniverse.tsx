@@ -5,8 +5,9 @@ import { CommsManager, states } from "jderobot-commsmanager";
 import StopCircleRoundedIcon from "@mui/icons-material/StopCircleRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { sendExecutionProbe } from "Api";
 
-const TerminateUniverseButton = () => {
+const TerminateUniverseButton = ({ project }: { project: string }) => {
   const theme = useAcademyTheme();
   const { warning } = useError();
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,6 +29,8 @@ const TerminateUniverseButton = () => {
       return;
     }
 
+    sendExecutionProbe(project, "stop_world");
+
     setLoading(true);
 
     if (state === states.RUNNING || state === states.PAUSED) {
@@ -40,7 +43,6 @@ const TerminateUniverseButton = () => {
     } else {
       await manager.terminateWorld();
     }
-
     setLoading(false);
   };
 
