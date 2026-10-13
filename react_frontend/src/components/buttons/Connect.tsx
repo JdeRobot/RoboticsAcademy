@@ -22,7 +22,7 @@ const ConnectButton = ({
     });
   };
 
-  const msg = loading ? "Conecting ..." : "Click to connect";
+  const msg = loading ? "Connecting ..." : "Click to connect";
 
   return (
     <StyledHeaderConnectButton
