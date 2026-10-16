@@ -26,7 +26,6 @@ import {
 import { Entry, Layout } from "jderobot-ide-interface";
 import { CommsManager } from "jderobot-commsmanager";
 import { subscribe, unsubscribe } from "Helpers/utils";
-import { sendExecutionProbe } from "Api";
 const ExerciseHeader = ({
   project,
   name,
@@ -52,18 +51,6 @@ const ExerciseHeader = ({
   additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
-  useEffect(() => {
-    const handleUnload = () => {
-      sendExecutionProbe(project, "exit_exercise");
-    };
-
-    window.addEventListener('beforeunload', handleUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleUnload);
-      handleUnload(); 
-    };
-  }, [project]);
 
   return (
     <AppBar position="static">
