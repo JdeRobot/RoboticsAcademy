@@ -40,6 +40,12 @@ services:
         source: ./src
         target: /RoboticsApplicationManager
       - ./RoboticsInfrastructure/database/worlds.sql:/worlds.sql
+      # Host /dev away from /dev/pts so USB robots show up even when plugged later
+      - /dev:/host_dev:ro
+    # USB serial ports for physical robots
+    device_cgroup_rules:
+      - "c 188:* rmw"
+      - "c 166:* rmw"
     tty: true
     stdin_open: true
     depends_on:
