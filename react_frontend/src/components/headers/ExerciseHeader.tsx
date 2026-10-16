@@ -26,7 +26,6 @@ import {
 import { Entry, Layout } from "jderobot-ide-interface";
 import { CommsManager } from "jderobot-commsmanager";
 import { subscribe, unsubscribe } from "Helpers/utils";
-
 const ExerciseHeader = ({
   project,
   name,
@@ -52,6 +51,7 @@ const ExerciseHeader = ({
   additionalEntrypoints: string[];
 }) => {
   const theme = useAcademyTheme();
+
   return (
     <AppBar position="static">
       <Toolbar
@@ -157,8 +157,8 @@ const ExecutionControl = ({
             entrypointRef={entrypointRef}
             additionalEntrypoints={additionalEntrypoints}
           />
-          <ResetButton />
-          <TerminateUniverseButton />
+          <ResetButton project={project} />
+          <TerminateUniverseButton project={project} />
         </>
       )}
     </>
