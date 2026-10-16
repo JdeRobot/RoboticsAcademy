@@ -374,4 +374,11 @@ WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
   export GZ_VERSION=harmonic && \
   colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+
+# Install BT Cpp
+WORKDIR /home/ws/src
+RUN git clone --depth 1 https://github.com/BehaviorTree/BehaviorTree.CPP.git
+# RUN pip install conan && conan profile detect
+RUN cd BehaviorTree.CPP && mkdir build_release && cmake -S . -B build_release && cmake --build build_release --parallel
+
 WORKDIR /
