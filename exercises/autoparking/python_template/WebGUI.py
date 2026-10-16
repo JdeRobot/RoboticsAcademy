@@ -134,15 +134,14 @@ class WebGUI(MeasuringThreadingGUI):
 
         message = json.dumps(self.payload)
         self.send_to_client(message)
-      
+
     def show_user_lidar(self, user_points, color):
         points = []
         for p in user_points:
             x, y, z = p
             if not (math.isinf(x) or math.isinf(y) or math.isinf(z)):
                 points.append(
-                    (float(x * 10), float((z + 1.75) * 10), float(-y * 10))
-                    + color
+                    (float(x * 10), float((z + 1.75) * 10), float(-y * 10)) + color
                 )
 
         with self.lidar_show_lock:
@@ -157,5 +156,6 @@ host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
 
-def showLidar(points,color=(255, 20, 20)):
+
+def showLidar(points, color=(255, 20, 20)):
     gui.show_user_lidar(points, color)
