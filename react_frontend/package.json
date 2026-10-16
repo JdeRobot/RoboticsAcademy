@@ -50,12 +50,13 @@
     "webpack-cli": "^7.2.1"
   },
   "dependencies": {
+    "@arizeai/point-cloud": "^4.1.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^9.2.0",
     "@mui/material": "^9.2.0",
     "@mui/system": "^9.2.0",
-    "@react-three/drei": "^10.7.7",
+    "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "9.6.1",
     "@types/node": "^26.1.1",
     "@types/react-dom": "^19.2.3",

@@ -1,6 +1,7 @@
 import json
 import subprocess
 import math
+import threading
 
 import rclpy
 from rclpy.node import Node
@@ -67,6 +68,10 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
+        self.lidar_to_be_shown = None
+        self.lidar_to_be_shown_updated = False
+        self.lidar_show_lock = threading.Lock()
+
         self.ros_node = WebGUINode()
         self.executor = rclpy.executors.SingleThreadedExecutor()
         self.executor.add_node(self.ros_node)
@@ -107,6 +112,12 @@ class WebGUI(MeasuringThreadingGUI):
                 self.payload["map"] = map_message
 
         elif self.mode == "Lidar":
+            with self.lidar_show_lock:
+                lidar_to_be_shown_updated = self.lidar_to_be_shown_updated
+                lidar_to_be_shown = self.lidar_to_be_shown
+
+            self.payload["user_lidar"] = json.dumps(lidar_to_be_shown)
+
             if self.ros_node.lidar:
                 points = []
                 color = (20, 20, 255)
@@ -123,6 +134,20 @@ class WebGUI(MeasuringThreadingGUI):
 
         message = json.dumps(self.payload)
         self.send_to_client(message)
+      
+    def show_user_lidar(self, user_points, color):
+        points = []
+        for p in user_points:
+            x, y, z = p
+            if not (math.isinf(x) or math.isinf(y) or math.isinf(z)):
+                points.append(
+                    (float(x * 10), float((z + 1.75) * 10), float(-y * 10))
+                    + color
+                )
+
+        with self.lidar_show_lock:
+            self.lidar_to_be_shown = points
+            self.lidar_to_be_shown_updated = True
 
     def reset_gui(self):
         self.map = Map(self.get_front, self.get_right, self.get_back)
@@ -131,3 +156,6 @@ class WebGUI(MeasuringThreadingGUI):
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
+
+def showLidar(points,color=(255, 20, 20)):
+    gui.show_user_lidar(points, color)

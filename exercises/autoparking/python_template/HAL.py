@@ -149,7 +149,6 @@ def getLidarData():
             x, y, z = point
     """
     lidar = lidar_node.getLidarData()
-    print(lidar)
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
         lidar = lidar_node.getLidarData()
