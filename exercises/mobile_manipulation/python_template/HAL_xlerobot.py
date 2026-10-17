@@ -35,7 +35,7 @@ sys.path.append(
 from robot import RBT  # noqa: E402
 from ros2srrc_data.msg import Robpose  # noqa: E402
 
-# HAL for XLeRobot in the house exercise
+# HAL for XLeRobot in the warehouse exercise
 # Cartesian arm goals are planned with MoveIt2 and are relative to base_footprint
 # so they stay valid while the robot drives
 # The joint functions move the arms directly without planning
@@ -49,8 +49,10 @@ GRIPPER_OPEN = 1.7453292
 GRIPPER_CLOSED = -0.374533
 # Jaw angle that holds the cube without pushing it out
 GRASP_JAW = 0.55
-# Jaw angle used while approaching
+# Jaw angle used to release and around the tray
 GRASP_OPEN = 1.0
+# Wider jaw angle while approaching an object so it enters the gap cleanly
+GRASP_APPROACH_OPEN = 1.4
 
 # Fully extended zero pose
 ARM_HOME_JOINTS = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -60,8 +62,8 @@ LEFT_TRAY_JOINTS = [-1.9181, 1.1113, 2.0946, 0.7083, -1.5708]
 RIGHT_TRAY_JOINTS = [2.116, 1.1136, 2.099, 0.7062, -1.5708]
 
 # Both arms forward with the grippers pointing down
-READY_LEFT_JOINTS = [-1.600, 1.527, 2.123, 0.063, 1.664]
-READY_RIGHT_JOINTS = [1.630, 1.525, 2.110, 0.074, 1.459]
+READY_LEFT_JOINTS = [-1.600, 1.527, 2.123, 0.063, -1.571]
+READY_RIGHT_JOINTS = [1.630, 1.525, 2.110, 0.074, -1.571]
 
 
 def custom_thread_excepthook(args):
@@ -72,7 +74,7 @@ def custom_thread_excepthook(args):
 
 threading.excepthook = custom_thread_excepthook
 
-print("HAL (XLeRobot Home) initializing", flush=True)
+print("HAL (XLeRobot Warehouse) initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
@@ -113,7 +115,16 @@ head_depth_node = DepthCameraNode(
 arm_node = Node("hal_arm_node")
 
 # Read by the gz_link_attacher plugins of the world
-grasp_pub = arm_node.create_publisher(Bool, "/gripper_auto_attach", 10)
+# Each gripper has its own attach switch and a stow switch that fixes the
+# held object to the robot tray
+attach_pubs = {
+    side: arm_node.create_publisher(Bool, f"/xlerobot/{side}_gripper_attach", 10)
+    for side in ("left", "right")
+}
+stow_pubs = {
+    side: arm_node.create_publisher(Bool, f"/xlerobot/{side}_gripper_stow", 10)
+    for side in ("left", "right")
+}
 graspable_pub = arm_node.create_publisher(String, "/graspable_objects", 10)
 
 # The TF buffer has its own node because sharing arm_node left it with stale transforms
@@ -225,7 +236,7 @@ executor_thread.start()
 
 def __publish_graspable_objects():
     msg = String()
-    msg.data = "red_box,yellow_box,blue_box"
+    msg.data = "blue_box,yellow_box,green_cylinder"
     graspable_pub.publish(msg)
 
 
@@ -291,6 +302,15 @@ def __move_cartesian(arm, x, y, z, roll, pitch, yaw, speed, motion, side):
 def getPose3d():
     """Base pose from odometry."""
     return odometry_node.getPose3d()
+
+
+def worldToBase(x, y, z):
+    """Warehouse point expressed in base_footprint using odometry."""
+    pose = odometry_node.getPose3d()
+    dx = x - pose.x
+    dy = y - pose.y
+    c, s = math.cos(pose.yaw), math.sin(pose.yaw)
+    return (c * dx + s * dy, -s * dx + c * dy, z)
 
 
 def getJointPositions():
@@ -455,20 +475,58 @@ def cameraToBase(x, y, z):
     return tuple(point)
 
 
+# The base reaches the commanded speeds with limited acceleration
+# because a sudden speed change swings the arms around their weak joints
+BASE_MAX_LINEAR_ACCEL = 0.4  # m/s^2
+BASE_MAX_ANGULAR_ACCEL = 0.5  # rad/s^2
+_base_target = [0.0, 0.0, 0.0]
+_base_current = [0.0, 0.0, 0.0]
+
+
+def __base_ramp():
+    last = __sim_now()
+    while True:
+        time.sleep(0.01)
+        now = __sim_now()
+        dt = now - last
+        if dt <= 0.0:
+            continue
+        last = now
+        limits = (
+            BASE_MAX_LINEAR_ACCEL * dt,
+            BASE_MAX_LINEAR_ACCEL * dt,
+            BASE_MAX_ANGULAR_ACCEL * dt,
+        )
+        changed = False
+        for i, step in enumerate(limits):
+            delta = max(-step, min(step, _base_target[i] - _base_current[i]))
+            if delta != 0.0:
+                _base_current[i] += delta
+                changed = True
+        if changed:
+            twist = motor_node.last_twist
+            twist.linear.x = _base_current[0]
+            twist.linear.y = _base_current[1]
+            twist.angular.z = _base_current[2]
+            motor_node.pub.publish(twist)
+
+
 def setV(velocity):
     """Forward speed in m/s."""
-    motor_node.sendV(velocity)
+    _base_target[0] = float(velocity)
 
 
 def setVY(velocity):
     """Sideways speed in m/s."""
-    motor_node.last_twist.linear.y = float(velocity)
-    motor_node.pub.publish(motor_node.last_twist)
+    _base_target[1] = float(velocity)
 
 
 def setW(velocity):
     """Yaw rate in rad/s."""
-    motor_node.sendW(velocity)
+    _base_target[2] = float(velocity)
+
+
+threading.Thread(target=__base_ramp, daemon=True).start()
 
 
 def moveLeftArm(x, y, z, roll=0.0, pitch=0.0, yaw=0.0, speed=0.3, motion="PTP"):
@@ -544,9 +602,8 @@ def readyPose(duration=2.0):
 def setLeftGripper(closed, duration=1.0, target=None):
     """True closes the left gripper and arms auto attach and False opens it.
     target overrides the jaw angle.
-    Both grippers share the auto attach switch so grasp with one arm at a time.
     """
-    grasp_pub.publish(Bool(data=bool(closed)))
+    attach_pubs["left"].publish(Bool(data=bool(closed)))
     if target is None:
         target = GRIPPER_CLOSED if closed else GRIPPER_OPEN
     __send_trajectory(left_gripper_client, ["Jaw_L"], [target], duration)
@@ -554,43 +611,35 @@ def setLeftGripper(closed, duration=1.0, target=None):
 
 def setRightGripper(closed, duration=1.0, target=None):
     """Right gripper like setLeftGripper."""
-    grasp_pub.publish(Bool(data=bool(closed)))
+    attach_pubs["right"].publish(Bool(data=bool(closed)))
     if target is None:
         target = GRIPPER_CLOSED if closed else GRIPPER_OPEN
     __send_trajectory(right_gripper_client, ["Jaw_R"], [target], duration)
 
 
-# The cube stays at a fixed tray spot so a later pick finds it again
+# The object is fixed to its tray spot so a later pick finds it again
 def dropInLeftTray(speed=0.3):
     """Stow the held cube in the left arm's tray spot."""
-    return __tray_visit(
-        "left", moveLeftArm, setLeftGripper, setLeftArmJoints, True, speed
-    )
+    return __tray_visit("left", True, speed)
 
 
 def dropInRightTray(speed=0.3):
     """Stow the held cube in the right arm's tray spot."""
-    return __tray_visit(
-        "right", moveRightArm, setRightGripper, setRightArmJoints, True, speed
-    )
+    return __tray_visit("right", True, speed)
 
 
 def pickFromLeftTray(speed=0.3):
     """Take the cube left by dropInLeftTray."""
-    return __tray_visit(
-        "left", moveLeftArm, setLeftGripper, setLeftArmJoints, False, speed
-    )
+    return __tray_visit("left", False, speed)
 
 
 def pickFromRightTray(speed=0.3):
     """Take the cube left by dropInRightTray."""
-    return __tray_visit(
-        "right", moveRightArm, setRightGripper, setRightArmJoints, False, speed
-    )
+    return __tray_visit("right", False, speed)
 
 
 # The arms have 5 joints so MoveIt only accepts exactly reachable poses
-# The grasp orientation is solved numerically and its forward kinematics pose is sent to Robmove
+# The grasp orientation is solved numerically so every pose is exactly reachable
 GRASP_PITCH = 0.4
 GRASP_APPROACH_DISTANCE = 0.10
 
@@ -602,7 +651,7 @@ _ARM_CHAIN = [
     ((0, 0.0052, 0.1349), (-1.5708, 0, 0), (1, 0, 0)),
     ((0, -0.0601, 0), (0, 1.5707927, 0), (0, -1, 0)),
 ]
-_TCP_OFFSET = (-0.0171, -0.0800, 0.0)
+_TCP_OFFSET = (-0.0380, -0.0930, 0.0)
 _ARM_LOWER = np.array([-2.16, -0.22, -0.22, -1.6580628, -2.7438473])
 _ARM_UPPER = np.array([2.16, 3.37, 3.14, 1.6580627, 2.8412063])
 # Arm mount position and yaw in base_footprint
@@ -720,46 +769,6 @@ def __solve_pose(arm, position, R, seed):
     return r.x if np.linalg.norm(r.fun) < 1e-6 else None
 
 
-def __grasp(move, set_gripper, arm, x, y, z, speed):
-    solved = __solve_grasp_orientation(
-        arm, (x, y, z), roll_sign=1.0 if arm == "left" else -1.0
-    )
-    if solved is None:
-        print(
-            f"[HAL] {arm} arm cannot reach a grasp at ({x:.3f}, {y:.3f}, {z:.3f})",
-            flush=True,
-        )
-        return False
-    R, f, q_grasp = solved
-    roll, pitch, yaw = __rpy_from_matrix(R)
-    pre = (
-        x - f[0] * GRASP_APPROACH_DISTANCE,
-        y - f[1] * GRASP_APPROACH_DISTANCE,
-        z - f[2] * GRASP_APPROACH_DISTANCE,
-    )
-    set_gripper(False, 1.0, GRASP_OPEN)
-    sleepSim(1.0)
-    if not move(pre[0], pre[1], pre[2], roll, pitch, yaw, speed, "PTP"):
-        return False
-    if not move(x, y, z, roll, pitch, yaw, speed, "LIN"):
-        return False
-    set_gripper(True, 1.0, GRASP_JAW)
-    sleepSim(1.0)
-
-    # The retreat falls back to other motions because a LIN retreat can fail
-    for motion in ("LIN", "LIN", "PTP"):
-        if move(pre[0], pre[1], pre[2], roll, pitch, yaw, speed, motion):
-            return True
-        print(f"[HAL] {arm} retreat with {motion} failed", flush=True)
-    q_pre = __solve_pose(arm, pre, R, q_grasp)
-    if q_pre is None:
-        return False
-    print(f"[HAL] {arm} retreat: sending joints straight to the controller", flush=True)
-    (setLeftArmJoints if arm == "left" else setRightArmJoints)(q_pre, 3.0)
-    sleepSim(3.0)
-    return True
-
-
 def __rpy_from_matrix(R):
     pitch = -math.asin(max(-1.0, min(1.0, R[2, 0])))
     return math.atan2(R[2, 1], R[2, 2]), pitch, math.atan2(R[1, 0], R[0, 0])
@@ -767,64 +776,167 @@ def __rpy_from_matrix(R):
 
 # The hand reaches the tray through a carry pose and a waypoint above the spot
 # so the cube clears the front rim of the tray
-# TRAY_PITCH keeps the fingers nearly straight down
-# TRAY_APPROACH_Z is the highest waypoint the wrist can reach
-TRAY_PITCH = 1.45
-TRAY_APPROACH_Z = 0.84
-TRAY_DROP_XYZ = {"left": (0.062, -0.082, 0.724), "right": (0.062, 0.083, 0.724)}
+# The spots are joint poses with the fingers nearly straight down
+TRAY_DROP_JOINTS = {
+    "left": [-1.9181, 1.276, 2.4177, 0.3084, -1.5708],
+    "right": [2.116, 1.1136, 2.099, 0.7062, -1.5708],
+}
+TRAY_ABOVE_JOINTS = {
+    "left": [-1.9181, 1.928, 2.1165, 1.2615, -1.5708],
+    "right": [2.116, 1.6408, 1.8219, 1.5106, -1.5708],
+}
 TRAY_CARRY_JOINTS = {
     "left": [-1.544, 1.356, 1.66, 0.612, -1.571],
     "right": [1.86, 1.332, 1.621, 0.142, -1.571],
 }
 
 
-def __tray_visit(arm, move, set_gripper, set_joints, release, speed):
-    """Go over the tray spot and lower the hand to release or take the cube."""
-    x, y, z = TRAY_DROP_XYZ[arm]
-    solved = __solve_grasp_orientation(arm, (x, y, z), TRAY_PITCH, roll_sign=-1.0)
-    if solved is None:
-        print(f"[HAL] {arm} arm cannot reach its tray spot", flush=True)
-        return False
-    R, _, q_drop = solved
-    q_above = __solve_pose(arm, (x, y, TRAY_APPROACH_Z), R, q_drop)
-    if q_above is None:
-        return False
-    roll, pitch, yaw = __rpy_from_matrix(R)
-    p_carry, R_carry = __arm_fk(arm, TRAY_CARRY_JOINTS[arm])
-    c_roll, c_pitch, c_yaw = __rpy_from_matrix(R_carry)
+# Grasping placing and the tray run joint paths from the exact solver of this HAL
+# because MoveIt IK is unreliable on a 5 joint arm and can pick a flipped branch
+JOINT_SPEED = 1.0  # rad/s at the default speed
+LINE_SPEED = 0.05  # m/s at the default speed
+LINE_STEPS = 20
 
-    def go(label, q, target, orientation, motion):
-        if move(target[0], target[1], target[2], *orientation, speed, motion):
-            return
-        print(
-            f"[HAL] {arm} {label}: planning failed, sending joints straight to the controller",
-            flush=True,
-        )
-        set_joints(q, 3.0)
-        sleepSim(3.0)
 
-    if not release:
-        set_gripper(False, 1.0, GRASP_OPEN)
-        sleepSim(1.0)
-    go("carry", TRAY_CARRY_JOINTS[arm], p_carry, (c_roll, c_pitch, c_yaw), "PTP")
-    go("above the tray", q_above, (x, y, TRAY_APPROACH_Z), (roll, pitch, yaw), "PTP")
-    go("lowering", q_drop, (x, y, z), (roll, pitch, yaw), "LIN")
-    if release:
-        set_gripper(False, 1.0, GRASP_OPEN)
-    else:
-        set_gripper(True, 1.0, GRASP_JAW)
+def __arm_names(arm):
+    return LEFT_ARM_JOINTS if arm == "left" else RIGHT_ARM_JOINTS
+
+
+def __set_gripper(arm, closed, target):
+    (setLeftGripper if arm == "left" else setRightGripper)(closed, 1.0, target)
     sleepSim(1.0)
-    go("coming back up", q_above, (x, y, TRAY_APPROACH_Z), (roll, pitch, yaw), "LIN")
+
+
+def __run_path(arm, path, step_times):
+    """Send a joint path to the arm controller and wait until it ends."""
+    goal = FollowJointTrajectory.Goal()
+    goal.trajectory.joint_names = __arm_names(arm)
+    t = 0.0
+    for q, dt in zip(path, step_times):
+        t += dt
+        point = JointTrajectoryPoint()
+        point.positions = [float(v) for v in q]
+        whole = int(t)
+        point.time_from_start = Duration(sec=whole, nanosec=int((t - whole) * 1e9))
+        goal.trajectory.points.append(point)
+    client = left_arm_joint_client if arm == "left" else right_arm_joint_client
+    client.send_goal_async(goal)
+    sleepSim(t + 0.5)
+
+
+def __joint_move(arm, q, speed):
+    current = joint_state_node.positions
+    q0 = np.array([current.get(n, 0.0) for n in __arm_names(arm)])
+    rate = JOINT_SPEED * speed / 0.3
+    __run_path(arm, [q], [max(1.0, float(np.max(np.abs(np.array(q) - q0))) / rate)])
+
+
+def __line_move(arm, start, end, R, seed, speed):
+    """Straight TCP line with fixed orientation. Returns the final joints or None."""
+    start, end = np.array(start, dtype=float), np.array(end, dtype=float)
+    path = []
+    q = np.array(seed, dtype=float)
+    for k in range(1, LINE_STEPS + 1):
+        q_next = __solve_pose(arm, start + (end - start) * k / LINE_STEPS, R, q)
+        if q_next is None or np.max(np.abs(q_next - q)) > 0.3:
+            print(f"[HAL] {arm} straight line is not reachable", flush=True)
+            return None
+        q = q_next
+        path.append(q)
+    step = np.linalg.norm(end - start) / LINE_STEPS / (LINE_SPEED * speed / 0.3)
+    __run_path(arm, path, [max(0.05, step)] * LINE_STEPS)
+    return q
+
+
+def __approach(arm, x, y, z):
+    """Grasp rotation and joints at the point and at the approach point or None."""
+    # Same wrist roll as the tray and ready poses so the wrist never flips
+    solved = __solve_grasp_orientation(arm, (x, y, z), roll_sign=-1.0)
+    if solved is None:
+        print(f"[HAL] {arm} arm cannot reach ({x:.3f}, {y:.3f}, {z:.3f})", flush=True)
+        return None
+    R, f, q = solved
+    pre = np.array((x, y, z)) - f * GRASP_APPROACH_DISTANCE
+    q_pre = __solve_pose(arm, pre, R, q)
+    if q_pre is None:
+        print(f"[HAL] {arm} arm cannot reach the approach point", flush=True)
+        return None
+    return R, pre, q, q_pre
+
+
+def __grasp(arm, x, y, z, speed):
+    solved = __approach(arm, x, y, z)
+    if solved is None:
+        return False
+    R, pre, q, q_pre = solved
+    __set_gripper(arm, False, GRASP_APPROACH_OPEN)
+    __joint_move(arm, q_pre, speed)
+    if __line_move(arm, pre, (x, y, z), R, q_pre, speed) is None:
+        return False
+    __set_gripper(arm, True, GRASP_JAW)
+    if __line_move(arm, (x, y, z), pre, R, q, speed) is None:
+        __joint_move(arm, q_pre, speed)
+    return True
+
+
+def __place(arm, x, y, z, speed):
+    solved = __approach(arm, x, y, z)
+    if solved is None:
+        return False
+    R, pre, q, q_pre = solved
+    # Leave the robot tray through the carry pose so the object clears the rim
+    __joint_move(arm, TRAY_CARRY_JOINTS[arm], speed)
+    __joint_move(arm, q_pre, speed)
+    if __line_move(arm, pre, (x, y, z), R, q_pre, speed) is None:
+        return False
+    __set_gripper(arm, False, GRASP_OPEN)
+    if __line_move(arm, (x, y, z), pre, R, q, speed) is None:
+        __joint_move(arm, q_pre, speed)
+    return True
+
+
+def __tray_visit(arm, release, speed):
+    """Go over the tray spot and lower the hand to release or take the object."""
+    q_drop = TRAY_DROP_JOINTS[arm]
+    q_above = TRAY_ABOVE_JOINTS[arm]
+    p_drop, R = __arm_fk(arm, q_drop)
+    p_above, _ = __arm_fk(arm, q_above)
+    if not release:
+        __set_gripper(arm, False, GRASP_OPEN)
+    __joint_move(arm, TRAY_CARRY_JOINTS[arm], speed)
+    __joint_move(arm, q_above, speed)
+    if __line_move(arm, p_above, p_drop, R, q_above, speed) is None:
+        __joint_move(arm, q_drop, speed)
+    if release:
+        stow_pubs[arm].publish(Bool(data=True))
+        sleepSim(0.5)
+        __set_gripper(arm, False, GRASP_OPEN)
+    else:
+        __set_gripper(arm, True, GRASP_JAW)
+    if __line_move(arm, p_drop, p_above, R, q_drop, speed) is None:
+        __joint_move(arm, q_above, speed)
     return True
 
 
 def graspLeft(x, y, z, speed=0.3):
-    """Grasp with the left arm at a point in base_footprint.
+    """Grasp with the left arm an object centered at a point in base_footprint.
     Returns True only if every step succeeded.
     """
-    return __grasp(moveLeftArm, setLeftGripper, "left", x, y, z, speed)
+    return __grasp("left", x, y, z, speed)
 
 
 def graspRight(x, y, z, speed=0.3):
     """Grasp with the right arm like graspLeft."""
-    return __grasp(moveRightArm, setRightGripper, "right", x, y, z, speed)
+    return __grasp("right", x, y, z, speed)
+
+
+def placeLeft(x, y, z, speed=0.3):
+    """Release the object held by the left arm at a point in base_footprint.
+    z is the height of the object center when it is released.
+    """
+    return __place("left", x, y, z, speed)
+
+
+def placeRight(x, y, z, speed=0.3):
+    """Release the object held by the right arm like placeLeft."""
+    return __place("right", x, y, z, speed)
