@@ -9,6 +9,7 @@ if not rclpy.ok():
 
 ### AUXILIARY FUNCTIONS
 class SimTimeData:
+    """Simulation time split into seconds and nanoseconds."""
     def __init__(self):
 
         self.seconds = 0
@@ -39,6 +40,11 @@ def simTime2SimTimeData(clock):
 
 ### HAL INTERFACE ###
 class SimTimeNode(Node):
+    """
+    ROS2 node that subscribes to /clock and stores the latest simulation time.
+
+    Uses a best-effort, depth 1 QoS since only the newest clock value matters.
+    """
     def __init__(self):
         super().__init__("simulation_time_node")
         qos_policy = QoSProfile(
@@ -55,7 +61,14 @@ class SimTimeNode(Node):
         self.last_sim_time_ = rosgraph_msgs.msg.Clock()
 
     def listener_callback(self, msg):
+        """Store the latest Clock message received from /clock."""
         self.last_sim_time_ = msg
 
     def getSimTime(self):
+        """
+        Return the latest simulation time.
+
+        Returns:
+            SimTimeData with the last received clock, zero if none was received.
+        """
         return simTime2SimTimeData(self.last_sim_time_)
