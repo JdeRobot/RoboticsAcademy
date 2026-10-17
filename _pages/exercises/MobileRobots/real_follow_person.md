@@ -157,7 +157,7 @@ while True:
 ### Bounding Box attributes
 `HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
 * `id` - identificator of the type of object (1, 2, 3)
-* `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)
+* `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in the [COCO dataset documentation](https://cocodataset.org/#explore)s
 * `xmin` - x value of the top left point of the bounding box
 * `ymin` - y value of the top left point of the bounding box
 * `xmax` - x value of the bottom right point of the bounding box
