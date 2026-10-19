@@ -35,11 +35,7 @@ const WebGUI = () => {
       }
 
       if (user_point != "") {
-        for (
-          let index = 0;
-          index < user_point.length;
-          index += Math.round(user_point.length / 2500)
-        ) {
+        for (let index = 0; index < user_point.length; index += 1) {
           pdata.push(user_point[index]);
         }
       }
