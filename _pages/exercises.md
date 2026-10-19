@@ -235,7 +235,7 @@ feature_row:
     - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
       alt: "Mobile Manipulation"
       title: "Mobile Manipulation"
-      excerpt: "Pick and place with mobile manipulator"
+      excerpt: "Navigation and manipulation with three mobile manipulators"
       url: "/exercises/IndustrialRobots/mobile_manipulation"
       status: "prototype"
       order: 2;
