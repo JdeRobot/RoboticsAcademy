@@ -201,9 +201,6 @@ RUN python3.10 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==
 # BT STUDIO hotfix
 RUN python3.10 -m pip install --no-cache-dir py-trees autopep8
 
-# Yolo hotfix
-RUN python3.10 -m pip install --no-cache-dir --ignore-installed ultralytics
-
 # MiR100 real robot bridge dependency
 RUN python3.10 -m pip install --no-cache-dir roslibpy==2.1.0
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
