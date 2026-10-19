@@ -137,7 +137,9 @@ def get_gripper():
 # objects, red_cube, green_cube, blue_cube are the Dobot world's
 graspable_msg = String()
 
-graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box,red_cube,green_cube,blue_cube"
+graspable_msg.data = (
+    "blue_ball,green_cylinder,yellow_box,red_box,red_cube,green_cube,blue_cube"
+)
 
 HAL.graspable_pub.publish(graspable_msg)
 
