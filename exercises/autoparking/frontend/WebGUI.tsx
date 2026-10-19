@@ -100,6 +100,7 @@ const WebGUI = () => {
         setReset={setReset}
         refreshPoints
         id="canvas"
+        shape="sphere"
         style={{ height: "100%", width: "100%" }}
       />
     </WebGUIContainer>

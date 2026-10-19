@@ -11,12 +11,14 @@ const WebGUI3D = ({
   style,
   toPaint,
   reset,
+  shape,
   setReset,
   refreshPoints,
 }: {
   id?: string;
   style?: object;
   reset: boolean;
+  shape: "sphere" | "cube" | "octahedron";
   setReset: (reset: boolean) => void;
   toPaint?: number[][];
   refreshPoints?: boolean;
@@ -66,7 +68,7 @@ const WebGUI3D = ({
         <ambientLight color={0xffffff} intensity={0.75} />
         <Grid infiniteGrid sectionColor={theme.viewer3d?.grid} />
         <ThreeDimensionalControls />
-        <Points data={points} pointProps={{ color: colorByFn,radius:0.75 }} opacity={0.75} pointShape="sphere"/>
+        <Points data={points} pointProps={{ color: colorByFn,radius:0.75, size:0.75 }} opacity={0.75} pointShape={shape}/>
       </ThreeDimensionalCanvas>
     </div>
   );
