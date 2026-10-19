@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { states } from "jderobot-commsmanager";
-import { useExercise } from "Contexts/ExerciseContext";
-import WebGUI3D from "Components/exercise/WebGUI3D";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
+import WebGUILidar from "Components/exercise/WebGUILidar";
+import { useExercise } from "Contexts/ExerciseContext";
+import { states } from "jderobot-commsmanager";
+import { useEffect, useState } from "react";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
@@ -20,8 +20,9 @@ const WebGUI = () => {
     let data = updateData as any;
     data = data.update;
 
-    if (data.lidar) {
+    if (data.lidar || data.user_lidar) {
       const point = JSON.parse(data.lidar);
+      const user_point = JSON.parse(data.user_lidar);
       var pdata: number[][] = [];
       if (point != "") {
         for (
@@ -31,9 +32,21 @@ const WebGUI = () => {
         ) {
           pdata.push(point[index]);
         }
-        setPointsToPaint(pdata);
       }
+
+      if (user_point != "") {
+        for (
+          let index = 0;
+          index < user_point.length;
+          index += Math.round(user_point.length / 2500)
+        ) {
+          pdata.push(user_point[index]);
+        }
+      }
+
+      setPointsToPaint(pdata);
     }
+
     if (data.map) {
       const map_data = JSON.parse(data.map);
       var pdata: number[][] = [];
@@ -81,12 +94,13 @@ const WebGUI = () => {
 
   return (
     <WebGUIContainer>
-      <WebGUI3D
+      <WebGUILidar
         toPaint={pointsToPaint}
         reset={reset}
         setReset={setReset}
         refreshPoints
         id="canvas"
+        shape="sphere"
         style={{ height: "100%", width: "100%" }}
       />
     </WebGUIContainer>

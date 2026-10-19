@@ -146,13 +146,12 @@ const PlayPauseButton = ({
     }
 
     if (state === states.RUNNING) {
+      sendExecutionProbe(project, "stop_execution");
+
       try {
         await manager.pause();
         console.log("App paused correctly!");
         
-        // Pause event probe
-        sendExecutionProbe(project, "stop_execution");
-
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
@@ -202,13 +201,10 @@ const PlayPauseButton = ({
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
+          sendExecutionProbe(project,"resume_execution");
         try {
           await manager.resume();
           console.log("App resumed correctly!");
-          
-          // Resume event probe
-          sendExecutionProbe(project,"start_execution");
-
         } catch (e: unknown) {
           console.error("Error resuming app: " + (e as Error).message);
           error(

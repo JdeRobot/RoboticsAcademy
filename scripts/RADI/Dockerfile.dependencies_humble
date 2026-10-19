@@ -201,6 +201,9 @@ RUN python3.10 -m pip install --no-cache-dir websocket_server==0.6.4 posix-ipc==
 # BT STUDIO hotfix
 RUN python3.10 -m pip install --no-cache-dir py-trees autopep8
 
+# Yolo hotfix
+RUN python3.10 -m pip install --no-cache-dir --ignore-installed ultralytics
+
 # MiR100 real robot bridge dependency
 RUN python3.10 -m pip install --no-cache-dir roslibpy==2.1.0
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
@@ -374,4 +377,11 @@ WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
   export GZ_VERSION=harmonic && \
   colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+
+# Install BT Cpp
+WORKDIR /home/ws/src
+RUN git clone --depth 1 https://github.com/BehaviorTree/BehaviorTree.CPP.git
+# RUN pip install conan && conan profile detect
+RUN cd BehaviorTree.CPP && mkdir build_release && cmake -S . -B build_release && cmake --build build_release --parallel
+
 WORKDIR /
