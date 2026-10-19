@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { states } from "jderobot-commsmanager";
-import { useExercise } from "Contexts/ExerciseContext";
-import WebGUI3D from "Components/exercise/WebGUI3D";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
-import "./css/Reconstruction3DRR.css";
+import WebGUILidar from "Components/exercise/WebGUILidar";
+import { useExercise } from "Contexts/ExerciseContext";
+import { states } from "jderobot-commsmanager";
+import { useEffect, useState } from "react";
 import { draw, reset_all } from "./helpers/helperRecontruction";
 
 const WebGUI = () => {
@@ -47,11 +46,12 @@ const WebGUI = () => {
 
   return (
     <WebGUIContainer>
-      <WebGUI3D
+      <WebGUILidar
         toPaint={pointsToPaint}
         reset={reset}
         setReset={setReset}
         id="canvas"
+        shape="cube"
         style={{ height: "100%", width: "33%" }}
       />
       <canvas id="gui_canvas" style={{ width: "67%" }}></canvas>
