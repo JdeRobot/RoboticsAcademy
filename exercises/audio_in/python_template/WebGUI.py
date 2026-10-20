@@ -22,6 +22,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.display_text = []
         self.display_text_lock = threading.Lock()
         self.transcriptions = []
+        self.transcriptions_lock = threading.Lock()
         
         self.last_timestamp = 0
 
@@ -120,10 +121,11 @@ class WebGUI(MeasuringThreadingGUI):
         if text:
             with self.display_text_lock:
                 self.display_text.append(text)
-            self.transcriptions.append({
-              "text": text,
-              "timestamp": time
-            })
+            with self.display_text_lock:
+              self.transcriptions.append({
+                "text": text,
+                "timestamp": time
+              })
 
     def update_gui(self):
         payload = self.payloadText()
@@ -139,13 +141,15 @@ class WebGUI(MeasuringThreadingGUI):
 
         return payload
       
-    def listen(self, ms: float):
-      for transcription in self.transcriptions:
-        if transcription["timestamp"] >= (self.last_timestamp - ms):
-          print(transcription["text"])
-    
-    def printTexts(self):
-      print(self.display_text)
+    def listen(self, ms: float = 5000) -> str:
+      texts = []
+      with self.transcriptions_lock:
+        for transcription in self.transcriptions:
+          if transcription["timestamp"] >= (self.last_timestamp - ms):
+            texts.append(transcription["text"])
+      
+      result = " ".join(texts)
+      return result
 
 
 host = "ws://127.0.0.1:2303"
@@ -155,7 +159,4 @@ gui = WebGUI(host)
 start_console()
 
 def listen(ms: float):
-  gui.listen(ms)
-
-def printTexts():
-  gui.printTexts()
+  return gui.listen(ms)
