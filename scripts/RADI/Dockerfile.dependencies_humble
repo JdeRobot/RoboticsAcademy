@@ -331,6 +331,8 @@ RUN apt-get update && \
   ros-humble-tf-transformations \
   ros-humble-pcl-conversions \
   ros-humble-pcl-msgs \
+  ros-humble-navigation2 \
+  ros-humble-nav2-bringup \
   libpoco-dev \
   libpcl-dev \
   && rm -rf /var/lib/apt/lists/*
