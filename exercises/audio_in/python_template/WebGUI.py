@@ -21,6 +21,9 @@ class WebGUI(MeasuringThreadingGUI):
         # GUI display state
         self.display_text = []
         self.display_text_lock = threading.Lock()
+        self.transcriptions = []
+        
+        self.last_timestamp = 0
 
         self.payload = {"text": ""}
 
@@ -63,7 +66,7 @@ class WebGUI(MeasuringThreadingGUI):
         if message.startswith("pick"):
             # Audio received from the frontend
             base64_buffer = message[4:-time_frame_size]
-            time = message[-time_frame_size:]
+            self.last_timestamp = float(message[-time_frame_size:])
 
             audio_data = base64.b64decode(base64_buffer)
             audio_chunk = np.frombuffer(audio_data, dtype=np.float32)
@@ -81,11 +84,11 @@ class WebGUI(MeasuringThreadingGUI):
                 self.silence += 1
 
             if self.silence > self.max_silence and self.phrase:
-                self.transcribe_audio()
+                self.transcribe_audio(self.last_timestamp)
                 self.phrase = []
                 self.silence = 0
             if len(self.phrase) > self.max_phrase_chunks:
-                self.transcribe_audio()
+                self.transcribe_audio(self.last_timestamp)
                 self.phrase = []
                 self.silence = 0
 
@@ -93,11 +96,11 @@ class WebGUI(MeasuringThreadingGUI):
             #     ack_message = {"ack_img": "ack", "time": time}
             #     self.send_to_client(json.dumps(ack_message))
         elif "audio-stop" in message:
-            self.transcribe_audio()
+            self.transcribe_audio(self.last_timestamp)
             self.phrase = []
             self.silence = 0
 
-    def transcribe_audio(self) -> None:
+    def transcribe_audio(self, time: float) -> None:
         chunks = self.phrase
 
         if len(chunks) <= self.min_phrase_chunks:
@@ -117,6 +120,10 @@ class WebGUI(MeasuringThreadingGUI):
         if text:
             with self.display_text_lock:
                 self.display_text.append(text)
+            self.transcriptions.append({
+              "text": text,
+              "timestamp": time
+            })
 
     def update_gui(self):
         payload = self.payloadText()
@@ -131,6 +138,14 @@ class WebGUI(MeasuringThreadingGUI):
             self.display_text = []
 
         return payload
+      
+    def listen(self, ms: float):
+      for transcription in self.transcriptions:
+        if transcription["timestamp"] >= (self.last_timestamp - ms):
+          print(transcription["text"])
+    
+    def printTexts(self):
+      print(self.display_text)
 
 
 host = "ws://127.0.0.1:2303"
@@ -138,3 +153,9 @@ gui = WebGUI(host)
 
 # Redirect the console
 start_console()
+
+def listen(ms: float):
+  gui.listen(ms)
+
+def printTexts():
+  gui.printTexts()
