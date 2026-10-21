@@ -42,6 +42,8 @@
 | Visibility Graph Navigation          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visibility_graph]      | [Link][vid_visibility_graph]       |        ok         |                         |
 | Rapidly Exploring Random Trees nav   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_rrt]                   | [Link][vid_rrt]                    |        ok         |                         |
 | Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_line_mapper]           | [Link][vid_line_mapper]            |        ok         |                         |
+| Mobile Manipulation                  |        ok        |             |               |          | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
+| Sausage Packaging                    |        ok        |             |               |          | -                                 | -                                  |        ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
 
@@ -109,6 +111,7 @@
 [doc_visibility_graph]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/visibility_graph
 [doc_rrt]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/rrt
 [doc_line_mapper]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/line_mapper_pr
+[doc_mobile_manipulation]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
 [vid_labyrinth_escape]: https://www.youtube.com/watch?v=JR5OH_XHw7U
 [vid_position_control]: https://www.youtube.com/watch?v=L1suayB3vVA
 [vid_follow_turtlebot]: https://www.youtube.com/watch?v=uehDVlBzpmU
