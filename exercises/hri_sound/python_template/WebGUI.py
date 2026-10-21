@@ -34,7 +34,7 @@ except NameError:
     PROJECT_DIR = Path.cwd()
 
 # Ruta del ejercicio dentro del contenedor (el repo está montado en /RoboticsAcademy)
-EXERCISE_DIR = Path("/RoboticsAcademy/exercises/audio_out")
+EXERCISE_DIR = Path("/RoboticsAcademy/exercises/hri_sound")
 
 # Garantiza que podamos importar audio_source.py y piper_source.py, aunque WebGUI.py se ejecute desde otra carpeta
 sys.path.insert(0, str(PROJECT_DIR))

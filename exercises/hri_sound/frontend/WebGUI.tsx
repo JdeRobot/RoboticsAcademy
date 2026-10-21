@@ -107,6 +107,11 @@ const WebGUI = () => {
     };
   }, []);
 
+  // Ya no es necesario clicar el botón para activar la conexión
+  useEffect(() => {
+    connectAudio();
+  }, []);
+
   const resizeObserver = new ResizeObserver((entries) => {
     const img = entries[0].target;
     const width = img.clientWidth / 300;
@@ -336,21 +341,7 @@ const WebGUI = () => {
         )}
       </div>
       {/* Controles de audio (audio_out): superpuestos para no alterar el layout del mapa */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "8px",
-          left: "8px",
-          zIndex: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "4px 8px",
-          background: "rgba(255, 255, 255, 0.85)",
-          borderRadius: "4px",
-        }}
-      >
-        <button onClick={connectAudio}>Conectar y recibir audio</button>
+      <div>
         <span>{status}</span>
       </div>
     </WebGUIContainer>
