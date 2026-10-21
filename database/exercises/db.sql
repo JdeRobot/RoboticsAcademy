@@ -138,7 +138,6 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
-27	conveyor_exercise	Conveyor Belt Exercise	Control a conveyor belt with ROS2	["ROS2","INDUSTRIAL"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/conveyor_exercise
 28	drone_cat_mouse	Drone Cat Mouse	Two-drone chase exercise: program the cat drone to catch the mouse drone	["ROS2","Drones", "MULTILANGUAGE"]	["/resources/exercises/drone_cat_mouse/mouse.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse
 29	package_delivery	Package Delivery	Drone Package Delivery exercise	["ROS2","Drones", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/package_delivery
 30	drone_hangar	Drone Hangar	Escape a hangar filled with obstacles flying a drone	["ROS2","Drones", "MULTILANGUAGE"]	[]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_hangar
@@ -200,7 +199,6 @@ COPY public.exercises_worlds (id, exercise_id, world_id, is_default) FROM stdin;
 68	14	64	False
 69	14	65	False
 70	25	70	True
-71	27	71	True
 72	28	72	True
 73	29	57	True
 74	30	73	True
@@ -314,10 +312,6 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 79	15	video
 80	18	video
 81	19	video
-82	27	simulator
-83	27	console
-84	27	rviz
-85	27	web_gui
 86	28	console
 87	28	simulator
 88	28	web_gui
