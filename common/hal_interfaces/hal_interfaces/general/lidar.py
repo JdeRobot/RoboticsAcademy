@@ -8,6 +8,7 @@ from threading import Lock
 
 
 class LidarData:
+    """3D LiDAR reading with XYZ points, intensities and sensor limits."""
     def __init__(self):
         self.points = []
         self.intensities = []
@@ -29,6 +30,17 @@ class LidarData:
 
 
 def pointCloud2LidarData(cloud):
+    """
+    Convert a ROS PointCloud2 message to a LidarData object.
+
+    Args:
+        cloud: sensor_msgs/PointCloud2 message, or None.
+
+    Returns:
+        LidarData with the XYZ points (NaNs kept), intensities if the cloud
+        has that field, and is_dense set to False if any coordinate is not
+        finite. An empty LidarData is returned for a missing or empty cloud.
+    """
     lidar = LidarData()
     if not cloud or cloud.width * cloud.height == 0:
         return lidar
@@ -57,6 +69,12 @@ def pointCloud2LidarData(cloud):
 
 
 class LidarNode(Node):
+    """
+    ROS2 node that subscribes to a PointCloud2 topic and stores the latest cloud.
+
+    Access to the stored cloud is guarded by a lock because the callback and
+    the user code run on different threads.
+    """
     def __init__(self, topic):
         super().__init__("lidar_node")
         self._lock = Lock()
@@ -66,13 +84,26 @@ class LidarNode(Node):
         )
 
     def pointcloud_callback(self, cloud):
+        """Store the latest PointCloud2 message received from the topic."""
         with self._lock:
             self.last_cloud_ = cloud
 
     def getLidarData(self):
+        """
+        Return the latest LiDAR reading.
+
+        Returns:
+            LidarData built from the last cloud, empty if none was received.
+        """
         with self._lock:
             return pointCloud2LidarData(self.last_cloud_)
 
     def get_point_cloud(self):
+        """
+        Return the raw latest point cloud.
+
+        Returns:
+            The last sensor_msgs/PointCloud2 message, or None if none was received.
+        """
         with self._lock:
             return self.last_cloud_

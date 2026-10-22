@@ -13,6 +13,7 @@ LEFT_BUMPER = 2
 
 
 class BumperData:
+    """Bumper contact state: whether a bumper is pressed and which one."""
     def __init__(self):
 
         self.state = 0
@@ -30,6 +31,17 @@ class BumperData:
 
 
 def contactsToBumperData(contacts):
+    """
+    Convert per-bumper Gazebo contact messages to a BumperData object.
+
+    Args:
+        contacts: List of ros_gz_interfaces/Contacts messages ordered
+            right, center, left.
+
+    Returns:
+        BumperData with state 1 and the index of the first bumper in contact,
+        or state 0 if none of them is touching anything.
+    """
 
     bumper_data = BumperData()
 
@@ -44,6 +56,7 @@ def contactsToBumperData(contacts):
 
 ### HAL INTERFACE ###
 class BumperNode(Node):
+    """ROS2 node that subscribes to the right, center and left bumper topics."""
     def __init__(self, topics):
         super().__init__("bumper_node")
 
@@ -64,13 +77,22 @@ class BumperNode(Node):
         self.contact_states_ = [Contacts() for _ in range(3)]
 
     def right_callback(self, contact):
+        """Store the latest contacts from the right bumper."""
         self.contact_states_[0] = contact
 
     def center_callback(self, contact):
+        """Store the latest contacts from the center bumper."""
         self.contact_states_[1] = contact
 
     def left_callback(self, contact):
+        """Store the latest contacts from the left bumper."""
         self.contact_states_[2] = contact
 
     def getBumperData(self):
+        """
+        Return the current bumper state.
+
+        Returns:
+            BumperData built from the latest contacts of the three bumpers.
+        """
         return contactsToBumperData(self.contact_states_)
