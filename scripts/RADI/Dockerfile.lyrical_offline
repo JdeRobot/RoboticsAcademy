@@ -1,4 +1,7 @@
-FROM node:24 AS ra-base
+ARG BASE_IMAGE=jderobot/robotics-applications:dependencies-lyrical
+
+# Frontend output is arch independent so it is built natively on the build host
+FROM --platform=$BUILDPLATFORM node:24 AS ra-base
 
 RUN apt-get update && apt-get install -y git zip
 
@@ -13,7 +16,7 @@ WORKDIR /tmp/app/react_frontend
 RUN yarn install && yarn run build
 
 
-FROM jderobot/robotics-applications:dependencies-lyrical
+FROM ${BASE_IMAGE}
 
 WORKDIR /
 
@@ -43,7 +46,8 @@ RUN rm /etc/xdg/autostart/lxpolkit.desktop
 RUN rm /usr/bin/lxpolkit
 
 # Install and config traefik
-RUN wget https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3.7.14_linux_amd64.tar.gz && tar -xzf traefik_*.tar.gz && mv traefik /usr/bin/
+ARG TARGETARCH
+RUN wget https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3.7.14_linux_${TARGETARCH}.tar.gz && tar -xzf traefik_*.tar.gz && mv traefik /usr/bin/ && rm traefik_*.tar.gz
 RUN mkdir /etc/traefik
 COPY ./RoboticsInfrastructure/scripts/proxy /etc/traefik
 
@@ -77,6 +81,18 @@ COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --symlink-install --continue-on-error; exit 0"
+# Retry failed packages once since parallel builds under emulation fail intermittently
+RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --symlink-install --continue-on-error --packages-select-build-failed; exit 0"
+
+# Rebuild the C++ exercise libs for the target arch since the committed ones are x86 Humble builds
+RUN /bin/bash -c 'source /opt/ros/lyrical/setup.bash; source /home/ws/install/setup.bash; failed=""; \
+    for lib in /RoboticsAcademy/exercises/*/cpp_lib; do \
+      ex=$(dirname $lib); rm -f $ex/cpp_template/libs/*.so; \
+      if cmake -S $lib -B /tmp/cpp_build && make -C /tmp/cpp_build -j$(nproc); then \
+        install -m 777 /tmp/cpp_build/*.so $ex/cpp_template/libs/ && cp -r $lib/include/ $ex/cpp_template/libs/; \
+      else failed="$failed $(basename $ex)"; fi; \
+      rm -rf /tmp/cpp_build; \
+    done; echo "cpp_lib build failures:${failed:- none}"'
 RUN mv /usr/share/xsessions/LXDE.desktop /usr/share/xsessions/startlxde.desktop
 RUN python3.14 -m pip install --no-cache-dir websockets "fastapi[standard]" uvicorn sh asyncssh python-lsp-server
 

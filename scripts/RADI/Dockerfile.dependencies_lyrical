@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
   nlohmann-json3-dev \
   python3.14-venv \
   python3-pip \
+  python3.14-dev \
+  build-essential \
+  libpq-dev \
   openssh-server \
   && rm -rf /var/lib/apt/lists/*
 
@@ -232,6 +235,17 @@ RUN apt-get update && \
 
 
 # RUN python3.14 -m pip install --no-cache-dir ompl
+
+# ONNX Runtime C++ API for the C++ deep learning exercises, same version as the python wheel
+ARG TARGETARCH
+ENV ONNXRUNTIME_VERSION=1.31.0
+RUN ORT_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo aarch64 || echo x64) && \
+  wget -q https://github.com/microsoft/onnxruntime/releases/download/v${ONNXRUNTIME_VERSION}/onnxruntime-linux-${ORT_ARCH}-${ONNXRUNTIME_VERSION}.tgz -O /tmp/onnxruntime.tgz && \
+  tar -zxf /tmp/onnxruntime.tgz -C /tmp && \
+  cp -r /tmp/onnxruntime-linux-${ORT_ARCH}-${ONNXRUNTIME_VERSION}/include/* /usr/local/include/ && \
+  cp -r /tmp/onnxruntime-linux-${ORT_ARCH}-${ONNXRUNTIME_VERSION}/lib/* /usr/local/lib/ && \
+  ldconfig && \
+  rm -rf /tmp/onnxruntime*
 
 ## Aerostack2
 ### Remove log folder

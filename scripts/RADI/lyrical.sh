@@ -9,6 +9,7 @@ IMAGE_TAG="test"
 OFFLINE_BUILD=false
 FORCE_BUILD=false
 FORCE_BUILD_NO_CACHE=false
+PLATFORM=""
 
 # Default GitHub owners
 ACADEMY_OWNER="JdeRobot"
@@ -27,11 +28,13 @@ Help()
    echo "  -m, --ram           <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
    echo "  -r, --ros           <value>  ROS Distro (lyrical).                    Default: lyrical"
    echo "  -t, --tag           <value>  Tag name of the image.                   Default: test"
+   echo "  -p, --platform      <value>  Target platform (linux/amd64, linux/arm64). Default: host. Tags get the arch as suffix"
    echo "  --academy-owner     <value>  GitHub owner for RoboticsAcademy.        Default: JdeRobot"
    echo "  --infra-owner       <value>  GitHub owner for RoboticsInfrastructure. Default: JdeRobot"
    echo
    echo "Example:"
    echo "   ./build.sh -t my_image"
+   echo "   ./build.sh -o -p linux/arm64 -t my_image"
    echo "   ./build.sh --infra-owner <github-user> -i <infra-fork-branch> --tag my_image"
    echo
 }
@@ -56,6 +59,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -t | --tag)
             IMAGE_TAG="$2"
+            shift 2
+            ;;
+        -p | --platform)
+            PLATFORM="$2"
             shift 2
             ;;
         --academy-owner)
@@ -96,6 +103,18 @@ echo "ROBOTICS_ACADEMY:-------------:$ROBOTICS_ACADEMY (Owner: $ACADEMY_OWNER)"
 echo "ROBOTICS_INFRASTRUCTURE:------:$ROBOTICS_INFRASTRUCTURE (Owner: $INFRA_OWNER)"
 echo "RAM:--------------------------:$RAM"
 echo "ROS_DISTRO:-------------------:$ROS_DISTRO"
+# Cross builds get per arch tags so they never overwrite the host image
+BASE_TAG="dependencies-$ROS_DISTRO"
+PLATFORM_ARGS=""
+if [[ -n $PLATFORM ]]; then
+  ARCH_SUFFIX="-${PLATFORM##*/}"
+  BASE_TAG="$BASE_TAG$ARCH_SUFFIX"
+  IMAGE_TAG="$IMAGE_TAG$ARCH_SUFFIX"
+  PLATFORM_ARGS="--platform $PLATFORM"
+fi
+BASE_IMAGE="jderobot/robotics-applications:$BASE_TAG"
+
+echo "PLATFORM:---------------------:${PLATFORM:-host}"
 echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
@@ -118,12 +137,11 @@ else
 fi
 
 
-if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
+if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q $BASE_IMAGE 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
-  docker build $NO_CACHE -f $DOCKERFILE_BASE \
-    --build-arg TARGETARCH=$(uname -m | sed 's/x86_64/amd64/;s/arm64/arm64/') \
-    -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
+  docker buildx build --load $PLATFORM_ARGS $NO_CACHE -f $DOCKERFILE_BASE \
+    -t $BASE_IMAGE .
 fi
 
 if [ $? -eq 0 ]; then
@@ -140,7 +158,8 @@ if $OFFLINE_BUILD; then
   cd ../..
 fi
 
-docker build --no-cache -f $DOCKERFILE \
+docker buildx build --load $PLATFORM_ARGS --no-cache -f $DOCKERFILE \
+  --build-arg BASE_IMAGE=$BASE_IMAGE \
   --build-arg ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY \
   --build-arg ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE \
   --build-arg RAM=$RAM \
