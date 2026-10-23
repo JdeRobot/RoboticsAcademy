@@ -17,7 +17,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(common_interfaces_cpp REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(Boost REQUIRED COMPONENTS thread)
 
 find_path(ONNXRUNTIME_INCLUDE_DIR NAMES onnxruntime_cxx_api.h)
 find_library(ONNXRUNTIME_LIB NAMES onnxruntime)
@@ -44,21 +44,25 @@ include_directories(
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 add_library(${PROJECT_NAME} SHARED academy.cpp)
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+foreach(dep IN LISTS dependencies)
+  target_link_libraries(${PROJECT_NAME} ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(${PROJECT_NAME}
   nlohmann_json::nlohmann_json
   ${ONNXRUNTIME_LIB}
 )
 
 add_executable(academyCode main.cpp)
-ament_target_dependencies(academyCode ${dependencies})
+foreach(dep IN LISTS dependencies)
+  target_link_libraries(academyCode ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(academyCode
   ${PROJECT_NAME}
   HAL
   WebGUI
   Frequency
   nlohmann_json::nlohmann_json
-  Boost::system
+  Boost::headers
   Boost::thread
   ${OpenCV_LIBS}
   ${ONNXRUNTIME_LIB}

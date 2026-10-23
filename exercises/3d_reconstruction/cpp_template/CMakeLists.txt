@@ -18,7 +18,7 @@ find_package(common_interfaces_cpp REQUIRED)
 
 find_package(yaml-cpp REQUIRED)
 find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(Boost REQUIRED COMPONENTS thread)
 
 set(dependencies
   rclcpp
@@ -40,21 +40,25 @@ include_directories(
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
 add_library(${PROJECT_NAME} SHARED academy.cpp)
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+foreach(dep IN LISTS dependencies)
+  target_link_libraries(${PROJECT_NAME} ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(${PROJECT_NAME}
   nlohmann_json::nlohmann_json
   yaml-cpp
 )
 
 add_executable(academyCode main.cpp)
-ament_target_dependencies(academyCode ${dependencies})
+foreach(dep IN LISTS dependencies)
+  target_link_libraries(academyCode ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(academyCode
   ${PROJECT_NAME}
   HAL
   WebGUI
   Frequency
   nlohmann_json::nlohmann_json
-  Boost::system
+  Boost::headers
   Boost::thread
   yaml-cpp
 )

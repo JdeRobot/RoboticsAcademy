@@ -5,7 +5,7 @@
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include <atomic>
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <mutex>
 
 class WebGUINode : public BaseWebGUI {

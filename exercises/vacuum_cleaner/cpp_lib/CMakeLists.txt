@@ -39,12 +39,16 @@ target_include_directories(Frequency PUBLIC include)
 add_library(WebGUI SHARED src/WebGUI.cpp)
 target_include_directories(WebGUI PUBLIC include ${COMMON_INTERFACES_INCLUDE} ${OpenCV_INCLUDE_DIRS})
 
-ament_target_dependencies(WebGUI ${WEBGUI_ROS_DEPS})
+foreach(dep IN LISTS WEBGUI_ROS_DEPS)
+  target_link_libraries(WebGUI ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS} ${COMMON_INTERFACES_LIB} ${OpenCV_LIBS})
 
 # --- libHAL.so ---
 add_library(HAL SHARED src/HAL.cpp)
 target_include_directories(HAL PUBLIC include ${COMMON_INTERFACES_INCLUDE})
 
-ament_target_dependencies(HAL ${HAL_ROS_DEPS})
+foreach(dep IN LISTS HAL_ROS_DEPS)
+  target_link_libraries(HAL ${${dep}_TARGETS})
+endforeach()
 target_link_libraries(HAL ${COMMON_INTERFACES_LIB})

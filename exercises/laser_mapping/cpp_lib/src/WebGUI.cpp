@@ -6,7 +6,7 @@
 #include "sensor_msgs/msg/image.hpp"
 #include <atomic>
 #include <cmath>
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <mutex>
 #include <stdexcept>
 

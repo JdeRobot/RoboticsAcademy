@@ -3,7 +3,7 @@
 #include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/string.hpp"
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <mutex>
 #include <atomic>
 #include <cmath>

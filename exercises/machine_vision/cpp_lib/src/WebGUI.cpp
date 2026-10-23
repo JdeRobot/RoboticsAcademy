@@ -2,7 +2,7 @@
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
 #include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
 #include "sensor_msgs/msg/image.hpp"
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.hpp>
 #include <rcutils/logging.h>
 #include <atomic>
 #include <cmath>
