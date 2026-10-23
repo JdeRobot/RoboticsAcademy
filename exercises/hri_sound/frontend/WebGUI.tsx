@@ -341,7 +341,14 @@ const WebGUI = () => {
         )}
       </div>
       {/* Controles de audio (audio_out): superpuestos para no alterar el layout del mapa */}
-      <div>
+      <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        width: "100%",
+        zIndex: 3,
+      }}>
         <span>{status}</span>
       </div>
     </WebGUIContainer>
