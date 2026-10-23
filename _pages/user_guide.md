@@ -23,8 +23,15 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 ### Minimum System Requirements
 
 - **CPU**: A 4-cored processor.
-- **RAM**: 2 gb RAM.
+- **RAM**: 8 gb RAM.
 - **Memory**: 20 gb of disk space.
+
+### Recommended System Requirements
+
+- **CPU**: A 8-cored processor.
+- **RAM**: 16 gb RAM.
+- **Memory**: 30 gb of disk space.
+- **GPU**: integrated GPU or low spec.
 
 ## 2. Robotics Academy on Windows
 
@@ -411,9 +418,11 @@ docker rm CONTAINER_ID
 
 4. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
-## 5. Reference execution performance data: Outdated
+## 6. Reference execution performance data
 
 In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
+
+This data may not be from the latest version and should only be used as a reference.
 
 ### No GPU Acceleration
 
@@ -577,4 +586,4 @@ _(Average Percentages up to 100%)_
 
 No data yet.
 
-## 5. Troubleshooting
+## 7. Troubleshooting
