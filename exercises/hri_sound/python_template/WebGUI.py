@@ -18,6 +18,11 @@ from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThrea
 from console_interfaces.general.console import start_console
 from map import Map
 
+import numpy as np
+import torch
+from faster_whisper import WhisperModel
+from queue import Queue
+
 # Simple HAL check
 try:
     from HAL import getPose3d as hal_getPose3d
@@ -44,7 +49,6 @@ sys.path.append(str(EXERCISE_DIR / "python_template"))
 from audio_source import file_frames  # noqa: E402
 from piper_source import text_frames  # noqa: E402
 from piper import PiperVoice  # noqa: E402
-
 
 MODEL_NAME = "es_ES-carlfm-x_low.onnx"
 MODEL_DIRS = [EXERCISE_DIR / "models", PROJECT_DIR / "models", PROJECT_DIR]
@@ -97,7 +101,7 @@ class WebGUI(MeasuringThreadingGUI):
         super().__init__(host)
 
         # Payload vars (map: ejercicio vacuum / audio: ejercicio audio_out)
-        self.payload = {"map": "", "audio": ""}
+        self.payload = {"map": "", "audio": "", "text": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
 
@@ -113,11 +117,19 @@ class WebGUI(MeasuringThreadingGUI):
 
         # Condition sobre el mismo lock: despierta al hilo de síntesis cuando llega un pedido
         self.speech_cond = threading.Condition(self.audio_lock)
-        self.audio_queue = deque()  # frames PCM de 20 ms pendientes de enviar al navegador
-        self.speech_queue = deque()  # pedidos pendientes: ("text", texto) o ("file", ruta)
+        self.audio_queue = (
+            deque()
+        )  # frames PCM de 20 ms pendientes de enviar al navegador
+        self.speech_queue = (
+            deque()
+        )  # pedidos pendientes: ("text", texto) o ("file", ruta)
         self.busy = False  # True mientras el hilo de síntesis procesa un pedido
-        self.generation = 0  # se incrementa en cada interrupción para cancelar el pedido en curso
-        self.synthesis_done = False  # True cuando el worker ha terminado de encolar frames
+        self.generation = (
+            0  # se incrementa en cada interrupción para cancelar el pedido en curso
+        )
+        self.synthesis_done = (
+            False  # True cuando el worker ha terminado de encolar frames
+        )
 
         # Modelo de voz de Piper
         model_dir = self._find_model_dir()
@@ -125,6 +137,44 @@ class WebGUI(MeasuringThreadingGUI):
         self.piper_config_path = model_dir / (MODEL_NAME + ".json")
         self.voice = None
         self._load_voice()
+
+        # --- Audio (audio_in) ---
+        # GUI display state
+        self.display_text = []
+        self.display_text_lock = threading.Lock()
+        self.transcriptions = []
+        self.transcriptions_lock = threading.Lock()
+
+        self.last_timestamp = 0.0
+
+        self.sample_rate = 16000
+        self.language = "es"
+        self.model_size = "base"
+        self.vad_threshold = 0.5
+        self.grace_period = 0.5
+        self.max_phrase_secs = 3.0
+        self.chunk_size = 512
+        self.min_phrase_chunks = 5
+
+        self.max_silence = int(self.grace_period * self.sample_rate / self.chunk_size)
+        self.max_phrase_chunks = int(
+            self.max_phrase_secs * self.sample_rate / self.chunk_size
+        )
+
+        self.phrase = []
+        self.silence = 0
+        self.silero_model = None
+        self.whisper = None
+
+        self._load_models()
+
+        # Transcribir en otro hilo
+        self.transcription_queue = Queue()
+        threading.Thread(
+            target=self._transcription_worker,
+            daemon=True,
+            name="whisper_transcription_worker",
+        ).start()
 
         # Auto-detect mode and get pose function
         pose_getter = self._get_pose_function()
@@ -190,6 +240,7 @@ class WebGUI(MeasuringThreadingGUI):
         ang = self.map.getRobotAngle()
         self.payload["map"] = str(pos + ang)
         self.payload["audio"] = json.dumps(self.payload_audio())
+        self.payload["text"] = json.dumps(self.payload_text())
         self.send_to_client(json.dumps(self.payload))
 
     def reset_gui(self):
@@ -210,7 +261,10 @@ class WebGUI(MeasuringThreadingGUI):
         for model_dir in MODEL_DIRS:
             if (model_dir / MODEL_NAME).exists():
                 return model_dir
-        print(f"No se encuentra {MODEL_NAME} en {[str(d) for d in MODEL_DIRS]}", file=sys.stderr)
+        print(
+            f"No se encuentra {MODEL_NAME} en {[str(d) for d in MODEL_DIRS]}",
+            file=sys.stderr,
+        )
         return MODEL_DIRS[0]
 
     # Carga el modelo de Piper; deja self.voice en None si falla
@@ -226,6 +280,13 @@ class WebGUI(MeasuringThreadingGUI):
 
     def gui_in_thread(self, ws, message):
         # Mensajes que llegan del frontend (manager.send("gui", ...))
+        if message.startswith("pick"):
+            self._process_microphone_chunk(message)
+            return
+
+        if message == "audio-stop":
+            self._finish_phrase()
+            return
 
         # Orden de reproducir: JSON {"play": true, "text": "..."}.
         # Se procesa primero y se sale, para que el texto del usuario no se
@@ -349,6 +410,127 @@ class WebGUI(MeasuringThreadingGUI):
         with self.audio_lock:
             return self.audio_status
 
+    # ------------------------------------------------------------------
+    # Audio (audio_in)
+    # ------------------------------------------------------------------
+
+    # Carga el modelo de Silero y Whisper
+    def _load_models(self):
+        try:
+            self.silero_model, _ = torch.hub.load(
+                repo_or_dir="snakers4/silero-vad", model="silero_vad", trust_repo=True
+            )
+            print("Modelo de Silero VAD cargado.")
+            self.whisper = WhisperModel(
+                self.model_size, device="cpu", compute_type="int8", cpu_threads=4
+            )
+            print("Modelo de Faster-Whisper cargado.")
+        except Exception as e:
+            print(f"Error cargando modelos de Silero y Whisper: {e}", file=sys.stderr)
+            self.silero_model = None
+            self.whisper = None
+
+    def _process_microphone_chunk(self, message):
+        time_frame_size = 20
+
+        # Audio received from the frontend
+        try:
+            base64_buffer = message[4:-time_frame_size]
+            timestamp = float(message[-time_frame_size:])
+
+            audio_data = base64.b64decode(base64_buffer)
+            audio_chunk = np.frombuffer(audio_data, dtype=np.float32)
+        except Exception as e:
+            print("Error pasando chunks de audio a binario")
+            return
+
+        # Si no es el mismo chunk por lo que sea
+        if len(audio_chunk) != self.chunk_size:
+            return
+
+        # Si los modelos no se han podido cargar, no se puede analizar audio.
+        if self.silero_model is None:
+            return
+
+        self.last_timestamp = timestamp
+
+        tensor_chunk = torch.from_numpy(audio_chunk.flatten()).float()
+        speech_prob = self.silero_model(tensor_chunk, self.sample_rate).item()
+        is_voice = speech_prob > self.vad_threshold
+
+        if is_voice:
+            self.phrase.append(audio_chunk)
+            self.silence = 0
+        elif self.phrase:
+            # Silence after talking
+            self.phrase.append(audio_chunk)
+            self.silence += 1
+
+        if self.silence > self.max_silence and self.phrase:
+            self._finish_phrase()
+        if len(self.phrase) > self.max_phrase_chunks:
+            self._finish_phrase()
+
+    def _finish_phrase(self):
+        chunks = self.phrase
+        timestamp = self.last_timestamp
+
+        self.phrase = []
+        self.silence = 0
+
+        if len(chunks) > self.min_phrase_chunks:
+            self.transcription_queue.put((chunks, timestamp))
+
+    def _transcription_worker(self):
+        while True:
+            chunks, timestamp = self.transcription_queue.get()
+
+            if self.whisper is None:
+                continue
+
+            try:
+                audio = np.concatenate(chunks).flatten()
+                segments, _ = self.whisper.transcribe(
+                    audio,
+                    language=self.language,
+                    beam_size=3,
+                    temperature=0.0,
+                    condition_on_previous_text=False,
+                )
+                text = "".join(segment.text for segment in segments).strip()
+            except Exception as error:
+                print(
+                    f"Error transcribiendo el audio: {error}",
+                    file=sys.stderr,
+                )
+                continue
+
+            if not text:
+                continue
+
+            with self.display_text_lock:
+                self.display_text.append(text)
+
+            with self.transcriptions_lock:
+                self.transcriptions.append({"text": text, "timestamp": timestamp})
+
+    def payload_text(self):
+        with self.display_text_lock:
+            payload = self.display_text
+            self.display_text = []
+
+        return payload
+
+    def listen(self, ms: float = 5000) -> str:
+        texts = []
+        with self.transcriptions_lock:
+            for transcription in self.transcriptions:
+                if transcription["timestamp"] >= (self.last_timestamp - ms):
+                    texts.append(transcription["text"])
+
+        result = " ".join(texts)
+        return result
+
 
 # Create GUI instance
 gui = WebGUI()
@@ -356,7 +538,6 @@ start_console()
 
 
 # FUNCIONES API PARA EL USUARIO (audio_out)
-
 # Reproduce un texto
 def play(text=DEFAULT_TEXT):
     gui.play_text(text)
@@ -385,3 +566,9 @@ def get_status():
 # ¿Está sonando algo?
 def is_playing():
     return gui.is_playing()
+
+
+# FUNCIONES API PARA EL USUARIO (audio_in)
+def listen(ms: float):
+    print("LISTEN FUNCIONANDO...")
+    return gui.listen(ms)
