@@ -83,6 +83,7 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `HAL.getLidarData()` - to obtain the 3D LiDAR point cloud data.
 - `HAL.setV(velocity)` - to set the linear speed.
 - `HAL.setW(velocity)` - to set the angular velocity.
+- `WebGUI.showLidar(points, color)` - allows you to view a list of 3d points. By default shows them with red color.
 
 #### C++
 
