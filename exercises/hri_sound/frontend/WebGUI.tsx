@@ -15,7 +15,7 @@ import "./css/GUICanvas.css";
 // Audio (audio_out)
 // ---------------------------------------------------------------------
 
-// Código del AudioWorklet, cargado desde un Blob para que el archivo sea autocontenido.
+// Códigos del AudioWorklet, cargados desde un Blob para que el archivo sea autocontenido.
 // Recibe Float32Array (audio a encolar) o "clear" (vaciar la cola).
 const WORKLET_CODE = `
   class PCMPlayerProcessor extends AudioWorkletProcessor {
@@ -64,7 +64,40 @@ const WORKLET_CODE = `
   registerProcessor('pcm-player', PCMPlayerProcessor);
 `;
 
+const MICROPHONE_WORKLET_CODE = `class AudioProcessor extends AudioWorkletProcessor {
+    constructor() {
+      super();
+      this.buffer = new Float32Array(512);
+      this.offset = 0;
+    }
+  
+    process(inputs, outputs, parameters) {
+      const input = inputs[0];
+      if (!input || !input[0]) return true;
+      const channelData = input[0]; // 128 muestras
+      this.buffer.set(channelData, this.offset);
+      this.offset += channelData.length;
+  
+      if (this.offset >= 512) {
+        this.port.postMessage(this.buffer.slice());
+        this.buffer = new Float32Array(512);
+        this.offset = 0;
+      }
+      
+      return true;
+    }
+  }
+  
+  registerProcessor("audio-worklet", AudioProcessor);`;
+
+// URL en memoria para que el navegador pueda cargarlo como módulo sin que dé problemas
+const getWorkletUrl = () => {
+  const blob = new Blob([MICROPHONE_WORKLET_CODE], { type: "application/javascript" });
+  return URL.createObjectURL(blob);
+};
+
 const SAMPLE_RATE = 48000; // debe coincidir con SAMPLE_RATE de audio_source.py
+const MICROPHONE_SAMPLE_RATE = 16000;
 
 // Estados que manda el backend -> texto que se muestra
 const STATUS_LABELS: Record<string, string> = {
@@ -94,9 +127,41 @@ const WebGUI = () => {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const playerNodeRef = useRef<AudioWorkletNode | null>(null);
 
+  const micStreamRef = useRef<MediaStream | null>(null);
+  const micContextRef = useRef<AudioContext | null>(null);
+  const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const micWorkletRef = useRef<AudioWorkletNode | null>(null);
+  const micStartingRef = useRef(false);
+
+  const [text, setText] = useState<string[]>([]);
+  const [micStatus, setMicStatus] = useState<string>("Desconectado");
+  const [isAudioReady, setAudioReady] = useState(false);
+  const microphonePaused = useRef(false);
+
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
+
+  useEffect(() => {
+    if (!manager) {
+      setAudioReady(false);
+      return;
+    }
+
+    const state = manager.getState();
+    const ready =
+      state === states.TOOLS_READY ||
+      state === states.RUNNING ||
+      state === states.PAUSED;
+
+    setAudioReady(ready);
+    microphonePaused.current = state === states.PAUSED;
+  }, [manager]);
+
+  // Ya no es necesario clicar el botón para activar la conexión
+  useEffect(() => {
+    connectAudio();
+  }, []);
 
   // Al desmontar el componente, cierra el contexto de audio
   useEffect(() => {
@@ -105,11 +170,6 @@ const WebGUI = () => {
       audioCtxRef.current = null;
       playerNodeRef.current = null;
     };
-  }, []);
-
-  // Ya no es necesario clicar el botón para activar la conexión
-  useEffect(() => {
-    connectAudio();
   }, []);
 
   const resizeObserver = new ResizeObserver((entries) => {
@@ -134,6 +194,86 @@ const WebGUI = () => {
       ]);
     }
   });
+
+  // Función que solicita permisos del micrófono y envía los fragmentos a la aplicación
+  const startMicrophone = async () => {
+    if (!manager || micContextRef.current || micStartingRef.current) return;
+
+    micStartingRef.current = true;
+    try {
+      micStreamRef.current = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      micContextRef.current = new AudioContext({ sampleRate: MICROPHONE_SAMPLE_RATE });
+
+      const urlCode = getWorkletUrl();
+      await micContextRef.current.audioWorklet.addModule(urlCode);
+      URL.revokeObjectURL(urlCode);
+
+      micSourceRef.current = micContextRef.current.createMediaStreamSource(
+        micStreamRef.current,
+      );
+      // AudioWorletNode - audio crudo
+      micWorkletRef.current = new AudioWorkletNode(
+        micContextRef.current,
+        "audio-worklet",
+      );
+      micSourceRef.current.connect(micWorkletRef.current);
+      micWorkletRef.current.port.onmessage = (ev) => {
+        // Codificamos en base64
+        const audioData = btoa(
+          String.fromCharCode(...Array.from(new Uint8Array(ev.data.buffer))),
+        );
+
+        const performance_t = performance.now();
+        const time = performance_t.toFixed(5).toString().padStart(20, "0");
+
+        if (manager !== null && !microphonePaused.current) {
+          manager.send("gui", `pick${audioData}${time}`);
+        }
+      };
+
+      setMicStatus("Escuchando");
+    } catch (e) {
+      setMicStatus(`Error de micrófono: ${(e as Error).message}`);
+    } finally {
+      micStartingRef.current = false;
+    }
+  };
+
+  const stopMicrophone = async () => {
+    if (micStreamRef.current && manager) {
+      manager.send("gui", "audio-stop");
+    }
+
+    micWorkletRef.current?.disconnect();
+    micSourceRef.current?.disconnect();
+
+    micStreamRef.current?.getTracks().forEach((track) => track.stop());
+
+    if (micContextRef.current) {
+      await micContextRef.current.close();
+    }
+
+    micWorkletRef.current = null;
+    micSourceRef.current = null;
+    micStreamRef.current = null;
+    micContextRef.current = null;
+
+    setMicStatus("Desconectado");
+  };
+
+  useEffect(() => {
+    if (isAudioReady && manager) {
+      startMicrophone();
+    } else {
+      stopMicrophone();
+    }
+
+    return () => {
+      stopMicrophone();
+    };
+  }, [isAudioReady, manager]);
 
   // Crea el AudioContext y el worklet (solo tras un clic del usuario). Devuelve false si falla
   const initAudio = async (): Promise<boolean> => {
@@ -210,6 +350,13 @@ const WebGUI = () => {
     const data = updateData as any;
     const update = data.update;
 
+    if (update.text) {
+      const texts = JSON.parse(update.text);
+      if (texts.length > 0) {
+        setText((prev) => [...prev, ...texts]);
+      }
+    }
+
     // Lógica para manejar el audio (va antes que el mapa porque este puede hacer return)
     if (update.audio) {
       handleAudioUpdate(update.audio);
@@ -247,6 +394,19 @@ const WebGUI = () => {
   };
 
   const stateCallback = (state: string) => {
+    if (state === states.TOOLS_READY || state === states.RUNNING) {
+      setAudioReady(true);
+      microphonePaused.current = false;
+    } else if (state === states.PAUSED) {
+      setAudioReady(true);
+      microphonePaused.current = true;
+    } else {
+      setAudioReady(false);
+    }
+
+    if (state === states.TOOLS_READY) {
+      setText([]);
+    }
     if (state === states.TOOLS_READY) {
       setPath("");
       trail = [];
@@ -341,8 +501,23 @@ const WebGUI = () => {
         )}
       </div>
       {/* Controles de audio (audio_out): superpuestos para no alterar el layout del mapa */}
-      <div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8px",
+          left: "8px",
+          zIndex: 3,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          padding: "4px 8px",
+          background: "rgba(255, 255, 255, 0.85)",
+          borderRadius: "4px",
+        }}
+      >
         <span>{status}</span>
+        <span>{micStatus}</span>
+        <p>{text.join("\n")}</p>
       </div>
     </WebGUIContainer>
   );

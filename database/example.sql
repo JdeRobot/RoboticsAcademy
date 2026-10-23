@@ -15,3 +15,4 @@ VALUES (
 
 INSERT INTO exercises_tools (exercise_id, tool_id) VALUES (35, 'console');
 INSERT INTO exercises_tools (exercise_id, tool_id) VALUES (35, 'web_gui');
+-- INSERT INTO exercises_tools (exercise_id, tool_id) VALUES (35, 'simulator');
