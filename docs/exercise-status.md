@@ -47,14 +47,12 @@
 
 ## 🚧 Exercises under repair / workshop state
 
-| Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
-| ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
-| Digital Image Processing |        ok        |             |               |          | -     |        none        | broken |
-| 2d visual odometry       |                  |             |               |          | -     |         -          | broken |
-| Follow face              |                  |             |               |          | -     |         -          | broken |
-| Laser loc                |                  |             |               |          | -     |         -          | broken |
-| Follow line Turtlebot    |                  |             |               |          | -     |         -          | broken |
-| Opticalflow teleop       |                  |             |               |          | -     |         -          | broken |
+| Exercise ID                      | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
+| -------------------------------- | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
+| Digital Image Processing         |        ok        |             |               |          | -     |        none        | broken |
+| Follow face                      |                  |             |               |          | -     |         -          | broken |
+| Follow line Turtlebot (physical) |                  |             |               |          | -     |         -          | broken |
+| Opticalflow teleop               |                  |             |               |          | -     |         -          | broken |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
