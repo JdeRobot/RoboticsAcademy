@@ -447,7 +447,7 @@ const WebGUI = () => {
         style={{ left: "0", width: "100%" }}
       />
       <div className="overlay" id="map-container">
-        {vacuumPose && (
+        {vacuumPose && canvasRef.current && (
           <div
             id="vacuum-pos"
             style={{
@@ -499,25 +499,6 @@ const WebGUI = () => {
             />
           </svg>
         )}
-      </div>
-      {/* Controles de audio (audio_out): superpuestos para no alterar el layout del mapa */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "8px",
-          left: "8px",
-          zIndex: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "4px 8px",
-          background: "rgba(255, 255, 255, 0.85)",
-          borderRadius: "4px",
-        }}
-      >
-        <span>{status}</span>
-        <span>{micStatus}</span>
-        <p>{text.join("\n")}</p>
       </div>
     </WebGUIContainer>
   );
