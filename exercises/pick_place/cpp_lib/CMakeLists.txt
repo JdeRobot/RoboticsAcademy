@@ -46,6 +46,11 @@ ament_target_dependencies(WebGUI ${WEBGUI_ROS_DEPS})
 target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS} ${COMMON_INTERFACES_LIB} ${OpenCV_LIBS})
 
 # --- libHAL.so ---
-add_library(HAL SHARED src/HAL.cpp)
+# One library with the HAL of both arms, each one in its own header
+add_library(HAL SHARED
+    src/hal_common.cpp
+    src/HAL.cpp
+    src/HAL_dobot.cpp
+)
 target_include_directories(HAL PUBLIC include)
 ament_target_dependencies(HAL ${HAL_ROS_DEPS})
