@@ -1,15 +1,15 @@
-import React, { useState, JSX } from "react";
 import { CommsManager } from "jderobot-commsmanager";
 import { ViewersEntry, VncViewer } from "jderobot-ide-interface";
+import { JSX, useState } from "react";
 
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
-import Camera from "Components/visualizers/Camera";
-import Video from "Components/visualizers/Video";
-import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
-import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
+import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
+import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
+import Camera from "Components/visualizers/Camera";
+import Video from "Components/visualizers/Video";
 
 const getTools = (
   manager: CommsManager | null,
@@ -63,7 +63,7 @@ const getTools = (
       component: (
         <VncViewer
           commsManager={manager}
-          port={6080}
+          port={"7163/sim"}
           message={"Click Play to connect to the Robotics Backend"}
         />
       ),
@@ -79,7 +79,7 @@ const getTools = (
       component: (
         <VncViewer
           commsManager={manager}
-          port={6081}
+          port={"7163/rviz"}
           message={"Click Play to connect to the Robotics Backend"}
         />
       ),
@@ -95,7 +95,7 @@ const getTools = (
       component: (
         <VncViewer
           commsManager={manager}
-          port={6082}
+          port={"7163/console"}
           message={"Click Play to connect to the Robotics Backend"}
         />
       ),

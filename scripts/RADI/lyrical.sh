@@ -4,8 +4,9 @@
 ROBOTICS_ACADEMY="humble-devel"
 ROBOTICS_INFRASTRUCTURE="humble-devel"
 RAM="humble-devel"
-ROS_DISTRO="jazzy"
+ROS_DISTRO="lyrical"
 IMAGE_TAG="test"
+OFFLINE_BUILD=false
 FORCE_BUILD=false
 FORCE_BUILD_NO_CACHE=false
 
@@ -20,10 +21,11 @@ Help()
    echo "  -h                           Print this Help."
    echo "  -f                           Force creation of the base image. If omitted, the base image is created only if it doesn't exist."
    echo "  -F                           Force creation of the base image without using docker cache."
+   echo "  -o, --offline       <value>  Use offline dockerfile."
    echo "  -a, --academy       <value>  Branch of RoboticsAcademy.               Default: humble-devel"
    echo "  -i, --infra         <value>  Branch of RoboticsInfrastructure.        Default: humble-devel"
    echo "  -m, --ram           <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
-   echo "  -r, --ros           <value>  ROS Distro (jazzy).                     Default: jazzy"
+   echo "  -r, --ros           <value>  ROS Distro (lyrical).                    Default: lyrical"
    echo "  -t, --tag           <value>  Tag name of the image.                   Default: test"
    echo "  --academy-owner     <value>  GitHub owner for RoboticsAcademy.        Default: JdeRobot"
    echo "  --infra-owner       <value>  GitHub owner for RoboticsInfrastructure. Default: JdeRobot"
@@ -68,6 +70,10 @@ while [[ $# -gt 0 ]]; do
             FORCE_BUILD=true
             shift
             ;;
+        -o | --offline)
+            OFFLINE_BUILD=true
+            shift
+            ;;
         -F | --force-no-cache)
             FORCE_BUILD_NO_CACHE=true
             shift
@@ -93,11 +99,15 @@ echo "ROS_DISTRO:-------------------:$ROS_DISTRO"
 echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
-if [[ $ROS_DISTRO == "jazzy" ]]; then
-    DOCKERFILE_BASE="Dockerfile.dependencies_jazzy"
-    DOCKERFILE="Dockerfile.humble"
+if [[ $ROS_DISTRO == "lyrical" ]]; then
+    DOCKERFILE_BASE="Dockerfile.dependencies_lyrical"
+    if $OFFLINE_BUILD; then
+      DOCKERFILE="scripts/RADI/Dockerfile.lyrical_offline"
+    else
+      DOCKERFILE="Dockerfile.lyrical"
+    fi
 else
-    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'humble'."
+    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'lyrical'."
     exit 1
 fi
 
@@ -106,6 +116,7 @@ if $FORCE_BUILD_NO_CACHE; then
 else
   NO_CACHE=""
 fi
+
 
 if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
@@ -125,6 +136,10 @@ fi
 echo "===================== BUILDING $ROS_DISTRO RoboticsBackend ====================="
 echo "Building RoboticsBackend using $DOCKERFILE for ROS $ROS_DISTRO"
 
+if $OFFLINE_BUILD; then
+  cd ../..
+fi
+
 docker build --no-cache -f $DOCKERFILE \
   --build-arg ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY \
   --build-arg ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE \
@@ -134,3 +149,7 @@ docker build --no-cache -f $DOCKERFILE \
   --build-arg ACADEMY_OWNER=$ACADEMY_OWNER \
   --build-arg INFRA_OWNER=$INFRA_OWNER \
   -t jderobot/robotics-academy:$IMAGE_TAG .
+
+if $OFFLINE_BUILD; then
+  cd scripts/RADI
+fi

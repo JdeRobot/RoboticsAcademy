@@ -1,7 +1,14 @@
-import React from "react";
-import { useState, useEffect, useRef, JSX } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
+import { JSX, useEffect, useRef, useState } from "react";
 
+import { getFile, getRoboticsBackendWorld, listWorlds, saveFile } from "Api";
+import { ExerciseHeader } from "Components/headers";
+import Frequencies from "Components/statusBar/Frequencies";
+import { ExerciseProvider } from "Contexts/ExerciseContext";
+import { getHalGuiMethods } from "Helpers/editor";
+import { fileExplorer } from "Helpers/explorer";
+import getTools from "Helpers/tools";
+import { clearTimeouts, subscribe, unsubscribe } from "Helpers/utils";
 import IdeInterface, {
   Entry,
   ExtraApi,
@@ -9,15 +16,7 @@ import IdeInterface, {
   StatusBarComponents,
   useError,
 } from "jderobot-ide-interface";
-import { ExerciseProvider } from "Contexts/ExerciseContext";
-import { ExerciseHeader } from "Components/headers";
-import { getFile, getRoboticsBackendWorld, listWorlds, saveFile } from "Api";
-import Frequencies from "Components/statusBar/Frequencies";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
-import { getHalGuiMethods } from "Helpers/editor";
-import { clearTimeouts, subscribe, unsubscribe } from "Helpers/utils";
-import { fileExplorer } from "Helpers/explorer";
-import getTools from "Helpers/tools";
 
 const base_file = {
   name: `academy.py`,
@@ -56,7 +55,7 @@ const ExerciseContainer = ({
     "both",
   );
   const userRef = useRef<string | undefined>(undefined);
-  const addressRef = useRef<string>(`ws://127.0.0.1:7163`);
+  const addressRef = useRef<string>(`ws://127.0.0.1:7163/manager`);
 
   const getWorldList = async (project: string) => {
     const list = await listWorlds(project);
