@@ -1,15 +1,12 @@
 print("HAL Harmonic initializing", flush=True)
 
 import sys, os, time, math
-import xml.etree.ElementTree as ET
 import rclpy
 import numpy as np
 
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
 from ros2srrc_data.msg import Robpose
 from linkattacher_msgs.srv import AttachLink, DetachLink
-from rcl_interfaces.srv import GetParameters
 from ament_index_python.packages import get_package_share_directory
 
 # Gripper (NO modificar según tu requisito)
@@ -51,7 +48,7 @@ HAL.graspable_pub = HAL.create_publisher(
 HAL.gripper_client = ActionClient(
     HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
 )
-HAL.gripper = None
+HAL.gripper_ready = False
 
 # Latest arm state from the robpose node, read by get_Joint_states and get_TCP_pose
 HAL.joints = None
@@ -72,90 +69,20 @@ HAL.create_subscription(Robpose, "/Robpose", on_pose, 1)
 print("[HAL] LinkAttacher ready")
 
 
-def get_gripper_joint_name():
-    """Read the gripper_controller joint list so this HAL works with any
-    arm's gripper, not just the Robotiq one."""
+def wait_gripper():
+    """Wait for the gripper controller on first use."""
 
-    client = HAL.create_client(GetParameters, "/gripper_controller/get_parameters")
-
-    if not client.wait_for_service(timeout_sec=5.0):
-        return "robotiq_85_left_knuckle_joint"
-
-    request = GetParameters.Request()
-    request.names = ["joints"]
-
-    future = client.call_async(request)
-    rclpy.spin_until_future_complete(HAL, future)
-    result = future.result()
-
-    if result and result.values and result.values[0].string_array_value:
-        return result.values[0].string_array_value[0]
-
-    return "robotiq_85_left_knuckle_joint"
-
-
-def get_gripper_joint_limits(joint_name):
-    """Read the joint's <limit> from robot_description instead of assuming
-    the Robotiq range. Every gripper has its own travel."""
-
-    qos = QoSProfile(depth=1)
-    qos.durability = QoSDurabilityPolicy.TRANSIENT_LOCAL
-    qos.reliability = QoSReliabilityPolicy.RELIABLE
-
-    received = {}
-
-    def on_robot_description(msg):
-        received["urdf"] = msg.data
-
-    subscription = HAL.create_subscription(
-        String, "/robot_description", on_robot_description, qos
-    )
-
-    deadline = time.time() + 5.0
-    while "urdf" not in received and time.time() < deadline:
-        rclpy.spin_once(HAL, timeout_sec=0.2)
-
-    HAL.destroy_subscription(subscription)
-
-    if "urdf" not in received:
-        return 0.0, 0.80285
-
-    root = ET.fromstring(received["urdf"])
-
-    for joint in root.findall("joint"):
-        if joint.get("name") == joint_name:
-            limit = joint.find("limit")
-            if limit is not None:
-                return float(limit.get("lower", 0.0)), float(limit.get("upper", 1.0))
-
-    return 0.0, 0.80285
-
-
-def get_gripper():
-    """Wait for the gripper controller on first use so suction cup arms never block on it."""
-
-    if HAL.gripper is None:
+    if not HAL.gripper_ready:
         print("[HAL] Waiting for gripper controller...")
         while not HAL.gripper_client.wait_for_server(timeout_sec=1.0):
             print("[HAL] Waiting for gripper controller...")
         print("[HAL] Gripper ready")
-
-        joint_name = get_gripper_joint_name()
-        lower, upper = get_gripper_joint_limits(joint_name)
-        HAL.gripper = (joint_name, lower, upper)
-
-        print(f"[HAL] Gripper joint: {joint_name} range [{lower}, {upper}]")
-
-    return HAL.gripper
+        HAL.gripper_ready = True
 
 
-# blue_ball, green_cylinder, yellow_box, red_box are the UR5 world's
-# objects, red_cube, green_cube, blue_cube are the Dobot world's
 graspable_msg = String()
 
-graspable_msg.data = (
-    "blue_ball,green_cylinder,yellow_box,red_box,red_cube,green_cube,blue_cube"
-)
+graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box"
 
 HAL.graspable_pub.publish(graspable_msg)
 
@@ -166,9 +93,7 @@ def publish_graspable_objects():
 
     graspable_msg = String()
 
-    graspable_msg.data = (
-        "blue_ball,green_cylinder,yellow_box,red_cube,green_cube,blue_cube"
-    )
+    graspable_msg.data = "blue_ball,green_cylinder,yellow_box,red_box"
 
     HAL.graspable_pub.publish(graspable_msg)
 
@@ -477,7 +402,7 @@ def GripperSet(relative_closure, wait_time):
     print(f"[HAL] Requested closure: {relative_closure} %")
     print(f"[HAL] Wait time: {wait_time} s")
 
-    gripper_joint, gripper_min, gripper_max = get_gripper()
+    wait_gripper()
 
     # ==========================================================
     # ENABLE/DISABLE AUTO ATTACH
@@ -506,13 +431,14 @@ def GripperSet(relative_closure, wait_time):
     # GRIPPER MOTION
     # ==========================================================
 
-    position = gripper_min + ((gripper_max - gripper_min) * (relative_closure / 100.0))
+    # Same 0 to 1 range as the C++ HAL
+    position = relative_closure / 100.0
 
     print(f"[HAL] Target gripper joint position: {position}")
 
     goal_msg = FollowJointTrajectory.Goal()
 
-    goal_msg.trajectory.joint_names = [gripper_joint]
+    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
 
     point = JointTrajectoryPoint()
 
@@ -541,41 +467,6 @@ def GripperSet(relative_closure, wait_time):
     rclpy.spin_until_future_complete(HAL, result_future)
 
     print("[HAL] Gripper motion completed")
-
-    time.sleep(wait_time)
-
-    print(f"[HAL] Waiting {wait_time} s")
-    print("==================================================\n")
-
-
-# ==============================================================
-# SUCTION GRIPPER CONTROL
-# ==============================================================
-
-
-def SuctionSet(on, wait_time):
-    """
-    Turn the suction (vacuum) gripper on or off.
-
-    on = True   -> grip: any graspable object touching the cup is attached
-    on = False  -> release: the held object is detached
-
-    The suction cup has no actuated joint and no controller. Gripping is handled
-    by the gz_link_attacher plugin, which rigidly attaches an object to the cup
-    link on contact while auto-attach is enabled and releases it when disabled.
-    """
-
-    print("\n==================================================")
-    print(f"[HAL] SuctionSet({on}) called")
-
-    # Nothing spins HAL here so the graspable list is sent again on every call
-    publish_graspable_objects()
-
-    auto_msg = Bool()
-    auto_msg.data = bool(on)
-    HAL.auto_attach_pub.publish(auto_msg)
-
-    print(f"[HAL] Suction {'ENABLED' if on else 'DISABLED'}")
 
     time.sleep(wait_time)
 

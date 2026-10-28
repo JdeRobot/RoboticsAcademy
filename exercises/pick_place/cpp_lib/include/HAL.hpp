@@ -2,12 +2,11 @@
 #define INCLUDE_HAL_HPP_
 
 #include <array>
-#include <memory>
-#include <thread>
 
-// Forward declarations to keep ROS 2 headers out of user-facing code.
-class HALNode;
-namespace rclcpp::executors { class MultiThreadedExecutor; }
+// HAL for the UR5 with the Robotiq gripper, the Dobot worlds use HAL_dobot.hpp
+// It starts the first time one of its functions is called
+namespace ur5
+{
 
 class HAL
 {
@@ -42,15 +41,10 @@ public:
 
     // Gripper control. relative_closure in [0,100] (0 = fully open, 100 = fully closed).
     static void GripperSet(double relative_closure, double wait_time);
-
-private:
-    static void init();
-    friend class SystemBootstrapper;
-
-    // Hidden internal state. Not accessible to the user.
-    static std::shared_ptr<HALNode> hal_node_;
-    static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
-    static std::thread spin_thread_;
 };
+
+}  // namespace ur5
+
+using HAL = ur5::HAL;
 
 #endif

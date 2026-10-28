@@ -1,4 +1,3 @@
-#include "HAL.hpp"
 #include "WebGUI.hpp"
 #include "academy.cpp"
 #include "rclcpp/rclcpp.hpp"
@@ -7,12 +6,10 @@
 #include <string>
 #include <iostream>
 
+// Each arm has its own HAL header, included by the user code
+// and initialized the first time one of its functions is called
 class SystemBootstrapper {
 public:
-    static void init_hal() {
-        HAL::init();
-    }
-    
     static void init_webgui() {
         WebGUI::init();
     }
@@ -51,8 +48,6 @@ int main(int argc, char *argv[])
   executor.add_node(user_node);
   executor.spin();
 #else
-  SystemBootstrapper::init_hal();
-
   std::thread user_thread(exercise);
 
   if (user_thread.joinable()) {
