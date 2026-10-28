@@ -15,7 +15,7 @@ websocket-client==0.57.0
 pydiscourse==0.9.0
 django-taggit-autosuggest==0.3.8
 pillow==13.0.0
-pylint==2.17.4
+pylint==4.0.9
 
 setuptools==78.1.1  # This should be removed after going to python 3.9
 
