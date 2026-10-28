@@ -190,33 +190,33 @@ const PlayPauseButton = ({
       return;
     }
 
-    const files = await getFileList(project, userRef.current);
-    filesRef.current = JSON.parse(files);
-    const userZip = await loadFiles(
-      entrypointRef.current,
-      filesRef.current,
-      userRef.current,
-    );
-
-    if (state === states.PAUSED) {
-      const sameZips = await compareZips(userZip, runningFilesRef.current);
-      if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
-          sendExecutionProbe(project,"resume_execution");
-        try {
-          await manager.resume();
-          console.log("App resumed correctly!");
-        } catch (e: unknown) {
-          console.error("Error resuming app: " + (e as Error).message);
-          error(
-            "Failed to resume the application. See the traces in the terminal.",
-          );
-        }
-        setLoading(false);
-        return;
-      }
-    }
-
     try {
+      const files = await getFileList(project, userRef.current);
+      filesRef.current = JSON.parse(files);
+      const userZip = await loadFiles(
+        entrypointRef.current,
+        filesRef.current,
+        userRef.current,
+      );
+
+      if (state === states.PAUSED) {
+        const sameZips = await compareZips(userZip, runningFilesRef.current);
+        if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
+            sendExecutionProbe(project,"resume_execution");
+          try {
+            await manager.resume();
+            console.log("App resumed correctly!");
+          } catch (e: unknown) {
+            console.error("Error resuming app: " + (e as Error).message);
+            error(
+              "Failed to resume the application. See the traces in the terminal.",
+            );
+          }
+          setLoading(false);
+          return;
+        }
+      }
+
       runningFilesRef.current = userZip;
       const helperZip = new JSZip();
       runningEntrypointRef.current = entrypointRef.current;
