@@ -33,6 +33,13 @@ public:
     // Relative TCP reorientation. ypr in degrees.
     static void MoveRelReor(const std::array<double, 3>& ypr, double speed, double wait_time);
 
+    // TCP pose in the same frame and angle order MoveLinear takes. Position in metres, orientation in degrees.
+    static std::array<double, 3> get_TCP_position();
+    static std::array<double, 3> get_TCP_orientation();
+
+    // Current joint angles in degrees, in the order MoveAbsJ takes them.
+    static std::array<double, 6> get_Joint_states();
+
     // Gripper control. relative_closure in [0,100] (0 = fully open, 100 = fully closed).
     static void GripperSet(double relative_closure, double wait_time);
 
