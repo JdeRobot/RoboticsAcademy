@@ -5,8 +5,9 @@ import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import React, { useState } from "react";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { sendExecutionProbe } from "Api";
 
-const ResetButton = () => {
+const ResetButton = ({ project }: { project: string }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,6 +31,7 @@ const ResetButton = () => {
     if (state === states.TOOLS_READY) {
       return;
     }
+    sendExecutionProbe(project, "reset_world");
 
     setLoading(true);
     try {

@@ -16,7 +16,7 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFileList, getHelperFileList } from "Api";
+import { getFileList, getHelperFileList, sendExecutionProbe } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -146,9 +146,12 @@ const PlayPauseButton = ({
     }
 
     if (state === states.RUNNING) {
+      sendExecutionProbe(project, "stop_execution");
+
       try {
         await manager.pause();
         console.log("App paused correctly!");
+        
       } catch (e: unknown) {
         console.error("Error pausing app: " + (e as Error).message);
         error(
@@ -198,6 +201,7 @@ const PlayPauseButton = ({
     if (state === states.PAUSED) {
       const sameZips = await compareZips(userZip, runningFilesRef.current);
       if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
+          sendExecutionProbe(project,"resume_execution");
         try {
           await manager.resume();
           console.log("App resumed correctly!");
@@ -236,28 +240,32 @@ const PlayPauseButton = ({
         entrypointRef.current,
       );
 
-      const finalZip = await mergeZips(helperZip, userZip);
+        const finalZip = await mergeZips(helperZip, userZip);
 
-      // Convert the blob to base64 using FileReader
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64data = reader.result; // Get the zip in base64
-        // Send the base64 encoded blob
-        if (base64data && runningEntrypointRef.current) {
-          const entrypoints = [
-            `/workspace/code/${runningEntrypointRef.current.path}`,
-          ];
-          additionalEntrypoints.forEach((entrypoint) => {
-            entrypoints.push(entrypoint);
-          });
+        // Convert the blob to base64 using FileReader
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const base64data = reader.result; // Get the zip in base64
+          // Send the base64 encoded blob
+          if (base64data && runningEntrypointRef.current) {
+            const entrypoints = [
+              `/workspace/code/${runningEntrypointRef.current.path}`,
+            ];
+            additionalEntrypoints.forEach((entrypoint) => {
+              entrypoints.push(entrypoint);
+            });
 
-          const lint_files = additionalEntrypoints;
-          try {
-            await manager.run(
-              entrypoints,
-              [runningEntrypointRef.current.path].concat(lint_files),
-              base64data as string,
-            );
+            const lint_files = additionalEntrypoints;
+            try {
+              await manager.run(
+                entrypoints,
+                [runningEntrypointRef.current.path].concat(lint_files),
+                base64data as string,
+              );
+
+            // New start event probe (Run)
+            sendExecutionProbe(project,"start_execution");
+
           } catch {
             error(
               "Failed to run the application. See the traces in the terminal.",
@@ -292,6 +300,7 @@ const PlayPauseButton = ({
       return zip;
     }
   };
+
 
   return (
     <>
