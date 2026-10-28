@@ -18,7 +18,7 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
-from std_msgs.msg import Bool, String
+from std_msgs.msg import Bool, Float64MultiArray, String
 
 # Paths
 PATH = os.path.join(get_package_share_directory("ros2srrc_execution"), "python")
@@ -52,6 +52,22 @@ HAL.gripper_client = ActionClient(
     HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
 )
 HAL.gripper = None
+
+# Latest arm state from the robpose node, read by get_Joint_states and get_TCP_pose
+HAL.joints = None
+HAL.pose = None
+
+
+def on_joints(msg):
+    HAL.joints = list(msg.data)
+
+
+def on_pose(msg):
+    HAL.pose = msg
+
+
+HAL.create_subscription(Float64MultiArray, "/Robjoints", on_joints, 1)
+HAL.create_subscription(Robpose, "/Robpose", on_pose, 1)
 
 print("[HAL] LinkAttacher ready")
 
@@ -158,6 +174,55 @@ def publish_graspable_objects():
 
 
 HAL.create_timer(1.0, publish_graspable_objects)
+
+# ==============================================================
+# ROBOT INFO, same names as machine_vision
+# ==============================================================
+
+
+def wait_fresh(attribute):
+    """Nothing spins HAL between calls, so wait for a message newer than the call."""
+
+    setattr(HAL, attribute, None)
+    deadline = time.time() + 2.0
+    while getattr(HAL, attribute) is None and time.time() < deadline:
+        rclpy.spin_once(HAL, timeout_sec=0.1)
+    return getattr(HAL, attribute)
+
+
+def get_Joint_states():
+    """Current joint angles in degrees, in the order MoveAbsJ takes them."""
+
+    joints = wait_fresh("joints")
+    if joints is None:
+        print("[HAL] ERROR: no joint state received")
+        return None
+    joints = [round(value, 3) for value in joints]
+    print(f"Current Joint States (degrees): {joints}")
+    return joints
+
+
+def get_TCP_pose():
+    """Current tool pose as (xyz, ypr), in the same frame, units and angle order
+    MoveLinear takes, so it can be passed back to it."""
+
+    pose = wait_fresh("pose")
+    if pose is None:
+        print("[HAL] ERROR: no tool pose received")
+        return None
+
+    qx, qy, qz, qw = pose.qx, pose.qy, pose.qz, pose.qw
+
+    # Inverse of the quaternion built in MoveLinear
+    roll = math.atan2(2 * (qw * qx + qy * qz), 1 - 2 * (qx * qx + qy * qy))
+    pitch = math.asin(max(-1.0, min(1.0, 2 * (qw * qy - qz * qx))))
+    yaw = math.atan2(2 * (qw * qz + qx * qy), 1 - 2 * (qy * qy + qz * qz))
+
+    xyz = [round(pose.x, 4), round(pose.y, 4), round(pose.z, 4)]
+    ypr = [round(math.degrees(angle), 2) for angle in (roll, pitch, yaw)]
+    print(f"Current TCP Pose - XYZ: {xyz}, YPR: {ypr}")
+    return xyz, ypr
+
 
 # ==============================================================
 # MoveAbsJ (IDÉNTICO a classic)
@@ -372,6 +437,10 @@ def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
     ACTION = Action()
     ACTION.action = "MoveR"
     ACTION.speed = float(speed)
+
+    # Accepts 3 as well as "joint3"
+    if isinstance(joint_number, int):
+        joint_number = f"joint{joint_number}"
 
     INPUT = Joint()
     INPUT.joint = str(joint_number)

@@ -222,10 +222,7 @@ const PlayPauseButton = ({
             "Failed to resume the application. See the traces in the terminal.",
           );
         }
-        setLoading(false);
-        return;
       }
-    }
 
     runningFilesRef.current = userZip;
     const helperZip = new JSZip();

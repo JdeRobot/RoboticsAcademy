@@ -9,6 +9,7 @@
 #include "ros2srrc_data/msg/joint.hpp"
 #include "ros2srrc_data/msg/xyz.hpp"
 #include "ros2srrc_data/msg/ypr.hpp"
+#include "ros2srrc_data/msg/robpose.hpp"
 
 // Gripper (Harmonic): FollowJointTrajectory action on /gripper_controller
 #include "control_msgs/action/follow_joint_trajectory.hpp"
@@ -17,11 +18,14 @@
 // Gripper auto-attach signalling topics
 #include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <future>
 #include <thread>
 #include <chrono>
+#include <mutex>
 
 using namespace std::chrono_literals;
 
@@ -43,6 +47,15 @@ void ypr_to_quat(const std::array<double, 3>& ypr,
     qy = cr2 * sp2 * cy2 + sr2 * cp2 * sy2;
     qz = cr2 * cp2 * sy2 - sr2 * sp2 * cy2;
     qw = cr2 * cp2 * cy2 + sr2 * sp2 * sy2;
+}
+
+// Inverse of ypr_to_quat, YPR in degrees
+std::array<double, 3> quat_to_ypr(double qx, double qy, double qz, double qw)
+{
+    double roll  = std::atan2(2 * (qw * qx + qy * qz), 1 - 2 * (qx * qx + qy * qy));
+    double pitch = std::asin(std::clamp(2 * (qw * qy - qz * qx), -1.0, 1.0));
+    double yaw   = std::atan2(2 * (qw * qz + qx * qy), 1 - 2 * (qy * qy + qz * qz));
+    return {roll * 180.0 / M_PI, pitch * 180.0 / M_PI, yaw * 180.0 / M_PI};
 }
 
 } // namespace
@@ -67,6 +80,21 @@ public:
 
         auto_attach_pub_ = this->create_publisher<std_msgs::msg::Bool>("/gripper_auto_attach", 10);
         graspable_pub_   = this->create_publisher<std_msgs::msg::String>("/graspable_objects", 10);
+
+        // Arm state from the robpose node, read by get_Joint_states and get_TCP_*
+        joints_sub_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
+            "/Robjoints", 1,
+            [this](const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
+                std::lock_guard<std::mutex> lock(state_mutex_);
+                joints_ = msg->data;
+            });
+        pose_sub_ = this->create_subscription<ros2srrc_data::msg::Robpose>(
+            "/Robpose", 1,
+            [this](const ros2srrc_data::msg::Robpose::SharedPtr msg) {
+                std::lock_guard<std::mutex> lock(state_mutex_);
+                pose_ = *msg;
+                has_pose_ = true;
+            });
 
         RCLCPP_INFO(get_logger(), "Waiting for /Move action server...");
         while (!move_client_->wait_for_action_server(1s))
@@ -175,6 +203,35 @@ public:
         return ok;
     }
 
+    // The first message can arrive after init, wait for it like the Python HAL
+    std::vector<double> joints()
+    {
+        for (int i = 0; i < 20; i++) {
+            {
+                std::lock_guard<std::mutex> lock(state_mutex_);
+                if (!joints_.empty())
+                    return joints_;
+            }
+            std::this_thread::sleep_for(100ms);
+        }
+        return {};
+    }
+
+    bool pose(ros2srrc_data::msg::Robpose& out)
+    {
+        for (int i = 0; i < 20; i++) {
+            {
+                std::lock_guard<std::mutex> lock(state_mutex_);
+                if (has_pose_) {
+                    out = pose_;
+                    return true;
+                }
+            }
+            std::this_thread::sleep_for(100ms);
+        }
+        return false;
+    }
+
 private:
     rclcpp_action::Client<Move>::SharedPtr    move_client_;
     rclcpp_action::Client<Robmove>::SharedPtr robmove_client_;
@@ -182,6 +239,12 @@ private:
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr   auto_attach_pub_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr graspable_pub_;
     rclcpp::TimerBase::SharedPtr graspable_timer_;
+    rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr joints_sub_;
+    rclcpp::Subscription<ros2srrc_data::msg::Robpose>::SharedPtr pose_sub_;
+    std::mutex state_mutex_;
+    std::vector<double> joints_;
+    ros2srrc_data::msg::Robpose pose_;
+    bool has_pose_ = false;
 };
 
 // Static member definitions
@@ -222,7 +285,7 @@ void HAL::MoveSingleJ(int joint_number, double relative_angle, double speed, dou
     Move::Goal goal;
     goal.action       = "MoveR";
     goal.speed        = static_cast<float>(speed);
-    goal.mover.joint  = std::to_string(joint_number);
+    goal.mover.joint  = "joint" + std::to_string(joint_number);
     goal.mover.value  = relative_angle;
 
     if (!hal_node_->move_execute(goal, wait_time))
@@ -289,6 +352,33 @@ void HAL::MoveRelReor(const std::array<double, 3>& ypr, double speed, double wai
 
     if (!hal_node_->move_execute(goal, wait_time))
         RCLCPP_ERROR(rclcpp::get_logger("HAL"), "MoveRelReor failed");
+}
+
+std::array<double, 6> HAL::get_Joint_states()
+{
+    std::array<double, 6> joints{};
+    auto values = hal_node_->joints();
+    if (values.empty())
+        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "get_Joint_states: no joint state received");
+    for (size_t i = 0; i < values.size() && i < joints.size(); i++)
+        joints[i] = values[i];
+    return joints;
+}
+
+std::array<double, 3> HAL::get_TCP_position()
+{
+    ros2srrc_data::msg::Robpose pose;
+    if (!hal_node_->pose(pose))
+        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "get_TCP_position: no tool pose received");
+    return {pose.x, pose.y, pose.z};
+}
+
+std::array<double, 3> HAL::get_TCP_orientation()
+{
+    ros2srrc_data::msg::Robpose pose;
+    if (!hal_node_->pose(pose))
+        RCLCPP_ERROR(rclcpp::get_logger("HAL"), "get_TCP_orientation: no tool pose received");
+    return quat_to_ypr(pose.qx, pose.qy, pose.qz, pose.qw);
 }
 
 void HAL::GripperSet(double relative_closure, double wait_time)
