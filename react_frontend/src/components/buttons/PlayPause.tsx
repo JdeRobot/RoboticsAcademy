@@ -1,3 +1,7 @@
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { getFileList, getHelperFileList, sendExecutionProbe } from "Api";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   publish,
@@ -9,14 +13,9 @@ import {
 import { CommsManager, states } from "jderobot-commsmanager";
 import { Entry, useError } from "jderobot-ide-interface";
 import JSZip from "jszip";
-import { RefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import commons from "../../common.zip";
-
-import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
-import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFileList, getHelperFileList, sendExecutionProbe } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -61,8 +60,8 @@ const PlayPauseButton = ({
     subscribe("CommsManagerStateChange", updateState);
 
     return () => {
-      unsubscribe("autoSaveCompleted", () => {});
-      unsubscribe("CommsManagerStateChange", () => {});
+      unsubscribe("autoSaveCompleted", () => { });
+      unsubscribe("CommsManagerStateChange", () => { });
     };
   }, []);
 
@@ -127,6 +126,17 @@ const PlayPauseButton = ({
     }
     return mergeZip;
   };
+
+  async function loadFiles(entrypoint: Entry, files: Entry[], user?: string) {
+    const zip = new JSZip();
+
+    await zipCodeFiles(zip, files, project, user);
+
+    zip.files[entrypoint.path]
+      .async("string")
+      .then((value: string) => (runningContentRef.current = value));
+    return zip;
+  }
 
   // App handling
 
@@ -223,6 +233,7 @@ const PlayPauseButton = ({
           );
         }
       }
+    }
 
     runningFilesRef.current = userZip;
     const helperZip = new JSZip();
@@ -296,17 +307,6 @@ const PlayPauseButton = ({
     });
 
     console.log("App started successfully");
-
-    async function loadFiles(entrypoint: Entry, files: Entry[], user?: string) {
-      const zip = new JSZip();
-
-      await zipCodeFiles(zip, files, project, user);
-
-      zip.files[entrypoint.path]
-        .async("string")
-        .then((value: string) => (runningContentRef.current = value));
-      return zip;
-    }
   };
 
 
