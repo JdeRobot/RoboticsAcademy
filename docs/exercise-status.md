@@ -42,7 +42,7 @@
 | Visibility Graph Navigation          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visibility_graph]      | [Link][vid_visibility_graph]       |        ok         |                         |
 | Rapidly Exploring Random Trees nav   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_rrt]                   | [Link][vid_rrt]                    |        ok         |                         |
 | Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_line_mapper]           | [Link][vid_line_mapper]            |        ok         |                         |
-| Mobile Manipulation                  |        ok        |             |               |          | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
+| Mobile Manipulation                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
 | Sausage Packaging                    |        ok        |             |               |          | -                                 | -                                  |        ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
