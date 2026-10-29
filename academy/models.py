@@ -97,12 +97,11 @@ class Scene(models.Model):
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     launch_file_path = models.CharField(max_length=200, blank=False)
-    tools_config = models.CharField(max_length=200, blank=False)
     ros_version = models.CharField(max_length=4, choices=RosVersion, default="none")
     type = models.CharField(
         max_length=50, choices=UniverseType, default="none", blank=False
     )
-    tools_supported = models.ManyToManyField(Tool, default=None, db_table='"scenes_supported_tools"')
+    tools_supported = models.ManyToManyField(Tool, default=None, through="SceneSupportedTools")
     model_path = models.CharField(max_length=200, blank=False)
 
     def __str__(self):
@@ -127,7 +126,7 @@ class World(models.Model):
         Scene, default=None, on_delete=models.CASCADE, db_column="scene_id"
     )
     robots = models.ManyToManyField(Robot, default=None, through="WorldRobots")
-    drivers = models.ManyToManyField(Driver, default=None, db_table='"supported_drivers"')
+    # drivers = models.ManyToManyField(Driver, default=None, db_table='"supported_drivers"')
 
     def __str__(self):
         return str(self.name)
@@ -212,3 +211,24 @@ class WorldRobots(models.Model):
 
     class Meta:
         db_table = '"worlds_robots"'
+
+
+class SceneSupportedTools(models.Model):
+    """
+    Through model linking World and Robot with the number of instances of said robot.
+
+    Attributes:
+        world: Related World instance.
+        robot: Related Robot instance.
+        instances: Number of instances of the robot in a world (defaults to 1).
+    """
+
+    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
+    tool = models.ForeignKey(Tool, on_delete=models.CASCADE)
+    config = models.CharField(max_length=200, blank=False)
+
+    class Meta:
+        db_table = '"scenes_supported_tools"'
+
+    def __str__(self):
+        return f"{str(self.scene)}: {str(self.tool)}"
