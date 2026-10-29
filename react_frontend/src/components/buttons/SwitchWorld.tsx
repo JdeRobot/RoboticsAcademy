@@ -22,6 +22,7 @@ const TerminateUniverseButton = ({ project, commsManager, baseWorld }: {
   const wrnMsg =
     "Failed to connect with the Robotics Backend. Please make sure it is connected.";
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resetWorld = (e: any) => {
     if (e.detail.state == states.IDLE) {
       setWorld(baseWorld);
