@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Exercise, Scene, World, Tool, Robot
+from .models import Exercise, Scene, World, Tool, Robot, SceneSupportedTools
 
 # Register your models here.
 
@@ -17,3 +17,4 @@ admin.site.register(Tool, SaveWorldAdmin)
 admin.site.register(World, SaveWorldAdmin)
 admin.site.register(Scene, SaveWorldAdmin)
 admin.site.register(Robot, SaveWorldAdmin)
+admin.site.register(SceneSupportedTools, SaveWorldAdmin)
