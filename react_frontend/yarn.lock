@@ -5125,13 +5125,6 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.1.0.tgz#e89d438f688a1392d7725a429118a00f23ae2889"
-  integrity sha512-dT+mxkr6O0vh1lQPJSH2EUT26QgDlsjXUYYYJcgFQn7kvGdI8r00hWGsqe8QJBWvkD/NeVZHQya4wifmsc+cWg==
-  dependencies:
-    uuid "^14.0.1"
-
 jderobot-commsmanager@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.1.2.tgz#19161e228d55830627f4f10657756bb237b75000"
@@ -5140,10 +5133,10 @@ jderobot-commsmanager@1.1.2:
     uuid "^14.0.1"
     websocket-ts "^2.3.0"
 
-jderobot-ide-interface@0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.3.8.tgz#7c644d44725a3b67e143b37ed19acf9dffc74281"
-  integrity sha512-lL9hg58iV4hUSklnOv8uvbeCA6YkvivwN+WqFlFDGjDfZkLhNgJLzjMworvpdoKw9EIWhg9xGyl/0CSoEEMuWA==
+jderobot-ide-interface@0.3.21:
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.3.21.tgz#90a688ef43b6166b848aed6ba6056fb313d5b220"
+  integrity sha512-PUe/hu9uPeDn9ye28wioYykJvhtZb6NjGCQqPlRKDR5mL+pXqiPeC4/sI3N/4akPeXtH3isBby2SbdrMTLJpQg==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"

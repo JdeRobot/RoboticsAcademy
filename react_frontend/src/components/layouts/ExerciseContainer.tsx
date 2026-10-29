@@ -177,6 +177,8 @@ const ExerciseContainer = ({
           connectManager={connectWithRetry}
           userRef={userRef}
           additionalEntrypoints={additionalEntrypoints}
+          baseWorld={worlds ? worlds[0] : undefined}
+          tools={toolsList}
         />
         <IdeInterface
           commsManager={manager}

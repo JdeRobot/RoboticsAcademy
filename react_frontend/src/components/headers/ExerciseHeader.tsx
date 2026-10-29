@@ -27,7 +27,7 @@ import {
 } from "Components/buttons";
 import { subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager } from "jderobot-commsmanager";
-import { Entry, Layout } from "jderobot-ide-interface";
+import { Entry, Layout, type ViewersEntry } from "jderobot-ide-interface";
 const ExerciseHeader = ({
   project,
   name,
@@ -38,6 +38,8 @@ const ExerciseHeader = ({
   commsManager,
   userRef,
   additionalEntrypoints,
+  tools,
+  baseWorld
 }: {
   project: string;
   name: string;
@@ -51,6 +53,8 @@ const ExerciseHeader = ({
     callback?: () => void,
   ) => Promise<void>;
   additionalEntrypoints: string[];
+  tools: ViewersEntry[];
+  baseWorld?: string;
 }) => {
   const theme = useAcademyTheme();
 
@@ -87,6 +91,8 @@ const ExerciseHeader = ({
             connectManager={connectManager}
             userRef={userRef}
             additionalEntrypoints={additionalEntrypoints}
+            baseWorld={baseWorld}
+            tools={tools}
           />
           <TheoryButton url={url} />
           <InfoButton />
@@ -104,6 +110,8 @@ const ExecutionControl = ({
   connectManager,
   userRef,
   additionalEntrypoints,
+  tools,
+  baseWorld
 }: {
   project: string;
   supportedLanguages: string[];
@@ -114,6 +122,8 @@ const ExecutionControl = ({
     callback?: () => void,
   ) => Promise<void>;
   additionalEntrypoints: string[];
+  tools: ViewersEntry[];
+  baseWorld?: string;
 }) => {
   const [state, setState] = useState<string | undefined>(
     commsManager?.getState(),
@@ -152,8 +162,8 @@ const ExecutionControl = ({
         <ConnectButton connectManager={connectManager} />
       ) : (
         <>
-          <WorldButton project={project} />
-          <ToolButton project={project} />
+          <WorldButton project={project} commsManager={commsManager} baseWorld={baseWorld}/>
+          <ToolButton tools={tools} />
           <PlayPauseButton
             project={project}
             supportedLanguages={supportedLanguages}
