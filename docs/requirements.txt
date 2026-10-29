@@ -1,4 +1,4 @@
-setuptools==83.0.0
+setuptools==84.1.0
 
 django==5.2.16
 channels==1.1.5
@@ -17,7 +17,7 @@ django-taggit-autosuggest==0.3.8
 pillow==13.0.0
 pylint==2.17.4
 
-setuptools==78.1.1  # This should be removed after going to python 3.9
+setuptools==84.1.0  # This should be removed after going to python 3.9
 
 djangorestframework==3.18.2
 django-webpack-loader==1.5.0
