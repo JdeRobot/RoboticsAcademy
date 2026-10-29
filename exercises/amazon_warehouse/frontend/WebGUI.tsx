@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
-import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
+import { states } from "jderobot-commsmanager";
+import { useEffect, useRef, useState } from "react";
 import {
-  updatePath,
   addToTrail,
+  updatePath,
   updateTrail,
 } from "./helpers/AmazonWarehouseHelper";
 
 import Map1 from "./resources/map.png";
 import Map2 from "./resources/map_2.png";
 
-import "./css/GUICanvas.css";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
 import WebGUIImage from "Components/exercise/WebGUIImage";
+import "./css/GUICanvas.css";
 
 function WebGUI() {
   const Map1Size = { width: 415, height: 279 };
@@ -147,7 +147,7 @@ function WebGUI() {
     if (state === states.TOOLS_READY) {
       const world = manager.getWorld();
 
-      if (world.includes("2")) {
+      if (world.includes("Warehouse 2")) {
         setMap(Map2);
         setMapSize(Map2Size);
       } else {
