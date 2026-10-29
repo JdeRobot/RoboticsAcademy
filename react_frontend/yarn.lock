@@ -6915,9 +6915,9 @@ svgo@^3.0.2:
     sax "^1.5.0"
 
 systeminformation@^5.31.1:
-  version "5.31.7"
-  resolved "https://registry.npmjs.org/systeminformation/-/systeminformation-5.31.7.tgz"
-  integrity sha512-/8NC53e5nP9nmhn42/ncdOkyJnOoue/Vy+tJOyUGd1Yv66G069wK4rrziwhrqDETgk78CudTQupw5z19S5uoZw==
+  version "5.33.18"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.33.18.tgz#cae5983875ba291f6f036cfde86a26b422c5b71c"
+  integrity sha512-SF8DBQx3ypa8zDqZlezpHQ6M2g7TrqSEWpAtC4OsHCdLmi7J2WdxaSbA8/DJyEn2l/CHPrW0VFenoqoDccrw6g==
 
 tailwindcss@^3.4.13:
   version "3.4.13"
