@@ -1,9 +1,9 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Link } from "react-router";
-import { LogoIcon } from "Icons/index";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { LogoIcon } from "Icons/index";
+import React,{ RefObject, useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
@@ -11,21 +11,23 @@ import {
 } from "../../styles/headers/HeaderMenu.styles";
 
 import {
-  HomeButton,
+  ConnectButton,
   DownloadButton,
   ForumButton,
+  HomeButton,
   InfoButton,
-  TheoryButton,
+  LayoutButton,
   PlayPauseButton,
   ResetButton,
-  LayoutButton,
   TerminateUniverseButton,
   ThemeButton,
-  ConnectButton,
+  TheoryButton,
+  ToolButton,
+  WorldButton,
 } from "Components/buttons";
-import { Entry, Layout } from "jderobot-ide-interface";
-import { CommsManager } from "jderobot-commsmanager";
 import { subscribe, unsubscribe } from "Helpers/utils";
+import { CommsManager } from "jderobot-commsmanager";
+import { Entry, Layout } from "jderobot-ide-interface";
 const ExerciseHeader = ({
   project,
   name,
@@ -150,6 +152,8 @@ const ExecutionControl = ({
         <ConnectButton connectManager={connectManager} />
       ) : (
         <>
+          <WorldButton project={project} />
+          <ToolButton project={project} />
           <PlayPauseButton
             project={project}
             supportedLanguages={supportedLanguages}
