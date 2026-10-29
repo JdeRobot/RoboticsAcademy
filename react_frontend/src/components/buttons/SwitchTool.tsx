@@ -1,61 +1,56 @@
 import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
-import { sendExecutionProbe } from "Api";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import { CommsManager, states } from "jderobot-commsmanager";
-import { useError } from "jderobot-ide-interface";
-import { useState } from "react";
-import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
-const TerminateUniverseButton = ({ project }: { project: string }) => {
+import { type ViewersEntry } from "jderobot-ide-interface";
+import { Dropdown } from './Dropdown';
+import { publish } from 'Helpers/utils';
+import React from "react";
+
+const TerminateUniverseButton = ({ tools }: { tools: ViewersEntry[] }) => {
   const theme = useAcademyTheme();
-  const { warning } = useError();
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const terminateUniverse = async () => {
-    const manager = CommsManager.getInstance();
-
-    if (manager.getWorld() === undefined || manager.getWorld() === "") {
-      return;
-    }
-
-    const state = manager.getState();
-
-    if (state === states.IDLE || state === states.CONNECTED) {
-      console.error("Simulation is not ready!");
-      warning(
-        "Failed to found a running simulation. Please make sure a world is selected."
-      );
-      return;
-    }
-
-    sendExecutionProbe(project, "stop_world");
-
-    setLoading(true);
-
-    if (state === states.RUNNING || state === states.PAUSED) {
-      await manager.terminateApplication();
-      await manager.terminateTools();
-      await manager.terminateWorld();
-    } else if (state === states.TOOLS_READY) {
-      await manager.terminateTools();
-      await manager.terminateWorld();
-    } else {
-      await manager.terminateWorld();
-    }
-    setLoading(false);
+  const selectTools = (newTool: string) => {
+    publish("changeToolGroup", { tool: newTool });
   };
 
+  let toggleGroup = undefined;
+  const groups: string[] = [];
+
+  for (let index = 0; index < tools.length; index++) {
+    const element = tools[index];
+    if (element.group !== undefined) {
+      if (groups.includes(element.group)) {
+        toggleGroup = element.group;
+      } else {
+        groups.push(element.group);
+      }
+    }
+  }
+
+  const toggles = [];
+
+  if (toggleGroup !== undefined) {
+    for (let index = 0; index < tools.length; index++) {
+      const element = tools[index];
+      if (element.group === toggleGroup) {
+        toggles.push(element.name);
+      }
+    }
+  }
+
+  if (toggles.length === 0) {
+    return <></>
+  }
+
   return (
-    <StyledHeaderButton
-      bgColor={theme.palette.primary}
-      hoverColor={theme.palette.secondary}
-      roundness={theme.roundness}
-      id="switch-tool"
-      onClick={terminateUniverse}
-      title="Switch tool"
-      disabled={loading}
+    <Dropdown
+      id="tool"
+      title="Switch Tool"
+      width={300}
+      setter={selectTools}
+      possibleValues={toggles}
     >
       <BuildRoundedIcon htmlColor={theme.palette.text} />
-    </StyledHeaderButton>
+    </Dropdown>
   );
 };
 
