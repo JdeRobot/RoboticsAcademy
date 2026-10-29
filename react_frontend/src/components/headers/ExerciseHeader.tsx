@@ -1,9 +1,9 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Link } from "react-router";
-import { LogoIcon } from "Icons/index";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { LogoIcon } from "Icons/index";
+import React,{ RefObject, useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
@@ -11,21 +11,23 @@ import {
 } from "../../styles/headers/HeaderMenu.styles";
 
 import {
-  HomeButton,
+  ConnectButton,
   DownloadButton,
   ForumButton,
+  HomeButton,
   InfoButton,
-  TheoryButton,
+  LayoutButton,
   PlayPauseButton,
   ResetButton,
-  LayoutButton,
   TerminateUniverseButton,
   ThemeButton,
-  ConnectButton,
+  TheoryButton,
+  ToolButton,
+  WorldButton,
 } from "Components/buttons";
-import { Entry, Layout } from "jderobot-ide-interface";
-import { CommsManager } from "jderobot-commsmanager";
 import { subscribe, unsubscribe } from "Helpers/utils";
+import { CommsManager } from "jderobot-commsmanager";
+import { Entry, Layout, type ViewersEntry } from "jderobot-ide-interface";
 const ExerciseHeader = ({
   project,
   name,
@@ -36,6 +38,8 @@ const ExerciseHeader = ({
   commsManager,
   userRef,
   additionalEntrypoints,
+  tools,
+  baseWorld
 }: {
   project: string;
   name: string;
@@ -49,6 +53,8 @@ const ExerciseHeader = ({
     callback?: () => void,
   ) => Promise<void>;
   additionalEntrypoints: string[];
+  tools: ViewersEntry[];
+  baseWorld?: string;
 }) => {
   const theme = useAcademyTheme();
 
@@ -85,6 +91,8 @@ const ExerciseHeader = ({
             connectManager={connectManager}
             userRef={userRef}
             additionalEntrypoints={additionalEntrypoints}
+            baseWorld={baseWorld}
+            tools={tools}
           />
           <TheoryButton url={url} />
           <InfoButton />
@@ -102,6 +110,8 @@ const ExecutionControl = ({
   connectManager,
   userRef,
   additionalEntrypoints,
+  tools,
+  baseWorld
 }: {
   project: string;
   supportedLanguages: string[];
@@ -112,6 +122,8 @@ const ExecutionControl = ({
     callback?: () => void,
   ) => Promise<void>;
   additionalEntrypoints: string[];
+  tools: ViewersEntry[];
+  baseWorld?: string;
 }) => {
   const [state, setState] = useState<string | undefined>(
     commsManager?.getState(),
@@ -150,6 +162,8 @@ const ExecutionControl = ({
         <ConnectButton connectManager={connectManager} />
       ) : (
         <>
+          <WorldButton project={project} commsManager={commsManager} baseWorld={baseWorld}/>
+          <ToolButton tools={tools} />
           <PlayPauseButton
             project={project}
             supportedLanguages={supportedLanguages}
