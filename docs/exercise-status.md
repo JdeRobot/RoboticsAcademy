@@ -42,17 +42,17 @@
 | Visibility Graph Navigation          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visibility_graph]      | [Link][vid_visibility_graph]       |        ok         |                         |
 | Rapidly Exploring Random Trees nav   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_rrt]                   | [Link][vid_rrt]                    |        ok         |                         |
 | Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_line_mapper]           | [Link][vid_line_mapper]            |        ok         |                         |
+| Mobile Manipulation                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
+| Sausage Packaging                    |        ok        |             |               |          | -                                 | -                                  |        ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
 
-| Exercise ID              | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
-| ------------------------ | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
-| Digital Image Processing |        ok        |             |               |          | -     |        none        | broken |
-| 2d visual odometry       |                  |             |               |          | -     |         -          | broken |
-| Follow face              |                  |             |               |          | -     |         -          | broken |
-| Laser loc                |                  |             |               |          | -     |         -          | broken |
-| Follow line Turtlebot    |                  |             |               |          | -     |         -          | broken |
-| Opticalflow teleop       |                  |             |               |          | -     |         -          | broken |
+| Exercise ID                      | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Video | 🟧 Gazebo Harmonic | Notes  |
+| -------------------------------- | :--------------: | :---------: | :-----------: | :------: | ----- | :----------------: | ------ |
+| Digital Image Processing         |        ok        |             |               |          | -     |        none        | broken |
+| Follow face                      |                  |             |               |          | -     |         -          | broken |
+| Follow line Turtlebot (physical) |                  |             |               |          | -     |         -          | broken |
+| Opticalflow teleop               |                  |             |               |          | -     |         -          | broken |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
@@ -109,6 +109,7 @@
 [doc_visibility_graph]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/visibility_graph
 [doc_rrt]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/rrt
 [doc_line_mapper]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/line_mapper_pr
+[doc_mobile_manipulation]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
 [vid_labyrinth_escape]: https://www.youtube.com/watch?v=JR5OH_XHw7U
 [vid_position_control]: https://www.youtube.com/watch?v=L1suayB3vVA
 [vid_follow_turtlebot]: https://www.youtube.com/watch?v=uehDVlBzpmU
