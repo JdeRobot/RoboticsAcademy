@@ -28,6 +28,7 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
   mv /opt/jderobot/resources /resources && \
   mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
   mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
+  mv -f /opt/jderobot/scripts/proxy/* /etc/traefik && \
   chmod +x /entrypoint.sh /set_dri_name.sh && \
   rm -rf /opt/jderobot/.git \
   /opt/jderobot/.github \
@@ -39,9 +40,6 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
   /opt/jderobot/Universes \
   /opt/jderobot/utils \
   && rm -f /opt/jderobot/Scenes/*.glb
-
-RUN rm /etc/xdg/autostart/lxpolkit.desktop
-RUN rm /usr/bin/lxpolkit
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh

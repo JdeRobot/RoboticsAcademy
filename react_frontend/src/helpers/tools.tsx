@@ -8,6 +8,7 @@ import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
+import Console from "Components/Console";
 import Camera from "Components/visualizers/Camera";
 import Video from "Components/visualizers/Video";
 
@@ -93,18 +94,26 @@ const getTools = (
 
     if (tools.includes("console")) {
       list.push({
-        component: (
-          <VncViewer
-            commsManager={manager}
-            port={"7163/console"}
-            message={"Click Play to connect to the Robotics Backend"}
-          />
-        ),
+        component: <Console commsManager={manager} visible={showTerminal}/>,
         icon: <TerminalRoundedIcon />,
         name: "Terminal",
         active: showTerminal,
         activate: setTerminalVisible,
       });
+
+      // list.push({
+      //   component: (
+      //     <VncViewer
+      //       commsManager={manager}
+      //       port={"7163/console"}
+      //       message={"Click Play to connect to the Robotics Backend"}
+      //     />
+      //   ),
+      //   icon: <TerminalRoundedIcon />,
+      //   name: "Terminal",
+      //   active: showTerminal,
+      //   activate: setTerminalVisible,
+      // });
     }
     console.log(list)
     setToolsList(list)

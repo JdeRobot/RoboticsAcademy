@@ -28,6 +28,7 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     mv /opt/jderobot/resources /resources && \
     mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
     mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
+    mv -f /opt/jderobot/scripts/proxy/* /etc/traefik && \
     chmod +x /entrypoint.sh /set_dri_name.sh && \
     rm -rf /opt/jderobot/.git \
     /opt/jderobot/.github \
@@ -38,14 +39,6 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
     /opt/jderobot/Universes \
     /opt/jderobot/utils \
     && rm -f /opt/jderobot/Scenes/*.glb
-
-RUN rm /etc/xdg/autostart/lxpolkit.desktop
-RUN rm /usr/bin/lxpolkit
-
-# Install and config traefik
-RUN wget https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3.7.14_linux_amd64.tar.gz && tar -xzf traefik_*.tar.gz && mv traefik /usr/bin/
-RUN mkdir /etc/traefik
-COPY ./RoboticsInfrastructure/scripts/proxy /etc/traefik
 
 COPY ./RoboticsInfrastructure/scripts/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
@@ -77,19 +70,12 @@ COPY --from=ra-base /tmp/app/react_frontend/webpack-stats.json /RoboticsAcademy/
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /opt/ros/lyrical/setup.bash; colcon build --symlink-install --continue-on-error; exit 0"
-RUN mv /usr/share/xsessions/LXDE.desktop /usr/share/xsessions/startlxde.desktop
-RUN python3.14 -m pip install --no-cache-dir websockets "fastapi[standard]" uvicorn sh asyncssh python-lsp-server
-
-# Behavior trees cpp
 
 # Django server
 EXPOSE 7164
 
 # Manager websocket
 EXPOSE 7163
-
-# Tools ports
-EXPOSE 6080-6090
 
 #PostgreSQL Database
 EXPOSE 5432
