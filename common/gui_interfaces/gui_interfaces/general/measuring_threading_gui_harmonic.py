@@ -135,11 +135,7 @@ class MeasuringThreadingGUI:
             }
             message = json.dumps(self.frequency_message)
 
-<<<<<<< HEAD
             # await self.send_to_client(message)
-=======
-            await self.send_to_client(message)
->>>>>>> c357480 (Test new gui)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
