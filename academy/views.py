@@ -460,6 +460,7 @@ def get_docker_world_data(fal, request):
     robots = []
     robots_config = []
     tools = []
+    drivers = []
     tools_configuration = {}
 
     for tool_name, base_config in project.tools.values_list("name", "base_config"):
@@ -468,9 +469,9 @@ def get_docker_world_data(fal, request):
             tools_configuration[tool_name] = base_config
 
     for driver_name, base_config in project.drivers.values_list("name", "base_config"):
-        tools.append(driver_name)
-        if base_config is not None and base_config != str(None):
-            tools_configuration[driver_name] = base_config
+        drivers.append(driver_name)
+        # if base_config is not None and base_config != str(None):
+        #     tools_configuration[driver_name] = base_config
 
     if not project.worlds.exists():
         config = {
@@ -494,8 +495,12 @@ def get_docker_world_data(fal, request):
     world_type = world.scene.type
 
     supported_tools = world.scene.tools_supported.all()
-    tools = get_used_elements(supported_tools, tools)
+    supported_drivers = world.drivers_supported.all()
     supported_tools_config = {}
+
+    tools = get_used_elements(supported_tools, tools)
+    drivers = get_used_elements(supported_drivers, drivers)
+
     for supported_tool in supported_tools:
       config = SceneSupportedTools.objects.get(scene=world.scene, tool=supported_tool).config
       if config is not None and config != str(None):
@@ -505,7 +510,6 @@ def get_docker_world_data(fal, request):
       if tool in supported_tools_config:
         tools_configuration[tool] = supported_tools_config[tool]
 
-    print(tools_configuration, supported_tools_config)
 
     robot_models = world.robots.all()
     for robot in robot_models:
@@ -532,6 +536,7 @@ def get_docker_world_data(fal, request):
         },
         "robot": robots_config,
         "tools": tools,
+        "drivers": drivers,
         "tools_config": tools_configuration,
     }
 

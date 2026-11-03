@@ -39,6 +39,7 @@ const ExerciseHeader = ({
   userRef,
   additionalEntrypoints,
   tools,
+  setTools,
   baseWorld
 }: {
   project: string;
@@ -54,6 +55,7 @@ const ExerciseHeader = ({
   ) => Promise<void>;
   additionalEntrypoints: string[];
   tools: ViewersEntry[];
+  setTools: (tools: string[]) => void;
   baseWorld?: string;
 }) => {
   const theme = useAcademyTheme();
@@ -93,6 +95,7 @@ const ExerciseHeader = ({
             additionalEntrypoints={additionalEntrypoints}
             baseWorld={baseWorld}
             tools={tools}
+            setTools={setTools}
           />
           <TheoryButton url={url} />
           <InfoButton />
@@ -111,6 +114,7 @@ const ExecutionControl = ({
   userRef,
   additionalEntrypoints,
   tools,
+  setTools,
   baseWorld
 }: {
   project: string;
@@ -123,6 +127,7 @@ const ExecutionControl = ({
   ) => Promise<void>;
   additionalEntrypoints: string[];
   tools: ViewersEntry[];
+  setTools: (tools: string[]) => void;
   baseWorld?: string;
 }) => {
   const [state, setState] = useState<string | undefined>(
@@ -162,7 +167,7 @@ const ExecutionControl = ({
         <ConnectButton connectManager={connectManager} />
       ) : (
         <>
-          <WorldButton project={project} commsManager={commsManager} baseWorld={baseWorld}/>
+          <WorldButton project={project} commsManager={commsManager} baseWorld={baseWorld} setTools={setTools}/>
           <ToolButton tools={tools} />
           <PlayPauseButton
             project={project}

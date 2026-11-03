@@ -8,10 +8,10 @@ import { useError } from "jderobot-ide-interface";
 import { useEffect, useState } from "react";
 import { Dropdown } from "./Dropdown";
 
-const TerminateUniverseButton = ({ project, commsManager, baseWorld }: {
+const TerminateUniverseButton = ({ project, commsManager, baseWorld, setTools }: {
   project: string, commsManager: CommsManager | null,
   baseWorld?: string;
-
+  setTools: (tools: string[]) => void;
 }) => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
@@ -88,6 +88,7 @@ const TerminateUniverseButton = ({ project, commsManager, baseWorld }: {
     const worldConfig = await getRoboticsBackendWorld(project, world);
 
     const tools = worldConfig.tools;
+    const drivers = worldConfig.drivers;
     const scene_config = worldConfig.scene;
     const robot_config = worldConfig.robot;
 
@@ -99,6 +100,7 @@ const TerminateUniverseButton = ({ project, commsManager, baseWorld }: {
 
     await manager.launchWorld(world_config);
     console.log("RB world launched!");
+    setTools(drivers.concat(tools))
     await manager.prepareTools(tools, worldConfig.tools_config);
     console.log("Tools ready!");
   };
