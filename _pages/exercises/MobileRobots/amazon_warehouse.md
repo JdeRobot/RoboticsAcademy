@@ -121,6 +121,11 @@ The objective of this exercise is to implement the logic that allows a logistics
 
 {% include gallery caption="Gallery" %}
 
+The exercise offers two kinds of robot. Choose the world in the exercise page and read the section of its robot.
+
+- **Logistic robots**, holonomic or Ackermann, with a lifting platform to carry the shelves, in **Warehouse 1** and **Warehouse 2**. Their API is in [Robot API](#robot-api) and the details of the robots and warehouses in [Supporting information](#supporting-information).
+- [**MiR100**](#mir100), a differential drive robot with two lasers and no lifting platform, simulated in **Warehouse 1 Mir100** or real in **Mir100 Physical**, see [Running on the real robots](#running-on-the-real-robots).
+
 ## Frequency API
 
 ### Python
@@ -137,6 +142,13 @@ The objective of this exercise is to implement the logic that allows a logistics
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+| World | Robot | Python | C++ |
+| ----- | ----- | ------ | --- |
+| Warehouse 1, Warehouse 2 | Logistic robots | `import HAL` | `#include "HAL.hpp"` |
+| Warehouse 1 Mir100, Mir100 Physical | [MiR100](#mir100) | `import HAL_mir100 as HAL` | Not available |
+
+This section is about the logistic robots, the MiR100 API is in [its section](#mir100).
 
 ### HAL-based Implementation
 
@@ -158,7 +170,7 @@ sec = HAL.getSimTime().sec + HAL.getSimTime().nanosec / 1000000000
 
 - `HAL.setV(velocity)` - to set the linear speed.
 - `HAL.setW(velocity)` - to set the angular speed.
-- `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
+- `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values (0-180º, distance in meters).
 - `HAL.lift()` - to lift the platform.
 - `HAL.putdown()` - to put down the platform.
 - `HAL.getLiftState()` - Returns the current lift state (`True` if lifted).
@@ -370,6 +382,48 @@ There are two warehouses to choose from:
 - You can get the warehouse's map from there: /resources/exercises/amazon_warehouse/images/map_2.png
 
 {% include gallery id="warehouse2" caption="Warehouse 2" %}
+
+---
+
+## MiR100
+{: style="font-size: 1.9em; margin-top: 1.5em"}
+
+{% include figure image_path="/assets/images/exercises/amazon_warehouse/mir100_robot.jpg" alt="MiR100" caption="The MiR100." %}
+
+The [MiR100](https://mobile-industrial-robots.com/) is a differential drive robot with two laser scanners and no lifting platform, so with it the exercise is about moving around the warehouse. It runs in two worlds: **Warehouse 1 Mir100**, in simulation, and **Mir100 Physical**, the real robot, see [Running on the real robots](#running-on-the-real-robots). The same code moves the simulated and the real robot.
+
+### The robot
+
+{% include figure image_path="/assets/images/exercises/amazon_warehouse/mir100_top.png" alt="MiR100 seen from above" caption="Top view of the MiR100 with its frame and the field of both lasers." %}
+
+- The robot is 0.89 meters long and 0.58 meters wide. It moves forward and backward and turns in place, but it cannot move sideways.
+- The two lasers are at opposite corners, each one rotated 45 degrees. The front laser is at (0.4288, 0.2358) looking 45 degrees to the left, the back laser at (-0.3548, -0.2352) looking 135 degrees to the right, in metres from the robot origin, `x` forward and `y` to the left.
+- In the **Warehouse 1 Mir100** world it starts at (0, 0) of Warehouse 1. On the real robot the odometry does not start at (0, 0).
+
+### HAL-based Implementation in Python
+
+- `import HAL_mir100 as HAL` - to import the HAL (Hardware Abstraction Layer) library class of the MiR100. This class contains the functions that send and receive information to and from the Hardware (Gazebo or the real robot).
+- `HAL.getPose3d()` - returns the robot pose from the odometry: `x`, `y` in metres and `yaw` in radians.
+- `HAL.setV(velocity)` - to set the linear speed in m/s, positive forward. Limited to [-1, 1] m/s.
+- `HAL.setW(velocity)` - to set the angular speed in rad/s, positive to the left. Limited to [-1, 1] rad/s.
+- `HAL.getFrontLaserData()` - returns the scan of the front laser.
+- `HAL.getBackLaserData()` - returns the scan of the back laser.
+
+Each scan has `values`, a list of 541 distances in metres covering 270 degrees, one every 0.5 degrees, plus `minAngle`, `maxAngle`, `minRange` and `maxRange`. `values[0]` is at -135 degrees and `values[540]` at +135 degrees of the laser. Readings that hit nothing are returned as the maximum range, or `inf` in simulation.
+
+The C++ HAL is not available for the MiR100.
+
+### ROS 2-direct Implementation
+
+The topics are the same for the simulated and the real robot.
+
+- `/mir100/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/mir100/odom` - Subscribe to this topic to receive the odometry of the robot. Message type: `nav_msgs/msg/Odometry`
+- `/mir100/front_laser/scan` - Subscribe to this topic to receive the front laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/mir100/back_laser/scan` - Subscribe to this topic to receive the back laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/mir100/imu` - Subscribe to this topic to receive the IMU data. Message type: `sensor_msgs/msg/Imu`
+
+---
 
 ## Theory
 
@@ -636,19 +690,67 @@ The library offers the possibility to set an optimization objective, which could
 
 {% include youtubePlayer.html id=page.youtubeId4 %}
 
-- #### Euclidean planning
+### Euclidean planning
 
-    {% include youtubePlayer.html id=page.youtubeId1 %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
-- #### Planning with robot's geometry constraints
+### Planning with robot's geometry constraints
 
-    {% include youtubePlayer.html id=page.youtubeId2 %}
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
-- #### Control-based planning
-    {% include youtubePlayer.html id=page.youtubeId3 %}
+### Control-based planning
+
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 * Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 * Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164), [Javier Izquierdo](https://github.com/javizqh).
+
+## Running on the real robots
+
+The **Mir100 Physical** world moves a real MiR100 instead of a simulated one. No simulator runs: a bridge inside the Robotics Backend talks to the rosbridge server of the robot and publishes the same topics as the simulated MiR100, so `HAL_mir100` runs unchanged. It works with the MiR software 2.x, nothing has to be installed on the robot.
+
+The steps are the usual ones of the [Unibotics user guide](https://unibotics.org/user_guide): launch the Robotics Backend on your computer, open the exercise in [unibotics.org](https://unibotics.org) and connect. The difference is that the Robotics Backend is launched with an extra option for the robot. The Robotics Backend runs inside a Docker container and the robot is outside it, so the container has to be told how to talk to the hardware. The MiR100 is reached over the network, so the container needs the robot address. The section below gives the full command to copy. It is the launch command without GPU acceleration of the user guide, since no simulator runs with a real robot, and it works on any computer.
+
+### MiR100
+
+**1. Robot.** Power the MiR100 on, release its emergency stop and check in its web interface that it has no errors.
+
+**2. Network.** Connect the computer to the wifi of the robot, or to the network the robot is on. By default the robot has the address `192.168.12.20` on its own wifi, but it can be different: the robot may have been given another address, or be reached through the network of your lab. In that case find out its address first, from whoever manages the robot or from the list of devices connected to the router of that network, and use it in the next steps instead of `192.168.12.20`.
+
+The bridge connects to the rosbridge server of the robot, always on port `9090`, the one of the MiR software. Check that the address answers and that the port is open:
+
+```bash
+ping 192.168.12.20
+nc -zv 192.168.12.20 9090
+```
+
+**3. Launch the Robotics Backend.** `MIR100_ROBOT_IP` is the robot address of step 2, change it if it is not the default one.
+
+```bash
+docker run --rm -it --name robotics-backend -p 6080-6090:6080-6090 -p 1108:1108 -p 7163:7163 -e MIR100_ROBOT_IP=192.168.12.20 jderobot/robotics-backend:latest
+```
+
+**4. Open Amazon Warehouse** in [unibotics.org](https://unibotics.org), connect to the Robotics Backend and choose the **Mir100 Physical** world.
+
+**5. Check the robot data** from a second terminal. The odometry has to arrive at a steady rate, stop it with Ctrl+C:
+
+```bash
+docker exec -it robotics-backend bash -c "source /opt/ros/humble/setup.bash && ros2 topic hz /mir100/odom"
+```
+
+**6. Run your code** with `import HAL_mir100 as HAL`, as in the Warehouse 1 Mir100 world. Start with low speeds, 0.1 to 0.3 m/s, and work with poses relative to the start of your program, since the odometry of the real robot does not start at (0, 0).
+
+The bridge stops the robot when it stops receiving velocity commands, so set the velocity inside the loop of your code.
+
+**Possible errors**
+
+| Symptom | Fix |
+| ------- | --- |
+| The robot does not move | Check that the code imports `HAL_mir100` and not `HAL`, that the emergency stop is released and that the robot has no errors in its web interface. If it still does not move, put the robot in **Manual** mode in the web interface |
+| The robot moves in short jerks | Set the velocity inside the loop, not only once |
+| The code gets stuck on the first laser call | No laser data arrives from the robot. Check the network connection and that `MIR100_ROBOT_IP` is the robot address of step 2 |
+| `nc` reports the port `9090` closed | The address is not the one of the robot, or the rosbridge server of the robot is not running. Check the address and the MiR software version, it has to be 2.x |
+| The robot stops near obstacles | The safety system of the robot, this is expected |
 
 ## References
 
