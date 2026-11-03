@@ -36,7 +36,7 @@ def save_exercise_db(request):
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools --table public.exercises_drivers > RoboticsAcademy/database/exercises/db.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -59,7 +59,7 @@ def save_world_db(request):
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.scenes --table public.robots --table public.tools > /worlds.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.worlds_robots --table public.scenes --table public.robots --table public.tools --table public.drivers --table public.worlds_supported_drivers --table public.scenes_supported_tools > /worlds.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
