@@ -126,7 +126,7 @@ class World(models.Model):
         Scene, default=None, on_delete=models.CASCADE, db_column="scene_id"
     )
     robots = models.ManyToManyField(Robot, default=None, through="WorldRobots")
-    # drivers = models.ManyToManyField(Driver, default=None, db_table='"supported_drivers"')
+    drivers_supported = models.ManyToManyField(Driver, default=None, through='WorldSupportedDrivers')
 
     def __str__(self):
         return str(self.name)
@@ -162,6 +162,7 @@ class Exercise(models.Model):
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     worlds = models.ManyToManyField(World, default=None, through="ExerciseWorlds")
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
+    drivers = models.ManyToManyField(Driver, default=None, db_table='"exercises_drivers"')
     url = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
@@ -211,6 +212,26 @@ class WorldRobots(models.Model):
 
     class Meta:
         db_table = '"worlds_robots"'
+
+class WorldSupportedDrivers(models.Model):
+    """
+    Through model linking World and Robot with the number of instances of said robot.
+
+    Attributes:
+        world: Related World instance.
+        driver: Related Driver instance.
+        instances: Number of instances of the robot in a world (defaults to 1).
+    """
+
+    world = models.ForeignKey(World, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    config = models.CharField(max_length=200, blank=False)
+
+    class Meta:
+        db_table = '"worlds_supported_drivers"'
+
+    def __str__(self):
+        return f"{str(self.world)}: {str(self.driver)}"
 
 
 class SceneSupportedTools(models.Model):
