@@ -19,7 +19,7 @@ from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
 from .templates import select_template
-from .models import Exercise, World, ExerciseWorlds, WorldRobots
+from .models import Exercise, World, ExerciseWorlds, WorldRobots, SceneSupportedTools, Tool
 from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
@@ -36,7 +36,7 @@ def save_exercise_db(request):
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.exercises --table public.exercises_worlds --table public.exercises_tools --table public.exercises_drivers > RoboticsAcademy/database/exercises/db.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -59,7 +59,7 @@ def save_world_db(request):
 
     subprocess.Popen(
         [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.scenes --table public.robots --table public.tools > /worlds.sql""",
+            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h world_db --table public.worlds --table public.worlds_robots --table public.scenes --table public.robots --table public.tools --table public.drivers --table public.worlds_supported_drivers --table public.scenes_supported_tools > /worlds.sql""",
         ],
         shell=True,
         stdout=sys.stdout,
@@ -82,6 +82,7 @@ def enter_exercise(fal, request):
     project = Exercise.objects.prefetch_related("tools").get(exercise_id=project_id)
 
     tools = list(project.tools.values_list("name", flat=True))
+    drivers = list(project.drivers.values_list("name", flat=True))
 
     try:
         parsed_tags = ast.literal_eval(project.tags) if project.tags else []
@@ -99,11 +100,10 @@ def enter_exercise(fal, request):
         "name": project.name,
         "tags": parsed_tags,
         "entrypoints": parsed_entrypoints,
-        "tools": tools,
+        "tools": tools + drivers,
         "url": project.url,
     }
 
-    # FIX:https://github.com/JdeRobot/RoboticsAcademy/issues/3510
     global active_project
     if active_project is None:
         active_project = project_id
@@ -435,6 +435,16 @@ def get_worlds_list(fal, request):
 
     return Response({"worlds_list": worlds_list})
 
+def get_used_elements(supported, used):
+    # Convert arrays to sets for faster lookup
+    supported_list = []
+    for s in supported:
+      supported_list.append(s.name)
+    set1 = set(supported_list)
+    set2 = set(used)
+    # Find intersection of the sets (common elements)
+    common_elements = set1.intersection(set2)
+    return list(common_elements)
 
 @error_wrapper("GET", ["project"])
 def get_docker_world_data(fal, request):
@@ -443,19 +453,25 @@ def get_docker_world_data(fal, request):
     """
     name = request.GET.get("world")
     project_id = request.GET.get("project")
-    project = Exercise.objects.prefetch_related("tools", "worlds").get(
+    project = Exercise.objects.prefetch_related("tools", "drivers", "worlds").get(
         exercise_id=project_id
     )
 
     robots = []
     robots_config = []
     tools = []
+    drivers = []
     tools_configuration = {}
 
     for tool_name, base_config in project.tools.values_list("name", "base_config"):
         tools.append(tool_name)
-        if base_config != "None":
+        if base_config is not None and base_config != str(None):
             tools_configuration[tool_name] = base_config
+
+    for driver_name, base_config in project.drivers.values_list("name", "base_config"):
+        drivers.append(driver_name)
+        # if base_config is not None and base_config != str(None):
+        #     tools_configuration[driver_name] = base_config
 
     if not project.worlds.exists():
         config = {
@@ -478,8 +494,22 @@ def get_docker_world_data(fal, request):
     ros_version = world.scene.ros_version
     world_type = world.scene.type
 
-    if world.scene.tools_config != "None":
-        tools_configuration = json.loads(world.scene.tools_config)
+    supported_tools = world.scene.tools_supported.all()
+    supported_drivers = world.drivers_supported.all()
+    supported_tools_config = {}
+
+    tools = get_used_elements(supported_tools, tools)
+    drivers = get_used_elements(supported_drivers, drivers)
+
+    for supported_tool in supported_tools:
+      config = SceneSupportedTools.objects.get(scene=world.scene, tool=supported_tool).config
+      if config is not None and config != str(None):
+        supported_tools_config[supported_tool.name] = config
+
+    for tool in tools:
+      if tool in supported_tools_config:
+        tools_configuration[tool] = supported_tools_config[tool]
+
 
     robot_models = world.robots.all()
     for robot in robot_models:
@@ -506,8 +536,12 @@ def get_docker_world_data(fal, request):
         },
         "robot": robots_config,
         "tools": tools,
+        "drivers": drivers,
         "tools_config": tools_configuration,
     }
+
+    print(config)
+    # raise Exception("AAAA")
 
     return Response({"success": True, "world": config})
 

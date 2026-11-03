@@ -58,7 +58,6 @@ const Exercise = () => {
         additionalEntrypoints={data.entrypoints}
         project={data.exercise_id}
         name={data.name}
-        tools={data.tools}
         url={data.url !== "" ? data.url : undefined}
       >
         <Suspense fallback={<WebGUILoading />}>

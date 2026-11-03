@@ -104,6 +104,7 @@ const getRoboticsBackendWorld = async (project: string, world: string) => {
     return {
       scene: response.data.world.scene,
       robot: response.data.world.robot,
+      drivers: response.data.world.drivers,
       tools: response.data.world.tools,
       tools_config: response.data.world.tools_config,
     };
@@ -463,23 +464,9 @@ const deleteFolder = async (projectId: string, path: string, user?: string) => {
 
 
 export {
-  getProjectData,
-  getHelperFileList,
-  getHelperFile,
-  getExerciseList,
-  getRoboticsBackendWorld,
-  listWorlds,
-  getFile,
-  saveFile,
-  getFileList,
-  createFile,
-  renameFile,
-  deleteFile,
-  uploadFile,
-  createFolder,
-  renameFolder,
-  deleteFolder,
-  exitProject,
-  sendExecutionProbe,
-  sendTypingProbe,
+  createFile, createFolder, deleteFile, deleteFolder,
+  exitProject, getExerciseList, getFile, getFileList, getHelperFile, getHelperFileList, getProjectData, getRoboticsBackendWorld,
+  listWorlds, renameFile, renameFolder, saveFile, sendExecutionProbe,
+  sendTypingProbe, uploadFile
 };
+

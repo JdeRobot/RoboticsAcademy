@@ -14,7 +14,7 @@ import IdeInterface, {
   ExtraApi,
   ExtraSnippets,
   StatusBarComponents,
-  useError,
+  useError
 } from "jderobot-ide-interface";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 
@@ -31,14 +31,12 @@ const ExerciseContainer = ({
   project,
   name,
   multiLanguage,
-  tools,
   url,
   children,
   additionalEntrypoints,
 }: {
   project: string;
   name: string;
-  tools: string[];
   url?: string;
   multiLanguage: boolean;
   children: JSX.Element;
@@ -50,6 +48,7 @@ const ExerciseContainer = ({
   const connectTimeoutRef = useRef<number | null>(null);
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [worlds, setWorlds] = useState<string[] | undefined>(undefined);
+  const [tools, setTools] = useState<string[]>([]);
   const toolsList = getTools(manager, tools, children);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both",
@@ -177,6 +176,9 @@ const ExerciseContainer = ({
           connectManager={connectWithRetry}
           userRef={userRef}
           additionalEntrypoints={additionalEntrypoints}
+          baseWorld={worlds ? worlds[0] : undefined}
+          tools={toolsList}
+          setTools={setTools}
         />
         <IdeInterface
           commsManager={manager}

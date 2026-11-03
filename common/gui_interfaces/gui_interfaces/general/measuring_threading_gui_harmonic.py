@@ -87,19 +87,16 @@ class MeasuringThreadingGUI:
         asyncio.run(self.run_websocket())
 
     async def run_websocket(self):
-        async for websocket in connect(self.host):
-          try:
-              self.client = websocket
-              print("Connected", flush=True)
+        try:
+          async with connect(self.host) as websocket:
+            self.client = websocket
 
-              async for raw_msg in websocket:
-                self.gui_in_thread(websocket, raw_msg)
-          except:
-              print("Disconnected", flush=True)
-              pass
-          finally:
-              print("Exit", flush=True)
-              self.client = None
+            async for raw_msg in websocket:
+              self.gui_in_thread(websocket, raw_msg)
+        except ConnectionClosedOK as e:
+            pass
+        finally:
+            self.client = None
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
@@ -138,7 +135,11 @@ class MeasuringThreadingGUI:
             }
             message = json.dumps(self.frequency_message)
 
+<<<<<<< HEAD
             # await self.send_to_client(message)
+=======
+            await self.send_to_client(message)
+>>>>>>> c357480 (Test new gui)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):

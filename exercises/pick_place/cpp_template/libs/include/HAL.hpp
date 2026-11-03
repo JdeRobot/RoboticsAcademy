@@ -2,12 +2,11 @@
 #define INCLUDE_HAL_HPP_
 
 #include <array>
-#include <memory>
-#include <thread>
 
-// Forward declarations to keep ROS 2 headers out of user-facing code.
-class HALNode;
-namespace rclcpp::executors { class MultiThreadedExecutor; }
+// HAL for the UR5 with the Robotiq gripper, the Dobot worlds use HAL_dobot.hpp
+// It starts the first time one of its functions is called
+namespace ur5
+{
 
 class HAL
 {
@@ -33,17 +32,19 @@ public:
     // Relative TCP reorientation. ypr in degrees.
     static void MoveRelReor(const std::array<double, 3>& ypr, double speed, double wait_time);
 
+    // TCP pose in the same frame and angle order MoveLinear takes. Position in metres, orientation in degrees.
+    static std::array<double, 3> get_TCP_position();
+    static std::array<double, 3> get_TCP_orientation();
+
+    // Current joint angles in degrees, in the order MoveAbsJ takes them.
+    static std::array<double, 6> get_Joint_states();
+
     // Gripper control. relative_closure in [0,100] (0 = fully open, 100 = fully closed).
     static void GripperSet(double relative_closure, double wait_time);
-
-private:
-    static void init();
-    friend class SystemBootstrapper;
-
-    // Hidden internal state. Not accessible to the user.
-    static std::shared_ptr<HALNode> hal_node_;
-    static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
-    static std::thread spin_thread_;
 };
+
+}  // namespace ur5
+
+using HAL = ur5::HAL;
 
 #endif
