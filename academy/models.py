@@ -252,4 +252,4 @@ class SceneSupportedTools(models.Model):
         db_table = '"scenes_supported_tools"'
 
     def __str__(self):
-        return f"{str(self.scene)}: {str(self.tool)}"
+        return f"{str(self.scene)}: {str(self.tool)} -> {str(self.config)}"
