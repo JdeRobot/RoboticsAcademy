@@ -10,20 +10,20 @@ toc_label: "TOC Visual Odometry"
 toc_icon: "cog"
 
 correlation:
-  - url: /assets/images/exercises/visual_odometry/correlation.png
-    image_path: /assets/images/exercises/visual_odometry/correlation.png
+  - url: /assets/images/exercises/visual_odom/correlation.png
+    image_path: /assets/images/exercises/visual_odom/correlation.png
     alt: "Feature correlation between frames"
     title: "Feature correlation between frames"
 
 trajectories:
-  - url: /assets/images/exercises/visual_odometry/trajectories.png
-    image_path: /assets/images/exercises/visual_odometry/trajectories.png
+  - url: /assets/images/exercises/visual_odom/trajectories.png
+    image_path: /assets/images/exercises/visual_odom/trajectories.png
     alt: "Ground truth and estimated trajectories"
     title: "Ground truth and estimated trajectories"
 
 spacethree:
-  - url: /assets/images/exercises/visual_odometry/3dspace.png
-    image_path: /assets/images/exercises/visual_odometry/3dspace.png
+  - url: /assets/images/exercises/visual_odom/3dspace.png
+    image_path: /assets/images/exercises/visual_odom/3dspace.png
     alt: "3D space trajectory visualization"
     title: "3D space trajectory visualization"
 

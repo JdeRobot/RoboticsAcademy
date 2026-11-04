@@ -19,20 +19,20 @@ digitclassification:
     alt: "image_classification_exercise"
     title: "Image Classification"
 mnist:
-  - url: /assets/images/exercises/digit_classification/mnist.png
-    image_path: /assets/images/exercises/digit_classification/mnist.png
+  - url: /assets/images/exercises/image_classification/mnist.png
+    image_path: /assets/images/exercises/image_classification/mnist.png
     alt: "MNIST samples"
     title: "MNIST samples"
     
 cnn:
-  - url: /assets/images/exercises/digit_classification/cnn.png
-    image_path: /assets/images/exercises/digit_classification/cnn.png
+  - url: /assets/images/exercises/image_classification/cnn.png
+    image_path: /assets/images/exercises/image_classification/cnn.png
     alt: "Example of a Convolutional Neural Network"
     title: "Example of a Convolutional Neural Network"
 
 instruction:
-  - url: /assets/images/exercises/digit_classification/digit-classification-exercise-instruction-img-1.png
-    image_path: /assets/images/exercises/digit_classification/digit-classification-exercise-instruction-img-1.png
+  - url: /assets/images/exercises/image_classification/digit-classification-exercise-instruction-img-1.png
+    image_path: /assets/images/exercises/image_classification/digit-classification-exercise-instruction-img-1.png
     alt: "exercise instruction"
     title: "exercise instruction"
 
