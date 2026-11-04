@@ -136,11 +136,12 @@ Recommended to load the ONNX model session
 
 ```python
 # Import the required package
-from model import model_path
+from model import model_path_func
 import onnxruntime
 import sys
 
 # Load ONNX model
+model_path = model_path_func("my_model.onnx")
 try:
     ort_session = onnxruntime.InferenceSession(model_path)
 except Exception as e:

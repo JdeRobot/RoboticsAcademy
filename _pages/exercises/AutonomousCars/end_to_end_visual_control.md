@@ -393,10 +393,12 @@ nvidia-smi
 
 #### File Path for Uploaded Model
 
-The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
+To obtain the path of an uploaded <strong>ONNX</strong> model, use the `model_path_func` helper function. The model filename must be passed as an argument.
 
 ```python
-from model import model_path
+from model import model_path_func
+
+model_path = model_path_func("model.onnx")
 ```
 
 #### Import GPU Configuration
@@ -408,7 +410,9 @@ from model import model_path
 
 ```python
 import onnxruntime
-from model import model_path
+from model import model_path_func
+
+model_path = model_path_func("model.onnx")
 
 # Preload CUDA/cuDNN DLLs
 onnxruntime.preload_dlls()
@@ -438,7 +442,7 @@ Recommended to load the ONNX model session
 
 ```python
 # Import the required package
-from model import model_path
+from model import model_path_func
 import onnxruntime
 import sys
 
@@ -446,6 +450,7 @@ import sys
 onnxruntime.preload_dlls()
 
 # Load ONNX model
+model_path = model_path_func("model.onnx")
 try:
     ort_session = onnxruntime.InferenceSession(model_path,providers=["CUDAExecutionProvider"])
 except Exception as e:
