@@ -1732,6 +1732,147 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
+  _tomato_harvesting: {
+    hal: [
+      {
+        type: "method",
+        label: "getPose3d()",
+        code: "getPose3d()",
+        docstring:
+          "Returns the base pose from odometry as a Pose3d with x, y and yaw.",
+      },
+      {
+        type: "method",
+        label: "getFrontLaserData()",
+        code: "getFrontLaserData()",
+        docstring:
+          "Returns the front laser readings, values holds the ranges in m.",
+      },
+      {
+        type: "method",
+        label: "getBackLaserData()",
+        code: "getBackLaserData()",
+        docstring:
+          "Returns the back laser readings, values holds the ranges in m.",
+      },
+      {
+        type: "method",
+        label: "setV(velocity)",
+        code: "setV(velocity)",
+        docstring: "Sets the forward speed of the base, in m/s.",
+      },
+      {
+        type: "method",
+        label: "setVY(velocity)",
+        code: "setVY(velocity)",
+        docstring:
+          "Sets the sideways speed of the mecanum base, in m/s, positive to the left.",
+      },
+      {
+        type: "method",
+        label: "setW(velocity)",
+        code: "setW(velocity)",
+        docstring:
+          "Sets the turning speed of the base, in rad/s, positive to the left.",
+      },
+      {
+        type: "method",
+        label: "moveArm(x, y, z, heading, speed, motion)",
+        code: "moveArm(x, y, z)",
+        docstring:
+          "Moves the grasp point between the fingers to x, y, z in m relative to the base. The fingers point towards heading, -pi/2 by default (right of the robot). motion is PTP or LIN. Returns True on success.",
+      },
+      {
+        type: "method",
+        label: "getArmPose()",
+        code: "getArmPose()",
+        docstring:
+          "Returns the grasp point as [x, y, z, heading] relative to the base.",
+      },
+      {
+        type: "method",
+        label: "homeArm()",
+        code: "homeArm()",
+        docstring: "Folds the arm back over the cabinet.",
+      },
+      {
+        type: "method",
+        label: "setGripper(angle)",
+        code: "setGripper(angle)",
+        docstring:
+          "Closes the three fingers to angle in rad, from 0.0 open to 0.20 fully closed.",
+      },
+      {
+        type: "method",
+        label: "openGripper()",
+        code: "openGripper()",
+        docstring: "Opens the fingers fully.",
+      },
+      {
+        type: "method",
+        label: "getGripForce()",
+        code: "getGripForce()",
+        docstring:
+          "Returns the force in N the fingers squeeze the held tomato with.",
+      },
+      {
+        type: "method",
+        label: "closeGripperUntil(force)",
+        code: "closeGripperUntil(force)",
+        docstring:
+          "Closes the fingers little by little until the grip reaches force in N and returns the force reached.",
+      },
+      {
+        type: "method",
+        label: "twistGripper(angle)",
+        code: "twistGripper(angle)",
+        docstring:
+          "Turns the fingers around their shaft to angle in rad, between -pi and pi.",
+      },
+      {
+        type: "method",
+        label: "getImage()",
+        code: "getImage()",
+        docstring:
+          "Returns the latest image of the wrist camera as a OpenCV cv2_image.",
+      },
+      {
+        type: "method",
+        label: "getDepthImage()",
+        code: "getDepthImage()",
+        docstring:
+          "Returns the depth of every pixel of the wrist camera in m, inf where nothing is in range.",
+      },
+      {
+        type: "method",
+        label: "pixelToPoint(u, v)",
+        code: "pixelToPoint(u, v)",
+        docstring:
+          "Returns the point seen at pixel column u and row v as [x, y, z] in m relative to the base, or None without depth.",
+      },
+      {
+        type: "method",
+        label: "getScore()",
+        code: "getScore()",
+        docstring:
+          "Returns the harvest score with harvested, green_in_crate, crushed, dropped and broken_trusses.",
+      },
+    ],
+    webgui: [
+      {
+        type: "method",
+        label: "showImage(cv2_image)",
+        code: "showImage(cv2_image)",
+        docstring: "Shows a image of the camera in the GUI.",
+      },
+      {
+        type: "method",
+        label: "showLeftImage(cv2_image)",
+        code: "showLeftImage(cv2_image)",
+        docstring: "Shows another image of the camera in the GUI.",
+      },
+    ],
+  },
 };
 
 export const frequencyAutoCompleteObj: Snippet[] = [
