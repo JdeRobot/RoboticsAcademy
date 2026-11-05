@@ -91,7 +91,7 @@ class ThreadingGUI:
             time.sleep(sleep_time)
 
     def send_to_client(self, msg):
-        if self.client:
+        if self.client and self.client.sock and self.client.sock.connected:
             try:
                 self.client.send(msg)
             except Exception as e:
