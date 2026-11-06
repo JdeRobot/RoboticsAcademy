@@ -1,5 +1,6 @@
 import { ExerciseStatus } from "Types/exercises";
 import styled from "styled-components";
+import { Link } from "react-router";
 
 interface StyledExerciseCardContainerProps {
   state: ExerciseStatus;
@@ -30,11 +31,18 @@ export const StyledExerciseCardContainer = styled.div<StyledExerciseCardContaine
   ${handleStatus}
 `;
 
-export const StyledExerciseCardArea = styled.div`
+export const StyledExerciseCardArea = styled(Link)`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: -8px;
+  }
 `;
 
 export const StyledExerciseCardInfoContainer = styled.div`
