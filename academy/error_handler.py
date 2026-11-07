@@ -54,13 +54,17 @@ def error_wrapper(type: str, param: list[str | tuple] = []):
                 return Response({"message": str(e)}, status=e.error_code)
             except json.JSONDecodeError as e:
                 logger.warning("Invalid JSON format: %s", e)
-                return Response({"error": f"Invalid JSON format: {str(e)}"}, status=422)
+                return Response(
+                    {"message": f"Invalid JSON format: {str(e)}"}, status=422
+                )
             except (binascii.Error, ValueError) as e:
                 logger.warning("Invalid B64 format: %s", e)
-                return Response({"error": f"Invalid B64 format: {str(e)}"}, status=422)
+                return Response(
+                    {"message": f"Invalid B64 format: {str(e)}"}, status=422
+                )
             except Exception as e:
                 logger.exception("Unhandled error in %s", func.__name__)
-                return Response({"error": f"An error occurred: {str(e)}"}, status=500)
+                return Response({"message": f"An error occurred: {str(e)}"}, status=500)
 
         return wrapper
 

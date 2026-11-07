@@ -370,6 +370,30 @@ class FileManagementViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
 
+    def test_upload_invalid_base64_returns_message(self):
+        response = self.client.post(
+            "/academy/upload/",
+            {
+                "project_id": "file_test_ex",
+                "file_name": "model.onnx",
+                "location": "",
+                "content": "not valid base64!",
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("message", response.json())
+        self.assertNotIn("error", response.json())
+
+    def test_create_file_in_missing_project_returns_message(self):
+        # The project folder does not exist, so the view raises a generic error.
+        response = self.client.post(
+            "/academy/create_file/",
+            {"project_id": "ghost", "location": "", "file_name": "a.py"},
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertIn("message", response.json())
+        self.assertNotIn("error", response.json())
+
     def test_path_traversal_rejected(self):
         response = self.client.post(
             "/academy/create_file/",
