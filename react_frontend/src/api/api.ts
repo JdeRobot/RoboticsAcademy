@@ -32,7 +32,9 @@ const getProjectData = async (
     return data;
   } catch (e: unknown) {
     const error = e as ApiError;
-    throw Error(error.response?.data.message, { cause: e });
+    throw Error(error.response?.data.message ?? error.response?.data.error, {
+      cause: e,
+    });
   }
 };
 

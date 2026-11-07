@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { Params, useLoaderData } from "react-router";
+import { Params, useLoaderData, useRouteError } from "react-router";
+import axios from "axios";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
@@ -71,20 +72,46 @@ const Exercise = () => {
 
 export const ErrorBoundary = () => {
   const theme = useAcademyTheme();
+  const error = useRouteError();
+
+  const cause = error instanceof Error ? error.cause : undefined;
+  const alreadyOpen =
+    axios.isAxiosError(cause) && cause.response?.status === 409;
+
+  if (alreadyOpen) {
+    return (
+      <>
+        <BasicHeader />
+        <StyledErrorContainer bgColor={theme.palette.bg}>
+          <StyledErrorMessage color={theme.palette.error}>
+            You have open a Robotics Academy exercise in another tab or window
+          </StyledErrorMessage>
+          <StyledErrorMessage color={theme.palette.error}>
+            You can only have one open at a time
+          </StyledErrorMessage>
+          <StyledErrorMessage color={theme.palette.error}>
+            Close the other instance or exit the exercise and refresh the page
+            to continue
+          </StyledErrorMessage>
+        </StyledErrorContainer>
+      </>
+    );
+  }
+
+  const message =
+    error instanceof Error && error.message
+      ? error.message
+      : "The server could not load this exercise";
 
   return (
     <>
       <BasicHeader />
       <StyledErrorContainer bgColor={theme.palette.bg}>
         <StyledErrorMessage color={theme.palette.error}>
-          You have open a Robotics Academy exercise in another tab or window
+          Unable to open the exercise
         </StyledErrorMessage>
         <StyledErrorMessage color={theme.palette.error}>
-          You can only have one open at a time
-        </StyledErrorMessage>
-        <StyledErrorMessage color={theme.palette.error}>
-          Close the other instance or exit the exercise and refresh the page to
-          continue
+          {message}
         </StyledErrorMessage>
       </StyledErrorContainer>
     </>
