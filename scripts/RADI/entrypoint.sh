@@ -79,6 +79,8 @@ else
   runram="python3 /ram_entrypoint.py 0.0.0.0 7163"
 fi
 
+runras="python3 RoboticsApplicationManager/robotics_application_services/main.py"
+
 root="cd /"
 
 # TEST LOGS
@@ -91,6 +93,6 @@ else
     if [ $debug == true ]; then
       { bash ; }
     else
-      { $root & $runserver & $runram ; }
+      { $root & $runserver & $runram & $runras; }
     fi
 fi

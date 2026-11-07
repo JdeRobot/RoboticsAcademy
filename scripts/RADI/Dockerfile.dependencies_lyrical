@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
   python3.14-venv \
   python3-pip \
   openssh-server \
+  clang-format \
   && rm -rf /var/lib/apt/lists/*
 
 # Setup python env
