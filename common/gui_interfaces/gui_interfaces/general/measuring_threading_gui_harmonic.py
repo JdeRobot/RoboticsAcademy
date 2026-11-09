@@ -34,6 +34,7 @@ class MeasuringThreadingGUI:
         self.ack = True
         self.ack_frontend = False
         self.ack_lock = threading.Lock()
+        self.rtf_lock = threading.Lock()
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
@@ -64,27 +65,20 @@ class MeasuringThreadingGUI:
             target=self.get_real_time_factor, name="rtf_thread", daemon=True
         ).start()
 
-        # Initialize and start the Frequency thread
-        threading.Thread(
-            target=self.launch_measure_and_send_frequency, name="frequency_thread", daemon=True
-        ).start()
+    async def task_start(self):
+        task1 = asyncio.create_task(self.gui_out_thread())
+        task2 = asyncio.create_task(self.measure_and_send_frequency())
+        task3 = asyncio.create_task(self.run_websocket())
 
-        # Initialize and start the image sending thread (GUI out thread)
-        threading.Thread(
-            target=self.launch_gui_out_thread, name="gui_out_thread", daemon=True
-        ).start()
+        # Must await them
+        await asyncio.gather(task1, task2, task3)
 
     def rtf_callback(self, msg: WorldStatistics):
-        self.real_time_factor = round(msg.real_time_factor, 2)
-
-    def launch_gui_out_thread(self):
-        asyncio.run(self.gui_out_thread())
-
-    def launch_measure_and_send_frequency(self):
-        asyncio.run(self.measure_and_send_frequency())
+        with self.rtf_lock:
+          self.real_time_factor = round(msg.real_time_factor, 2)
 
     def launch_websocket(self):
-        asyncio.run(self.run_websocket())
+        asyncio.run(self.task_start())
 
     async def run_websocket(self):
         try:
@@ -126,16 +120,18 @@ class MeasuringThreadingGUI:
                 round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
             )
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {
-                "brain": brain_frequency,
-                "gui": gui_frequency,
-                "rtf": self.real_time_factor,
-                "fps": self.fps,
-                "lat": self.lat,
-            }
+
+            with self.rtf_lock:
+              self.frequency_message = {
+                  "brain": brain_frequency,
+                  "gui": gui_frequency,
+                  "rtf": self.real_time_factor,
+                  "fps": self.fps,
+                  "lat": self.lat,
+              }
             message = json.dumps(self.frequency_message)
 
-            # await self.send_to_client(message)
+            await self.send_to_client(message)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
@@ -171,10 +167,10 @@ class MeasuringThreadingGUI:
             # Maintain desired frequency
             elapsed = time.time() - start_time
             sleep_time = max(0, self.out_period - elapsed)
-            time.sleep(sleep_time)
+            await asyncio.sleep(sleep_time)
 
     async def send_to_client(self, msg):
-        if self.client:
+        if self.client and self.client.state == 1:
             try:
                 await self.client.send(msg)
             except Exception as e:
