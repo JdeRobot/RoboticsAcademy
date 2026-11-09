@@ -6,10 +6,21 @@ import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
 
+const parseImage = (raw: string): string | undefined => {
+  if (!raw) {
+    return undefined;
+  }
+  const image = JSON.parse(raw);
+  if (image.image === "" || !(image.shape instanceof Array)) {
+    return undefined;
+  }
+  return `data:image/jpeg;base64,${image.image}`;
+};
+
 const WebGUI = () => {
   const exerciseContext = useExercise();
-  const [rightImage, setRightImage] = useState<string | undefined>(undefined);
   const [leftImage, setLeftImage] = useState<string | undefined>(undefined);
+  const [rightImage, setRightImage] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
 
   useEffect(() => {
@@ -17,20 +28,18 @@ const WebGUI = () => {
   }, [exerciseContext]);
 
   const updateCallback = (updateData: unknown) => {
-    const data = updateData as any;
-    const update = data.update;
-    let image;
-    if (update.image_right) {
-      image = JSON.parse(update.image_right);
-      if (image.image_right != "" && image.shape_right instanceof Array) {
-        setRightImage(`data:image/png;base64,${image.image_right}`);
-      }
+    const update = (updateData as any).update;
+    // Frequency and RTF messages go to the status bar
+    if (update.image_left === undefined && update.image_right === undefined) {
+      return;
     }
-    if (update.image_left) {
-      image = JSON.parse(update.image_left);
-      if (image.image_left != "" && image.shape_left instanceof Array) {
-        setLeftImage(`data:image/png;base64,${image.image_left}`);
-      }
+    const left = parseImage(update.image_left);
+    if (left) {
+      setLeftImage(left);
+    }
+    const right = parseImage(update.image_right);
+    if (right) {
+      setRightImage(right);
     }
   };
 

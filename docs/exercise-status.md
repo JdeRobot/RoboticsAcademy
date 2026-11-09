@@ -53,7 +53,7 @@
 | Follow face                      |                  |             |               |          | -     |         -          | broken |
 | Follow line Turtlebot (physical) |                  |             |               |          | -     |         -          | broken |
 | Opticalflow teleop               |                  |             |               |          | -     |         -          | broken |
-| Tomato Harvesting                |                  |             |               |          | -     |         ok         | new    |
+| Tomatoes Harvesting              |                  |             |               |          | -     |         ok         | new    |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90

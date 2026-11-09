@@ -145,7 +145,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, entrypoints, st
 32	palletizing	Palletizing	Palletizing exercise	["ROS2", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/palletizing
 33	visual_lander	Visual Lander	Visually track a moving car and land the drone on its color beacon	["ROS2","Drones", "MULTILANGUAGE"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/visual_lander
 34	follow_turtlebot	Follow Turtlebot	Fly a drone that follows a turtlebot on the ground by vision	["ROS2","Drones", "MULTILANGUAGE"]	["/resources/exercises/follow_turtlebot/turtlebot_patrol.py"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_turtlebot
-35	tomato_harvesting	Tomato Harvesting	Drive a mobile manipulator through a greenhouse, find the ripe tomatoes with its wrist camera and pick them one by one with a three finger head that grips and twists	["ROS2"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/tomato_harvesting
+35	tomatoes_harvesting	Tomatoes Harvesting	Drive a mobile manipulator through a greenhouse, find the ripe tomatoes with its wrist camera and pick them one by one with a three finger head that grips and twists	["ROS2"]	[]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/tomatoes_harvesting
 \.
 
 --

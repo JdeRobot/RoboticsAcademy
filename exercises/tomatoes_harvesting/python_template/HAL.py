@@ -1,4 +1,3 @@
-import json
 import math
 import os
 import sys
@@ -12,12 +11,12 @@ from builtin_interfaces.msg import Duration
 from control_msgs.action import FollowJointTrajectory
 from rclpy.action import ActionClient
 from rclpy.node import Node
-from rclpy.qos import DurabilityPolicy, QoSProfile
-from std_msgs.msg import Float32, String
-from trajectory_msgs.msg import JointTrajectoryPoint
+from cv_bridge import CvBridge
+from sensor_msgs.msg import CameraInfo, Image
+from std_msgs.msg import Float32
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 from hal_interfaces.general.camera import CameraNode
-from hal_interfaces.general.depth_camera import DepthCameraNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -40,8 +39,23 @@ ARM_JOINTS = [
 ]
 # Folded over the cabinet, the pose the robot starts in
 ARM_HOME = [1.5708, -2.75, 2.67, -1.5708, -1.5708, 0.0]
+# Unfolded in front of the base, MoveIt sees the folded arm touching the cabinet and plans best from here
+ARM_READY = [1.1428, -2.1233, 1.9619, -1.4094, -1.5708, -1.9988]
+ARM_SPEED = 0.3
+# Pilz plans the same move every time, the harvest head joint limits keep the arm on one configuration
+ARM_PLANNER = "PTP"
+# Finger angles of the harvest head, the student only deals with forces
 GRIPPER_OPEN = 0.0
 GRIPPER_CLOSED = 0.20
+# The fingers close smoothly at this rate while the grip force is watched
+GRIPPER_STEP = 0.003
+GRIP_RATE = 20.0
+# The head spins a tomato several fast turns, the shaft has five turns of travel each way
+TWIST_SPEED = 2 * 2 * math.pi
+TWIST_RANGE = 10 * math.pi
+# Depth is only rendered while asked for and dropped after this long without use
+DEPTH_IDLE = 5.0
+DEPTH_TIMEOUT = 3.0
 
 
 def _transform(xyz, rpy):
@@ -69,19 +83,30 @@ _TCP_TO_OPTICAL = (np.linalg.inv(_transform((0.265, 0.0, 0.09), (0.0, math.pi / 
                    @ _transform((0.0, 0.0, 0.0), (-math.pi / 2, 0.0, -math.pi / 2)))
 
 
+class ArmPose:
+    """Grasp point relative to the base and the direction its fingers point to."""
+
+    def __init__(self, x, y, z, heading):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.heading = heading
+
+    def __str__(self):
+        return f"ArmPose: {{x: {self.x:.3f}, y: {self.y:.3f}, z: {self.z:.3f}, heading: {self.heading:.3f}}}"
+
+
 class HarvestNode(Node):
-    """Arm pose, head controllers and harvest score of the MMO-500 harvester."""
+    """Arm pose and head controllers of the MMO-500 harvester."""
 
     def __init__(self):
         super().__init__("hal_harvest_node")
         self.tcp = None
         self.force = 0.0
-        self.score = {}
-        latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(Robpose, "/mmo500/Robpose", self.__pose_cb, 10)
         self.create_subscription(Float32, "/tomato_greenhouse/grip_force", self.__force_cb, 10)
-        self.create_subscription(String, "/tomato_greenhouse/score", self.__score_cb, latched)
-        self.clients = {
+        self.finger_pub = self.create_publisher(JointTrajectory, "/mmo500/gripper_controller/joint_trajectory", 10)
+        self._controllers = {
             name: ActionClient(self, FollowJointTrajectory, f"/mmo500/{name}/follow_joint_trajectory")
             for name in ("arm_controller", "gripper_controller", "twist_controller")
         }
@@ -92,12 +117,9 @@ class HarvestNode(Node):
     def __force_cb(self, msg):
         self.force = msg.data
 
-    def __score_cb(self, msg):
-        self.score = json.loads(msg.data)
-
-    def follow(self, controller, joints, positions, duration):
+    def follow(self, controller, joints, positions, duration, wait=True):
         """Send one trajectory point and wait until the controller has reached it."""
-        client = self.clients[controller]
+        client = self._controllers[controller]
         if not client.wait_for_server(timeout_sec=10.0):
             print(f"{controller} not available", flush=True)
             return False
@@ -108,9 +130,60 @@ class HarvestNode(Node):
         point.time_from_start = Duration(sec=int(duration), nanosec=int((duration % 1) * 1e9))
         goal.trajectory.points = [point]
         sent = client.send_goal_async(goal)
+        if not wait:
+            return True
         if not _wait(sent, 10.0) or not sent.result().accepted:
             return False
-        return _wait(sent.result().get_result_async(), duration + 15.0)
+        done = sent.result().get_result_async()
+        if not _wait(done, duration + 15.0):
+            return False
+        # An aborted goal also answers, only a reached one counts
+        return done.result().result.error_code == FollowJointTrajectory.Result.SUCCESSFUL
+
+
+class DepthOnDemand(Node):
+    """Depth of the wrist camera in m, subscribed only while it is being asked for."""
+
+    def __init__(self, image_topic, info_topic):
+        super().__init__("hal_harvest_depth")
+        self.k = None
+        self._topic = image_topic
+        self._bridge = CvBridge()
+        self._lock = threading.Lock()
+        self._sub = None
+        self._depth = None
+        self._stamp = 0.0
+        self._last_use = 0.0
+        self.create_subscription(CameraInfo, info_topic, self.__info_cb, 10)
+        self.create_timer(1.0, self.__drop_when_idle)
+
+    def __info_cb(self, msg):
+        self.k = msg.k
+
+    def __depth_cb(self, msg):
+        depth = self._bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        with self._lock:
+            self._depth, self._stamp = depth, time.monotonic()
+
+    def __drop_when_idle(self):
+        with self._lock:
+            if self._sub is not None and time.monotonic() - self._last_use > DEPTH_IDLE:
+                self.destroy_subscription(self._sub)
+                self._sub = None
+
+    def get(self):
+        """Depth image taken after the call, None if none arrives in time."""
+        asked = time.monotonic()
+        with self._lock:
+            self._last_use = asked
+            if self._sub is None:
+                self._sub = self.create_subscription(Image, self._topic, self.__depth_cb, 1)
+        while time.monotonic() - asked < DEPTH_TIMEOUT:
+            with self._lock:
+                if self._depth is not None and self._stamp >= asked:
+                    return self._depth
+            time.sleep(0.01)
+        return None
 
 
 def _wait(future, timeout):
@@ -139,7 +212,7 @@ odometry_node = OdometryNode("/mmo500/odom")
 front_laser_node = LaserNode("/mmo500/front_laser/scan")
 back_laser_node = LaserNode("/mmo500/back_laser/scan")
 camera_node = CameraNode("/mmo500/harvest_camera/image")
-depth_node = DepthCameraNode("/mmo500/harvest_camera/depth_image", "/mmo500/harvest_camera/camera_info")
+depth_node = DepthOnDemand("/mmo500/harvest_camera/depth_image", "/mmo500/harvest_camera/camera_info")
 harvest_node = HarvestNode()
 arm = RBT(suffix="_mmo500", robmove_action="/mmo500/Robmove", use_move=False)
 
@@ -149,16 +222,17 @@ for node in (odometry_node, front_laser_node, back_laser_node, camera_node, dept
     executor.add_node(node)
 
 
-def __auto_spin() -> None:
+def _serve_callbacks():
+    # One failing callback would stop every sensor for good, so it is reported and serving goes on
     while rclpy.ok():
         try:
-            executor.spin_once(timeout_sec=0)
-        except Exception:
-            pass
-        time.sleep(1 / freq)
+            executor.spin_once(timeout_sec=0.1)
+        except Exception as error:
+            print(f"HAL callback error: {error!r}", flush=True)
 
 
-executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+# Callbacks are served as they arrive, the grip watches a force that must never lag behind
+executor_thread = threading.Thread(target=_serve_callbacks, name="hal_spin", daemon=True)
 executor_thread.start()
 
 
@@ -200,11 +274,12 @@ def setW(velocity):
 ### ARM ###
 
 
-def moveArm(x, y, z, heading=-math.pi / 2, speed=0.3, motion="PTP"):
+def moveArm(x, y, z, heading=-math.pi / 2):
     """Move the grasp point between the fingers to x, y, z in m relative to the base.
 
-    The head stays level with its fingers pointing towards heading, an angle around
-    the vertical where -pi/2 points to the right of the robot. motion is PTP or LIN.
+    The head stays level and its fingers point towards heading, an angle around the
+    vertical measured like the base yaw. The default points to the right of the robot.
+    Returns True once the arm is there.
     """
     c, s = math.cos(heading), math.sin(heading)
     # Grasp frame with z along the fingers and x up
@@ -216,57 +291,81 @@ def moveArm(x, y, z, heading=-math.pi / 2, speed=0.3, motion="PTP"):
     pose = Robpose()
     pose.x, pose.y, pose.z = float(x), float(y), float(z)
     pose.qx, pose.qy, pose.qz, pose.qw = qx, qy, qz, qw
-    result = arm.RobMove_EXECUTE(motion, float(speed), pose)
-    if not result["Success"]:
-        print("Arm movement FAILED, check the MoveIt output", flush=True)
-    return bool(result["Success"])
+    if arm.RobMove_EXECUTE(ARM_PLANNER, ARM_SPEED, pose)["Success"]:
+        return True
+    # A failed plan is tried again once from the unfolded pose
+    harvest_node.follow("arm_controller", ARM_JOINTS, ARM_READY, 3.0)
+    # MoveIt plans from the current state so the arm settles first
+    time.sleep(2.0)
+    if arm.RobMove_EXECUTE(ARM_PLANNER, ARM_SPEED, pose)["Success"]:
+        return True
+    print("Arm movement FAILED, the point may be out of reach", flush=True)
+    return False
 
 
 def getArmPose():
-    """Grasp point as [x, y, z, heading] relative to the base, None until the first reading."""
+    """Current grasp point as an ArmPose, None until the arm reports its first pose."""
     tcp = harvest_node.tcp
     if tcp is None:
         return None
     axis = _quaternion_matrix(tcp.qx, tcp.qy, tcp.qz, tcp.qw)[:, 2]
-    return [tcp.x, tcp.y, tcp.z, math.atan2(axis[1], axis[0])]
+    return ArmPose(tcp.x, tcp.y, tcp.z, math.atan2(axis[1], axis[0]))
 
 
-def homeArm(duration=4.0):
-    return harvest_node.follow("arm_controller", ARM_JOINTS, ARM_HOME, duration)
+def homeArm():
+    """Fold the arm back to the pose the robot starts in."""
+    return harvest_node.follow("arm_controller", ARM_JOINTS, ARM_HOME, 4.0)
 
 
 ### HARVEST HEAD ###
 
 
-def setGripper(angle, duration=0.4):
-    """Close the three fingers to angle in rad, from 0.0 open to 0.20 fully closed."""
-    angle = max(GRIPPER_OPEN, min(GRIPPER_CLOSED, float(angle)))
+_finger_angle = GRIPPER_OPEN
+_twist_angle = 0.0
+
+
+def _set_fingers(angle, duration):
+    global _finger_angle
+    _finger_angle = angle
     return harvest_node.follow("gripper_controller", ["harvest_finger_1_joint"], [angle], duration)
 
 
-def openGripper():
-    return setGripper(GRIPPER_OPEN)
+def grip(force):
+    """Close the fingers until they squeeze with force in N and return the force reached.
 
-
-def getGripForce():
-    """Force in N the fingers squeeze the held tomato with."""
+    Returns 0.0 when the fingers closed completely without touching anything.
+    """
+    global _finger_angle
+    # Keeps closing from where the fingers are so a firmer grip never lets go first
+    angle = _finger_angle
+    while angle < GRIPPER_CLOSED and harvest_node.force < force:
+        angle = min(GRIPPER_CLOSED, angle + GRIPPER_STEP)
+        point = JointTrajectoryPoint(positions=[angle], time_from_start=Duration(nanosec=int(1e9 / GRIP_RATE)))
+        harvest_node.finger_pub.publish(JointTrajectory(joint_names=["harvest_finger_1_joint"], points=[point]))
+        time.sleep(1.0 / GRIP_RATE)
+    _finger_angle = angle
+    # The force follows the fingers with a short delay
+    time.sleep(0.2)
     return harvest_node.force
 
 
-def closeGripperUntil(force, step=0.005):
-    """Close the fingers little by little until the grip reaches force in N and return the force reached."""
-    angle = GRIPPER_OPEN
-    while angle < GRIPPER_CLOSED and getGripForce() < force:
-        angle = min(GRIPPER_CLOSED, angle + step)
-        setGripper(angle, 0.15)
-        time.sleep(0.15)
-    return getGripForce()
+def release():
+    """Open the fingers, the shaft winds back to zero on its own meanwhile."""
+    global _twist_angle
+    opened = _set_fingers(GRIPPER_OPEN, 0.4)
+    if _twist_angle != 0.0:
+        harvest_node.follow("twist_controller", ["harvest_twist_joint"], [0.0], max(0.2, abs(_twist_angle) / TWIST_SPEED), wait=False)
+        _twist_angle = 0.0
+    return opened
 
 
-def twistGripper(angle, duration=1.0):
-    """Turn the fingers around their shaft to angle in rad, between -pi and pi."""
-    angle = max(-math.pi, min(math.pi, float(angle)))
-    return harvest_node.follow("twist_controller", ["harvest_twist_joint"], [angle], duration)
+def twist(turns):
+    """Spin the fingers this many turns, negative turns spin the other way."""
+    global _twist_angle
+    target = max(-TWIST_RANGE, min(TWIST_RANGE, _twist_angle + 2 * math.pi * float(turns)))
+    duration = max(0.2, abs(target - _twist_angle) / TWIST_SPEED)
+    _twist_angle = target
+    return harvest_node.follow("twist_controller", ["harvest_twist_joint"], [target], duration)
 
 
 ### WRIST CAMERA ###
@@ -281,9 +380,10 @@ def getImage():
 
 def getDepthImage():
     """Depth of every pixel in m, inf where nothing is in range."""
-    while depth_node.depth is None:
-        time.sleep(0.01)
-    return depth_node.depth.copy()
+    depth = depth_node.get()
+    while depth is None:
+        depth = depth_node.get()
+    return depth.copy()
 
 
 def pixelToPoint(u, v):
@@ -291,7 +391,7 @@ def pixelToPoint(u, v):
 
     Returns None when that pixel has no depth or the arm pose is still unknown.
     """
-    depth, k, tcp = depth_node.depth, depth_node.k, harvest_node.tcp
+    depth, k, tcp = depth_node.get(), depth_node.k, harvest_node.tcp
     if depth is None or k is None or tcp is None:
         return None
     u, v = int(round(u)), int(round(v))
@@ -305,11 +405,3 @@ def pixelToPoint(u, v):
     base_to_tcp[:3, :3] = _quaternion_matrix(tcp.qx, tcp.qy, tcp.qz, tcp.qw)
     base_to_tcp[:3, 3] = [tcp.x, tcp.y, tcp.z]
     return list((base_to_tcp @ _TCP_TO_OPTICAL @ point)[:3])
-
-
-### SCORE ###
-
-
-def getScore():
-    """Harvested, green_in_crate, crushed, dropped and broken_trusses counters."""
-    return dict(harvest_node.score)

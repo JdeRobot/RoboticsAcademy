@@ -1732,7 +1732,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
-  _tomato_harvesting: {
+  _tomatoes_harvesting: {
     hal: [
       {
         type: "method",
@@ -1777,17 +1777,17 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
       {
         type: "method",
-        label: "moveArm(x, y, z, heading, speed, motion)",
+        label: "moveArm(x, y, z, heading)",
         code: "moveArm(x, y, z)",
         docstring:
-          "Moves the grasp point between the fingers to x, y, z in m relative to the base. The fingers point towards heading, -pi/2 by default (right of the robot). motion is PTP or LIN. Returns True on success.",
+          "Moves the grasp point between the fingers to x, y, z in m relative to the base. The fingers point towards heading, measured like the base yaw and to the right of the robot by default. Returns True once the arm is there.",
       },
       {
         type: "method",
         label: "getArmPose()",
         code: "getArmPose()",
         docstring:
-          "Returns the grasp point as [x, y, z, heading] relative to the base.",
+          "Returns the grasp point relative to the base as an ArmPose with x, y, z and heading.",
       },
       {
         type: "method",
@@ -1797,37 +1797,24 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
       {
         type: "method",
-        label: "setGripper(angle)",
-        code: "setGripper(angle)",
+        label: "grip(force)",
+        code: "grip(force)",
         docstring:
-          "Closes the three fingers to angle in rad, from 0.0 open to 0.20 fully closed.",
+          "Closes the fingers until they squeeze with force in N and returns the force reached, 0.0 if nothing was between them.",
       },
       {
         type: "method",
-        label: "openGripper()",
-        code: "openGripper()",
-        docstring: "Opens the fingers fully.",
+        label: "release()",
+        code: "release()",
+        docstring:
+          "Opens the fingers, the shaft winds back to zero on its own meanwhile.",
       },
       {
         type: "method",
-        label: "getGripForce()",
-        code: "getGripForce()",
+        label: "twist(turns)",
+        code: "twist(turns)",
         docstring:
-          "Returns the force in N the fingers squeeze the held tomato with.",
-      },
-      {
-        type: "method",
-        label: "closeGripperUntil(force)",
-        code: "closeGripperUntil(force)",
-        docstring:
-          "Closes the fingers little by little until the grip reaches force in N and returns the force reached.",
-      },
-      {
-        type: "method",
-        label: "twistGripper(angle)",
-        code: "twistGripper(angle)",
-        docstring:
-          "Turns the fingers around their shaft to angle in rad, between -pi and pi.",
+          "Spins the fingers this many turns at two turns per second, negative turns spin the other way.",
       },
       {
         type: "method",
@@ -1849,13 +1836,6 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         code: "pixelToPoint(u, v)",
         docstring:
           "Returns the point seen at pixel column u and row v as [x, y, z] in m relative to the base, or None without depth.",
-      },
-      {
-        type: "method",
-        label: "getScore()",
-        code: "getScore()",
-        docstring:
-          "Returns the harvest score with harvested, green_in_crate, crushed, dropped and broken_trusses.",
       },
     ],
     webgui: [
