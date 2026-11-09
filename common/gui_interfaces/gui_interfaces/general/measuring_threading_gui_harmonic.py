@@ -1,13 +1,10 @@
 from datetime import datetime
 import json
-import subprocess
 import threading
 import time
 from websockets.asyncio.client import connect
 from websockets.exceptions import ConnectionClosedOK
 import asyncio
-from threading import Timer
-import re
 import sys
 
 
