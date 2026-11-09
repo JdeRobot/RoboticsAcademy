@@ -170,7 +170,7 @@ class MeasuringThreadingGUI:
             await asyncio.sleep(sleep_time)
 
     async def send_to_client(self, msg):
-        if self.client and self.client.state == 1:
+        if self.client:
             try:
                 await self.client.send(msg)
             except Exception as e:
