@@ -4,85 +4,88 @@
 [Back to main README.]: ../README.md
 
 
-# Data base
+# Database
 
-The data base of this proyect is localizated en main directory, it's name is db.sqlite3. In this file, we save the structure of all the information that the website is compiling. Db is divided in  12 tables that includes all the diferent parameters. Most of this tables are created and modified by Django, we are just gonna use the table "exercises_exercise".
+Robotics Academy stores its data in a PostgreSQL database (`academy_db`). The connection is configured in the `DATABASES` setting of [`academy/settings.py`](../academy/settings.py), and the tables of the application are defined by the Django models in [`academy/models.py`](../academy/models.py).
+
+The database is created by the `jderobot/robotics-database` container, which loads these files on its first start (see [Instructions for developers](./InstructionsForDevelopers.md) for the full command):
+
+- `RoboticsInfrastructure/database/worlds.sql`: the `scenes`, `worlds`, `robots`, `tools` and `worlds_robots` tables.
+- `database/exercises/db.sql`: the `exercises`, `exercises_worlds` and `exercises_tools` tables.
+- `database/django_auth.sql`: the Django authentication, admin, session and migration tables.
+
+To add or edit an exercise use the Django admin site, as explained in [Add the exercise to the database](./InstructionsForDevelopers.md#add-the-exercise-to-the-database).
 
 ### Tables
 
-db contains 12 tables that save the information of the website:
+The database has 18 tables: 8 used by Robotics Academy and 10 that belong to Django.
 
-  - auth_group: group of authorised groups. Includes 2 columns:
+#### Robotics Academy tables
+
+  - exercises: the exercises shown on the home page. Includes 8 columns:
     - id
-    - name
-
-  - auth_group_permissions: contains the authorised groups' permissions. Includes 3 columns:
-    - id
-    - group_id
-    - permission_id
-
-  - auth_permission: contains the permissions' list . Includes 4 columns:
-    - id
-    - content_type_id
-    - codename
-    - name
-
-  - auth_user: contains a web users' list. Includes 11 columns:
-    - id
-    - password
-    - last_login
-    - is_superuser
-    - username
-    - last_name
-    - email
-    - is_staff
-    - is_active
-    - date_joined
-    - first_name
-
-  - auth_user_groups: contains the user's groups. Includes 3 columns:
-    - id
-    - user_id
-    - group_id
-
-  - auth_user_user_groups: contains the user's permissions. Includes 3 columns:
-    - id
-    - user_id
-    - permission_id
-
-  - django_admin_log: contains the Django's dates. Includes 8 columns:
-    - id
-    - action_time
-    - object_id
-    - object_repr
-    - change_message
-    - content_type_id
-    - user_id
-    - action_flag
-
-  - django_content_type: contains the diferent type of information that Django server saves. Includes 3 columns:
-    - id
-    - app_label
-    - model
-
-  - django_migrations: contains the Django's migrations. Includes 4 columns:
-    - id
-    - app
-    - name
-    - applied
-
-  - django_session: contains the Django's sessions. Includes 3 columns:
-    - session_key
-    - session_data
-    - expire_date
-
-  - exercises_exercise: contains the web's exercises. Includes 5 columns:
-    - id
-    - exercise_id
+    - exercise_id: unique identifier, the same as the exercise folder name
     - name
     - description
-    - assets
+    - tags
+    - entrypoints
+    - status: `ACTIVE`, `INACTIVE` or `PROTOTYPE`
+    - url
 
-  - sqlite_sequence: contains the sqlite's sequences. Includes 2 columns:
+  - worlds: the worlds an exercise can run in. Includes 3 columns:
+    - id
     - name
-    - seq
+    - scene_id: the scene of the world
+
+  - scenes: the simulation scenes. Includes 7 columns:
+    - id
+    - name
+    - launch_file_path
+    - tools_config
+    - ros_version: `ROS` or `ROS2`
+    - type: `none`, `gazebo`, `gz` or `physical`
+    - model_path
+
+  - robots: the robots that can be placed in a world. Includes 6 columns:
+    - id
+    - name
+    - launch_file_path
+    - entity
+    - extra_config
+    - model_path
+
+  - tools: the tools (for example `console`, `simulator` or `web_gui`) an exercise can use. Includes 2 columns:
+    - name
+    - base_config
+
+  - exercises_worlds: relates exercises and worlds. Includes 4 columns:
+    - id
+    - exercise_id
+    - world_id
+    - is_default: whether the world is the default one for the exercise
+
+  - exercises_tools: relates exercises and tools. Includes 3 columns:
+    - id
+    - exercise_id
+    - tool_id
+
+  - worlds_robots: relates worlds and robots. Includes 4 columns:
+    - id
+    - world_id
+    - robot_id
+    - poses: starting poses of the robot in the world
+
+#### Django tables
+
+Django's own tables (loaded from `database/django_auth.sql`), used for the admin login, sessions and migrations:
+
+  - auth_group
+  - auth_group_permissions
+  - auth_permission
+  - auth_user
+  - auth_user_groups
+  - auth_user_user_permissions
+  - django_admin_log
+  - django_content_type
+  - django_migrations
+  - django_session
