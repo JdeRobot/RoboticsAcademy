@@ -135,7 +135,7 @@ class WebGUI(MeasuringThreadingGUI):
                 threading.Event().wait(1.0)
 
     # Process incoming messages to the GUI
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
         # time frame size
         time_frame_size = 20
 
@@ -165,7 +165,7 @@ class WebGUI(MeasuringThreadingGUI):
             with self.frame_rgb_lock:
                 self.frame_rgb = img
                 ack_message = {"ack_img": "ack", "time": time}
-                self.send_to_client(json.dumps(ack_message))
+                await self.send_to_client(json.dumps(ack_message))
 
             if self.input_publisher_node is not None:
                 self.input_publisher_node.publish_image(img)
@@ -175,17 +175,17 @@ class WebGUI(MeasuringThreadingGUI):
             self.fps, self.lat = info.split("/")
 
     # Prepares and sends a map to the websocket server
-    def update_gui(self):
+    async def update_gui(self):
 
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
         if not self.has_received_img:
             ack_message = {"ack_img": "ack", "time": ""}
-            self.send_to_client(json.dumps(ack_message))
+            await self.send_to_client(json.dumps(ack_message))
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS

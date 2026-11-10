@@ -64,23 +64,7 @@ class WebGUI(MeasuringThreadingGUI):
         )
         self.executor_thread.start()
 
-    def gui_out_thread(self):
-        while self.running:
-            start_time = time.time()
-            self.iteration_counter += 1
-
-            with self.ack_lock:
-                with self.image_lock:
-                    if self.ack:
-                        if np.any(self.left_image) or np.any(self.right_image):
-                            self.update_gui()
-                            self.ack = False
-
-            elapsed = time.time() - start_time
-            sleep_time = max(0, self.out_period - elapsed)
-            time.sleep(sleep_time)
-
-    def update_gui(self):
+    async def update_gui(self):
         if np.any(self.left_image):
             _, encoded_left_image = cv2.imencode(".JPEG", self.left_image)
             b64_left = base64.b64encode(encoded_left_image).decode("utf-8")
@@ -108,7 +92,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.msg["image_left"] = json.dumps(payload_left)
         self.msg["image_right"] = json.dumps(payload_right)
         message = json.dumps(self.msg)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def setLeftImage(self, image):
         with self.image_lock:

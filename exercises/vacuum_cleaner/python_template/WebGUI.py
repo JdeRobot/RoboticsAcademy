@@ -123,14 +123,14 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception as e:
             print(f"GUI: ROS2 executor error: {e}")
 
-    def update_gui(self):
+    async def update_gui(self):
         """Update GUI with latest robot position"""
         pos = self.map.getRobotCoordinates()
         if pos == self.init_coords:
             pos = self.start_coords
         ang = self.map.getRobotAngle()
         self.payload["map"] = str(pos + ang)
-        self.send_to_client(json.dumps(self.payload))
+        await self.send_to_client(json.dumps(self.payload))
 
     def reset_gui(self):
         """Reset the map"""

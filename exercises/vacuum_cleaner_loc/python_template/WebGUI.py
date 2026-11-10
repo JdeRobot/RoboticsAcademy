@@ -235,7 +235,7 @@ class WebGUI(MeasuringThreadingGUI):
                 print(f"GUI: ROS2 image loop error: {e}", file=sys.stderr)
                 threading.Event().wait(1.0)
 
-    def update_gui(self):
+    async def update_gui(self):
         pos_message = self.map.getRobotCoordinates()
         if pos_message == self.init_coords:
             pos_message = self.start_coords
@@ -248,7 +248,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_show_lock:

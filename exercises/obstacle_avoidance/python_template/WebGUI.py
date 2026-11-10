@@ -123,12 +123,12 @@ class WebGUI(MeasuringThreadingGUI):
             return None
         return self.pose3d_node.getPose3d()
 
-    def update_gui(self):
+    async def update_gui(self):
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def showForces(self, vec1, vec2, vec3):
         self.map.setCar(vec1[0], vec1[1])

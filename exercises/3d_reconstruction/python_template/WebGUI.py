@@ -3,7 +3,7 @@ import cv2
 import base64
 import threading
 import numpy as np
-
+import asyncio
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import SingleThreadedExecutor
@@ -115,7 +115,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.start()
 
-    def update_gui(self):
+    async def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
 
         payload1, payload2 = self.payloadImage()
@@ -139,7 +139,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["p_match"] = self.paint_matching
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_show_lock:
@@ -197,12 +197,12 @@ class WebGUI(MeasuringThreadingGUI):
     def showImageMatching(self, x1, y1, x2, y2):
         self.matching.append([x1, y1, x2, y2])
 
-    def ClearAllPoints(self):
+    async def ClearAllPoints(self):
         self.point_to_save = []
         self.point_to_send = []
         self.matching_to_save = []
         self.matching = []
-        self.send_to_client(json.dumps({"reset": True}))
+        await self.send_to_client(json.dumps({"reset": True}))
 
     def reset_gui(self):
         self.ClearAllPoints()
@@ -231,4 +231,4 @@ def showImageMatching(x1, y1, x2, y2):
 
 
 def ClearAllPoints():
-    gui.ClearAllPoints()
+    asyncio.run(gui.ClearAllPoints())

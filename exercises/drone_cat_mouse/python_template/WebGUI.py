@@ -64,22 +64,6 @@ class WebGUI(MeasuringThreadingGUI):
         )
         self.executor_thread.start()
 
-    def gui_out_thread(self):
-        while self.running:
-            start_time = time.time()
-            self.iteration_counter += 1
-
-            with self.ack_lock:
-                with self.image_lock:
-                    if self.ack:
-                        if np.any(self.left_image) or np.any(self.right_image):
-                            self.update_gui()
-                            self.ack = False
-
-            elapsed = time.time() - start_time
-            sleep_time = max(0, self.out_period - elapsed)
-            time.sleep(sleep_time)
-
     def update_gui(self):
         if np.any(self.left_image):
             _, encoded_left = cv2.imencode(".JPEG", self.left_image)

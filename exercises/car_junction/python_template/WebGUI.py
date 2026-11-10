@@ -89,7 +89,7 @@ class WebGUI(MeasuringThreadingGUI):
             except Exception:
                 threading.Event().wait(1.0)
 
-    def update_gui(self):
+    async def update_gui(self):
         with self.payload_lock:
             if not self.encoded_payload:
                 return
@@ -100,7 +100,7 @@ class WebGUI(MeasuringThreadingGUI):
             {"image": current_payload, "shape": [480, 640, 3]}
         )
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def setImage(self, image):
         self.set_incoming_image(image)

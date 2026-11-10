@@ -137,7 +137,7 @@ class WebGUI(MeasuringThreadingGUI):
                 print(f"Error in image display loop: {e}", file=sys.stderr)
                 threading.Event().wait(1.0)
 
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
         time_frame_size = 20
 
         if "ack" in message:
@@ -164,7 +164,7 @@ class WebGUI(MeasuringThreadingGUI):
             with self.latest_input_frame_lock:
                 self.latest_input_frame = img
                 ack_message = {"ack_img": "ack", "time": time}
-                self.send_to_client(json.dumps(ack_message))
+                await self.send_to_client(json.dumps(ack_message))
 
             if self.input_image_publisher is not None:
                 self.input_image_publisher.publish_image(img)
@@ -173,16 +173,16 @@ class WebGUI(MeasuringThreadingGUI):
             info = message[len("introspection:") :]
             self.fps, self.lat = info.split("/")
 
-    def update_gui(self):
+    async def update_gui(self):
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
         if not self.has_received_img:
             ack_message = {"ack_img": "ack", "time": ""}
-            self.send_to_client(json.dumps(ack_message))
+            await self.send_to_client(json.dumps(ack_message))
 
     def payloadImage(self):
         with self.display_image_lock:

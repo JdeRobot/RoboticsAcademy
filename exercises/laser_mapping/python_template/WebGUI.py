@@ -122,7 +122,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.bridge_node.noisy_pose.yaw,
         )
 
-    def update_gui(self):
+    async def update_gui(self):
         pos_message = self.map.getRobotCoordinates()
         self.payload["real_pose"] = str(pos_message)
 
@@ -144,7 +144,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.payload["user_map"] = json.dumps(payload_img)
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:

@@ -99,7 +99,7 @@ class WebGUI(MeasuringThreadingGUI):
     def get_back(self):
         return self.ros_node.laser_b
 
-    def update_gui(self):
+    async def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
 
         if self.mode == "Laser":
@@ -133,7 +133,7 @@ class WebGUI(MeasuringThreadingGUI):
                 self.payload["lidar"] = json.dumps(points)
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def show_user_lidar(self, user_points, color):
         points = []

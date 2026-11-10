@@ -3,6 +3,7 @@ import cv2
 import base64
 import threading
 import time
+import asyncio
 
 import rclpy
 from rclpy.node import Node
@@ -64,7 +65,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.start()
 
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
@@ -97,23 +98,25 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.ros_node.pub.publish(twist)
 
-    def gui_out_thread(self):
-        while self.running:
+    # Process outcoming messages from the GUI
+    async def gui_out_thread(self):
+        while True:
             start_time = time.time()
-
+            self.iteration_counter += 1
             self.executor.spin_once(timeout_sec=0)
 
+            # Check if a new map should be sent
             with self.ack_lock:
-                with self.image_lock:
-                    if self.ack and self.image is not None:
-                        self.update_gui()
-                        self.ack = False
+                if self.ack_frontend and self.ack:
+                    await self.update_gui()
+                    self.ack = False
 
+            # Maintain desired frequency
             elapsed = time.time() - start_time
             sleep_time = max(0, self.out_period - elapsed)
-            time.sleep(sleep_time)
+            await asyncio.sleep(sleep_time)
 
-    def update_gui(self):
+    async def update_gui(self):
         if self.image is None:
             return
 
@@ -125,7 +128,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.msg["image"] = json.dumps(payload)
         message = json.dumps(self.msg)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def setImage(self, image):
         with self.image_lock:

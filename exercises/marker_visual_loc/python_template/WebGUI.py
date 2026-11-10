@@ -124,7 +124,7 @@ class WebGUI(MeasuringThreadingGUI):
     def get_odom(self):
         return self.bridge_node.odom
 
-    def update_gui(self):
+    async def update_gui(self):
         if self.map.getRobotCoordinates() is not None:
             pos_message = self.map.getRobotCoordinates()
             pos_message = str(pos_message)
@@ -154,7 +154,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.payload["image"] = json.dumps(payload_img)
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def setImage(self, image):
         with self.image_lock:

@@ -117,7 +117,7 @@ class WebGUI(MeasuringThreadingGUI):
     def get_pose3d(self):
         return self.bridge_node.pose
 
-    def update_gui(self):
+    async def update_gui(self):
         pos_message = self.map.getRobotCoordinates()
         if pos_message == self.init_coords:
             pos_message = self.start_coords
@@ -137,7 +137,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.payload["particles"] = json.dumps([])
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def showPosition(self, x, y, angle):
         scale_y = 15

@@ -139,7 +139,7 @@ class WebGUI(MeasuringThreadingGUI):
     def get_lift_state(self):
         return self.bridge_node.lift_state
 
-    def update_gui(self):
+    async def update_gui(self):
         with self.array_lock:
             self.payload["array"] = self.array
 
@@ -153,7 +153,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["image"] = json.dumps(payload_img)
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_show_lock:

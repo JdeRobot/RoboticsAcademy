@@ -82,7 +82,7 @@ class MeasuringThreadingGUI:
             self.client = websocket
 
             async for raw_msg in websocket:
-              self.gui_in_thread(websocket, raw_msg)
+              await self.gui_in_thread(websocket, raw_msg)
         except ConnectionClosedOK as e:
             pass
         finally:
@@ -130,7 +130,7 @@ class MeasuringThreadingGUI:
             await self.send_to_client(message)
 
     # Process incoming messages to the GUI
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
 
         # In this case, incoming msgs can only be acks
         if "ack" in message:

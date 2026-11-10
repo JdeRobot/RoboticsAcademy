@@ -105,7 +105,7 @@ class MeasuringThreadingGUI:
             await self.send_to_client(message)
 
     # Process incoming messages to the GUI
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
 
         # In this case, incoming msgs can only be acks
         if "ack" in message:

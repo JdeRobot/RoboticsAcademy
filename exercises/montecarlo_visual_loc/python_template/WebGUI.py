@@ -124,7 +124,7 @@ class WebGUI(MeasuringThreadingGUI):
     def get_pose3d(self):
         return self.bridge_node.pose
 
-    def update_gui(self):
+    async def update_gui(self):
         payload_image = self.payloadImage()
         self.payload["image"] = json.dumps(payload_image)
 
@@ -147,7 +147,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.payload["particles"] = json.dumps([])
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_lock:

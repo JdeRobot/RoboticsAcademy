@@ -86,27 +86,8 @@ class WebGUI(MeasuringThreadingGUI):
             except Exception:
                 threading.Event().wait(1.0)
 
-    # Process outcoming messages from the GUI
-    def gui_out_thread(self):
-        while self.running:
-            start_time = time.time()
-            self.iteration_counter += 1
-
-            # Check if a new image should be sent
-            with self.ack_lock:
-                with self.image_lock:
-                    if self.ack:
-                        if np.any(self.right_image):
-                            self.update_gui()
-                            self.ack = False
-
-            # Maintain desired frequency
-            elapsed = time.time() - start_time
-            sleep_time = max(0, self.out_period - elapsed)
-            time.sleep(sleep_time)
-
     # Prepares and send image to the websocket server
-    def update_gui(self):
+    async def update_gui(self):
 
         if np.any(self.right_image):
             _, encoded_right_image = cv2.imencode(".JPEG", self.right_image)
@@ -123,7 +104,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.msg["image_right"] = json.dumps(payload_right)
         message = json.dumps(self.msg)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     # Functions to set the next image to be sent
     def setRightImage(self, image):

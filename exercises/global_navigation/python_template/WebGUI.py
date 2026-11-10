@@ -103,7 +103,7 @@ class WebGUI(MeasuringThreadingGUI):
             return None
         return self.pose3d_node.getPose3d()
 
-    def gui_in_thread(self, ws, message):
+    async def gui_in_thread(self, ws, message):
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
@@ -118,7 +118,7 @@ class WebGUI(MeasuringThreadingGUI):
             if self.bridge_node is not None:
                 self.bridge_node.publish_target(self.worldXY[0], self.worldXY[1])
 
-    def update_gui(self):
+    async def update_gui(self):
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
 
@@ -130,7 +130,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["map"] = pos_message
 
         message = json.dumps(self.payload)
-        self.send_to_client(message)
+        await self.send_to_client(message)
 
     def payloadImage(self):
         with self.image_show_lock:
