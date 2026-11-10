@@ -29,7 +29,7 @@ export function subscribe(eventName: string, listener: (e: unknown) => void) {
   document.addEventListener(eventName, listener);
 }
 
-export function unsubscribe(eventName: string, listener: () => void) {
+export function unsubscribe(eventName: string, listener: (e: unknown) => void) {
   document.removeEventListener(eventName, listener);
 }
 

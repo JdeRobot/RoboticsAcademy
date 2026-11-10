@@ -149,8 +149,8 @@ const ExecutionControl = ({
     subscribe("currentFile", updateCurrent);
 
     return () => {
-      unsubscribe("CommsManagerStateChange", () => {});
-      unsubscribe("currentFile", () => {});
+      unsubscribe("CommsManagerStateChange", updateState);
+      unsubscribe("currentFile", updateCurrent);
     };
   }, []);
 
