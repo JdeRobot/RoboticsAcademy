@@ -337,7 +337,7 @@ There are two robots to choose from:
 
 #### Holonomic robot:
 
-- The robot size is 0.55 meters long and 0.5 meters wide.
+- The robot size is 0.55 meters long and 0.55 meters wide.
 
 {% include gallery id="holonomicrobot" caption="Holonomic robot" %}
 
