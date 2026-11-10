@@ -7,7 +7,6 @@ from websockets.exceptions import ConnectionClosedOK
 import asyncio
 import sys
 
-
 from gz.transport import Node
 from gz.msgs.world_stats_pb2 import WorldStatistics
 
