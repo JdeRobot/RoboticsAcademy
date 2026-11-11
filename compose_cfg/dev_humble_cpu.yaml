@@ -21,7 +21,7 @@ services:
             retries: 20
 
     robotics-academy:
-        image: jderobot/robotics-academy:lyrical
+        image: jderobot/robotics-academy:7.0.0-beta
         container_name: developer-container
         networks:
             - db_network
