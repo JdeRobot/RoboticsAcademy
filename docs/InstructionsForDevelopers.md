@@ -283,19 +283,19 @@ Now you can launch Robotics Academy using the followings commands:
 - Automatic GPU selection
 
 ```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 127.0.0.1:6080-6090:6080-6090 -p 127.0.0.1:7163:7163 -p 127.0.0.1:7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 - Automatic GPU selection (Without Nvidia)
 
 ```bash
-docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+docker run --rm -it --device /dev/dri -p 127.0.0.1:6080-6090:6080-6090 -p 127.0.0.1:7163:7163 -p 127.0.0.1:7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 - Only CPU
 
 ```bash
-docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+docker run --rm -it -p 127.0.0.1:6080-6090:6080-6090 -p 127.0.0.1:7163:7163 -p 127.0.0.1:7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 [how to generate a RADI]: ./generate_a_radi.md

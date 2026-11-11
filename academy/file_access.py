@@ -245,6 +245,8 @@ class FAL_RA(FAL):
         return self.path_join(self.academy, "filesystem")
 
     def path_join(self, a: str, b: str) -> str:
+        if b[0] == "/":
+            raise InvalidPath(b)
         return os.path.join(a, b)
 
     def exists(self, path: str) -> bool:
