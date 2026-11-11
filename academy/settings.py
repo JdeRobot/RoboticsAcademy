@@ -168,8 +168,13 @@ WEBPACK_LOADER = {
 }
 
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:7164",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:7164",
+]
 
 CORS_ALLOW_HEADERS = (
     "accept",
