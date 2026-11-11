@@ -138,7 +138,6 @@ RUN apt-get update && \
   ros-${ROS_DISTRO}-geographic-msgs \
   ros-${ROS_DISTRO}-geometry-msgs \
   ros-${ROS_DISTRO}-image-transport \
-  # ros-${ROS_DISTRO}-mocap4r2-msgs \
   ros-${ROS_DISTRO}-nav-msgs \
   ros-${ROS_DISTRO}-pluginlib \
   ros-${ROS_DISTRO}-rclcpp \
@@ -164,7 +163,6 @@ RUN apt-get update && \
   ros-${ROS_DISTRO}-ros2-control \
   ros-${ROS_DISTRO}-gz-ros2-control \
   ros-${ROS_DISTRO}-ros2-controllers \
-  # ros-${ROS_DISTRO}-gripper-controllers \
   ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
   ros-${ROS_DISTRO}-ur \
   ros-${ROS_DISTRO}-ros-testing \
@@ -175,74 +173,6 @@ RUN apt-get update && \
   ros-${ROS_DISTRO}-ompl\
   ros-${ROS_DISTRO}-unique-identifier-msgs \
   ros-${ROS_DISTRO}-service-msgs \
-  # ros-${ROS_DISTRO}-rosidl-adapter \
-  # ros-${ROS_DISTRO}-rosidl-buffer \
-  # ros-${ROS_DISTRO}-rosidl-buffer-backend \
-  # ros-${ROS_DISTRO}-rosidl-buffer-backend-registry \
-  # ros-${ROS_DISTRO}-rosidl-buffer-backend-registry-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-buffer-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-buffer-py \
-  # ros-${ROS_DISTRO}-rosidl-buffer-py-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-cli \
-  # ros-${ROS_DISTRO}-rosidl-cmake \
-  # ros-${ROS_DISTRO}-rosidl-core-generators \
-  # ros-${ROS_DISTRO}-rosidl-core-runtime \
-  # ros-${ROS_DISTRO}-rosidl-default-generators  \
-  # ros-${ROS_DISTRO}-rosidl-default-runtime \
-  # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport \
-  # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-fastrtps \
-  # ros-${ROS_DISTRO}-rosidl-dynamic-typesupport-fastrtps-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-generator-c \
-  # ros-${ROS_DISTRO}-rosidl-generator-cpp \
-  # ros-${ROS_DISTRO}-rosidl-generator-dds-idl \
-  # ros-${ROS_DISTRO}-rosidl-generator-py \
-  # ros-${ROS_DISTRO}-rosidl-generator-rs \
-  # ros-${ROS_DISTRO}-rosidl-generator-type-description \
-  # ros-${ROS_DISTRO}-rosidl-parser \
-  # ros-${ROS_DISTRO}-rosidl-pycommon \
-  # ros-${ROS_DISTRO}-rosidl-runtime-c \
-  # ros-${ROS_DISTRO}-rosidl-runtime-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-runtime-cpp \
-  # ros-${ROS_DISTRO}-rosidl-runtime-py \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-c \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-cpp \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-c \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-cpp \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-fastrtps-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-interface \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-introspection-c \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-introspection-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-introspection-cpp \
-  # ros-${ROS_DISTRO}-rosidl-typesupport-introspection-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-c \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-core \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-core-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-cpp \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-py \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-py-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-type-description \
-  # ros-${ROS_DISTRO}-rosidlcpp-generator-type-description-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-parser \
-  # ros-${ROS_DISTRO}-rosidlcpp-parser-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-c \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-cpp \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-c \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-cpp \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-fastrtps-cpp-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-c \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-c-dbgsym \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-cpp \
-  # ros-${ROS_DISTRO}-rosidlcpp-typesupport-introspection-cpp-dbgsym \
   libpoco-dev \
   libpcl-dev \
   libompl-dev \
@@ -251,8 +181,17 @@ RUN apt-get update && \
 
 # RUN python3.14 -m pip install --no-cache-dir ompl
 
+## mocap4r2-msgs fix
+WORKDIR /home/ws/src/
+RUN git clone --depth=1 https://github.com/MOCAP4ROS2-Project/mocap4r2_msgs.git
+
+# Install BT Cpp
+RUN git clone --depth 1 https://github.com/BehaviorTree/BehaviorTree.CPP.git
+RUN cd BehaviorTree.CPP && mkdir build_release && cmake -S . -B build_release && cmake --build build_release --parallel
+
 ## Aerostack2
 ### Remove log folder
+WORKDIR /
 RUN rm -rf log 
 RUN mkdir -p /home/drones_ws/src/
 
@@ -293,19 +232,11 @@ RUN echo 'export AEROSTACK2_PATH=/home/drones_ws/src/aerostack2' >> ~/.bashrc
 RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
 RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
 
-# # Configure SSH
-# RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-# RUN sed -i 's/#Port 22/Port 8081/' /etc/ssh/sshd_config
-# RUN ssh-keygen -y -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
-# RUN mkdir -p /run/sshd && chmod 755 /run/sshd
-# RUN echo 'hare' | passwd --stdin root 
-
-
-# Configure proxy
-# COPY proxy/traefik /usr/bin/traefik
-# RUN mkdir /etc/traefik
-# WORKDIR /etc/traefik
-# COPY proxy/traefik.yaml /etc/traefik
-# COPY proxy/routes.yaml /etc/traefik
-
-
+# Download and install OMPL library
+COPY install-ompl-ubuntu.sh /
+WORKDIR /
+RUN git clone --depth=1 https://github.com/ompl/ompl.git
+WORKDIR /ompl
+RUN git submodule update --init --recursive
+RUN pip install ./py-bindings
+WORKDIR /
