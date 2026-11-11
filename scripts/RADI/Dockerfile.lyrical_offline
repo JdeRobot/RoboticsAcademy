@@ -57,6 +57,7 @@ RUN rm -rf /RoboticsAcademy/.git \
     /RoboticsAcademy/scripts \
     /RoboticsAcademy/tests \
     /RoboticsAcademy/react_frontend \
+    /RoboticsAcademy/filesystem \
     /RoboticsAcademy/common
 
 COPY --from=ra-base /tmp/app/react_frontend/static /RoboticsAcademy/react_frontend/static
