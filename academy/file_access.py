@@ -246,7 +246,7 @@ class FAL_RA(FAL):
 
     def path_join(self, a: str, b: str) -> str:
         if b[0] == "/":
-          raise InvalidPath(b)
+            raise InvalidPath(b)
         return os.path.join(a, b)
 
     def exists(self, path: str) -> bool:
