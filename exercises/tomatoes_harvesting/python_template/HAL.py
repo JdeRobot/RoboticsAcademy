@@ -53,6 +53,8 @@ GRIP_RATE = 20.0
 # The head spins a tomato several fast turns, the shaft has five turns of travel each way
 TWIST_SPEED = 2 * 2 * math.pi
 TWIST_RANGE = 10 * math.pi
+CAMERA_TOPIC = "/mmo500/harvest_camera/image"
+DEPTH_TOPIC = "/mmo500/harvest_camera/depth_image"
 # Depth is only rendered while asked for and dropped after this long without use
 DEPTH_IDLE = 5.0
 DEPTH_TIMEOUT = 3.0
@@ -218,13 +220,13 @@ motor_node = MotorsNode("/mmo500/cmd_vel", MAX_V, MAX_W)
 odometry_node = OdometryNode("/mmo500/odom")
 front_laser_node = LaserNode("/mmo500/front_laser/scan")
 back_laser_node = LaserNode("/mmo500/back_laser/scan")
-camera_node = CameraNode("/mmo500/harvest_camera/image")
-depth_node = DepthOnDemand("/mmo500/harvest_camera/depth_image", "/mmo500/harvest_camera/camera_info")
+camera_node = CameraNode(CAMERA_TOPIC)
+depth_node = DepthOnDemand(DEPTH_TOPIC, "/mmo500/harvest_camera/camera_info")
 harvest_node = HarvestNode()
 arm = RBT(suffix="_mmo500", robmove_action="/mmo500/Robmove", use_move=False)
 
-# Spin nodes so that subscription callbacks load topic data
-executor = rclpy.executors.MultiThreadedExecutor()
+# Spin nodes so that subscription callbacks load topic data, one thread serves them all
+executor = rclpy.executors.SingleThreadedExecutor()
 for node in (odometry_node, front_laser_node, back_laser_node, camera_node, harvest_node):
     executor.add_node(node)
 
@@ -264,7 +266,8 @@ def getBackLaserData():
     return laser_data
 
 
-def setV(velocity):
+def setVX(velocity):
+    """Forward speed of the mecanum base in m/s, positive forwards."""
     motor_node.sendV(max(-MAX_V, min(MAX_V, float(velocity))))
 
 
@@ -380,7 +383,10 @@ def twist(turns):
 
 def getImage():
     image = camera_node.getImage()
+    if image is None:
+        print(f"Waiting for the first image on {CAMERA_TOPIC}", flush=True)
     while image is None:
+        time.sleep(0.01)
         image = camera_node.getImage()
     return image.data
 
@@ -389,6 +395,7 @@ def getDepthImage():
     """Depth of every pixel in m, inf where nothing is in range."""
     depth = depth_node.get()
     while depth is None:
+        print(f"Waiting for a depth image on {DEPTH_TOPIC}", flush=True)
         depth = depth_node.get()
     return depth.copy()
 

@@ -1757,8 +1757,8 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
       {
         type: "method",
-        label: "setV(velocity)",
-        code: "setV(velocity)",
+        label: "setVX(velocity)",
+        code: "setVX(velocity)",
         docstring: "Sets the forward speed of the base, in m/s.",
       },
       {

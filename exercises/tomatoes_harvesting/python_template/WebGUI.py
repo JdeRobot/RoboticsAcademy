@@ -54,7 +54,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.node = WebGUINode(self)
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.node)
-        # Own name so the HAL, which mutes errors of threads called spin, never hides a failure here
+        # Own name so the HAL never mutes its errors as it does for threads called spin
         self.executor_thread = threading.Thread(target=self._spin, name="webgui_ros", daemon=True)
         self.executor_thread.start()
 
