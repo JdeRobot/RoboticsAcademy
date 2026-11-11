@@ -8,11 +8,16 @@ import rclpy
 from cv_bridge import CvBridge
 from rclpy.node import Node
 from sensor_msgs.msg import Image
+from gz.msgs10.stringmsg_pb2 import StringMsg
+from gz.transport13 import Node as GzNode
 
 from console_interfaces.general.console import start_console
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
+
+# Published by the harvest manager of the world
+SCORE_TOPIC = "/tomato_greenhouse/score"
 
 
 class WebGUINode(Node):
@@ -38,6 +43,11 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.lock = threading.Lock()
         self.images = {"left": None, "right": None}
+        self.score = ""
+
+        # Read from gz like the RTF of the base class
+        self.gz_node = GzNode()
+        self.gz_node.subscribe(StringMsg, SCORE_TOPIC, self.on_score)
 
         if not rclpy.ok():
             rclpy.init()
@@ -56,12 +66,18 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             traceback.print_exc()
 
+    def on_score(self, msg):
+        with self.lock:
+            self.score = msg.data
+
     def update_gui(self):
         with self.lock:
             images, self.images = self.images, {"left": None, "right": None}
+            score = self.score
         payload = {
             "image_left": encode_image(images["left"]),
             "image_right": encode_image(images["right"]),
+            "score": score,
         }
         self.send_to_client(json.dumps(payload))
 

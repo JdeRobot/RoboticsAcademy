@@ -1,0 +1,25 @@
+/* Above the camera images, which are absolutely positioned too */
+#harvest-score {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-family: monospace;
+  font-size: 14px;
+  text-align: left;
+  pointer-events: none;
+}
+
+#harvest-score .main {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff6b4a;
+}
+
+#harvest-score .penalty {
+  color: #ffb3a1;
+}
