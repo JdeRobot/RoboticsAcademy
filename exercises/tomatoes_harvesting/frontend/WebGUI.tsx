@@ -27,8 +27,10 @@ interface Score {
 }
 
 // Inline so the board always sits above the absolutely positioned camera images
+// and stays visible although the panel layout hides what it does not know
 const boardStyle = {
   position: "absolute",
+  visibility: "visible",
   top: "10px",
   right: "10px",
   zIndex: 10,

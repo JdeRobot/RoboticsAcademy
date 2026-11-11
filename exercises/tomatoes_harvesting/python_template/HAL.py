@@ -155,7 +155,10 @@ class DepthOnDemand(Node):
         self._stamp = 0.0
         self._last_use = 0.0
         self.create_subscription(CameraInfo, info_topic, self.__info_cb, 10)
-        self.create_timer(1.0, self.__drop_when_idle)
+        # Own executor so the depth subscription is only added or removed between spins, never inside one
+        self._executor = rclpy.executors.SingleThreadedExecutor()
+        self._executor.add_node(self)
+        threading.Thread(target=self.__serve, name="hal_depth", daemon=True).start()
 
     def __info_cb(self, msg):
         self.k = msg.k
@@ -165,19 +168,23 @@ class DepthOnDemand(Node):
         with self._lock:
             self._depth, self._stamp = depth, time.monotonic()
 
-    def __drop_when_idle(self):
-        with self._lock:
-            if self._sub is not None and time.monotonic() - self._last_use > DEPTH_IDLE:
+    def __serve(self):
+        while rclpy.ok():
+            wanted = time.monotonic() - self._last_use < DEPTH_IDLE
+            if wanted and self._sub is None:
+                self._sub = self.create_subscription(Image, self._topic, self.__depth_cb, 1)
+            elif not wanted and self._sub is not None:
                 self.destroy_subscription(self._sub)
                 self._sub = None
+            try:
+                self._executor.spin_once(timeout_sec=0.05)
+            except Exception as error:
+                print(f"HAL depth callback error: {error!r}", flush=True)
 
     def get(self):
         """Depth image taken after the call, None if none arrives in time."""
         asked = time.monotonic()
-        with self._lock:
-            self._last_use = asked
-            if self._sub is None:
-                self._sub = self.create_subscription(Image, self._topic, self.__depth_cb, 1)
+        self._last_use = asked
         while time.monotonic() - asked < DEPTH_TIMEOUT:
             with self._lock:
                 if self._depth is not None and self._stamp >= asked:
@@ -218,7 +225,7 @@ arm = RBT(suffix="_mmo500", robmove_action="/mmo500/Robmove", use_move=False)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
-for node in (odometry_node, front_laser_node, back_laser_node, camera_node, depth_node, harvest_node):
+for node in (odometry_node, front_laser_node, back_laser_node, camera_node, harvest_node):
     executor.add_node(node)
 
 
