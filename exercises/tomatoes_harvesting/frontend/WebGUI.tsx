@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./css/GUICanvas.css";
 import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
@@ -27,6 +26,22 @@ interface Score {
   ripe_total: number;
 }
 
+// Inline so the board always sits above the absolutely positioned camera images
+const boardStyle = {
+  position: "absolute",
+  top: "10px",
+  right: "10px",
+  zIndex: 10,
+  padding: "8px 12px",
+  borderRadius: "6px",
+  background: "rgba(0, 0, 0, 0.6)",
+  color: "white",
+  fontFamily: "monospace",
+  fontSize: "14px",
+  textAlign: "left",
+  pointerEvents: "none",
+} as const;
+
 const percent = (part: number, total: number): string =>
   total > 0 ? `${Math.round((100 * part) / total)}%` : "-";
 
@@ -35,13 +50,13 @@ const ScoreBoard = ({ score }: { score: Score }) => {
   // Every tomato taken off the plant, well or badly
   const picked = score.harvested + score.crushed + score.dropped;
   return (
-    <div id="harvest-score">
-      <div className="main">
+    <div id="harvest-score" style={boardStyle}>
+      <div style={{ fontSize: "18px", fontWeight: "bold", color: "#ff6b4a" }}>
         Ripe harvested {ripe} / {score.ripe_total} (
         {percent(ripe, score.ripe_total)})
       </div>
       <div>Precision {percent(ripe, picked)}</div>
-      <div className="penalty">
+      <div style={{ color: "#ffb3a1" }}>
         Green {score.green_in_crate} · Crushed {score.crushed} · Dropped{" "}
         {score.dropped} · Broken trusses {score.broken_trusses}
       </div>
