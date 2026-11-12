@@ -58,6 +58,8 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   ros-${ROS_DISTRO}-xacro \
   ros-${ROS_DISTRO}-joint-state-publisher \
   ros-${ROS_DISTRO}-rviz2 \
+  ros-${ROS_DISTRO}-rqt-common-plugins \
+  ros-${ROS_DISTRO}-rqt-tf-tree \
   python3-colcon-common-extensions \
   python3-pip python3-rosdep python3-vcstool \
   python3-argcomplete \
