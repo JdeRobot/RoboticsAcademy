@@ -10,7 +10,7 @@ import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRou
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
-import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
+import HubRoundedIcon from "@mui/icons-material/HubRounded";
 
 const getTools = (
   manager: CommsManager | null,
@@ -101,7 +101,7 @@ const getTools = (
           message={"Click Play to connect to the Robotics Backend"}
         />
       ),
-      icon: <AccountTreeRoundedIcon />,
+      icon: <HubRoundedIcon />,
       name: "Rqt",
       active: showRqt,
       activate: setRqtVisible,
