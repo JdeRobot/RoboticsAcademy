@@ -1732,6 +1732,127 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
+  _tomatoes_harvesting: {
+    hal: [
+      {
+        type: "method",
+        label: "getPose3d()",
+        code: "getPose3d()",
+        docstring:
+          "Returns the base pose from odometry as a Pose3d with x, y and yaw.",
+      },
+      {
+        type: "method",
+        label: "getFrontLaserData()",
+        code: "getFrontLaserData()",
+        docstring:
+          "Returns the front laser readings, values holds the ranges in m.",
+      },
+      {
+        type: "method",
+        label: "getBackLaserData()",
+        code: "getBackLaserData()",
+        docstring:
+          "Returns the back laser readings, values holds the ranges in m.",
+      },
+      {
+        type: "method",
+        label: "setVX(velocity)",
+        code: "setVX(velocity)",
+        docstring: "Sets the forward speed of the base, in m/s.",
+      },
+      {
+        type: "method",
+        label: "setVY(velocity)",
+        code: "setVY(velocity)",
+        docstring:
+          "Sets the sideways speed of the mecanum base, in m/s, positive to the left.",
+      },
+      {
+        type: "method",
+        label: "setW(velocity)",
+        code: "setW(velocity)",
+        docstring:
+          "Sets the turning speed of the base, in rad/s, positive to the left.",
+      },
+      {
+        type: "method",
+        label: "moveArm(x, y, z, heading)",
+        code: "moveArm(x, y, z)",
+        docstring:
+          "Moves the grasp point between the fingers to x, y, z in m relative to the base. The fingers point towards heading, measured like the base yaw and to the right of the robot by default. Returns True once the arm is there.",
+      },
+      {
+        type: "method",
+        label: "getArmPose()",
+        code: "getArmPose()",
+        docstring:
+          "Returns the grasp point relative to the base as an ArmPose with x, y, z and heading.",
+      },
+      {
+        type: "method",
+        label: "homeArm()",
+        code: "homeArm()",
+        docstring: "Folds the arm back over the cabinet.",
+      },
+      {
+        type: "method",
+        label: "grip(force)",
+        code: "grip(force)",
+        docstring:
+          "Closes the fingers until they squeeze with force in N and returns the force reached, 0.0 if nothing was between them.",
+      },
+      {
+        type: "method",
+        label: "release()",
+        code: "release()",
+        docstring:
+          "Opens the fingers, the shaft winds back to zero on its own meanwhile.",
+      },
+      {
+        type: "method",
+        label: "twist(turns)",
+        code: "twist(turns)",
+        docstring:
+          "Spins the fingers this many turns at two turns per second, negative turns spin the other way.",
+      },
+      {
+        type: "method",
+        label: "getImage()",
+        code: "getImage()",
+        docstring:
+          "Returns the latest image of the wrist camera as a OpenCV cv2_image.",
+      },
+      {
+        type: "method",
+        label: "getDepthImage()",
+        code: "getDepthImage()",
+        docstring:
+          "Returns the depth of every pixel of the wrist camera in m, inf where nothing is in range.",
+      },
+      {
+        type: "method",
+        label: "pixelToPoint(u, v)",
+        code: "pixelToPoint(u, v)",
+        docstring:
+          "Returns the point seen at pixel column u and row v as [x, y, z] in m relative to the base, or None without depth.",
+      },
+    ],
+    webgui: [
+      {
+        type: "method",
+        label: "showImage(cv2_image)",
+        code: "showImage(cv2_image)",
+        docstring: "Shows a image of the camera in the GUI.",
+      },
+      {
+        type: "method",
+        label: "showLeftImage(cv2_image)",
+        code: "showLeftImage(cv2_image)",
+        docstring: "Shows another image of the camera in the GUI.",
+      },
+    ],
+  },
 };
 
 export const frequencyAutoCompleteObj: Snippet[] = [
