@@ -10,6 +10,7 @@ import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRou
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
+import HubRoundedIcon from "@mui/icons-material/HubRounded";
 
 const getTools = (
   manager: CommsManager | null,
@@ -21,6 +22,7 @@ const getTools = (
   const [showCamera, setCameraVisible] = useState<boolean>(true);
   const [showVideo, setVideoVisible] = useState<boolean>(true);
   const [showRviz, setRvizVisible] = useState<boolean>(true);
+  const [showRqt, setRqtVisible] = useState<boolean>(true);
   const [showTerminal, setTerminalVisible] = useState<boolean>(true);
 
   const toolsList: ViewersEntry[] = [];
@@ -87,6 +89,22 @@ const getTools = (
       name: "Rviz",
       active: showRviz,
       activate: setRvizVisible,
+    });
+  }
+
+  if (tools.includes("rqt")) {
+    toolsList.push({
+      component: (
+        <VncViewer
+          commsManager={manager}
+          port={6083}
+          message={"Click Play to connect to the Robotics Backend"}
+        />
+      ),
+      icon: <HubRoundedIcon />,
+      name: "Rqt",
+      active: showRqt,
+      activate: setRqtVisible,
     });
   }
 
