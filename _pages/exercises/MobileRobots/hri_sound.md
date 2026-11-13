@@ -9,11 +9,7 @@ toc: true
 toc_label: "TOC HRI Sound"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
-
-# youtubeId1:
+ youtubeId1: utNTaveaVEs
 ---
 
 ## Goal
@@ -116,7 +112,7 @@ Simple hints provided to help you solve the HRI_sound exercise.
 ### Listening
 
 - The speech is split into phrases of **at most 3 seconds**. A very long sentence is cut and transcribed in several parts, so use short commands.
-- The transcription is not instantaneous and may contain mistakes. Compare the text with keywords (`"para" in heard.lower()`) instead of looking for an exact match, and handle the case in which `listen()` returns an empty string.
+- The transcription is not instantaneous and may contain mistakes. Compare the text with keywords (`"stop" in heard.lower()`) instead of looking for an exact match, and handle the case in which `listen()` returns an empty string.
 - `listen(ms)` returns what was heard in the last `ms` milliseconds. If you call it every iteration with a big `ms`, you will receive the same phrase more than once: store what you have already processed or use a small window.
 - The robot can hear its own voice through the speakers. If it reacts to itself, avoid listening while it is speaking (`WebGUI.is_playing()`).
 
@@ -127,7 +123,7 @@ Simple hints provided to help you solve the HRI_sound exercise.
 
 ## Example video
 
-<!-- TODO: add a demo video: {% include youtubePlayer.html id=page.youtubeId1 %} -->
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Contributors
 
