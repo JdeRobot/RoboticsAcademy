@@ -12,7 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
 from academy.exceptions import (
+    ExerciseAlreadyOpen,
     ResourceAlreadyExistsHelpers,
+    ResourceNotExists,
 )
 from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
@@ -79,7 +81,10 @@ def enter_exercise(fal, request):
     Retrieve basic information about an exercise. Only called when entering.
     """
     project_id = request.GET.get("project_id")
-    project = Exercise.objects.prefetch_related("tools").get(exercise_id=project_id)
+    try:
+        project = Exercise.objects.prefetch_related("tools").get(exercise_id=project_id)
+    except Exercise.DoesNotExist:
+        raise ResourceNotExists(f"Exercise {project_id}")
 
     tools = list(project.tools.values_list("name", flat=True))
 
@@ -108,7 +113,7 @@ def enter_exercise(fal, request):
     if active_project is None:
         active_project = project_id
     else:
-        raise Exception("Alredy open session")
+        raise ExerciseAlreadyOpen(active_project)
 
     # Create filesystem base
     path = fal.exercise_path(project_id)

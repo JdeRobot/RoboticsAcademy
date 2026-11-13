@@ -15,6 +15,7 @@ from .exceptions import (
     ResourceAlreadyExists,
     ParameterInvalid,
     InvalidPath,
+    ExerciseAlreadyOpen,
 )
 from .file_access import FAL_RA
 import os
@@ -28,6 +29,7 @@ CUSTOM_EXCEPTIONS = (
     InvalidPath,
     BinaryNotSupported,
     ResourceAlreadyExistsHelpers,
+    ExerciseAlreadyOpen,
 )
 
 local_fal = FAL_RA(

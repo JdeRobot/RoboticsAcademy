@@ -68,3 +68,15 @@ class BinaryNotSupported(Exception):
 
     def __str__(self):
         return f"{self.message}"
+
+
+class ExerciseAlreadyOpen(Exception):
+    """Exception raised when an exercise is already open in another tab or window."""
+
+    def __init__(self, msg):
+        self.message = f"Exercise {msg} is already open in another tab or window"
+        super().__init__(self.message)
+        self.error_code = 409
+
+    def __str__(self):
+        return f"{self.message}"
