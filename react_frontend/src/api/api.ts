@@ -397,7 +397,11 @@ const sendExecutionProbe = async (project: string, eventType: string) => {
   }
 };
 
-const sendTypingProbe = async (project: string, eventType: string, lastEditTimestamp?: string) => {
+const sendTypingProbe = async (
+  project: string,
+  eventType: string,
+  lastEditTimestamp?: string,
+) => {
   const apiUrl = "/academy/register_typing_probe/";
   const params = {
     project_id: project,
@@ -461,12 +465,24 @@ const deleteFolder = async (projectId: string, path: string, user?: string) => {
   }
 };
 
-
-
 export {
-  createFile, createFolder, deleteFile, deleteFolder,
-  exitProject, getExerciseList, getFile, getFileList, getHelperFile, getHelperFileList, getProjectData, getRoboticsBackendWorld,
-  listWorlds, renameFile, renameFolder, saveFile, sendExecutionProbe,
-  sendTypingProbe, uploadFile
+  createFile,
+  createFolder,
+  deleteFile,
+  deleteFolder,
+  exitProject,
+  getExerciseList,
+  getFile,
+  getFileList,
+  getHelperFile,
+  getHelperFileList,
+  getProjectData,
+  getRoboticsBackendWorld,
+  listWorlds,
+  renameFile,
+  renameFolder,
+  saveFile,
+  sendExecutionProbe,
+  sendTypingProbe,
+  uploadFile,
 };
-

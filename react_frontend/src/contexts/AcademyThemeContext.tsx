@@ -113,7 +113,7 @@ export const AcademyThemeProvider = ({
       ? window.localStorage.getItem("themeType") === "light"
         ? lightTheme
         : darkTheme
-      : darkTheme
+      : darkTheme,
   );
 
   const themeSwitchHandler = (themeType: string) => {

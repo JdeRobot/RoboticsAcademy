@@ -94,7 +94,7 @@ const getTools = (
 
     if (tools.includes("console")) {
       list.push({
-        component: <Console commsManager={manager} visible={showTerminal}/>,
+        component: <Console commsManager={manager} visible={showTerminal} />,
         icon: <TerminalRoundedIcon />,
         name: "Terminal",
         active: showTerminal,
@@ -115,10 +115,9 @@ const getTools = (
       //   activate: setTerminalVisible,
       // });
     }
-    console.log(list)
-    setToolsList(list)
+    console.log(list);
+    setToolsList(list);
   }, [tools]);
-
 
   return toolsList;
 };

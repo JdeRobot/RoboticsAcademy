@@ -26,9 +26,12 @@ const ExerciseCard = ({
   const tagsList: string[] = JSON.parse(tags);
 
   return (
-    <StyledExerciseCardContainer state={status} id={exercise_id}
+    <StyledExerciseCardContainer
+      state={status}
+      id={exercise_id}
       to={`/academy/studio/${exercise_id}`}
-      viewTransition>
+      viewTransition
+    >
       <StyledExerciseCardArea>
         <CardMedia
           component="img"

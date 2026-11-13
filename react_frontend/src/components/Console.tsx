@@ -26,10 +26,13 @@ const enabled = (state?: string): boolean => {
   return false;
 };
 
-const Console = ({ commsManager,visible }: { visible: boolean,
+const Console = ({
+  commsManager,
+  visible,
+}: {
+  visible: boolean;
   commsManager: CommsManager | null;
-
- }) => {
+}) => {
   const th = useAcademyTheme();
   const { instance, ref } = useXTerm();
   const [state, setState] = useState<string | undefined>(
@@ -49,12 +52,12 @@ const Console = ({ commsManager,visible }: { visible: boolean,
     subscribe("CommsManagerStateChange", updateState);
 
     return () => {
-      unsubscribe("CommsManagerStateChange", () => { });
+      unsubscribe("CommsManagerStateChange", () => {});
     };
   }, []);
 
   useEffect(() => {
-    if (! enabled(state)) return;
+    if (!enabled(state)) return;
     if (instance === null) return;
     if (ref.current === null) return;
 
@@ -98,7 +101,7 @@ const Console = ({ commsManager,visible }: { visible: boolean,
     const resizeObserver = new ResizeObserver(handleResize);
 
     resizeObserver.observe(ref.current);
-    ref.current.focus()
+    ref.current.focus();
   }, [ref, instance, state]);
 
   return (

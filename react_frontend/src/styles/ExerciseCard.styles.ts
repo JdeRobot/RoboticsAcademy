@@ -17,7 +17,9 @@ const handleStatus = (p: StyledExerciseCardContainerProps) => {
   }
 };
 
-export const StyledExerciseCardContainer = styled(Link)<StyledExerciseCardContainerProps>`
+export const StyledExerciseCardContainer = styled(
+  Link,
+)<StyledExerciseCardContainerProps>`
   display: flex;
   flex-direction: column;
   justify-content: spacebetween;
@@ -31,11 +33,11 @@ export const StyledExerciseCardContainer = styled(Link)<StyledExerciseCardContai
   outline: none;
   border-color: ${handleStatus};
 
-  &:hover{
+  &:hover {
     box-shadow: 0 0 30px ${handleStatus};
   }
 
-  &:focus-visible{
+  &:focus-visible {
     box-shadow: 0 0 30px ${handleStatus};
   }
 `;

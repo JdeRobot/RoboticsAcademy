@@ -7,7 +7,7 @@ import { HomepageProvider } from "Contexts/HomepageContext";
 const App = () => {
   const theme = useAcademyTheme();
   const AcademyContainer = lazy(
-    () => import("Components/layouts/AcademyContainer")
+    () => import("Components/layouts/AcademyContainer"),
   );
 
   return (

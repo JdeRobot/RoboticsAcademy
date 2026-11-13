@@ -34,7 +34,7 @@ export const fileExplorer = (warning: (msg: string) => void) => {
         project: string,
         path: string,
         name: string,
-        content: string
+        content: string,
       ) => {
         return uploadFile(project, name, path, content);
       },
@@ -59,7 +59,7 @@ export const fileExplorer = (warning: (msg: string) => void) => {
             data.fileName,
             location,
             data.templateType,
-            warning
+            warning,
           );
         },
       },
