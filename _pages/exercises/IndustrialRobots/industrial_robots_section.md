@@ -33,6 +33,14 @@ feature_row:
     status: "prototype"
     order: 2;
 
+  - image_path: /assets/images/exercises/tomatoes_harvesting/tomatoes_harvesting_teaser.png
+    alt: "Tomatoes Harvesting"
+    title: "Tomatoes Harvesting"
+    excerpt: "Harvest ripe tomatoes in a greenhouse with a mobile manipulator"
+    url: "/exercises/IndustrialRobots/tomatoes_harvesting"
+    status: "prototype"
+    order: 2;
+
 --- 
 
 
