@@ -1,4 +1,5 @@
 import { ExerciseStatus } from "Types/exercises";
+import { Link } from "react-router";
 import styled from "styled-components";
 
 interface StyledExerciseCardContainerProps {
@@ -8,15 +9,15 @@ interface StyledExerciseCardContainerProps {
 const handleStatus = (p: StyledExerciseCardContainerProps) => {
   switch (p.state) {
     case "ACTIVE":
-      return `border-color: green;`;
+      return `green`;
     case "PROTOTYPE":
-      return `border-color: orange;`;
+      return `orange`;
     default:
-      return `border-color: red;`;
+      return `red`;
   }
 };
 
-export const StyledExerciseCardContainer = styled.div<StyledExerciseCardContainerProps>`
+export const StyledExerciseCardContainer = styled(Link)<StyledExerciseCardContainerProps>`
   display: flex;
   flex-direction: column;
   justify-content: spacebetween;
@@ -27,7 +28,16 @@ export const StyledExerciseCardContainer = styled.div<StyledExerciseCardContaine
   overflow: hidden;
   width: 20rem;
   aspect-ratio: 9/10;
-  ${handleStatus}
+  outline: none;
+  border-color: ${handleStatus};
+
+  &:hover{
+    box-shadow: 0 0 30px ${handleStatus};
+  }
+
+  &:focus-visible{
+    box-shadow: 0 0 30px ${handleStatus};
+  }
 `;
 
 export const StyledExerciseCardArea = styled.div`
