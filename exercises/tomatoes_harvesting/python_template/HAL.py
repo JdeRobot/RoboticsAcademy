@@ -22,7 +22,9 @@ from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from ros2srrc_data.msg import Robpose
 
-sys.path.append(os.path.join(get_package_share_directory("ros2srrc_execution"), "python", "robot"))
+sys.path.append(
+    os.path.join(get_package_share_directory("ros2srrc_execution"), "python", "robot")
+)
 from robot import RBT  # noqa: E402
 
 freq = 30.0
@@ -66,23 +68,31 @@ def _transform(xyz, rpy):
     cp, sp = math.cos(pitch), math.sin(pitch)
     cy, sy = math.cos(yaw), math.sin(yaw)
     t = np.eye(4)
-    t[:3, :3] = [[cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr],
-                 [sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr],
-                 [-sp, cp * sr, cp * cr]]
+    t[:3, :3] = [
+        [cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr],
+        [sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr],
+        [-sp, cp * sr, cp * cr],
+    ]
     t[:3, 3] = xyz
     return t
 
 
 def _quaternion_matrix(x, y, z, w):
-    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
-                     [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
-                     [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
+    return np.array(
+        [
+            [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+            [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+            [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)],
+        ]
+    )
 
 
 # Grasp point to wrist camera optical frame, same numbers as mmo500_harvest_gripper.urdf.xacro
-_TCP_TO_OPTICAL = (np.linalg.inv(_transform((0.265, 0.0, 0.09), (0.0, math.pi / 2, 0.0)))
-                   @ _transform((0.08, 0.0, 0.045), (math.pi, -0.1, 0.0))
-                   @ _transform((0.0, 0.0, 0.0), (-math.pi / 2, 0.0, -math.pi / 2)))
+_TCP_TO_OPTICAL = (
+    np.linalg.inv(_transform((0.265, 0.0, 0.09), (0.0, math.pi / 2, 0.0)))
+    @ _transform((0.08, 0.0, 0.045), (math.pi, -0.1, 0.0))
+    @ _transform((0.0, 0.0, 0.0), (-math.pi / 2, 0.0, -math.pi / 2))
+)
 
 
 class ArmPose:
@@ -106,10 +116,16 @@ class HarvestNode(Node):
         self.tcp = None
         self.force = 0.0
         self.create_subscription(Robpose, "/mmo500/Robpose", self.__pose_cb, 10)
-        self.create_subscription(Float32, "/tomato_greenhouse/grip_force", self.__force_cb, 10)
-        self.finger_pub = self.create_publisher(JointTrajectory, "/mmo500/gripper_controller/joint_trajectory", 10)
+        self.create_subscription(
+            Float32, "/tomato_greenhouse/grip_force", self.__force_cb, 10
+        )
+        self.finger_pub = self.create_publisher(
+            JointTrajectory, "/mmo500/gripper_controller/joint_trajectory", 10
+        )
         self._controllers = {
-            name: ActionClient(self, FollowJointTrajectory, f"/mmo500/{name}/follow_joint_trajectory")
+            name: ActionClient(
+                self, FollowJointTrajectory, f"/mmo500/{name}/follow_joint_trajectory"
+            )
             for name in ("arm_controller", "gripper_controller", "twist_controller")
         }
 
@@ -129,7 +145,9 @@ class HarvestNode(Node):
         goal.trajectory.joint_names = joints
         point = JointTrajectoryPoint()
         point.positions = [float(p) for p in positions]
-        point.time_from_start = Duration(sec=int(duration), nanosec=int((duration % 1) * 1e9))
+        point.time_from_start = Duration(
+            sec=int(duration), nanosec=int((duration % 1) * 1e9)
+        )
         goal.trajectory.points = [point]
         sent = client.send_goal_async(goal)
         if not wait:
@@ -140,7 +158,9 @@ class HarvestNode(Node):
         if not _wait(done, duration + 15.0):
             return False
         # An aborted goal also answers, only a reached one counts
-        return done.result().result.error_code == FollowJointTrajectory.Result.SUCCESSFUL
+        return (
+            done.result().result.error_code == FollowJointTrajectory.Result.SUCCESSFUL
+        )
 
 
 class DepthOnDemand(Node):
@@ -174,7 +194,9 @@ class DepthOnDemand(Node):
         while rclpy.ok():
             wanted = time.monotonic() - self._last_use < DEPTH_IDLE
             if wanted and self._sub is None:
-                self._sub = self.create_subscription(Image, self._topic, self.__depth_cb, 1)
+                self._sub = self.create_subscription(
+                    Image, self._topic, self.__depth_cb, 1
+                )
             elif not wanted and self._sub is not None:
                 self.destroy_subscription(self._sub)
                 self._sub = None
@@ -227,7 +249,13 @@ arm = RBT(suffix="_mmo500", robmove_action="/mmo500/Robmove", use_move=False)
 
 # Spin nodes so that subscription callbacks load topic data, one thread serves them all
 executor = rclpy.executors.SingleThreadedExecutor()
-for node in (odometry_node, front_laser_node, back_laser_node, camera_node, harvest_node):
+for node in (
+    odometry_node,
+    front_laser_node,
+    back_laser_node,
+    camera_node,
+    harvest_node,
+):
     executor.add_node(node)
 
 
@@ -241,7 +269,9 @@ def _serve_callbacks():
 
 
 # Callbacks are served as they arrive, the grip watches a force that must never lag behind
-executor_thread = threading.Thread(target=_serve_callbacks, name="hal_spin", daemon=True)
+executor_thread = threading.Thread(
+    target=_serve_callbacks, name="hal_spin", daemon=True
+)
 executor_thread.start()
 
 
@@ -295,9 +325,15 @@ def moveArm(x, y, z, heading=-math.pi / 2):
     # Grasp frame with z along the fingers and x up
     m = np.array([[0.0, s, c], [0.0, -c, s], [1.0, 0.0, 0.0]])
     qw = math.sqrt(max(0.0, 1.0 + m[0, 0] + m[1, 1] + m[2, 2])) / 2
-    qx = math.copysign(math.sqrt(max(0.0, 1.0 + m[0, 0] - m[1, 1] - m[2, 2])) / 2, m[2, 1] - m[1, 2])
-    qy = math.copysign(math.sqrt(max(0.0, 1.0 - m[0, 0] + m[1, 1] - m[2, 2])) / 2, m[0, 2] - m[2, 0])
-    qz = math.copysign(math.sqrt(max(0.0, 1.0 - m[0, 0] - m[1, 1] + m[2, 2])) / 2, m[1, 0] - m[0, 1])
+    qx = math.copysign(
+        math.sqrt(max(0.0, 1.0 + m[0, 0] - m[1, 1] - m[2, 2])) / 2, m[2, 1] - m[1, 2]
+    )
+    qy = math.copysign(
+        math.sqrt(max(0.0, 1.0 - m[0, 0] + m[1, 1] - m[2, 2])) / 2, m[0, 2] - m[2, 0]
+    )
+    qz = math.copysign(
+        math.sqrt(max(0.0, 1.0 - m[0, 0] - m[1, 1] + m[2, 2])) / 2, m[1, 0] - m[0, 1]
+    )
     pose = Robpose()
     pose.x, pose.y, pose.z = float(x), float(y), float(z)
     pose.qx, pose.qy, pose.qz, pose.qw = qx, qy, qz, qw
@@ -337,7 +373,9 @@ _twist_angle = 0.0
 def _set_fingers(angle, duration):
     global _finger_angle
     _finger_angle = angle
-    return harvest_node.follow("gripper_controller", ["harvest_finger_1_joint"], [angle], duration)
+    return harvest_node.follow(
+        "gripper_controller", ["harvest_finger_1_joint"], [angle], duration
+    )
 
 
 def grip(force):
@@ -350,8 +388,12 @@ def grip(force):
     angle = _finger_angle
     while angle < GRIPPER_CLOSED and harvest_node.force < force:
         angle = min(GRIPPER_CLOSED, angle + GRIPPER_STEP)
-        point = JointTrajectoryPoint(positions=[angle], time_from_start=Duration(nanosec=int(1e9 / GRIP_RATE)))
-        harvest_node.finger_pub.publish(JointTrajectory(joint_names=["harvest_finger_1_joint"], points=[point]))
+        point = JointTrajectoryPoint(
+            positions=[angle], time_from_start=Duration(nanosec=int(1e9 / GRIP_RATE))
+        )
+        harvest_node.finger_pub.publish(
+            JointTrajectory(joint_names=["harvest_finger_1_joint"], points=[point])
+        )
         time.sleep(1.0 / GRIP_RATE)
     _finger_angle = angle
     # The force follows the fingers with a short delay
@@ -364,7 +406,13 @@ def release():
     global _twist_angle
     opened = _set_fingers(GRIPPER_OPEN, 0.4)
     if _twist_angle != 0.0:
-        harvest_node.follow("twist_controller", ["harvest_twist_joint"], [0.0], max(0.2, abs(_twist_angle) / TWIST_SPEED), wait=False)
+        harvest_node.follow(
+            "twist_controller",
+            ["harvest_twist_joint"],
+            [0.0],
+            max(0.2, abs(_twist_angle) / TWIST_SPEED),
+            wait=False,
+        )
         _twist_angle = 0.0
     return opened
 
@@ -372,10 +420,14 @@ def release():
 def twist(turns):
     """Spin the fingers this many turns, negative turns spin the other way."""
     global _twist_angle
-    target = max(-TWIST_RANGE, min(TWIST_RANGE, _twist_angle + 2 * math.pi * float(turns)))
+    target = max(
+        -TWIST_RANGE, min(TWIST_RANGE, _twist_angle + 2 * math.pi * float(turns))
+    )
     duration = max(0.2, abs(target - _twist_angle) / TWIST_SPEED)
     _twist_angle = target
-    return harvest_node.follow("twist_controller", ["harvest_twist_joint"], [target], duration)
+    return harvest_node.follow(
+        "twist_controller", ["harvest_twist_joint"], [target], duration
+    )
 
 
 ### WRIST CAMERA ###
@@ -409,7 +461,7 @@ def pixelToPoint(u, v):
     if depth is None or k is None or tcp is None:
         return None
     u, v = int(round(u)), int(round(v))
-    patch = depth[max(0, v - 2):v + 3, max(0, u - 2):u + 3]
+    patch = depth[max(0, v - 2) : v + 3, max(0, u - 2) : u + 3]
     patch = patch[np.isfinite(patch)]
     if patch.size == 0:
         return None

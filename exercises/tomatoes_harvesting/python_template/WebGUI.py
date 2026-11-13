@@ -27,8 +27,12 @@ class WebGUINode(Node):
         super().__init__("webgui_tomatoes_harvesting")
         self.gui = gui
         self.bridge = CvBridge()
-        self.create_subscription(Image, "/webgui/image_debug_left", self.on_left_image, 10)
-        self.create_subscription(Image, "/webgui/image_debug_right", self.on_right_image, 10)
+        self.create_subscription(
+            Image, "/webgui/image_debug_left", self.on_left_image, 10
+        )
+        self.create_subscription(
+            Image, "/webgui/image_debug_right", self.on_right_image, 10
+        )
 
     def on_left_image(self, msg):
         self.gui.showLeftImage(self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8"))
@@ -55,7 +59,9 @@ class WebGUI(MeasuringThreadingGUI):
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.node)
         # Own name so the HAL never mutes its errors as it does for threads called spin
-        self.executor_thread = threading.Thread(target=self._spin, name="webgui_ros", daemon=True)
+        self.executor_thread = threading.Thread(
+            target=self._spin, name="webgui_ros", daemon=True
+        )
         self.executor_thread.start()
 
         self.start()
@@ -95,7 +101,9 @@ def encode_image(image):
     if image is None:
         return ""
     frame = cv2.imencode(".JPEG", image)[1]
-    return json.dumps({"image": base64.b64encode(frame).decode("utf-8"), "shape": image.shape})
+    return json.dumps(
+        {"image": base64.b64encode(frame).decode("utf-8"), "shape": image.shape}
+    )
 
 
 host = "ws://127.0.0.1:2303"
