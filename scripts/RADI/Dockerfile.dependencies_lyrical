@@ -1,3 +1,11 @@
+FROM node:24 AS lsp-base
+
+RUN apt-get update && apt-get install -y git
+
+RUN git clone --depth 1 https://github.com/JdeRobot/lsp-proxy /tmp/app
+WORKDIR /tmp/app
+RUN npm install --force && npm run prepare
+
 FROM ros:lyrical-ros-core-resolute
 
 # Make all NVIDIA GPUS visible
@@ -23,6 +31,8 @@ RUN apt-get update && apt-get install -y \
   python3-pip \
   openssh-server \
   clang-format \
+  clangd-22 \
+  nodejs \
   && rm -rf /var/lib/apt/lists/*
 
 # Setup python env
@@ -62,6 +72,10 @@ RUN sed -i 's/#Port 22/Port 5901/' /etc/ssh/sshd_config
 RUN ssh-keygen -y -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
 RUN mkdir -p /run/sshd && chmod 755 /run/sshd
 RUN echo 'jderobot' | passwd --stdin root 
+
+# Install LSPs
+COPY --from=lsp-base /tmp/app/dist /lsp/dist
+RUN chmod +x /lsp/dist/server.mjs
 
 # Install postgreSQL-18
 RUN wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \

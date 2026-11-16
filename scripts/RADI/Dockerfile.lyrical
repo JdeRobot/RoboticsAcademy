@@ -28,6 +28,7 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
   mv /opt/jderobot/resources /resources && \
   mv -t / /opt/jderobot/scripts/.env /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh && \
   mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml && \
+  mv -f /opt/jderobot/LSP/servers.yml /lsp/servers.yml && \
   mv -f /opt/jderobot/scripts/proxy/* /etc/traefik && \
   chmod +x /entrypoint.sh /set_dri_name.sh && \
   rm -rf /opt/jderobot/.git \
@@ -35,6 +36,7 @@ RUN mkdir -p /opt/jderobot /home/ws/src && \
   /opt/jderobot/database \
   /opt/jderobot/deprecated_assets \
   /opt/jderobot/Docs \
+  /opt/jderobot/LSP \
   /opt/jderobot/scripts \
   /opt/jderobot/test \
   /opt/jderobot/Universes \
