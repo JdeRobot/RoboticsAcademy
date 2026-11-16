@@ -1,8 +1,10 @@
 import { ExerciseStatus } from "Types/exercises";
 import styled from "styled-components";
+import { Link } from "react-router";
 
 interface StyledExerciseCardContainerProps {
   state: ExerciseStatus;
+  focusColor?: string;
 }
 
 const handleStatus = (p: StyledExerciseCardContainerProps) => {
@@ -28,13 +30,24 @@ export const StyledExerciseCardContainer = styled.div<StyledExerciseCardContaine
   width: 20rem;
   aspect-ratio: 9/10;
   ${handleStatus}
+
+  &:has(a:focus-visible) {
+    outline: 3px solid ${(p) => p.focusColor ?? "currentColor"};
+    outline-offset: 3px;
+  }
 `;
 
-export const StyledExerciseCardArea = styled.div`
+export const StyledExerciseCardArea = styled(Link)`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: none;
+  }
 `;
 
 export const StyledExerciseCardInfoContainer = styled.div`
