@@ -36,6 +36,7 @@
 | Drone hangar                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_hangar]          | [Link (old)][vid_drone_hangar]     |        ok         |                         |
 | Drone Visual Lander                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_lander]         | [Link (old)][vid_visual_lander]    |        ok         | missing actor collision |
 | Drone Cat and Mouse                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_cat_mouse]       | [Link][vid_drone_cat_mouse]        |        ok         |                         |
+| F1 Pursuit                           |        ok        |             |      ok       |          | -                                 | -                                  |        ok         |                         |
 |                                      |                  |             |               |          |                                   |                                    |                   |                         |
 | Dynamic Window Approach              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_dynamic_window]        | [Link][vid_dynamic_window]         |        ok         |                         |
 | Visual Odometry                      |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_odom]           | [Link][vid_visual_odometry]        |        ok         |                         |

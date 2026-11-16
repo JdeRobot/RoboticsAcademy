@@ -42,6 +42,43 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
+  _f1_pursuit: {
+    hal: [
+      {
+        type: "method",
+        label: "getImage()",
+        code: "getImage()",
+        docstring: "Get the image (BGR8).",
+      },
+      {
+        type: "method",
+        label: "setV(velocity)",
+        code: "setV(velocity)",
+        docstring: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW(velocity)",
+        code: "setW(velocity)",
+        docstring: "Set the angular velocity.",
+      },
+      {
+        type: "method",
+        label: "isCaught()",
+        code: "isCaught()",
+        docstring: "True once the rival has been caught.",
+      },
+    ],
+    webgui: [
+      {
+        type: "method",
+        label: "showImage(image)",
+        code: "showImage(image)",
+        docstring:
+          "Allows you to view a debug image or with relevant information.",
+      },
+    ],
+  },
   _vacuum_cleaner: {
     hal: [
       {
