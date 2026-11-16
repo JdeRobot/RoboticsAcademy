@@ -23,6 +23,7 @@ UniverseType = (
 
 RosVersion = (("ROS", "ROS"), ("ROS2", "ROS2"))
 
+
 class Driver(models.Model):
     """
     Represents a driver available in the Robotics Academy platform.
@@ -40,6 +41,7 @@ class Driver(models.Model):
 
     class Meta:
         db_table = '"drivers"'
+
 
 class Tool(models.Model):
     """
@@ -101,7 +103,9 @@ class Scene(models.Model):
     type = models.CharField(
         max_length=50, choices=UniverseType, default="none", blank=False
     )
-    tools_supported = models.ManyToManyField(Tool, default=None, through="SceneSupportedTools")
+    tools_supported = models.ManyToManyField(
+        Tool, default=None, through="SceneSupportedTools"
+    )
     model_path = models.CharField(max_length=200, blank=False)
 
     def __str__(self):
@@ -126,7 +130,9 @@ class World(models.Model):
         Scene, default=None, on_delete=models.CASCADE, db_column="scene_id"
     )
     robots = models.ManyToManyField(Robot, default=None, through="WorldRobots")
-    drivers_supported = models.ManyToManyField(Driver, default=None, through='WorldSupportedDrivers')
+    drivers_supported = models.ManyToManyField(
+        Driver, default=None, through="WorldSupportedDrivers"
+    )
 
     def __str__(self):
         return str(self.name)
@@ -162,7 +168,9 @@ class Exercise(models.Model):
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     worlds = models.ManyToManyField(World, default=None, through="ExerciseWorlds")
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
-    drivers = models.ManyToManyField(Driver, default=None, db_table='"exercises_drivers"')
+    drivers = models.ManyToManyField(
+        Driver, default=None, db_table='"exercises_drivers"'
+    )
     url = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
@@ -212,6 +220,7 @@ class WorldRobots(models.Model):
 
     class Meta:
         db_table = '"worlds_robots"'
+
 
 class WorldSupportedDrivers(models.Model):
     """

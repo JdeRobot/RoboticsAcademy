@@ -19,7 +19,14 @@ from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
 from .templates import select_template
-from .models import Exercise, World, ExerciseWorlds, WorldRobots, SceneSupportedTools, Tool
+from .models import (
+    Exercise,
+    World,
+    ExerciseWorlds,
+    WorldRobots,
+    SceneSupportedTools,
+    Tool,
+)
 from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
@@ -435,16 +442,18 @@ def get_worlds_list(fal, request):
 
     return Response({"worlds_list": worlds_list})
 
+
 def get_used_elements(supported, used):
     # Convert arrays to sets for faster lookup
     supported_list = []
     for s in supported:
-      supported_list.append(s.name)
+        supported_list.append(s.name)
     set1 = set(supported_list)
     set2 = set(used)
     # Find intersection of the sets (common elements)
     common_elements = set1.intersection(set2)
     return list(common_elements)
+
 
 @error_wrapper("GET", ["project"])
 def get_docker_world_data(fal, request):
@@ -502,14 +511,15 @@ def get_docker_world_data(fal, request):
     drivers = get_used_elements(supported_drivers, drivers)
 
     for supported_tool in supported_tools:
-      config = SceneSupportedTools.objects.get(scene=world.scene, tool=supported_tool).config
-      if config is not None and config != str(None):
-        supported_tools_config[supported_tool.name] = config
+        config = SceneSupportedTools.objects.get(
+            scene=world.scene, tool=supported_tool
+        ).config
+        if config is not None and config != str(None):
+            supported_tools_config[supported_tool.name] = config
 
     for tool in tools:
-      if tool in supported_tools_config:
-        tools_configuration[tool] = supported_tools_config[tool]
-
+        if tool in supported_tools_config:
+            tools_configuration[tool] = supported_tools_config[tool]
 
     robot_models = world.robots.all()
     for robot in robot_models:

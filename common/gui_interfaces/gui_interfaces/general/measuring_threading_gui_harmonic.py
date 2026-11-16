@@ -71,18 +71,18 @@ class MeasuringThreadingGUI:
 
     def rtf_callback(self, msg: WorldStatistics):
         with self.rtf_lock:
-          self.real_time_factor = round(msg.real_time_factor, 2)
+            self.real_time_factor = round(msg.real_time_factor, 2)
 
     def launch_websocket(self):
         asyncio.run(self.task_start())
 
     async def run_websocket(self):
         try:
-          async with connect(self.host) as websocket:
-            self.client = websocket
+            async with connect(self.host) as websocket:
+                self.client = websocket
 
-            async for raw_msg in websocket:
-              await self.gui_in_thread(websocket, raw_msg)
+                async for raw_msg in websocket:
+                    await self.gui_in_thread(websocket, raw_msg)
         except ConnectionClosedOK as e:
             pass
         finally:
@@ -118,13 +118,13 @@ class MeasuringThreadingGUI:
             gui_frequency = round(1000 / self.ideal_cycle, 1)
 
             with self.rtf_lock:
-              self.frequency_message = {
-                  "brain": brain_frequency,
-                  "gui": gui_frequency,
-                  "rtf": self.real_time_factor,
-                  "fps": self.fps,
-                  "lat": self.lat,
-              }
+                self.frequency_message = {
+                    "brain": brain_frequency,
+                    "gui": gui_frequency,
+                    "rtf": self.real_time_factor,
+                    "fps": self.fps,
+                    "lat": self.lat,
+                }
             message = json.dumps(self.frequency_message)
 
             await self.send_to_client(message)
