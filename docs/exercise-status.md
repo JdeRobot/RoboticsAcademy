@@ -10,14 +10,14 @@
 | Global navigation                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_global_navigation]     | [Link][vid_global_nav]             |        ok         |           GPP           |
 | Laser Gridmap mapping                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_laser_grid_map]        | [Link][vid_laser_mapping]          |        ok         |                         |
 | MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_laser_loc]      | [Link][vid_montecarlo_laser]       |        ok         |          AMCL           |
-| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_visual_loc]     | -                                  |        ok         |          AMCL           |
+| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mntcrl_visual_loc]     | [Link (old)][vid_montecarlo_visual] |        ok         |          AMCL           |
 | Marker-based visual Loc              |        ok        |     ok      |      ok       |    ok    | [Docs][doc_marker_visual_loc]     | [Link][vid_marker_loc]             |        ok         |           PnP           |
 | Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_localized_vacuum]      | [Link][vid_localized_vacuum]       |        ok         |           BSA           |
 | Autoparking                          |        ok        |     ok      |      ok       |    ok    | [Docs][doc_autoparking]           | [Link][vid_autoparking]            |        ok         |                         |
 | Amazon Warehouse                     |        ok        |     ok      |      ok       |    ok    | [Docs][doc_amazon_warehouse]      | [Link][vid_amazon_warehouse]       |        ok         |                         |
 | Follow Person                        |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_person]         | [Link][vid_follow_person]          |        ok         |                         |
-| Drone Follow Road                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_follow_road]     | -                                  |        ok         |                         |
-| Drone Rescue people                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_rescue_people]   | -                                  |        ok         |                         |
+| Drone Follow Road                    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_follow_road]     | [Link (old)][vid_drone_follow_road] |        ok         |                         |
+| Drone Rescue people                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_rescue_people]   | [Link (old)][vid_drone_rescue_people] |        ok         |                         |
 | Drone Gymkhana                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_gymkhana]        | [Link][vid_drone_gymkhana]         |        ok         |                         |
 | Drone Power tower Inspection         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_drone_inspection]      | -                                  |        ok         |                         |
 | Visual 3D reconstruction             |        ok        |     ok      |      ok       |    ok    | [Docs][doc_3d_reconstruction]     | [Link][vid_3d_reconstr]            |        ok         |                         |
@@ -27,8 +27,9 @@
 | DL visual object detection           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_visual_obj_detection]  | -                                  |       none        |                         |
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]             |        ok         |      reset failure      |
 | Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]         |        ok         |      reset failure      |
-| Palletizing with industrial robot    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_palletizing]           | -                                  |        ok         |      reset failure      |
-| Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | -                                  |        ok         |                         |
+| Palletizing with industrial robot    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_palletizing]           | [Link][vid_palletizing]            |        ok         |      reset failure      |
+| Tomatoes Harvesting                  |        ok        |             |               |          | [Docs][doc_tomatoes_harvesting]   | -                                  |        ok         |                         |
+| Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | [Link][vid_car_junction]           |        ok         |                         |
 | Drone Labyrinth escape               |        ok        |     ok      |      ok       |    ok    | [Docs][doc_labyrinth_escape]      | [Link (old)][vid_labyrinth_escape] |        ok         |                         |
 | Drone Position control               |        ok        |     ok      |      ok       |    ok    | [Docs][doc_position_control]      | [Link (old)][vid_position_control] |        ok         |                         |
 | Drone Follow TurtleBot               |        ok        |     ok      |      ok       |    ok    | [Docs][doc_follow_turtlebot]      | [Link (old)][vid_follow_turtlebot] |        ok         |                         |
@@ -43,7 +44,7 @@
 | Rapidly Exploring Random Trees nav   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_rrt]                   | [Link][vid_rrt]                    |        ok         |                         |
 | Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_line_mapper]           | [Link][vid_line_mapper]            |        ok         |                         |
 | Mobile Manipulation                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
-| Sausage Packaging                    |        ok        |             |               |          | -                                 | -                                  |        ok         |                         |
+| Sausage Packaging                    |        ok        |     ok      |      ok       |    ok    | -                                 | [Link][vid_sausage]                |        ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
 
@@ -53,16 +54,15 @@
 | Follow face                      |                  |             |               |          | -     |         -          | broken |
 | Follow line Turtlebot (physical) |                  |             |               |          | -     |         -          | broken |
 | Opticalflow teleop               |                  |             |               |          | -     |         -          | broken |
-| Tomatoes Harvesting              |                  |             |               |          | -     |         ok         | new    |
 
 [vid_follow_line]: https://www.youtube.com/watch?v=HRZC1-tGW-s
 [vid_obstacle]: https://www.youtube.com/watch?v=6JvlBnJsP90
-[vid_autoparking]: https://www.youtube.com/watch?v=2tDKgsM8nyA
-[vid_follow_person]: https://www.youtube.com/watch?v=2E5op15e56Q
+[vid_autoparking]: https://www.youtube.com/watch?v=vQbbNEC_Dc8
+[vid_follow_person]: https://www.youtube.com/watch?v=_5i4MkE5HxI
 [vid_basic_cv]: https://www.youtube.com/watch?v=vXg-QYPyvhk
 [vid_machine_vision]: https://www.youtube.com/watch?v=ELx35ymlQXk
 [vid_basic_vacuum]: https://www.youtube.com/watch?v=ceQO6Z_ZiCM
-[vid_pick_place]: https://www.youtube.com/watch?v=y41iRZfnB7E
+[vid_pick_place]: https://www.youtube.com/watch?v=6AJ77qydej4
 [vid_amazon_warehouse]: https://www.youtube.com/watch?v=t-sJ1vK8yGk
 [vid_laser_mapping]: https://www.youtube.com/watch?v=rH7A-gPXplU
 [vid_localized_vacuum]: https://www.youtube.com/watch?v=cajn0qb-oeY
@@ -111,6 +111,7 @@
 [doc_rrt]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/rrt
 [doc_line_mapper]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/line_mapper_pr
 [doc_mobile_manipulation]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
+[doc_tomatoes_harvesting]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/tomatoes_harvesting
 [vid_labyrinth_escape]: https://www.youtube.com/watch?v=JR5OH_XHw7U
 [vid_position_control]: https://www.youtube.com/watch?v=L1suayB3vVA
 [vid_follow_turtlebot]: https://www.youtube.com/watch?v=uehDVlBzpmU
@@ -118,6 +119,12 @@
 [vid_drone_hangar]: https://www.youtube.com/watch?v=c9y89vZVkjg
 [vid_visual_lander]: https://www.youtube.com/watch?v=i0PGusLHXQM
 [vid_drone_cat_mouse]: https://www.youtube.com/watch?v=Jj9ORzrbMdQ
-[vid_visibility_graph]: https://www.youtube.com/watch?v=ozeVvHxN5ys
-[vid_rrt]: https://www.youtube.com/watch?v=klG-Q9AVkBs
-[vid_line_mapper]: https://www.youtube.com/watch?v=1c5vxZyYtSQ
+[vid_visibility_graph]: https://www.youtube.com/watch?v=40PUcMTKfw4
+[vid_rrt]: https://www.youtube.com/watch?v=ZDO0mNhJ99c
+[vid_line_mapper]: https://www.youtube.com/watch?v=He2zlLsXcKs
+[vid_montecarlo_visual]: https://www.youtube.com/watch?v=n-Fk4VCfvL8
+[vid_drone_follow_road]: https://www.youtube.com/watch?v=MKA5FcO0Jy8
+[vid_drone_rescue_people]: https://www.youtube.com/watch?v=pwtvTTDCi2I
+[vid_palletizing]: https://www.youtube.com/watch?v=R9nKdS6MKUo
+[vid_car_junction]: https://www.youtube.com/watch?v=VBmhHapRpw4
+[vid_sausage]: https://www.youtube.com/watch?v=582AF_l46-A
