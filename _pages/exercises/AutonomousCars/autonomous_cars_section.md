@@ -62,6 +62,14 @@ feature_row:
     status: "prototype"
     order: 2;
 
+  - image_path: /assets/images/exercises/f1_pursuit/f1_pursuit_teaser.png
+    alt: "F1 Pursuit"
+    title: "F1 Pursuit"
+    excerpt: "Chase a rival car following the red line and catch it as fast as you can"
+    url: "/exercises/AutonomousCars/f1_pursuit"
+    status: "prototype"
+    order: 2;
+
 ---
 
 
