@@ -18,12 +18,13 @@ const DownloadButton = ({ project }: { project: string }) => {
   };
 
   useEffect(() => {
-    subscribe("autoSaveCompleted", () => {
+    const onAutoSaveCompleted = () => {
       updateCode(true);
-    });
+    };
+    subscribe("autoSaveCompleted", onAutoSaveCompleted);
 
     return () => {
-      unsubscribe("autoSaveCompleted", () => {});
+      unsubscribe("autoSaveCompleted", onAutoSaveCompleted);
     };
   }, []);
 

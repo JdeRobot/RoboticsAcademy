@@ -80,7 +80,7 @@ const ExerciseContainer = ({
     subscribe("CommsManagerStateChange", resetWorld);
 
     return () => {
-      unsubscribe("CommsManagerStateChange", () => {});
+      unsubscribe("CommsManagerStateChange", resetWorld);
 
       if (hasTriedToConnect.current) {
         const currManager = CommsManager.getInstance();
