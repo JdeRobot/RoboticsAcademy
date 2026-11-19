@@ -195,6 +195,13 @@ class ExceptionTests(TestCase):
         self.assertIn("already exists", str(exc))
         self.assertEqual(exc.error_code, 409)
 
+    def test_exercise_already_open_message(self):
+        from academy.exceptions import ExerciseAlreadyOpen
+
+        exc = ExerciseAlreadyOpen("follow_line")
+        self.assertIn("already open", str(exc))
+        self.assertEqual(exc.error_code, 409)
+
     def test_binary_not_supported_message(self):
         from academy.exceptions import BinaryNotSupported
 
@@ -235,15 +242,32 @@ class GetExerciseListViewTests(TestCase):
 class EnterExerciseViewTests(TestCase):
     """Tests for the enter_exercise API endpoint."""
 
+    def tearDown(self):
+        from academy import views
+
+        views.active_project = None
+
     def test_missing_project_id_returns_400(self):
         response = self.client.get("/academy/enter_exercise/")
         self.assertEqual(response.status_code, 400)
 
-    def test_nonexistent_exercise_returns_500(self):
+    def test_nonexistent_exercise_returns_404(self):
         response = self.client.get(
             "/academy/enter_exercise/", {"project_id": "nonexistent"}
         )
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("nonexistent does not exist", response.json()["message"])
+
+    def test_exercise_already_open_returns_409(self):
+        from academy import views
+
+        _make_exercise("test_enter", "Test Enter")
+        views.active_project = "other_exercise"
+        response = self.client.get(
+            "/academy/enter_exercise/", {"project_id": "test_enter"}
+        )
+        self.assertEqual(response.status_code, 409)
+        self.assertIn("already open", response.json()["message"])
 
     def test_valid_exercise_returns_success(self):
         import tempfile, shutil
