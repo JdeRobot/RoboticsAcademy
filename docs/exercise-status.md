@@ -28,7 +28,7 @@
 | Pick and Place                       |        ok        |     ok      |      ok       |    ok    | [Docs][doc_pick_and_place]        | [Link][vid_pick_place]             |        ok         |      reset failure      |
 | Machine Vision with industrial robot |        ok        |     ok      |      ok       |    ok    | [Docs][doc_machine_vision_indus]  | [Link][vid_machine_vision]         |        ok         |      reset failure      |
 | Palletizing with industrial robot    |        ok        |     ok      |      ok       |    ok    | [Docs][doc_palletizing]           | [Link][vid_palletizing]            |        ok         |      reset failure      |
-| Tomatoes Harvesting                  |        ok        |             |               |          | [Docs][doc_tomatoes_harvesting]   | -                                  |        ok         |                         |
+| Tomatoes Harvesting                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_tomatoes_harvesting]   | -                                  |        ok         |                         |
 | Car junction                         |        ok        |     ok      |      ok       |    ok    | [Docs][doc_car_junction]          | [Link][vid_car_junction]           |        ok         |                         |
 | Drone Labyrinth escape               |        ok        |     ok      |      ok       |    ok    | [Docs][doc_labyrinth_escape]      | [Link (old)][vid_labyrinth_escape] |        ok         |                         |
 | Drone Position control               |        ok        |     ok      |      ok       |    ok    | [Docs][doc_position_control]      | [Link (old)][vid_position_control] |        ok         |                         |
