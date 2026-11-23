@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { states } from "jderobot-commsmanager";
+import JSZip from "jszip";
+import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import { contrastSelector } from "jderobot-ide-interface";
 import { useExercise } from "Contexts/ExerciseContext";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import { updatePath, addToPath } from "./helpers/showImageVisual";
 import RobotRed from "./resources/robot_red.svg";
 import RobotGreen from "./resources/robot_green.svg";
@@ -14,13 +18,35 @@ import warehouse from "./resources/map.png";
 import smallWarehouse from "./resources/small_map.png";
 
 import "./css/GUICanvas.css";
+
+// Packs the map that the backend exported in the Nav2 format into a zip download
+const downloadMap = (file: { pgm: string; yaml: string }) => {
+  const zip = new JSZip();
+  zip.file("map.pgm", file.pgm, { base64: true });
+  zip.file("map.yaml", file.yaml);
+  zip.generateAsync({ type: "blob" }).then((content) => {
+    const url = window.URL.createObjectURL(content);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = "laser_mapping_map.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  });
+};
+
 function WebGUI() {
+  const theme = useAcademyTheme();
   const [realPose, setRealPose] = useState<number[] | undefined>(undefined);
   const [noisyPose, setNoisyPose] = useState<number[] | undefined>(undefined);
   const [realPath, setRealPath] = useState<string>("");
   const [noisyPath, setNoisyPath] = useState<string>("");
   const [mapImg, setMapImg] = useState(smallWarehouse);
   const [userImage, setUserImage] = useState<string | undefined>(undefined);
+  const [running, setRunning] = useState<boolean>(false);
+  const [downloadHover, setDownloadHover] = useState<boolean>(false);
   const canvasRef = useRef<HTMLImageElement>(null);
 
   const exerciseContext = useExercise();
@@ -113,9 +139,19 @@ function WebGUI() {
         setUserImage(`data:image/png;base64,${image.user_map}`);
       }
     }
+
+    if (update.map_file) {
+      const file = JSON.parse(update.map_file);
+      if (file) {
+        downloadMap(file);
+      }
+    }
   };
 
   const stateCallback = (state: string) => {
+    // The backend that exports the map only answers while the code runs
+    setRunning(state === states.RUNNING);
+
     if (manager === null) {
       return;
     }
@@ -147,6 +183,20 @@ function WebGUI() {
     resizeObserver,
   );
 
+  const downloadBg = () => {
+    return running && downloadHover
+      ? theme.palette.secondary
+      : theme.palette.primary;
+  };
+
+  const downloadColor = () => {
+    return contrastSelector(
+      theme.palette.text,
+      theme.palette.darkText,
+      downloadBg(),
+    );
+  };
+
   return (
     <WebGUIContainer>
       <WebGUIImage
@@ -156,6 +206,49 @@ function WebGUI() {
         style={{ left: "0" }}
       />
       <WebGUIImage src={userImage} style={{ left: "50%" }} />
+      {userImage && (
+        <button
+          disabled={!running}
+          title={
+            running
+              ? "Download the map for Nav2 (PGM + YAML)"
+              : "Run your code to download the map"
+          }
+          onClick={() => {
+            try {
+              manager?.send("gui", "download_map");
+            } catch {
+              /* empty */
+            }
+          }}
+          onMouseEnter={() => setDownloadHover(true)}
+          onMouseLeave={() => setDownloadHover(false)}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "10px",
+            fontSize: "16px",
+            color: downloadColor(),
+            background: downloadBg(),
+            border: "none",
+            borderBottomLeftRadius: theme.viewRoundness,
+            zIndex: 4,
+            margin: 0,
+            cursor: running ? "pointer" : "default",
+            opacity: running ? 1 : 0.5,
+          }}
+        >
+          <FileDownloadRoundedIcon
+            htmlColor={downloadColor()}
+            fontSize="small"
+          />
+          Map
+        </button>
+      )}
       {realPose && (
         <div
           id="real-pos"

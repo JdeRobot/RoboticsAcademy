@@ -6,9 +6,17 @@
 #include "sensor_msgs/msg/image.hpp"
 #include <atomic>
 #include <cmath>
+#include <cstdio>
 #include <cv_bridge/cv_bridge.h>
 #include <mutex>
 #include <stdexcept>
+
+// Geometry of the user map as pose_to_map defines it, rows follow world x and
+// columns world y
+static constexpr double MAP_SCALE_X = 23.58;
+static constexpr double MAP_SCALE_Y = 23.53;
+static constexpr double MAP_ORIGIN_X = -20.36;
+static constexpr double MAP_ORIGIN_Y = -31.95;
 
 class WebGUINode : public BaseWebGUI {
 public:
@@ -93,7 +101,15 @@ protected:
                           std::to_string(std::get<1>(noisy_pos)) + ", " +
                           std::to_string(std::get<2>(noisy_pos)) + ")";
 
+    // The map file goes out once per download request from the frontend
+    inner["map_file"] = map_requested_.exchange(false) ? export_map() : "";
+
     return inner;
+  }
+
+  void on_frontend_message(const std::string &msg) override {
+    if (msg.find("download_map") != std::string::npos)
+      map_requested_.store(true);
   }
 
 private:
@@ -115,6 +131,37 @@ private:
     stats["lat"] = -1.0;
 
     send_to_frontend(stats);
+  }
+
+  // Builds the map in the Nav2 map_server format, a PGM image and its YAML
+  std::string export_map() {
+    cv::Mat gray;
+    {
+      std::lock_guard<std::mutex> lk(img_mtx_);
+      if (img_buf_.empty())
+        return "null";
+      cv::cvtColor(img_buf_, gray, cv::COLOR_BGR2GRAY);
+    }
+
+    // Nav2 puts world x along the columns and world y upwards along the rows
+    cv::Mat nav2_map;
+    cv::flip(gray.t(), nav2_map, 0);
+
+    std::vector<uchar> pgm;
+    cv::imencode(".pgm", nav2_map, pgm);
+
+    char yaml[256];
+    std::snprintf(yaml, sizeof(yaml),
+                  "image: map.pgm\nmode: trinary\nresolution: %.6f\n"
+                  "origin: [%.2f, %.2f, 0.0]\nnegate: 0\n"
+                  "occupied_thresh: 0.65\nfree_thresh: 0.25\n",
+                  2.0 / (MAP_SCALE_X + MAP_SCALE_Y), MAP_ORIGIN_X,
+                  MAP_ORIGIN_Y);
+
+    json file;
+    file["pgm"] = base64_encode(pgm.data(), pgm.size());
+    file["yaml"] = yaml;
+    return file.dump();
   }
 
   std::string encode_image() {
@@ -148,6 +195,7 @@ private:
   std::mutex img_mtx_;
   std::atomic<bool> image_updated_;
   std::string last_image_payload_;
+  std::atomic<bool> map_requested_{false};
 
   Map map_util_;
   RTFMonitor rtf_monitor_;

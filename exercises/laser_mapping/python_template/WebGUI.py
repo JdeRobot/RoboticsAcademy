@@ -19,6 +19,12 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
 )
 from console_interfaces.general.console import start_console
 
+# Geometry of the user map as poseToMap defines it, rows follow world x and columns world y
+MAP_SCALE_X = 23.58
+MAP_SCALE_Y = 23.53
+MAP_ORIGIN_X = -20.36
+MAP_ORIGIN_Y = -31.95
+
 
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
@@ -84,7 +90,13 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.user_map = None
         self.image_lock = threading.Lock()
-        self.payload = {"user_map": "", "real_pose": "", "noisy_pose": ""}
+        self.payload = {
+            "user_map": "",
+            "real_pose": "",
+            "noisy_pose": "",
+            "map_file": "",
+        }
+        self.map_requested = False
 
         self.bridge_node = None
         self.executor = None
@@ -143,8 +155,45 @@ class WebGUI(MeasuringThreadingGUI):
         }
 
         self.payload["user_map"] = json.dumps(payload_img)
+
+        # The map file goes out once per download request from the frontend
+        if self.map_requested:
+            self.map_requested = False
+            self.payload["map_file"] = json.dumps(self.export_map())
+        else:
+            self.payload["map_file"] = ""
+
         message = json.dumps(self.payload)
         self.send_to_client(message)
+
+    def gui_in_thread(self, ws, message):
+        if "download_map" in message:
+            self.map_requested = True
+        else:
+            super().gui_in_thread(ws, message)
+
+    # Builds the map in the Nav2 map_server format, a PGM image and its YAML
+    def export_map(self):
+        with self.image_lock:
+            if self.user_map is None:
+                return None
+            gray = cv2.cvtColor(self.user_map, cv2.COLOR_BGR2GRAY)
+
+        # Nav2 puts world x along the columns and world y upwards along the rows
+        nav2_map = np.ascontiguousarray(np.flipud(gray.T))
+        _, pgm = cv2.imencode(".pgm", nav2_map)
+
+        resolution = 2.0 / (MAP_SCALE_X + MAP_SCALE_Y)
+        yaml = (
+            "image: map.pgm\n"
+            "mode: trinary\n"
+            f"resolution: {resolution:.6f}\n"
+            f"origin: [{MAP_ORIGIN_X}, {MAP_ORIGIN_Y}, 0.0]\n"
+            "negate: 0\n"
+            "occupied_thresh: 0.65\n"
+            "free_thresh: 0.25\n"
+        )
+        return {"pgm": base64.b64encode(pgm).decode("utf-8"), "yaml": yaml}
 
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:
