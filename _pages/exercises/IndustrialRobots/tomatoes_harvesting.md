@@ -67,7 +67,7 @@ The robot is the [Neobotix MMO-500](https://www.neobotix-robots.com/), an omnidi
 
 ## Robot API
 
-This exercise supports the HAL-based approach and the ROS 2-direct implementation, both in Python and C++.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### Frames
 
@@ -75,7 +75,9 @@ This exercise supports the HAL-based approach and the ROS 2-direct implementatio
 - The arm moves the **grasp point**, the centre of the space between the three fingers. The harvest head is always kept level, so its orientation is a single angle, the **heading**: the direction the fingers point to, measured around the vertical like the base yaw. `0` points forward, `π/2` to the left and `-π/2` (the default) to the right.
 - World coordinates are in metres in the frame of `HAL.getPose3d()`, which gives the exact pose of the robot (without odometry noise). A world point `(wx, wy)` seen from a base at `(x, y, yaw)` is at `bx = cos(yaw)·(wx - x) + sin(yaw)·(wy - y)` and `by = -sin(yaw)·(wx - x) + cos(yaw)·(wy - y)` in `base_footprint`.
 
-### HAL-based Implementation in Python
+### HAL-based Implementation
+
+#### Python
 
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -116,7 +118,7 @@ This exercise supports the HAL-based approach and the ROS 2-direct implementatio
 
 The WebGUI also shows the [score](#score) of the run in its top right corner.
 
-### HAL-based Implementation in C++
+#### C++
 
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -210,7 +212,7 @@ For image debugging:
 
 - `/webgui/image_debug_left` and `/webgui/image_debug_right` - Publish to these topics to set the left / right debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
 
-### ROS 2-direct setup in Python
+#### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
@@ -225,7 +227,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
-### ROS 2-direct setup in C++
+#### C++
 
 In order to use direct ros controls you must include the following lines:
 
@@ -419,8 +421,6 @@ import WebGUI
 while True:
     # Enter iterative code here!
 ```
-
-In C++, include `HAL.hpp` and write your code in `exercise()`, as shown in [HAL-based Implementation in C++](#hal-based-implementation-in-c).
 
 ### Why does the arm fail to move to a desired pose?
 
