@@ -45,6 +45,7 @@
 | Line-based Mapping                   |        ok        |     ok      |      ok       |    ok    | [Docs][doc_line_mapper]           | [Link][vid_line_mapper]            |        ok         |                         |
 | Mobile Manipulation                  |        ok        |     ok      |      ok       |    ok    | [Docs][doc_mobile_manipulation]   | -                                  |        ok         |                         |
 | Sausage Packaging                    |        ok        |     ok      |      ok       |    ok    | -                                 | [Link][vid_sausage]                |        ok         |                         |
+| F1 Pursuit                           |        ok        |     ok      |      ok       |    ok    | [Docs][doc_f1_pursuit]            | -                                  |        ok         |                         |
 
 ## 🚧 Exercises under repair / workshop state
 
@@ -112,6 +113,7 @@
 [doc_line_mapper]: https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/line_mapper_pr
 [doc_mobile_manipulation]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/mobile_manipulation
 [doc_tomatoes_harvesting]: https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/tomatoes_harvesting
+[doc_f1_pursuit]: https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/f1_pursuit
 [vid_labyrinth_escape]: https://www.youtube.com/watch?v=JR5OH_XHw7U
 [vid_position_control]: https://www.youtube.com/watch?v=L1suayB3vVA
 [vid_follow_turtlebot]: https://www.youtube.com/watch?v=uehDVlBzpmU
