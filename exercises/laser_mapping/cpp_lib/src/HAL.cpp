@@ -11,6 +11,8 @@ std::shared_ptr<MotorsNode> HAL::motors_node_ = nullptr;
 std::shared_ptr<OdometryNode> HAL::odometry_node_ = nullptr;
 std::shared_ptr<OdometryNode> HAL::noisy_odometry_node_ = nullptr;
 std::shared_ptr<LaserNode> HAL::laser_node_ = nullptr;
+std::shared_ptr<LaserNode> HAL::front_laser_node_ = nullptr;
+std::shared_ptr<LaserNode> HAL::back_laser_node_ = nullptr;
 std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> HAL::executor_ =
     nullptr;
 std::thread HAL::spin_thread_;
@@ -24,12 +26,18 @@ void HAL::init() {
     motors_node_ =
         std::make_shared<MotorsNode>("/do150/cmd_vel", 4.0, 0.3, "hal_motors");
     laser_node_ = std::make_shared<LaserNode>("/do150/laser/scan", "hal_laser");
+    front_laser_node_ = std::make_shared<LaserNode>("/do150/front_laser/scan",
+                                                    "hal_front_laser");
+    back_laser_node_ =
+        std::make_shared<LaserNode>("/do150/back_laser/scan", "hal_back_laser");
 
     executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
     executor_->add_node(odometry_node_);
     executor_->add_node(noisy_odometry_node_);
     executor_->add_node(motors_node_);
     executor_->add_node(laser_node_);
+    executor_->add_node(front_laser_node_);
+    executor_->add_node(back_laser_node_);
 
     spin_thread_ = std::thread([]() { executor_->spin(); });
     spin_thread_.detach();
@@ -66,17 +74,27 @@ HAL::Pose3d HAL::get_odom() {
                      raw_pose.roll, raw_pose.timeStamp};
 }
 
-HAL::LaserData HAL::get_laser_data() {
-  if (!laser_node_)
+static HAL::LaserData wait_laser_data(const std::shared_ptr<LaserNode> &node) {
+  if (!node)
     return HAL::LaserData{};
 
-  auto raw_laser = laser_node_->getLaserData();
+  auto raw_laser = node->getLaserData();
   while (raw_laser.values.empty() && rclcpp::ok()) {
     std::this_thread::sleep_for(5ms);
-    raw_laser = laser_node_->getLaserData();
+    raw_laser = node->getLaserData();
   }
 
   return HAL::LaserData{raw_laser.values,   raw_laser.minAngle,
                         raw_laser.maxAngle, raw_laser.minRange,
                         raw_laser.maxRange, raw_laser.timeStamp};
+}
+
+HAL::LaserData HAL::get_laser_data() { return wait_laser_data(laser_node_); }
+
+HAL::LaserData HAL::get_front_laser_data() {
+  return wait_laser_data(front_laser_node_);
+}
+
+HAL::LaserData HAL::get_back_laser_data() {
+  return wait_laser_data(back_laser_node_);
 }

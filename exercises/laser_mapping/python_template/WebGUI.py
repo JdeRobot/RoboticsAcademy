@@ -13,17 +13,26 @@ from rclpy.qos import QoSProfile, DurabilityPolicy, qos_profile_sensor_data
 from sensor_msgs.msg import Image as ROSImage
 from nav_msgs.msg import Odometry
 
-from map import Map
+from map import (
+    MAP_HEIGHT,
+    MAP_WIDTH,
+    ORIGIN_X,
+    ORIGIN_Y,
+    SCALE_X,
+    SCALE_Y,
+    Map,
+    world_to_pixel,
+)
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
 from console_interfaces.general.console import start_console
 
-# Geometry of the user map as poseToMap defines it, rows follow world x and columns world y
-MAP_SCALE_X = 23.58
-MAP_SCALE_Y = 23.53
-MAP_ORIGIN_X = -20.36
-MAP_ORIGIN_Y = -31.95
+# Nav2 map_server thresholds written in the exported YAML
+OCCUPIED_THRESH = 0.65
+FREE_THRESH = 0.25
+# Unknown pixels kept around the mapped area of the exported map
+CROP_MARGIN = 10
 
 
 def quat_to_yaw(qw, qx, qy, qz):
@@ -172,7 +181,7 @@ class WebGUI(MeasuringThreadingGUI):
         else:
             super().gui_in_thread(ws, message)
 
-    # Builds the map in the Nav2 map_server format, a PGM image and its YAML
+    # Builds the map in the Nav2 map_server format cropped to the area the user mapped
     def export_map(self):
         with self.image_lock:
             if self.user_map is None:
@@ -180,25 +189,43 @@ class WebGUI(MeasuringThreadingGUI):
             gray = cv2.cvtColor(self.user_map, cv2.COLOR_BGR2GRAY)
 
         # Nav2 puts world x along the columns and world y upwards along the rows
-        nav2_map = np.ascontiguousarray(np.flipud(gray.T))
-        _, pgm = cv2.imencode(".pgm", nav2_map)
+        nav2_map = np.flipud(gray.T)
 
-        resolution = 2.0 / (MAP_SCALE_X + MAP_SCALE_Y)
+        # Pixels map_server reads as free or occupied, the rest is unknown
+        occupancy = 1.0 - nav2_map / 255.0
+        known = (occupancy > OCCUPIED_THRESH) | (occupancy < FREE_THRESH)
+        if not known.any():
+            return None
+
+        rows = np.flatnonzero(known.any(axis=1))
+        cols = np.flatnonzero(known.any(axis=0))
+        top = max(rows[0] - CROP_MARGIN, 0)
+        bottom = min(rows[-1] + CROP_MARGIN, nav2_map.shape[0] - 1)
+        left = max(cols[0] - CROP_MARGIN, 0)
+        right = min(cols[-1] + CROP_MARGIN, nav2_map.shape[1] - 1)
+        cropped = np.ascontiguousarray(nav2_map[top : bottom + 1, left : right + 1])
+        _, pgm = cv2.imencode(".pgm", cropped)
+
+        # The origin is the world pose of the lower left corner of the crop
+        # and poseToMap rounds so every pixel is centred on its world point
+        origin_x = ORIGIN_X + (left - 0.5) / SCALE_X
+        origin_y = ORIGIN_Y + (MAP_WIDTH - 1 - bottom - 0.5) / SCALE_Y
+        resolution = 2.0 / (SCALE_X + SCALE_Y)
         yaml = (
             "image: map.pgm\n"
             "mode: trinary\n"
             f"resolution: {resolution:.6f}\n"
-            f"origin: [{MAP_ORIGIN_X}, {MAP_ORIGIN_Y}, 0.0]\n"
+            f"origin: [{origin_x:.4f}, {origin_y:.4f}, 0.0]\n"
             "negate: 0\n"
-            "occupied_thresh: 0.65\n"
-            "free_thresh: 0.25\n"
+            f"occupied_thresh: {OCCUPIED_THRESH}\n"
+            f"free_thresh: {FREE_THRESH}\n"
         )
         return {"pgm": base64.b64encode(pgm).decode("utf-8"), "yaml": yaml}
 
     def setUserMap(self, image):
-        if image.shape[0] != 970 or image.shape[1] != 1500:
+        if image.shape[0] != MAP_HEIGHT or image.shape[1] != MAP_WIDTH:
             raise ValueError(
-                "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
+                f"map passed has the wrong dimensions, it has to be {MAP_HEIGHT} pixels high and {MAP_WIDTH} pixels wide"
             )
 
         if len(image.shape) == 2:
@@ -210,8 +237,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.user_map = processed_image
 
     def poseToMap(self, x_prime, y_prime, yaw_prime):
-        y = -23.58 * (-20.36 - x_prime)
-        x = -23.53 * (-31.95 - y_prime)
+        y, x = world_to_pixel(x_prime, y_prime)
         yaw = yaw_prime - math.pi / 2
         return [round(x), round(y), yaw]
 

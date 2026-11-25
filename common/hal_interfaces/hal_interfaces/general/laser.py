@@ -71,8 +71,8 @@ def laserScan2LaserData(scan):
 
 ### HAL INTERFACE ###
 class LaserNode(Node):
-    def __init__(self, topic):
-        super().__init__("laser_node")
+    def __init__(self, topic, node_name="laser_node"):
+        super().__init__(node_name)
         self.sub = self.create_subscription(
             sensor_msgs.msg.LaserScan, topic, self.listener_callback, 10
         )

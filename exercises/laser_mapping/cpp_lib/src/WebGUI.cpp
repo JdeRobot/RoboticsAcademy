@@ -4,19 +4,21 @@
 #include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
 #include "sensor_msgs/msg/image.hpp"
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <cstdio>
 #include <cv_bridge/cv_bridge.h>
 #include <mutex>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
-// Geometry of the user map as pose_to_map defines it, rows follow world x and
-// columns world y
-static constexpr double MAP_SCALE_X = 23.58;
-static constexpr double MAP_SCALE_Y = 23.53;
-static constexpr double MAP_ORIGIN_X = -20.36;
-static constexpr double MAP_ORIGIN_Y = -31.95;
+// Nav2 map_server thresholds written in the exported YAML
+static constexpr double OCCUPIED_THRESH = 0.65;
+static constexpr double FREE_THRESH = 0.25;
+// Unknown pixels kept around the mapped area of the exported map
+static constexpr int CROP_MARGIN = 10;
 
 class WebGUINode : public BaseWebGUI {
 public:
@@ -59,9 +61,11 @@ public:
     if (img.empty())
       return;
 
-    if (img.rows != 970 || img.cols != 1500) {
-      throw std::invalid_argument("map passed has the wrong dimensions, it has "
-                                  "to be 970 pixels high and 1500 pixels wide");
+    if (img.rows != map_canvas::HEIGHT || img.cols != map_canvas::WIDTH) {
+      throw std::invalid_argument(
+          "map passed has the wrong dimensions, it has to be " +
+          std::to_string(map_canvas::HEIGHT) + " pixels high and " +
+          std::to_string(map_canvas::WIDTH) + " pixels wide");
     }
 
     cv::Mat processed_image;
@@ -78,8 +82,7 @@ public:
 
   std::vector<double> pose_to_map(double x_prime, double y_prime,
                                   double yaw_prime) {
-    double y = -23.58 * (-20.36 - x_prime);
-    double x = -23.53 * (-31.95 - y_prime);
+    auto [y, x] = map_canvas::world_to_pixel(x_prime, y_prime);
     double yaw = yaw_prime - CV_PI / 2.0;
     return {std::round(x), std::round(y), yaw};
   }
@@ -133,7 +136,8 @@ private:
     send_to_frontend(stats);
   }
 
-  // Builds the map in the Nav2 map_server format, a PGM image and its YAML
+  // Builds the map in the Nav2 map_server format cropped to the area the user
+  // mapped
   std::string export_map() {
     cv::Mat gray;
     {
@@ -147,16 +151,37 @@ private:
     cv::Mat nav2_map;
     cv::flip(gray.t(), nav2_map, 0);
 
+    // Pixels map_server reads as free or occupied, the rest is unknown
+    cv::Mat known = (nav2_map < (1.0 - OCCUPIED_THRESH) * 255.0) |
+                    (nav2_map > (1.0 - FREE_THRESH) * 255.0);
+    if (cv::countNonZero(known) == 0)
+      return "null";
+
+    cv::Rect box = cv::boundingRect(known);
+    int left = std::max(box.x - CROP_MARGIN, 0);
+    int top = std::max(box.y - CROP_MARGIN, 0);
+    int right = std::min(box.br().x - 1 + CROP_MARGIN, nav2_map.cols - 1);
+    int bottom = std::min(box.br().y - 1 + CROP_MARGIN, nav2_map.rows - 1);
+    cv::Mat cropped =
+        nav2_map(cv::Rect(left, top, right - left + 1, bottom - top + 1));
+
     std::vector<uchar> pgm;
-    cv::imencode(".pgm", nav2_map, pgm);
+    cv::imencode(".pgm", cropped, pgm);
+
+    // The origin is the world pose of the lower left corner of the crop
+    // and pose_to_map rounds so every pixel is centred on its world point
+    double origin_x = map_canvas::ORIGIN_X + (left - 0.5) / map_canvas::SCALE_X;
+    double origin_y =
+        map_canvas::ORIGIN_Y +
+        (map_canvas::WIDTH - 1 - bottom - 0.5) / map_canvas::SCALE_Y;
+    double resolution = 2.0 / (map_canvas::SCALE_X + map_canvas::SCALE_Y);
 
     char yaml[256];
     std::snprintf(yaml, sizeof(yaml),
                   "image: map.pgm\nmode: trinary\nresolution: %.6f\n"
-                  "origin: [%.2f, %.2f, 0.0]\nnegate: 0\n"
-                  "occupied_thresh: 0.65\nfree_thresh: 0.25\n",
-                  2.0 / (MAP_SCALE_X + MAP_SCALE_Y), MAP_ORIGIN_X,
-                  MAP_ORIGIN_Y);
+                  "origin: [%.4f, %.4f, 0.0]\nnegate: 0\n"
+                  "occupied_thresh: %.2f\nfree_thresh: %.2f\n",
+                  resolution, origin_x, origin_y, OCCUPIED_THRESH, FREE_THRESH);
 
     json file;
     file["pgm"] = base64_encode(pgm.data(), pgm.size());

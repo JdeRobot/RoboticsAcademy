@@ -42,8 +42,7 @@ std::tuple<double, double, double> Map::get_robot_coordinates()
 {
     Pose3d pose = pose_getter_();
     
-    double y = -23.53 * (-31.95 - pose.y);
-    double x = -23.58 * (-20.36 - pose.x);
+    auto [x, y] = map_canvas::world_to_pixel(pose.x, pose.y);
 
     return {x, y, pose.yaw};
 }
@@ -52,8 +51,7 @@ std::tuple<double, double, double> Map::get_robot_coordinates_with_noise()
 {
     Pose3d pose = noisy_pose_getter_();
     
-    double y = -23.53 * (-31.95 - pose.y);
-    double x = -23.58 * (-20.36 - pose.x);
+    auto [x, y] = map_canvas::world_to_pixel(pose.x, pose.y);
 
     return {x, y, pose.yaw};
 }
