@@ -35,7 +35,7 @@ const WebGUI = () => {
     }
   }, []);
 
-  const updateCircuit = (world: string) => {
+  const updateCircuit = (world?: string) => {
     if (world === undefined) {
       return;
     }
