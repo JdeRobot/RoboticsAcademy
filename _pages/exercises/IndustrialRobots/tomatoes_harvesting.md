@@ -59,9 +59,15 @@ The robot is the [Neobotix MMO-500](https://www.neobotix-robots.com/), an omnidi
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
-This exercise supports the HAL-based approach and the ROS 2-direct implementation, both in Python.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### Frames
 
@@ -69,7 +75,9 @@ This exercise supports the HAL-based approach and the ROS 2-direct implementatio
 - The arm moves the **grasp point**, the centre of the space between the three fingers. The harvest head is always kept level, so its orientation is a single angle, the **heading**: the direction the fingers point to, measured around the vertical like the base yaw. `0` points forward, `π/2` to the left and `-π/2` (the default) to the right.
 - World coordinates are in metres in the frame of `HAL.getPose3d()`, which gives the exact pose of the robot (without odometry noise). A world point `(wx, wy)` seen from a base at `(x, y, yaw)` is at `bx = cos(yaw)·(wx - x) + sin(yaw)·(wy - y)` and `by = -sin(yaw)·(wx - x) + cos(yaw)·(wy - y)` in `base_footprint`.
 
-### HAL-based Implementation in Python
+### HAL-based Implementation
+
+#### Python
 
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -110,6 +118,66 @@ This exercise supports the HAL-based approach and the ROS 2-direct implementatio
 
 The WebGUI also shows the [score](#score) of the run in its top right corner.
 
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+**Base**
+
+- `HAL::get_pose3d();` - Returns a `HAL::Pose3d` struct with the base pose in the world frame: `x`, `y`, `z` (metres), `yaw`, `pitch`, `roll` (radians), `q` (`std::array<double, 4>` quaternion `[w, x, y, z]`) and `timeStamp` (seconds).
+- `HAL::set_vx(velocity);` - to set the forward speed of the base in m/s, limited to ±0.5.
+- `HAL::set_vy(velocity);` - to set the sideways speed of the base in m/s (positive to the left), limited to ±0.5.
+- `HAL::set_w(velocity);` - to set the yaw rate of the base in rad/s (positive counterclockwise), limited to ±0.8.
+
+**Lasers**
+
+- `HAL::get_front_laser_data();` / `HAL::get_back_laser_data();` - Returns a `HAL::LaserData` struct of the front / back laser, with `values` (`std::vector<float>` of 720 distances in metres over ±1.48 rad), `minAngle`, `maxAngle`, `minRange`, `maxRange` and `timeStamp`. The back laser looks backwards.
+
+**Arm**
+
+- `HAL::move_arm(x, y, z, heading);` - Moves the grasp point to `(x, y, z)` in `base_footprint` with the fingers pointing towards `heading`, through a trajectory planned by MoveIt 2. `heading` defaults to `-M_PI / 2`. If the plan fails it unfolds the arm in front of the base and tries once more. Returns `true` once the arm is there and `false` if the point cannot be reached.
+- `HAL::get_arm_pose();` - Returns a `std::optional<HAL::ArmPose>` with the current grasp point `x`, `y`, `z` in `base_footprint` and its `heading`, empty until the arm reports its first pose.
+- `HAL::home_arm();` - Folds the arm over the base, the pose the robot starts in. Returns `true` once the arm is there.
+
+**Harvest head**
+
+- `HAL::grip(force);` - Closes the fingers until they squeeze with `force` newtons and returns the force reached. It keeps closing from where the fingers are, so a second call with a higher force tightens the grip without letting go first. Returns `0.0` when the fingers closed completely without touching anything.
+- `HAL::twist(turns);` - Spins the fingers this many turns, two turns per second. Negative turns spin the other way. The head can wind up to five turns each way from its rest position. Returns `true` once the turns are done.
+- `HAL::release();` - Opens the fingers. The head winds back to its rest position at the same time. Returns `true` once the fingers are open.
+
+**Wrist camera**
+
+- `HAL::get_image();` - Returns the 640 x 480 BGR image of the wrist camera as a `cv::Mat`.
+- `HAL::get_depth_image();` - Returns the 640 x 480 depth image of the wrist camera as a `CV_32F` `cv::Mat` in metres, `inf` where nothing is in range (0.1 to 6 m). The depth is only rendered while it is being asked for, so the first call after a few seconds without using it waits for a new frame.
+- `HAL::pixel_to_point(u, v);` - Returns a `std::optional<std::array<double, 3>>` with the point seen at pixel column `u` and row `v` as `[x, y, z]` in `base_footprint`, using the depth around that pixel and the current pose of the head. It is empty when that pixel has no depth.
+
+**WebGUI**
+
+- `WebGUI::show_image(image);` - Shows a BGR `cv::Mat` in the right panel.
+- `WebGUI::show_left_image(image);` - Shows a BGR `cv::Mat` in the left panel.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics and actions for direct communication with the simulation. The robot runs in the `/mmo500` namespace.
@@ -144,6 +212,8 @@ For image debugging:
 
 - `/webgui/image_debug_left` and `/webgui/image_debug_right` - Publish to these topics to set the left / right debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
 
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -156,6 +226,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use direct ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### Argument examples
 
@@ -177,6 +282,18 @@ HAL.moveArm(0.4, -0.6, 1.2, heading=0.0)
 point = HAL.pixelToPoint(320, 240)
 if point is not None:
     x, y, z = point
+```
+
+**The same examples in C++**
+
+```cpp
+HAL::move_arm(0.4, -0.6, 1.2);
+HAL::move_arm(0.4, -0.6, 1.2, 0.0);
+
+auto point = HAL::pixel_to_point(320, 240);
+if (point) {
+    auto [x, y, z] = *point;
+}
 ```
 
 ---
