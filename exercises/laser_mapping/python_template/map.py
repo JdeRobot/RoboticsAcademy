@@ -4,6 +4,18 @@ import random
 from math import pi as pi
 import cv2
 
+# User map canvas, pixel rows follow world x and pixel columns follow world y
+MAP_HEIGHT = 970
+MAP_WIDTH = 1500
+SCALE_X = 23.58  # pixels per metre along world x
+SCALE_Y = 23.53  # pixels per metre along world y
+ORIGIN_X = -20.36  # world x of pixel row 0
+ORIGIN_Y = -31.95  # world y of pixel column 0
+
+
+def world_to_pixel(x, y):
+    return SCALE_X * (x - ORIGIN_X), SCALE_Y * (y - ORIGIN_Y)
+
 
 class Map:
     def __init__(self, pose_getter, noisy_pose_getter):
@@ -49,32 +61,12 @@ class Map:
 
     def getRobotCoordinates(self):
         pose = self.pose_getter()
-        x = pose.x
-        y = pose.y
-
-        scale_y = -23.53
-        offset_y = -31.95
-        y = scale_y * (offset_y - y)
-
-        scale_x = -23.58
-        offset_x = -20.36
-        x = scale_x * (offset_x - x)
-
+        x, y = world_to_pixel(pose.x, pose.y)
         return x, y, pose.yaw
 
     def getRobotCoordinatesWithNoise(self):
         pose = self.noisy_pose_getter()
-        x = pose.x
-        y = pose.y
-
-        scale_y = -23.53
-        offset_y = -31.95
-        y = scale_y * (offset_y - y)
-
-        scale_x = -23.58
-        offset_x = -20.36
-        x = scale_x * (offset_x - x)
-
+        x, y = world_to_pixel(pose.x, pose.y)
         return x, y, pose.yaw
 
     # Function to reset

@@ -35,11 +35,16 @@ motor_node = MotorsNode("/do150/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/do150/odom")
 noisy_odometry_node = OdometryNode("/do150/odom_noisy", node_name="noisy_odometry_node")
 laser_node = LaserNode("/do150/laser/scan")
+# Only the MiR100 has these two lasers
+front_laser_node = LaserNode("/do150/front_laser/scan", node_name="front_laser_node")
+back_laser_node = LaserNode("/do150/back_laser/scan", node_name="back_laser_node")
 
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
 executor.add_node(noisy_odometry_node)
 executor.add_node(laser_node)
+executor.add_node(front_laser_node)
+executor.add_node(back_laser_node)
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
@@ -53,11 +58,23 @@ def getOdom():
     return noisy_odometry_node.getPose3d()
 
 
-def getLaserData():
-    laser_data = laser_node.getLaserData()
+def __wait_laser_data(node):
+    laser_data = node.getLaserData()
     while len(laser_data.values) == 0:
-        laser_data = laser_node.getLaserData()
+        laser_data = node.getLaserData()
     return laser_data
+
+
+def getLaserData():
+    return __wait_laser_data(laser_node)
+
+
+def getFrontLaserData():
+    return __wait_laser_data(front_laser_node)
+
+
+def getBackLaserData():
+    return __wait_laser_data(back_laser_node)
 
 
 def setV(v):

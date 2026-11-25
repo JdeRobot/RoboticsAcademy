@@ -46,6 +46,9 @@ public:
     static Pose3d get_pose3d();
     static Pose3d get_odom();
     static LaserData get_laser_data();
+    // Only the MiR100 has these two lasers
+    static LaserData get_front_laser_data();
+    static LaserData get_back_laser_data();
 
 private:
     static void init();
@@ -56,6 +59,8 @@ private:
     static std::shared_ptr<OdometryNode> odometry_node_;
     static std::shared_ptr<OdometryNode> noisy_odometry_node_;
     static std::shared_ptr<LaserNode> laser_node_;
+    static std::shared_ptr<LaserNode> front_laser_node_;
+    static std::shared_ptr<LaserNode> back_laser_node_;
     static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
     static std::thread spin_thread_;
 };
