@@ -1143,6 +1143,79 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
       },
     ],
   },
+  _f1_race: {
+    hal: [
+      {
+        type: "method",
+        label: "getPose3d().x",
+        code: "getPose3d().x",
+        docstring: "Get the position of the robot (x coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().y",
+        code: "getPose3d().y",
+        docstring: "Obtain the position of the robot (y coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().yaw",
+        code: "getPose3d().yaw",
+        docstring: "Get the orientation of the robot with regarding the map.",
+      },
+      {
+        type: "method",
+        label: "getLaserData()",
+        code: "getLaserData()",
+        docstring:
+          "Obtain laser sensor data It is composed of 180 pairs of values: (0-180º distance in meters).",
+      },
+      {
+        type: "method",
+        label: "hasWon()",
+        code: "hasWon()",
+        docstring: "True once you finish the lap before the rival.",
+      },
+      {
+        type: "method",
+        label: "setV()",
+        code: "setV()",
+        docstring: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW()",
+        code: "setW()",
+        docstring: "Set the angular velocity.",
+      },
+    ],
+    webgui: [
+      {
+        type: "method",
+        label: "getNextTarget()",
+        code: "getNextTarget()",
+        docstring: "Obtain the next target object on the scenario.",
+      },
+      {
+        type: "method",
+        label: "setTargetx",
+        code: "setTargetx",
+        docstring: "Sets the x coordinate of the target on the GUI.",
+      },
+      {
+        type: "method",
+        label: "setTargety",
+        code: "setTargety",
+        docstring: "Sets the y coordinate of the target on the GUI.",
+      },
+      {
+        type: "method",
+        label: "showForces",
+        code: "showForces",
+        docstring: "Shows the forces being appliend on the car in real time.",
+      },
+    ],
+  },
   _3d_reconstruction: {
     hal: [
       {
