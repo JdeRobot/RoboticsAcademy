@@ -10,7 +10,6 @@
 #include <mutex>
 #include <atomic>
 #include <deque>
-#include <set>
 
 class WebGUINode : public BaseWebGUI
 {
@@ -59,9 +58,9 @@ public:
                 paint_matching_.store(msg->data);
             });
 
-        // New 3D points (deduplicated before adding to the send queue)
-        pts_new_sub_ = aux_node_->create_subscription<std_msgs::msg::String>(
-            "/webgui/points_new", qos_default,
+        // 3D points added to the viewer
+        pts_sub_ = aux_node_->create_subscription<std_msgs::msg::String>(
+            "/webgui/points", qos_default,
             [this](const std_msgs::msg::String::SharedPtr msg) {
                 try {
                     auto pts = json::parse(msg->data);
@@ -70,22 +69,7 @@ public:
                         if (p.size() >= 6)
                             v.push_back({ p[0], p[1], p[2], p[3], p[4], p[5] });
                     }
-                    add_new_points(v);
-                } catch (...) {}
-            });
-
-        // Replace the entire point cloud
-        pts_all_sub_ = aux_node_->create_subscription<std_msgs::msg::String>(
-            "/webgui/points_all", qos_default,
-            [this](const std_msgs::msg::String::SharedPtr msg) {
-                try {
-                    auto pts = json::parse(msg->data);
-                    std::vector<std::array<double, 6>> v;
-                    for (const auto& p : pts) {
-                        if (p.size() >= 6)
-                            v.push_back({ p[0], p[1], p[2], p[3], p[4], p[5] });
-                    }
-                    set_all_points(v);
+                    add_points(v);
                 } catch (...) {}
             });
 
@@ -104,7 +88,7 @@ public:
                 }
             });
 
-        // Full reset
+        // Remove every point
         clear_sub_ = aux_node_->create_subscription<std_msgs::msg::Empty>(
             "/webgui/clear_points", qos_default,
             [this](const std_msgs::msg::Empty::SharedPtr) {
@@ -131,22 +115,9 @@ public:
         images_updated_.store(true);
     }
 
-    void add_new_points(const std::vector<std::array<double, 6>>& points) {
+    void add_points(const std::vector<std::array<double, 6>>& points) {
         std::lock_guard<std::mutex> lk(points_mtx_);
-        for (const auto& p : points) {
-            if (point_set_.insert(p).second)   // only add if not already present
-                point_to_send_.push_back(p);
-        }
-    }
-
-    void set_all_points(const std::vector<std::array<double, 6>>& points) {
-        std::lock_guard<std::mutex> lk(points_mtx_);
-        point_to_send_.clear();
-        point_set_.clear();
-        for (const auto& p : points) {
-            point_set_.insert(p);
-            point_to_send_.push_back(p);
-        }
+        point_to_send_.insert(point_to_send_.end(), points.begin(), points.end());
     }
 
     void add_matching(double x1, double y1, double x2, double y2) {
@@ -158,7 +129,6 @@ public:
         {
             std::lock_guard<std::mutex> lk(points_mtx_);
             point_to_send_.clear();
-            point_set_.clear();
         }
         {
             std::lock_guard<std::mutex> lk(match_mtx_);
@@ -268,8 +238,7 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr          img_left_sub_;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr          img_right_sub_;
     rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr              paint_match_sub_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr            pts_new_sub_;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr            pts_all_sub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr            pts_sub_;
     rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr img_match_sub_;
     rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr             clear_sub_;
 
@@ -282,7 +251,6 @@ private:
 
     // 3D point cloud (deque for efficient front erasure during batching)
     std::deque<std::array<double, 6>> point_to_send_;
-    std::set<std::array<double, 6>>   point_set_;   // deduplication
     std::mutex points_mtx_;
 
     // Epipolar matching lines: [x1, y1, x2, y2]
@@ -318,14 +286,9 @@ void WebGUI::show_images(const cv::Mat& left, const cv::Mat& right, bool paint_m
     if (gui_node_) gui_node_->show_images(left, right, paint_matching);
 }
 
-void WebGUI::show_new_points(const std::vector<std::array<double, 6>>& points)
+void WebGUI::show_points(const std::vector<std::array<double, 6>>& points)
 {
-    if (gui_node_) gui_node_->add_new_points(points);
-}
-
-void WebGUI::show_all_points(const std::vector<std::array<double, 6>>& points)
-{
-    if (gui_node_) gui_node_->set_all_points(points);
+    if (gui_node_) gui_node_->add_points(points);
 }
 
 void WebGUI::show_image_matching(double x1, double y1, double x2, double y2)
@@ -333,7 +296,7 @@ void WebGUI::show_image_matching(double x1, double y1, double x2, double y2)
     if (gui_node_) gui_node_->add_matching(x1, y1, x2, y2);
 }
 
-void WebGUI::clear_all_points()
+void WebGUI::clear_points()
 {
     if (gui_node_) gui_node_->do_clear();
 }

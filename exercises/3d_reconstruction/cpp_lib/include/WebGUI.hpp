@@ -20,15 +20,14 @@ public:
     // Show the stereo image pair; paint_matching draws epipolar lines when true.
     static void show_images(const cv::Mat& left, const cv::Mat& right, bool paint_matching);
 
-    // 3D point cloud management. Each point is [x, y, z, r, g, b].
-    static void show_new_points(const std::vector<std::array<double, 6>>& points);
-    static void show_all_points(const std::vector<std::array<double, 6>>& points);
+    // Add points to the 3D viewer, nothing already shown is removed. Each point is [x, y, z, r, g, b].
+    static void show_points(const std::vector<std::array<double, 6>>& points);
 
     // Add an epipolar matching line between image coordinates (x1,y1) ↔ (x2,y2).
     static void show_image_matching(double x1, double y1, double x2, double y2);
 
-    // Clear all points and reset the 3D viewer.
-    static void clear_all_points();
+    // Remove every point from the 3D viewer.
+    static void clear_points();
 
 private:
     static void init();

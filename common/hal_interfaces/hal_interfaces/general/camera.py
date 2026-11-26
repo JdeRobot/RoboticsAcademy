@@ -77,8 +77,8 @@ def imageMsg2Image(img, bridge):
 class CameraNode(Node):
     """ROS2 node that subscribes to a camera topic and stores the latest image."""
 
-    def __init__(self, topic):
-        super().__init__("camera_node")
+    def __init__(self, topic, node_name="camera_node"):
+        super().__init__(node_name)
         self.sub = self.create_subscription(
             sensor_msgs.msg.Image, topic, self.listener_callback, 10
         )
