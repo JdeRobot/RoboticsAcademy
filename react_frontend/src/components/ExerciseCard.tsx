@@ -5,13 +5,13 @@ import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
 import FALLBACK_IMAGE from "../images/default_card.svg";
 import { Exercise } from "Types/exercises";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   StyledExerciseCardArea,
   StyledExerciseCardContainer,
   StyledExerciseCardInfoContainer,
   StyledExerciseCardTagList,
 } from "Styles/ExerciseCard.styles";
-import { useNavigate } from "react-router";
 
 const ExerciseCard = ({
   exercise_id,
@@ -20,11 +20,7 @@ const ExerciseCard = ({
   tags,
   status,
 }: Exercise) => {
-  const navigate = useNavigate();
-
-  const navigateToExercise = (): void => {
-    navigate(`/academy/studio/${exercise_id}`, { viewTransition: true });
-  };
+  const theme = useAcademyTheme();
 
   const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
     (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
@@ -33,10 +29,18 @@ const ExerciseCard = ({
   const tagsList: string[] = JSON.parse(tags);
 
   return (
-    <StyledExerciseCardContainer state={status} id={exercise_id}>
-      <StyledExerciseCardArea onClick={() => navigateToExercise()}>
+    <StyledExerciseCardContainer
+      state={status}
+      id={exercise_id}
+      focusColor={theme.palette.primary}
+    >
+      <StyledExerciseCardArea
+        to={`/academy/studio/${exercise_id}`}
+        viewTransition
+      >
         <CardMedia
           component="img"
+          alt=""
           style={{ flexGrow: 1 }}
           image={`/static/${exercise_id}/teaser.png`}
           onError={onMediaFallback}
