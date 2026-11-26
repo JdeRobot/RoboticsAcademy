@@ -1206,21 +1206,16 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
     webgui: [
       {
         type: "method",
-        label: "ShowNewPoints(points)",
-        code: "ShowNewPoints(points)",
-        docstring: "Plot a array of plots in the 3D visor.",
+        label: "showPoints(points)",
+        code: "showPoints(points)",
+        docstring:
+          "Adds a list of [x, y, z, r, g, b] points to the 3D viewer, the points already shown stay.",
       },
       {
         type: "method",
-        label: "ShowAllPoints(points)",
-        code: "ShowAllPoints(points)",
-        docstring: "Clear the 3D visor and plot new array of plots.",
-      },
-      {
-        type: "method",
-        label: "ClearAllPoints()",
-        code: "ClearAllPoints()",
-        docstring: "Clear the 3D visor.",
+        label: "clearPoints()",
+        code: "clearPoints()",
+        docstring: "Removes every point from the 3D viewer.",
       },
       {
         type: "method",

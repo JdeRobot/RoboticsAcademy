@@ -35,8 +35,7 @@ class WebGUINode(Node):
         self.create_subscription(
             Bool, "/webgui/paint_matching", self.paint_match_cb, 10
         )
-        self.create_subscription(String, "/webgui/points_new", self.pts_new_cb, 10)
-        self.create_subscription(String, "/webgui/points_all", self.pts_all_cb, 10)
+        self.create_subscription(String, "/webgui/points", self.pts_cb, 10)
         self.create_subscription(
             Float32MultiArray, "/webgui/image_matching", self.img_match_cb, 10
         )
@@ -63,17 +62,9 @@ class WebGUINode(Node):
     def paint_match_cb(self, msg):
         self.gui.paint_matching = "T" if msg.data else "F"
 
-    def pts_new_cb(self, msg):
+    def pts_cb(self, msg):
         try:
-            pts = json.loads(msg.data)
-            self.gui.ShowNewPoints(pts)
-        except Exception:
-            pass
-
-    def pts_all_cb(self, msg):
-        try:
-            pts = json.loads(msg.data)
-            self.gui.ShowAllPoints(pts)
+            self.gui.showPoints(json.loads(msg.data))
         except Exception:
             pass
 
@@ -84,7 +75,7 @@ class WebGUINode(Node):
             )
 
     def clear_cb(self, msg):
-        self.gui.ClearAllPoints()
+        self.gui.clearPoints()
 
 
 class WebGUI(MeasuringThreadingGUI):
@@ -99,9 +90,8 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
-        self.point_to_save = []
         self.point_to_send = []
-        self.point_set = set()
+        self.points_lock = threading.Lock()
 
         self.matching = []
         self.paint_matching = "F"
@@ -118,20 +108,23 @@ class WebGUI(MeasuringThreadingGUI):
     def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
 
+        # Sent from here, after the frontend handshake, so it never races its start requests
+        with self.points_lock:
+            needs_clear = self.needs_clear
+            self.needs_clear = False
+        if needs_clear:
+            self.send_to_client(json.dumps({"reset": True}))
+            return
+
         payload1, payload2 = self.payloadImage()
         self.payload["img1"] = json.dumps(payload1)
         self.payload["img2"] = json.dumps(payload2)
 
-        length_point_send = len(self.point_to_send)
-        if length_point_send != 0:
-            if length_point_send > 500:
-                self.payload["pts"] = json.dumps(self.point_to_send[0:500])
-                del self.point_to_send[0:500]
-            else:
-                self.payload["pts"] = json.dumps(self.point_to_send)
-                del self.point_to_send[0:length_point_send]
-        else:
-            self.payload["pts"] = json.dumps([])
+        # At most 500 points per message
+        with self.points_lock:
+            batch = self.point_to_send[:500]
+            del self.point_to_send[:500]
+        self.payload["pts"] = json.dumps(batch)
 
         self.payload["match"] = json.dumps(self.matching)
         self.matching = []
@@ -178,34 +171,21 @@ class WebGUI(MeasuringThreadingGUI):
                 self.image2_to_be_shown = image2
                 self.image_to_be_shown_updated = True
 
-    def ShowNewPoints(self, points):
-        for p in points:
-            tp = tuple(p)
-            if tp not in self.point_set:
-                self.point_set.add(tp)
-                self.point_to_save.append(p)
-                self.point_to_send.append(p)
-
-    def ShowAllPoints(self, points):
-        self.ClearAllPoints()
-        for p in points:
-            tp = tuple(p)
-            self.point_set.add(tp)
-            self.point_to_save.append(p)
-            self.point_to_send.append(p)
+    def showPoints(self, points):
+        with self.points_lock:
+            self.point_to_send.extend(list(p) for p in points)
 
     def showImageMatching(self, x1, y1, x2, y2):
         self.matching.append([x1, y1, x2, y2])
 
-    def ClearAllPoints(self):
-        self.point_to_save = []
-        self.point_to_send = []
-        self.matching_to_save = []
-        self.matching = []
-        self.send_to_client(json.dumps({"reset": True}))
+    def clearPoints(self):
+        with self.points_lock:
+            self.point_to_send = []
+            self.matching = []
+            self.needs_clear = True
 
     def reset_gui(self):
-        self.ClearAllPoints()
+        self.clearPoints()
 
 
 host = "ws://127.0.0.1:2303"
@@ -218,17 +198,13 @@ def showImages(image1, image2, paint_matching):
     gui.showImages(image1, image2, paint_matching)
 
 
-def ShowNewPoints(points):
-    gui.ShowNewPoints(points)
-
-
-def ShowAllPoints(points):
-    gui.ShowAllPoints(points)
+def showPoints(points):
+    gui.showPoints(points)
 
 
 def showImageMatching(x1, y1, x2, y2):
     gui.showImageMatching(x1, y1, x2, y2)
 
 
-def ClearAllPoints():
-    gui.ClearAllPoints()
+def clearPoints():
+    gui.clearPoints()
