@@ -97,9 +97,8 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 - `HAL.project3DScene(point3d)` - to transform 3D Point Space after triangulation to the 3D Point Viewer
 - `WebGUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
 - `WebGUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
-- `WebGUI.ShowNewPoints(points)` - See 3D visor below
-- `WebGUI.ShowAllPoints(points)` - See 3D visor below
-- `WebGUI.ClearAllPoints()` - See 3D visor below
+- `WebGUI.showPoints(points)` - See 3D visor below
+- `WebGUI.clearPoints()` - See 3D visor below
 
 ```python
 def algorithm(self):
@@ -127,9 +126,8 @@ def algorithm(self):
 - `HAL::project_3d_scene(point3d);` - Scales a reconstructed 3D point for the frontend 3D viewer. Returns `cv::Vec3d`.
 - `WebGUI::show_images(left, right, paint_matching);` - Displays left and right `cv::Mat` images in the WebGUI.
 - `WebGUI::show_image_matching(x1, y1, x2, y2);` - Plots a correspondence between two image points.
-- `WebGUI::show_new_points(points);` - Adds new 3D points to the viewer. Each point is `std::array<double, 6>` as `{x, y, z, r, g, b}`.
-- `WebGUI::show_all_points(points);` - Replaces all 3D points in the viewer.
-- `WebGUI::clear_all_points();` - Clears all 3D points from the viewer.
+- `WebGUI::show_points(points);` - Adds 3D points to the viewer, the points already shown stay. Each point is `std::array<double, 6>` as `{x, y, z, r, g, b}`.
+- `WebGUI::clear_points();` - Removes every 3D point from the viewer.
 
 In order to use the HAL-based controls you must include the following lines:
 
@@ -173,19 +171,15 @@ For WebGUI debugging:
 - `/webgui/paint_matching` - Publish to this topic to enable or disable matching visualization.  
   Message type: `std_msgs/msg/Bool`
 
-- `/webgui/points_new` - Publish to this topic to add newly reconstructed 3D points.  
+- `/webgui/points` - Publish to this topic to add 3D points to the viewer, the points already shown stay.  
   Message type: `std_msgs/msg/String`  
   Format: JSON list of points `[x, y, z, r, g, b]`
-
-- `/webgui/points_all` - Publish to this topic to replace the full reconstructed point cloud.  
-  Message type: `std_msgs/msg/String`  
-  Format: JSON list of points
 
 - `/webgui/image_matching` - Publish to this topic to visualize correspondences between both images.  
   Message type: `std_msgs/msg/Float32MultiArray`  
   Format: `[x1, y1, x2, y2]`
 
-- `/webgui/clear_points` - Publish to this topic to clear all reconstructed points.  
+- `/webgui/clear_points` - Publish to this topic to remove every point from the viewer.  
   Message type: `std_msgs/msg/Empty`
 
 #### Note
@@ -266,30 +260,32 @@ To have frequency control you may use a timer and a control function as follows:
 
 All the points follow this structure: `[x,y,z,R,G,B]`.
 
-- `WebGUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
-- `WebGUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
-- `WebGUI.ClearAllPoints()` - to clear the 3D visor
+- `WebGUI.showPoints(points)` - to add points to the 3D visor, the points already shown stay
+- `WebGUI.clearPoints()` - to remove every point from the 3D visor
 
 #### Example
 
-This code will create a red cube:
+This code will draw the corners of a green cube:
 
 ```python
 import WebGUI
 import HAL
+import Frequency
+
+points = [
+    (10, 10, 10, 0, 255, 0),
+    (-10, 10, 10, 0, 255, 0),
+    (10, 10, -10, 0, 255, 0),
+    (-10, 10, -10, 0, 255, 0),
+    (10, -10, 10, 0, 255, 0),
+    (-10, -10, 10, 0, 255, 0),
+    (10, -10, -10, 0, 255, 0),
+    (-10, -10, -10, 0, 255, 0),
+]
+WebGUI.showPoints(points)
 
 while True:
-    points = [
-        (1, 1, 1, 255, 0, 0),
-        (-1, 1, 1, 255, 0, 0),
-        (1, 1, -1, 255, 0, 0),
-        (-1, 1, -1, 255, 0, 0),
-        (1, -1, 1, 255, 0, 0),
-        (-1, -1, 1, 255, 0, 0),
-        (1, -1, -1, 255, 0, 0),
-        (-1, -1, -1, 255, 0, 0),
-    ]
-    WebGUI.ShowAllPoints(points)
+    Frequency.tick()
 ```
 
 {% include youtubePlayer.html id=page.youtubeId4 %}
