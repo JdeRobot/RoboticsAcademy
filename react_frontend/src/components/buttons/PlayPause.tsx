@@ -54,14 +54,15 @@ const PlayPauseButton = ({
   };
 
   useEffect(() => {
-    subscribe("autoSaveCompleted", () => {
+    const onAutoSaveCompleted = () => {
       updateCode(true);
-    });
+    };
+    subscribe("autoSaveCompleted", onAutoSaveCompleted);
     subscribe("CommsManagerStateChange", updateState);
 
     return () => {
-      unsubscribe("autoSaveCompleted", () => { });
-      unsubscribe("CommsManagerStateChange", () => { });
+      unsubscribe("autoSaveCompleted", onAutoSaveCompleted);
+      unsubscribe("CommsManagerStateChange", updateState);
     };
   }, []);
 

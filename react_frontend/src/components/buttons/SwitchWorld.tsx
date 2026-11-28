@@ -33,7 +33,7 @@ const TerminateUniverseButton = ({ project, commsManager, baseWorld }: {
     subscribe("CommsManagerStateChange", resetWorld);
 
     return () => {
-      unsubscribe("CommsManagerStateChange", () => { });
+      unsubscribe("CommsManagerStateChange", resetWorld);
     };
   }, []);
 
